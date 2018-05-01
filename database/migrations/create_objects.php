@@ -77,14 +77,12 @@ class CreateObjects extends Migration
 			$table->string('misc_name',128)->nullable(false);				// 'Название ресурса'
 			$table->string('misc_file',512)->nullable(false);				// 'Имя файла'
 			$table->integer('misc_size')->nullable(false);					// 'Размер файла (Кб)'
-			$table->integer('obj_id');										// 'Ссылка на объект (локальный ресурс)'
 			$table->datetime('created_at')->nullable(false);
 			$table->datetime('updated_at');
 			
 			$table->softDeletes();
 			
 			$table->foreign('tree_id')->references('tree_id')->on('_tree');
-			$table->foreign('obj_id')->references('obj_id')->on('_object');
 		});
 		
 		// Ссылки, вкладки для форм представления
@@ -163,7 +161,7 @@ class CreateObjects extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_obj_component');
+        Schema::dropIfExists('_obj_frame');
         Schema::dropIfExists('_obj_fun');
         Schema::dropIfExists('_obj_tab');
         Schema::dropIfExists('_misc');
@@ -171,8 +169,7 @@ class CreateObjects extends Migration
         Schema::dropIfExists('_object');
         Schema::dropIfExists('_tree');
     }
-	
-	
+
     public function initializeTree()
     {
         DB::table('_tree')->truncate();        

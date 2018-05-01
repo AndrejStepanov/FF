@@ -1,0 +1,10 @@
+{ 
+  "esversion": 6 ,
+  "camelcase" : true,
+  "indent": 4,
+  "undef": true,
+  "quotmark": "single",
+  "maxlen": 280,
+  "trailing": true,
+  "curly": true
+}

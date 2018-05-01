@@ -8,7 +8,7 @@ class Objects extends Model
 	use SoftDeletingTrait;
 
 	protected $table = '_object';
-  protected $primaryKey = 'object_id';
+    protected $primaryKey = 'obj_id';
 	protected $dates = [
         'created_at',
         'updated_at',

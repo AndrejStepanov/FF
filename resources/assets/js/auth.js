@@ -6,13 +6,12 @@ Vue.use(VueRouter);
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 Vue.use(VueAxios, axios);
-
 window._Vue={axios:axios, bus: new Vue() };
 
 import Vuetify from 'vuetify';
 Vue.use(Vuetify);
 
-import App from './components/App.vue';
+import App from './components/Auth.vue';
 
 var Hello = Vue.extend({
     template: 'Посмотрите на всех, кто тут работает!'
