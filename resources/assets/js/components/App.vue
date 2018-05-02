@@ -1,7 +1,6 @@
 <template>
     <v-app dark>
         
-
         <v-content>
             <v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
                 <v-list dense>
@@ -30,9 +29,10 @@
                 </v-list>
             </v-navigation-drawer>
             
-            {{title}}
+            <k-tab></k-tab>
      
         </v-content>
+
         <k-head :showRight=true :showLeft=true :cur_sys='cur_sys'  @clickRightDrawer ="drawerRight = !drawerRight" @clickLeftDrawer="drawerLeft = !drawerLeft" app> </k-head>
         <k-footer app> </k-footer>
         <k-msg ref='msg'></k-msg>
@@ -43,6 +43,7 @@
     import k_head from './k_head';
     import k_footer from './k_footer';
     import k_msg from './k_msg';
+    import k_tab from './tab';
 
     export default {
         data: () => ({
@@ -80,6 +81,7 @@
             'k-head': k_head,
             'k-footer':k_footer,
             'k-msg':k_msg,
+            'k-tab':k_tab,
         },
         methods: {
             choose_sys: function (name){

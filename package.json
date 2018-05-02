@@ -19,6 +19,8 @@
         "webpack": "^3.10.0"
     },
     "dependencies": {
+        "ag-grid": "^17.1.1",
+        "ag-grid-vue": "^17.1.0",
         "axios": "^0.17.1",
         "bootstrap-sass": "^3.3.7",
         "cross-env": "^5.0.1",

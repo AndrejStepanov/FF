@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Ticket;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class LoginController extends Controller
 {
@@ -26,7 +29,24 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/sucsess';
+    protected function redirectTo()
+    {
+        Ticket::insert(array(
+            'input_date'  => date("Y-m-d H:i:s"),
+            'finish_date' => date("Y-m-d H:i:s",time()+ ( 8 * 60 * 60)),
+            'auth_date' => date("Y-m-d H:i:s"),
+            'uptime' => date("Y-m-d H:i:s"),
+            'cnt_attempts' => 0,
+            'user_id' => Auth::user()->id,
+            'user_name' => Auth::user()->name,
+            'session_id' => session_id(),
+            'IP' => Request::ip(),
+            'Client' => Request::server('HTTP_USER_AGENT'),
+            'is_root'   => Auth::user()->is_root,
+            'allow_objects'=>null,
+          ));
+        return '/sucsess';
+    }
 
     public function username()
     {
