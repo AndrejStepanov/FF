@@ -38511,6 +38511,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__k_msg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__k_msg__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tab__ = __webpack_require__(187);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tab___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__tab__);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
 //
 //
 //
@@ -38566,9 +38569,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             right: null,
             left: null,
             title: '',
-            cur_sys: 'Мониторинг',
-            systems: [{ name: 'Мониторинг', title: 'Мониторинг описание ссылки', icon: 'dashboard' }, { name: 'Планирование', title: 'Планирование описание ссылки', icon: 'healing' }, { name: 'Производство', title: 'Производство описание ссылки', icon: 'content_cut' }, { name: 'Качество', title: 'Качество описание ссылки', icon: 'local_offer' }, { name: 'Служебная', title: 'Служебная описание ссылки', icon: 'directions_run' }],
-            ALL_Links: [{ system: 'Мониторинг', color: '', name: 'VIP', title: 'Просмотреть ВСЕ!', icon: 'local_activity', disabled: 0 }, { system: 'Мониторинг', color: '', name: 'Печи', title: 'Просмотр информации по печам', icon: 'school', disabled: 0 }, { system: 'Мониторинг', color: '', name: 'Стан', title: 'Просмотр информации по стану', icon: 'restaurant', disabled: 0 }, { system: 'Мониторинг', color: '', name: 'Склад', title: 'Просмотр информации по складу', icon: 'directions_run', disabled: 0 }, { system: 'Планирование', color: '', name: 'Годовой план', title: 'Просмотр информации', icon: 'school', disabled: 0 }, { system: 'Планирование', color: '', name: 'Месячный план', title: 'Просмотр информации', icon: 'directions_run', disabled: 0 }, { system: 'Производство', color: '', name: 'Печи', title: 'Просмотреть ВСЕ!', icon: 'local_activity', disabled: 0 }, { system: 'Производство', color: '', name: 'Стан', title: 'Просмотр информации по стану', icon: 'restaurant', disabled: 0 }, { system: 'Качество', color: '', name: 'Завяки', title: 'Просмотр информации по печам', icon: 'dashboard', disabled: 0 }, { system: 'Качество', color: '', name: 'Лаборотория', title: 'Просмотр информации по печам', icon: 'healing', disabled: 0 }, { system: 'Качество', color: '', name: 'Аттестация', title: 'Просмотр информации по стану', icon: 'restaurant', disabled: 0 }, { system: 'Служебная', color: '', name: 'Журнал операций', title: 'Просмотр информации по стану', icon: 'local_offer', disabled: 0 }],
+            cur_sys: 'Объекты',
+            systems: [{ name: 'Объекты', title: 'АРМы работы с объектами системы', icon: 'dashboard' }],
+            ALL_Links: [{ system: 'Объекты', color: '', type: 'АРМ', name: 'Дерево', title: 'Работы с деревом объектов!', icon: 'local_activity', disabled: 0, is_new_type: 0, href: '/' }],
             Links: []
         };
     },
@@ -38582,10 +38585,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         choose_sys: function choose_sys(name) {
             var _this = this;
 
-            var newLinks = [];
+            var newLinks = [],
+                cur_type = '';
             this.cur_sys = name;
             this.ALL_Links.forEach(function (link) {
-                if (link.system == name) newLinks.push(link);
+                if (link.system != name) return;
+                if (cur_type != link.type) newLinks.push(_extends({}, link, { is_new_type: 1, name: link.type }));
+                newLinks.push(link);
             });
             this.Links = newLinks;
             this.systems.forEach(function (system) {
@@ -38594,7 +38600,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     created: function created() {
-        this.choose_sys('Мониторинг');
+        this.choose_sys(this.cur_sys);
     }
 });
 
@@ -42307,17 +42313,30 @@ var render = function() {
                 _vm._l(_vm.Links, function(item) {
                   return _c(
                     "v-list-tile",
-                    { key: item.name, on: { click: function($event) {} } },
+                    {
+                      key: item.name,
+                      attrs: { href: item.is_new_type == 1 ? "" : item.href }
+                    },
                     [
-                      _c(
-                        "v-list-tile-action",
-                        [_c("v-icon", [_vm._v(_vm._s(item.icon))])],
-                        1
-                      ),
+                      item.is_new_type == 0
+                        ? _c(
+                            "v-list-tile-action",
+                            [_c("v-icon", [_vm._v(_vm._s(item.icon))])],
+                            1
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
                       _c(
                         "v-list-tile-content",
-                        [_c("v-list-tile-title", [_vm._v(_vm._s(item.name))])],
+                        [
+                          item.is_new_type == 1
+                            ? _c("v-list-tile-title", [
+                                _vm._v(_vm._s(item.type))
+                              ])
+                            : _c("v-list-tile-title", [
+                                _vm._v(_vm._s(item.name) + " ")
+                              ])
+                        ],
                         1
                       )
                     ],

@@ -1,6 +1,5 @@
 <template>
     <v-app dark>
-        
         <v-content>
             <v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
                 <v-list dense>
@@ -14,23 +13,20 @@
                     </v-list-tile>
                 </v-list>
             </v-navigation-drawer>
-
-
             <v-navigation-drawer fixed v-model="drawerRight" right  :clipped="$vuetify.breakpoint.width  > 1264"  app >
                 <v-list dense>
-                    <v-list-tile v-for="item in Links" :key="item.name" @click="">
-                        <v-list-tile-action>
+                    <v-list-tile v-for="item in Links" :key="item.name" v-bind:href="item.is_new_type==1?'':item.href" >                        
+                        <v-list-tile-action v-if="item.is_new_type==0 " >
                             <v-icon>{{ item.icon }}</v-icon>
                         </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                        <v-list-tile-content >
+                            <v-list-tile-title v-if="item.is_new_type==1 " >{{ item.type  }}</v-list-tile-title>
+                            <v-list-tile-title v-else>{{ item.name }} </v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
                 </v-list>
             </v-navigation-drawer>
-            
             <k-tab></k-tab>
-     
         </v-content>
 
         <k-head :showRight=true :showLeft=true :cur_sys='cur_sys'  @clickRightDrawer ="drawerRight = !drawerRight" @clickLeftDrawer="drawerLeft = !drawerLeft" app> </k-head>
@@ -52,27 +48,12 @@
             right: null,
             left: null,
             title: '',
-            cur_sys: 'Мониторинг',
+            cur_sys: 'Объекты',
             systems: [
-                {name:'Мониторинг',title:'Мониторинг описание ссылки', icon: 'dashboard'},
-                {name:'Планирование',title:'Планирование описание ссылки', icon: 'healing'},
-                {name:'Производство',title:'Производство описание ссылки', icon: 'content_cut'},
-                {name:'Качество',title:'Качество описание ссылки', icon: 'local_offer'},
-                {name:'Служебная',title:'Служебная описание ссылки', icon: 'directions_run'}
+                {name:'Объекты',title:'АРМы работы с объектами системы', icon: 'dashboard'},
             ],
             ALL_Links:[
-                {system:'Мониторинг',color:'',name:'VIP',title:'Просмотреть ВСЕ!', icon: 'local_activity',disabled:0},
-                {system:'Мониторинг',color:'',name:'Печи',title:'Просмотр информации по печам', icon: 'school',disabled:0},
-                {system:'Мониторинг',color:'',name:'Стан',title:'Просмотр информации по стану', icon: 'restaurant',disabled:0},
-                {system:'Мониторинг',color:'',name:'Склад',title:'Просмотр информации по складу', icon: 'directions_run',disabled:0},
-                {system:'Планирование',color:'',name:'Годовой план',title:'Просмотр информации', icon: 'school',disabled:0},
-                {system:'Планирование',color:'',name:'Месячный план',title:'Просмотр информации', icon: 'directions_run',disabled:0},
-                {system:'Производство',color:'',name:'Печи',title:'Просмотреть ВСЕ!', icon: 'local_activity',disabled:0},
-                {system:'Производство',color:'',name:'Стан',title:'Просмотр информации по стану', icon: 'restaurant',disabled:0},
-                {system:'Качество',color:'',name:'Завяки',title:'Просмотр информации по печам', icon: 'dashboard',disabled:0},
-                {system:'Качество',color:'',name:'Лаборотория',title:'Просмотр информации по печам', icon: 'healing',disabled:0},
-                {system:'Качество',color:'',name:'Аттестация',title:'Просмотр информации по стану', icon: 'restaurant',disabled:0},
-                {system:'Служебная',color:'',name:'Журнал операций',title:'Просмотр информации по стану', icon: 'local_offer',disabled:0},
+                {system:'Объекты',color:'',type:'АРМ',name:'Дерево',title:'Работы с деревом объектов!', icon: 'local_activity',disabled:0,is_new_type:0, href:'/',},
             ],
             Links:[
             ],
@@ -85,11 +66,15 @@
         },
         methods: {
             choose_sys: function (name){
-                let newLinks=[];
+                let newLinks=[],
+                    cur_type='';
                 this.cur_sys=name;
                 this.ALL_Links.forEach(link => {
-                    if (link.system==name )
-                      newLinks.push(link);                
+                    if (link.system!=name )
+                        return;
+                    if(cur_type!=link.type)
+                       newLinks.push({...link,is_new_type:1,name:link.type});
+                    newLinks.push(link);
                 });
                 this.Links=newLinks;
                 this.systems.forEach(system => {
@@ -99,7 +84,7 @@
             },
         },
         created: function (){
-            this.choose_sys('Мониторинг');
+            this.choose_sys(this.cur_sys);
         },
     }
 </script>
