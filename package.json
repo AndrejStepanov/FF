@@ -16,21 +16,24 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "webpack": "^3.10.0"
+        "webpack": "^3.12.0"
     },
     "dependencies": {
-        "ag-grid": "^17.1.1",
-        "ag-grid-vue": "^17.1.0",
         "axios": "^0.17.1",
         "bootstrap-sass": "^3.3.7",
-        "cross-env": "^5.0.1",
-        "jquery": "^3.2.1",
+        "cross-env": "^5.2.0",
+        "jquery": "^3.3.1",
+        "laravel-echo": "^1.4.0",
         "laravel-mix": "^1.7.2",
-        "lodash": "^4.17.4",
-        "vue": "^2.5.13",
-        "vue-axios": "^2.0.2",
+        "lodash": "^4.17.10",
+        "socket.io-client": "^2.1.1",
+        "uws": "^10.148.0",
+        "vue": "^2.5.16",
+        "vue-axios": "^2.1.1",
+        "vue-jstree": "^2.1.6",
         "vue-router": "^3.0.1",
         "vue-splitpane": "^1.0.2",
-        "vuetify": "^0.17.6"
+        "vue-template-compiler": "^2.5.16",
+        "vuetify": "^0.17.7"
     }
 }

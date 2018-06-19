@@ -26,7 +26,7 @@
                     </v-list-tile>
                 </v-list>
             </v-navigation-drawer>
-            <k-tab></k-tab>
+
         </v-content>
 
         <k-head :showRight=true :showLeft=true :cur_sys='cur_sys'  @clickRightDrawer ="drawerRight = !drawerRight" @clickLeftDrawer="drawerLeft = !drawerLeft" app> </k-head>
@@ -36,33 +36,28 @@
 </template>
 
 <script>
-    import k_head from './k_head';
-    import k_footer from './k_footer';
-    import k_msg from './k_msg';
-    import k_tab from './tab';
+    import head from '../components/k-head';
+    import footer from '../components/k-footer';
+    import msg from '../components/k-msg';
 
     export default {
         data: () => ({
             drawerLeft: true,
             drawerRight: true,
-            right: null,
-            left: null,
-            title: '',
             cur_sys: 'Объекты',
             systems: [
                 {name:'Объекты',title:'АРМы работы с объектами системы', icon: 'dashboard'},
             ],
             ALL_Links:[
-                {system:'Объекты',color:'',type:'АРМ',name:'Дерево',title:'Работы с деревом объектов!', icon: 'local_activity',disabled:0,is_new_type:0, href:'/',},
+                {system:'Объекты',color:'',type:'АРМ',name:'Работа с объектами',title:'Работы с деревом объектов!', icon: 'local_activity',disabled:0,is_new_type:0, href:'/Работа_с_объектами',},
             ],
             Links:[
             ],
         }),
         components: {
-            'k-head': k_head,
-            'k-footer':k_footer,
-            'k-msg':k_msg,
-            'k-tab':k_tab,
+            'k-head': head,
+            'k-footer':footer,
+            'k-msg':msg,
         },
         methods: {
             choose_sys: function (name){

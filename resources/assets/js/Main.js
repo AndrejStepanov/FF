@@ -12,6 +12,6 @@ window._Vue={axios:axios, bus: new Vue() };
 import Vuetify from 'vuetify';
 Vue.use(Vuetify);
 
-import App from './apps/Auth.vue';
+import App from './apps/Main.vue';
 
 new Vue(App).$mount('#app');

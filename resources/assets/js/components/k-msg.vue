@@ -34,7 +34,7 @@
                 this.$nextTick(function () {
                     this.$root.$refs.msg.timeout_=obj.timeout||6000;
                     this.$root.$refs.msg.title=obj.title||'Титул';
-                    this.$root.$refs.msg.text=obj.text||'Текст сообщения';
+                    this.$root.$refs.msg.text=(obj.status==401?'Необходимо авторизоваться!':obj.text)||'Текст сообщения';
                     this.$root.$refs.msg.k_type=obj.k_type||'danger';
                     this.$root.$refs.msg.x=obj.x||'right';
                     this.$root.$refs.msg.y=obj.y||'top';

@@ -11,14 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-    .webpackConfig({
-        resolve: {
-            alias: {
-                '@': path.resolve('resources/assets/sass')
-            }
-        }
-    })
+mix.js('resources/assets/js/Main.js', 'public/js')
+    .js('resources/assets/js/Obj_tree.js', 'public/js')
     .js('resources/assets/js/auth.js', 'public/js')
     .webpackConfig({
         resolve: {

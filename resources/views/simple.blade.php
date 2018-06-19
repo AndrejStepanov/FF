@@ -13,11 +13,11 @@
     <body>
         <div id="app"></div>
         <script>
-            window.Laravel = <?php echo json_encode([ 'csrfToken' => csrf_token(),]); ?>;
+            window.Laravel = <?php  echo json_encode([ 'csrfToken' => csrf_token(),]); ?>;
             window.User_info = <?php echo json_encode([ 'name' =>  !Auth::check()?'':Auth::user()->name,]); ?>;
         </script>
         <script src="{{asset('js/manifest.js')}}"></script>
         <script src="{{asset('js/vendor.js')}}"></script>
-        <script src="{{asset('js/app.js')}}"></script>
+        <script src="{{asset('js/'.$app_js.'.js')}}"></script>
     </body>
 </html>

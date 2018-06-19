@@ -31,13 +31,14 @@
 </template>
 
 <script>
-    import k_head from './k_head';
-    import k_footer from './k_footer';
-    import k_msg from './k_msg';
+    import head from '../components/k-head';
+    import footer from '../components/k-footer';
+    import msg from '../components/k-msg';
 	
     export default {
         data: () => ({
 			valid: false,
+			cur_sys: 'Авторизация',
 			remember: '',
 			login: '',
 			nameRules: [
@@ -49,14 +50,11 @@
 			],
         }),
         components: {
-            'k-head': k_head,
-            'k-footer':k_footer,
-            'k-msg':k_msg,
+            'k-head': head,
+            'k-footer':footer,
+            'k-msg':msg,
         },
         methods: {
-            choose_sys: function (name){
-                this.cur_sys=name;
-            },
 			submit () {
 				if (!this.$refs.form.validate()) 
 					return;
@@ -76,9 +74,6 @@
 					this.$root.$emit('show-message', {title:'Ошибка автороизации',text:'Указанные логин или пароль не найдены!'});
 				});
 			},
-        },
-        created: function (){
-            this.choose_sys('');
         },
     }
 </script>

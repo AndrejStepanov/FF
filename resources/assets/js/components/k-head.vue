@@ -7,13 +7,13 @@
 
         <v-toolbar-title>{{cur_sys}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <profile> </profile>
+        <k-profile> </k-profile>
         <v-toolbar-side-icon @click="$emit('clickRightDrawer');"  v-if="showRight"></v-toolbar-side-icon>
     </v-toolbar>
 </template>
 
 <script>
-    import profile from './profile';
+    import profile from './k-profile';
 
     export default {
         name:'k-head',
@@ -21,7 +21,7 @@
         data: () => ({            
         }),
         components: {
-            profile
+            'k-profile':profile
         },
         props: {
             cur_sys:{type: String,  default: '' },

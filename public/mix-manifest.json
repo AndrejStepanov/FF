@@ -1,5 +1,6 @@
 {
-    "/js/app.js": "/js/app.js",
+    "/js/Obj_tree.js": "/js/Obj_tree.js",
+    "/js/Main.js": "/js/Main.js",
     "/css/app.css": "/css/app.css",
     "/js/auth.js": "/js/auth.js",
     "/js/vendor.js": "/js/vendor.js",
