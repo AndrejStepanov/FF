@@ -37,6 +37,6 @@ class ObjTreeData extends Event implements ShouldBroadcast
     }
 	public function broadcastAs()
 	{
-		return 'ObjTreeData';
+		return 'object-tree-by-root';
 	}
 }

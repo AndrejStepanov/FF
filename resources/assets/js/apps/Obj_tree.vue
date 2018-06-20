@@ -2,13 +2,12 @@
     <v-app dark>
         <v-content>
             <v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
-				<k-loading v-if="tree_loading"/>
-                <v-tree v-else :data = "tree_data"   allow-batch whole-row @item-click = "itemClick" :textFieldName="tree_text" >  </v-tree>
+                <v-tree :data = "tree_data"   allow-batch whole-row @item-click = "itemClick" :textFieldName="tree_text" :socetHref="socetHref" :socetEvent="socetEvent" :socetChanel="socetChanel" >  </v-tree>
             </v-navigation-drawer>
-			<k-loading v-if="data_loading"/>
+			<!--<k-loading v-if="data_loading"/>-->
         </v-content>
 
-        <!--<k-head :showRight=false :showLeft=true :cur_sys='cur_sys'  @clickLeftDrawer="drawerLeft = !drawerLeft" app> </k-head>-->
+        <k-head :showRight=false :showLeft=true :cur_sys='cur_sys'  @clickLeftDrawer="drawerLeft = !drawerLeft" app> </k-head>
         <k-footer app> </k-footer>
         <k-msg ref='msg'></k-msg>
     </v-app>
@@ -19,15 +18,17 @@
     import footer from '../components/k-footer';
     import msg from '../components/k-msg';
     import loading from '../components/k-loading';
-    import VJstree from 'vue-jstree';
+    import VJstree from '../components/tree/tree';
 
     export default {
         data: () => ({
 			drawerLeft: true,
-			tree_loading:true,
 			data_loading:true,
             cur_sys: 'Работа с объектами',
             tree_text: 'tree_name',
+            socetHref: '/socet_command',
+            socetEvent: 'object-tree-by-root',
+            socetChanel: 'channel-ObjTreeData',
 			tree_data: [{}]
 		}),
         components: {
@@ -48,22 +49,11 @@
         created: function (){
 			let vm = this;
 			window._Vue.axios.post('/socet_command', {
-				type: 'object-tree-request',
+				type: 'object-tree-by-root',
 				_token: window.Laravel.csrfToken
 			}).catch(
 				(error) => vm.$root.$emit('show-message', {title:'Ошибка запроса данных',text:'Запросить данные не удалось!', status:error.response.status})
 			);			
-			window.Echo.channel('channel-ObjTreeData').listen('.ObjTreeData', (e) => {	
-				vm.tree_loading=true;
-				let data=JSON.parse(e.data);
-
-				while(vm.tree_data.length>0 )
-					vm.tree_data.pop();				
-				data.forEach((item, i, arr)=> 	
-					vm.tree_data.push(item));
-				vm.tree_loading=false;
-				
-			});
         },
     }
 </script>

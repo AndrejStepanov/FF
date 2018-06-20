@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Http\main_function;
 use App\Events\ObjTreeData ;
 class Tree extends Model
 {
@@ -15,17 +14,19 @@ class Tree extends Model
 
     protected $fillable = ['tree_id', 'tree_group', 'parent_id', 'parent_ids', 'level', 'tree_name', 'tree_desc', 'tree_path', 'seq_num'];
 	
-	public  function sentTreeData(){
-		 $data = $this->select('tree_id as id','tree_group','parent_id','tree_name')->orderBy('tree_path')->get()->toArray();
-		 $newData = $dicTree = array();
-		 foreach($data as $i=>$row)
-			if($row['parent_id']>0)
-				$dicTree[ $row['parent_id'] ]['children'][]  = $row ;
+	public  function sentTreeData($parent_id){
+		$query =  $this->select('tree_id as id','tree_group','parent_id','tree_name' )->orderBy('tree_path');
+		if($parent_id=='null')
+			 $query->whereNull('parent_id');
+		else
+			$query->where('parent_id' ,'=',$parent_id);
+		$data = $query->get()->toArray();		 
+		foreach($data  as $i=>$row)
+			if(!$this->where('parent_id' ,'=',$row['id'])->first())
+				$data[$i]['hasChild']=0;
 			else
-				$dicTree[ $row['id'] ] = $row;
-		foreach($dicTree as $i=>$row)
-			$newData[]=$row;
-		event(new ObjTreeData(json_encode($newData)));
+				$data[$i]['hasChild']=1;
+		event(new ObjTreeData(json_encode($data)));
 	}
 
 	public function objects()
