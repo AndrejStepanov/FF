@@ -15986,39 +15986,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      drawerLeft: true,
-      data_loading: true,
-      cur_sys: 'Работа с объектами',
-      tree_text: 'tree_name',
-      socetHref: '/socet_command',
-      socetEvent: 'object-tree-by-root',
-      socetChanel: 'channel-ObjTreeData',
-      tree_data: [{}]
-    };
-  },
-  components: {
-    'k-head': __WEBPACK_IMPORTED_MODULE_0__components_k_head___default.a,
-    'k-footer': __WEBPACK_IMPORTED_MODULE_1__components_k_footer___default.a,
-    'k-msg': __WEBPACK_IMPORTED_MODULE_2__components_k_msg___default.a,
-    'k-loading': __WEBPACK_IMPORTED_MODULE_3__components_k_loading___default.a,
-    'v-tree': __WEBPACK_IMPORTED_MODULE_4__components_tree_tree___default.a
-  },
-  methods: {
-    itemClick: function itemClick(node) {
-      if (node.data.opened) node.data.closeChildren();else node.data.openChildren();
-    }
-  },
-  created: function created() {
-    var vm = this;
-    window._Vue.axios.post('/socet_command', {
-      type: 'object-tree-by-root',
-      _token: window.Laravel.csrfToken
-    }).catch(function (error) {
-      return vm.$root.$emit('show-message', { title: 'Ошибка запроса данных', text: 'Запросить данные не удалось!', status: error.response.status });
-    });
-  }
+    data: function data() {
+        return {
+            drawerLeft: true,
+            data_loading: true,
+            cur_sys: 'Работа с объектами',
+            tree_text: 'tree_name',
+            socetHref: '/socet_command',
+            socetEvent: 'object-tree-by-root',
+            socetChanel: 'channel-ObjTreeData',
+            tree_data: [{}]
+        };
+    },
+    components: {
+        'k-head': __WEBPACK_IMPORTED_MODULE_0__components_k_head___default.a,
+        'k-footer': __WEBPACK_IMPORTED_MODULE_1__components_k_footer___default.a,
+        'k-msg': __WEBPACK_IMPORTED_MODULE_2__components_k_msg___default.a,
+        'k-loading': __WEBPACK_IMPORTED_MODULE_3__components_k_loading___default.a,
+        'v-tree': __WEBPACK_IMPORTED_MODULE_4__components_tree_tree___default.a
+    },
+    methods: {
+        itemClick: function itemClick(node) {
+            if (node.data.opened) node.data.closeChildren();else node.data.openChildren();
+        }
+    },
+    created: function created() {}
 });
 
 /***/ }),
@@ -16581,50 +16573,57 @@ var ITEM_HEIGHT_LARGE = 32;
 	},
 	created: function created() {
 		var vm = this;
-		vm.initializeData(vm.data);
-		window.Echo.channel(vm.socetChanel).listen('.' + vm.socetEvent, function (e) {
-			//vm.tree_loading=true;
-			var recive = JSON.parse(e.data);
-			var parent_id = recive[0].parent_id,
-			    parent_node = null,
-			    parent_childrens = null;
-			vm.data.forEach(function (node) {
-				return parent_node = vm.recursionSearchNode(node, parent_id) || parent_node;
-			});
-			if (parent_id == null) parent_node = parent_childrens = vm.data;
-			if (parent_node == null) return;
-			if (parent_id != null) parent_childrens = parent_node[vm.childrenFieldName];
-			parent_childrens.forEach(function (node) {
-				return node.is_save = 0;
-			});
-			recive.forEach(function (item) {
-				item.is_check = 0;
-				parent_childrens.forEach(function (node) {
-					if (item.id == node.id) {
-						node[vm.textFieldName] = item[vm.textFieldName];
-						node.hasChild = item.hasChild;
-						node.is_save = 1;
-						item.is_check = 1;
-					}
+		if (vm.socetChanel == '' || vm.socetHref == '' || vm.socetEvent == '') vm.initializeData(vm.data);else {
+			window.Echo.channel(vm.socetChanel).listen('.' + vm.socetEvent, function (e) {
+				//vm.tree_loading=true;
+				var recive = JSON.parse(e.data);
+				var parent_id = recive[0].parent_id,
+				    parent_node = null,
+				    parent_childrens = null;
+				vm.data.forEach(function (node) {
+					return parent_node = vm.recursionSearchNode(node, parent_id) || parent_node;
 				});
+				if (parent_id == null) parent_node = parent_childrens = vm.data;
+				if (parent_node == null) return;
+				if (parent_id != null) parent_childrens = parent_node[vm.childrenFieldName];
+				parent_childrens.forEach(function (node) {
+					return node.is_save = 0;
+				});
+				recive.forEach(function (item) {
+					item.is_check = 0;
+					parent_childrens.forEach(function (node) {
+						if (item.id == node.id) {
+							node[vm.textFieldName] = item[vm.textFieldName];
+							node.hasChild = item.hasChild;
+							node.is_save = 1;
+							item.is_check = 1;
+						}
+					});
+				});
+				parent_childrens.forEach(function (node, i) {
+					if (node.is_save == 0) parent_childrens.splice(i, 1);
+				});
+				recive.forEach(function (item, i) {
+					if (item.is_check == 0) parent_childrens.push(item);
+				});
+				parent_childrens.sort(function (a, b) {
+					if (a[vm.textFieldName] > b[vm.textFieldName]) return 1;
+					if (a[vm.textFieldName] < b[vm.textFieldName]) return -1;
+					// a должно быть равным b
+					return 0;
+				});
+				parent_node.loading = false;
+				parent_node.childLoaded = true;
+				vm.initializeData(parent_childrens);
+				vm.tree_loading = false;
 			});
-			parent_childrens.forEach(function (node, i) {
-				if (node.is_save == 0) parent_childrens.splice(i, 1);
+			window._Vue.axios.post(vm.socetHref, {
+				type: vm.socetEvent,
+				_token: window.Laravel.csrfToken
+			}).catch(function (error) {
+				return vm.$root.$emit('show-message', { title: 'Ошибка запроса данных', text: 'Запросить данные не удалось!', status: error.response.status });
 			});
-			recive.forEach(function (item, i) {
-				if (item.is_check == 0) parent_childrens.push(item);
-			});
-			parent_childrens.sort(function (a, b) {
-				if (a[vm.textFieldName] > b[vm.textFieldName]) return 1;
-				if (a[vm.textFieldName] < b[vm.textFieldName]) return -1;
-				// a должно быть равным b
-				return 0;
-			});
-			parent_node.loading = false;
-			parent_node.childLoaded = true;
-			vm.initializeData(parent_childrens);
-			vm.tree_loading = false;
-		});
+		}
 	},
 	mounted: function mounted() {
 		if (this.async) {

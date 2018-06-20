@@ -290,45 +290,54 @@
 		},
 		created() {
 			let vm = this;
-			vm.initializeData(vm.data)
-			window.Echo.channel(vm.socetChanel).listen('.'+vm.socetEvent, (e) => {
-				//vm.tree_loading=true;
-				let recive=JSON.parse(e.data);
-				let parent_id = recive[0].parent_id, parent_node=null, parent_childrens =null;
-				vm.data.forEach((node)=> parent_node=vm.recursionSearchNode(node, parent_id)||parent_node);
-				if(parent_id==null)
-					parent_node=parent_childrens = vm.data;
-				if(parent_node==null)
-					return;
-				if(parent_id!=null)
-					parent_childrens=parent_node[vm.childrenFieldName];
-				parent_childrens.forEach((node ) => node.is_save=0);
-				recive.forEach((item )=>{
-					item.is_check=0;
-					parent_childrens.forEach((node ) =>{
-						if(item.id==node.id){
-							node[vm.textFieldName ] = item[vm.textFieldName];
-							node.hasChild=item.hasChild;
-							node.is_save=1;
-							item.is_check=1;
-						}
-					})
+			if(vm.socetChanel=='' || vm.socetHref=='' || vm.socetEvent=='')
+				vm.initializeData(vm.data)
+			else {
+				window.Echo.channel(vm.socetChanel).listen('.'+vm.socetEvent, (e) => {
+					//vm.tree_loading=true;
+					let recive=JSON.parse(e.data);
+					let parent_id = recive[0].parent_id, parent_node=null, parent_childrens =null;
+					vm.data.forEach((node)=> parent_node=vm.recursionSearchNode(node, parent_id)||parent_node);
+					if(parent_id==null)
+						parent_node=parent_childrens = vm.data;
+					if(parent_node==null)
+						return;
+					if(parent_id!=null)
+						parent_childrens=parent_node[vm.childrenFieldName];
+					parent_childrens.forEach((node ) => node.is_save=0);
+					recive.forEach((item )=>{
+						item.is_check=0;
+						parent_childrens.forEach((node ) =>{
+							if(item.id==node.id){
+								node[vm.textFieldName ] = item[vm.textFieldName];
+								node.hasChild=item.hasChild;
+								node.is_save=1;
+								item.is_check=1;
+							}
+						})
+					});
+					parent_childrens.forEach((node, i ) => {if(node.is_save==0) parent_childrens.splice(i,1)	});
+					recive.forEach((item, i ) => {if(item.is_check==0) parent_childrens.push(item) });
+					parent_childrens.sort(function (a, b) {
+						if (a[vm.textFieldName] > b[vm.textFieldName]) 
+							return 1;
+						if (a[vm.textFieldName] < b[vm.textFieldName]) 
+							return -1;
+						// a должно быть равным b
+						return 0;
+					});
+					parent_node.loading = false;
+					parent_node.childLoaded= true;
+					vm.initializeData(parent_childrens)
+					vm.tree_loading=false;
 				});
-				parent_childrens.forEach((node, i ) => {if(node.is_save==0) parent_childrens.splice(i,1)	});
-				recive.forEach((item, i ) => {if(item.is_check==0) parent_childrens.push(item) });
-				parent_childrens.sort(function (a, b) {
-					if (a[vm.textFieldName] > b[vm.textFieldName]) 
-						return 1;
-					if (a[vm.textFieldName] < b[vm.textFieldName]) 
-						return -1;
-					// a должно быть равным b
-					return 0;
-				});
-				parent_node.loading = false;
-				parent_node.childLoaded= true;
-				vm.initializeData(parent_childrens)
-				vm.tree_loading=false;
-			});
+				window._Vue.axios.post(vm.socetHref, {
+					type: vm.socetEvent,
+					_token: window.Laravel.csrfToken
+				}).catch(
+					(error) => vm.$root.$emit('show-message', {title:'Ошибка запроса данных',text:'Запросить данные не удалось!', status:error.response.status})
+				);
+			}	
 		},
 		mounted() {
 			if (this.async) {

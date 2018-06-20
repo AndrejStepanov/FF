@@ -46,14 +46,7 @@
 					node.data.openChildren();
 			},
         },
-        created: function (){
-			let vm = this;
-			window._Vue.axios.post('/socet_command', {
-				type: 'object-tree-by-root',
-				_token: window.Laravel.csrfToken
-			}).catch(
-				(error) => vm.$root.$emit('show-message', {title:'Ошибка запроса данных',text:'Запросить данные не удалось!', status:error.response.status})
-			);			
+        created: function (){		
         },
     }
 </script>
