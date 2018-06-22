@@ -1,6 +1,6 @@
 <template>
-	<v-footer class="nav_head" fixed light app>
-		<span>FF - Конструктор форм</span>
+	<v-footer class='primary bold' fixed app>
+		<span >FF - Конструктор форм</span>
 		<v-spacer></v-spacer>
 		<span>&copy;  2018</span>
 	</v-footer>
@@ -9,11 +9,8 @@
 <script>
 
     export default {
+		name:'c-footer',
         data: () => ({
         }),
     }
 </script>
-
-<style lang="scss">
-    
-</style>

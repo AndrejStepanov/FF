@@ -29,16 +29,16 @@
 
         </v-content>
 
-        <k-head :showRight=true :showLeft=true :cur_sys='cur_sys'  @clickRightDrawer ="drawerRight = !drawerRight" @clickLeftDrawer="drawerLeft = !drawerLeft" app> </k-head>
-        <k-footer app> </k-footer>
-        <k-msg ref='msg'></k-msg>
+        <c-head :showRight=true :showLeft=true :cur_sys='cur_sys'  @clickRightDrawer ="drawerRight = !drawerRight" @clickLeftDrawer="drawerLeft = !drawerLeft" app/>
+		<c-footer app/>
+		<c-msg ref='msg'/>
     </v-app>
 </template>
 
 <script>
-    import head from '../components/k-head';
-    import footer from '../components/k-footer';
-    import msg from '../components/k-msg';
+    import CHead from '../components/c-head';
+    import CFooter from '../components/c-footer';
+    import CMsg from '../components/c-msg';
 
     export default {
         data: () => ({
@@ -55,9 +55,7 @@
             ],
         }),
         components: {
-            'k-head': head,
-            'k-footer':footer,
-            'k-msg':msg,
+            CHead,CFooter,CMsg,
         },
         methods: {
             choose_sys: function (name){
@@ -83,7 +81,3 @@
         },
     }
 </script>
-
-<style lang="scss">
-    
-</style>

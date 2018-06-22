@@ -1,5 +1,5 @@
 <template>
-	<li role="treeitem"
+	<li role="c-tree-item"
 		:class="classes"
 		:draggable="draggable"
 		@dragstart.stop="onItemDragStart($event, _self, _self.model)"
@@ -13,12 +13,12 @@
 		<div :class="anchorClasses" v-on="events">
 			<i class="tree-icon tree-checkbox" role="presentation" v-if="showCheckbox && !model.loading"></i>
 			<slot :vm="this" :model="model">
-				<i arrq='123' :class="themeIconClasses" role="presentation" v-if="!model.loading"></i>
+				<i :class="themeIconClasses" role="presentation" v-if="!model.loading">{{model.icon}}</i>
 				<span v-html="model[textFieldName]"></span>
 			</slot>
 		</div>
 		<ul role="group" ref="group" class="tree-children" v-if="isFolder" :style="groupStyle">
-			<tree-item v-for="(child, index) in model[childrenFieldName]"
+			<c-tree-item v-for="(child, index) in model[childrenFieldName]"
 					   :key="index"
 					   :data="child"
 					   :text-field-name="textFieldName"
@@ -38,19 +38,13 @@
 					   :on-item-drag-end="onItemDragEnd"
 					   :on-item-drop="onItemDrop"
 					   :klass="index === model[childrenFieldName].length-1?'tree-last':''">
-				<template slot-scope="_">
-					<slot :vm="_.vm" :model="_.model">
-						<i :class="_.vm.themeIconClasses" role="presentation" v-if="!model.loading"></i>
-						<span v-html="_.model[textFieldName]"></span>
-					</slot>
-				</template>
-			</tree-item>
+			</c-tree-item>
 		</ul>
 	</li>
 </template>
 <script>
   export default {
-	  name: 'TreeItem',
+	  name: 'c-tree-item',
 	  props: {
 		  data: {type: Object, required: true},
 		  textFieldName: {type: String},
@@ -92,11 +86,11 @@
 	  },
 	  watch: {
 		  isDragEnter (newValue) {
-			  if (newValue) {
+			  if (newValue) 
 				  this.$el.style.backgroundColor = this.dragOverBackgroundColor
-			  } else {
+			   else 
 				  this.$el.style.backgroundColor = "inherit"
-			  }
+			  
 		  },
 		  data (newValue) {
 			  this.model = newValue
@@ -129,6 +123,7 @@
 				  {'tree-anchor': true},
 				  {'tree-disabled': this.model.disabled},
 				  {'tree-selected': this.model.selected},
+				  {'bold': this.model.selected},
 				  {'tree-hovered': this.isHover}
 			  ]
 		  },
@@ -143,7 +138,8 @@
 			  return [
 				  {'tree-icon': true},
 				  {'tree-themeicon': true},
-				  {[this.model.icon]: !!this.model.icon},
+				  {'material-icons': true},
+				  {'bold': this.model.selected},
 				  {'tree-themeicon-custom': !!this.model.icon}
 			  ]
 		  },
@@ -185,7 +181,7 @@
 					  }
 				  }
 				  this.maxHeight = length * this.height + childHeight
-				  if (this.$parent.$options._componentTag === 'tree-item') {
+				  if (this.$parent.$options._componentTag === 'c-tree-item') {
 					  this.$parent.handleGroupMaxHeight()
 				  }
 			  }
@@ -204,7 +200,7 @@
 		  handleItemDrop (e, oriNode, oriItem) {
 			  this.$el.style.backgroundColor = "inherit"
 			  this.onItemDrop(e, oriNode, oriItem)
-		  }
+		  },
 	  },
 	  created () {
 		  const self = this
@@ -221,11 +217,10 @@
 					  eventCallback(self, self.model, event)
 					  itemEventCallback(self, self.model, event)
 				  }
-			  } else {
+			  } else 
 				  events[itemEvent] = function (event) {
 					  itemEventCallback(self, self.model, event)
 				  }
-			  }
 		  }
 		  this.events = events
 	  },

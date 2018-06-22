@@ -28,6 +28,7 @@
         "laravel-echo": "^1.4.0",
         "laravel-mix": "^1.7.2",
         "lodash": "^4.17.10",
+        "material-design-icons": "^3.0.1",
         "socket.io-client": "^2.1.1",
         "uws": "^10.148.0",
         "vue": "^2.5.16",

@@ -14,7 +14,7 @@ Route::get('/sucsess', function () { echo 'sucsess';} );
 Auth::routes();
 Route::get('/', function () { return view('simple')->with('app_js', 'Main');});
 Route::get('/Авторизация', function () { return view('auth');});
-Route::get('/Работа_с_объектами', function () { return view('simple')->with('app_js', 'Obj_tree');});
+Route::get('/Работа_с_объектами', function () { return view('simple')->with('app_js', 'Obj-Tree');});
 Route::post('/socet_command', 'SocetCommandController@reciveCommand')->middleware('auth');
 Route::resource('items', 'ItemController');
 

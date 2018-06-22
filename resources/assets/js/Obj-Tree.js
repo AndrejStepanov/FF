@@ -11,7 +11,9 @@ Vue.use(VueAxios, axios);
 window._Vue={axios:axios, bus: new Vue() };
 
 import Vuetify from 'vuetify';
-Vue.use(Vuetify);
+import _Fun from './functions.js';
+window._Fun=_Fun;
+Vue.use(Vuetify, {theme: _Fun.theme });
 
 window.io = require('socket.io-client');
 import Echo from "laravel-echo"
@@ -20,6 +22,7 @@ window.Echo = new Echo({
 	host: window.location.hostname + ':6001'
 });
 
-import App from './apps/Obj_tree.vue';
+import App from './apps/Obj-Tree.vue';
 
 new Vue(App).$mount('#app');
+_Fun.initTheme();

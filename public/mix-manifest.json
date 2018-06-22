@@ -1,8 +1,8 @@
 {
-    "/js/Obj_tree.js": "/js/Obj_tree.js",
+    "/js/Obj-tree.js": "/js/Obj-tree.js",
     "/js/Main.js": "/js/Main.js",
     "/css/app.css": "/css/app.css",
-    "/js/auth.js": "/js/auth.js",
+    "/js/Auth.js": "/js/Auth.js",
     "/js/vendor.js": "/js/vendor.js",
     "/js/manifest.js": "/js/manifest.js"
 }

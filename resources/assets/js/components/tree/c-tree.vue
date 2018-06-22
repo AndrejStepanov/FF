@@ -1,8 +1,8 @@
 <template>
-	<k-loading v-if="tree_loading"/>
+	<c-loading v-if="tree_loading"/>
 	<div  v-else :class="classes" role="tree" onselectstart="return false">
 		<ul :class="containerClasses" role="group">
-			<tree-item v-for="(child, index) in data"
+			<c-tree-item v-for="(child, index) in data"
 					   :key="index"
 					   :data="child"
 					   :text-field-name="textFieldName"
@@ -21,20 +21,13 @@
 					   :on-item-drag-start="onItemDragStart"
 					   :on-item-drag-end="onItemDragEnd"
 					   :on-item-drop="onItemDrop"
-					   :klass="index === data.length-1?'tree-last':''">
-				<template slot-scope="_">
-					<slot :vm="_.vm" :model="_.model">
-						<i :class="_.vm.themeIconClasses" role="presentation" v-if="!_.model.loading"></i>
-						<span v-html="_.model[textFieldName]"></span>
-					</slot>
-				</template>
-			</tree-item>
+					   :klass="index === data.length-1?'tree-last':''"/>
 		</ul>
 	</div>
 </template>
 <script>
-	import TreeItem from './tree-item.vue'
-	import KLoading from '../k-loading';
+	import CTreeItem from './c-tree-item.vue'
+	import CLoading from '../c-loading';
 
 	let ITEM_ID = 0
 	let ITEM_HEIGHT_SMALL = 18
@@ -42,9 +35,10 @@
 	let ITEM_HEIGHT_LARGE = 32
 
 	export default {
-		name: 'VJstree',
+		name: 'c-tree',
 		props: {
 			data: {type: Array},
+			iconDic: {type: Object},
 			size: {type: String, validator: value => ['large', 'small'].indexOf(value) > -1},
 			showCheckbox: {type: Boolean, default: false},
 			wholeRow: {type: Boolean, default: false},
@@ -58,6 +52,7 @@
 			socetEvent: {type: String, default: ''},
 			socetChanel: {type: String, default: ''},
 			socetHref: {type: String, default: ''},
+			typeFieldName: {type: String, default: 'type'},
 			childrenFieldName: {type: String, default: 'children'},
 			itemEvents: {
 				type: Object, default: function () {
@@ -65,18 +60,18 @@
 				}
 			},
 			async: {type: Function},
-			loadingText: {type: String, default: 'Loading...'},
+			loadingText: {type: String, default: 'Загрузка...'},
 			draggable: {type: Boolean, default: false},
 			dragOverBackgroundColor: {type: String, default: "#C9FDC9"},
 			klass: String
 		},
-		data() {
-			return {
+		data () {
+		  return {
 				tree_loading: true,
 				draggedItem: undefined,
 				draggedElm: undefined
-			}
-		},
+		  }
+	  	},
 		computed: {
 			classes() {
 				return [
@@ -118,22 +113,22 @@
 					}
 			},
 			initializeDataItem(item) {
-				function Model(item, textFieldName, valueFieldName, childrenFieldName, collapse) {
+				let vm = this;
+				function Model(item) {
 					this.id = item.id || ITEM_ID++
-					this[textFieldName] = item[textFieldName] || ''
-					this[valueFieldName] = item[valueFieldName] || item[textFieldName]
-					this.icon = item.icon || ''
-					this.opened = item.opened || collapse
+					this[vm.textFieldName] = item[vm.textFieldName] || ''
+					this[vm.valueFieldName] = item[vm.valueFieldName] || item[vm.textFieldName]
+					this.icon = item.icon || vm.setIcon(item[vm.typeFieldName] )
+					this.opened = item.opened || vm.collapse
 					this.selected = item.selected || false
 					this.disabled = item.disabled || false
 					this.loading = item.loading || false
 					this.childLoaded = item.loading || false
 					this.hasChild = item.hasChild || false
-					this[childrenFieldName] = item[childrenFieldName] || []
+					this[vm.childrenFieldName] = item[vm.childrenFieldName] || []
 				}
 
-				let node = Object.assign(new Model(item, this.textFieldName, this.valueFieldName, this.childrenFieldName, this.collapse), item)
-				let vm = this
+				let node = Object.assign(new Model(item), item)				
 				node.addBefore = function (data, selectedNode) {
 					let newItem = vm.initializeDataItem(data)
 					let index = selectedNode.parentItem.findIndex(t => t.id === node.id)
@@ -286,7 +281,15 @@
 					})
 					this.$emit("item-drop", oriNode, oriItem, draggedItem.item, e)
 				}
-			}
+			},
+			setIcon (type) {
+				if(this.iconDic[type]!=undefined)
+					return this.iconDic[type];
+				else if(this.iconDic['default']!=undefined)
+					return this.iconDic['default']
+				else 
+					return '';
+			},
 		},
 		created() {
 			let vm = this;
@@ -346,8 +349,7 @@
 			}
 		},
 		components: {
-			KLoading,
-			TreeItem,
+			CLoading, CTreeItem,
 		}
 	}
 </script>

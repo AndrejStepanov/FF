@@ -1,39 +1,40 @@
 <template>
     <v-app dark>
-        <k-head :cur_sys='cur_sys' > </k-head>
 		<v-content>
 			<v-container fluid fill-height>
 				<v-layout align-center justify-center>
 				<v-flex xs12 sm8 md4>
 					<v-card class="elevation-12">
-					<v-toolbar dark class='nav_head'>
+					<v-toolbar   class='primary'>
 						<v-toolbar-title>Авторизация</v-toolbar-title>
 					</v-toolbar>
 					<v-card-text>
 						<v-form v-model="valid" ref="form">
 							<v-text-field name="Login" prepend-icon="person" v-model="login" label="Пользователь" :rules="nameRules" type="text" @keyup.enter="submit"></v-text-field>
-							<v-text-field name="Password" prepend-icon="lock" v-model="password"  label="Пароль" :rules="emailRules" id="password" type="password" @keyup.enter="submit"></v-text-field>
+							<v-text-field name="Password"  prepend-icon="lock" v-model="password"  label="Пароль" :rules="emailRules" id="password" type="password" @keyup.enter="submit"></v-text-field>
 							<v-checkbox name="remember" label="Запомнить мои данные"  v-model="remember" @keyup.enter="submit" ></v-checkbox>
 						</v-form>
 					</v-card-text>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn class='k_second' @click="submit "   :disabled="!valid">Войти</v-btn>
+						<v-btn class='accent' @click="submit "   :disabled="!valid"><v-icon>input</v-icon>&nbsp;Войти</v-btn>
 					</v-card-actions>
 					</v-card>
 				</v-flex>
 				</v-layout>
 			</v-container>
 		</v-content>
-        <k-footer  > </k-footer>
-		<k-msg ref='msg'></k-msg>
+
+		<c-head :cur_sys='cur_sys' />
+		<c-footer app/>
+		<c-msg ref='msg'/>
     </v-app>
 </template>
 
 <script>
-    import head from '../components/k-head';
-    import footer from '../components/k-footer';
-    import msg from '../components/k-msg';
+    import CHead from '../components/c-head';
+    import CFooter from '../components/c-footer';
+    import CMsg from '../components/c-msg';
 	
     export default {
         data: () => ({
@@ -50,14 +51,13 @@
 			],
         }),
         components: {
-            'k-head': head,
-            'k-footer':footer,
-            'k-msg':msg,
+            CHead, CFooter,CMsg,
         },
         methods: {
 			submit () {
 				if (!this.$refs.form.validate()) 
 					return;
+				let href_back=window.location.search.match(new RegExp('href_back=([^&=]+)'));
 				// Native form submission is not yet supported
 				window._Vue.axios.post('/login', {
 					login: this.login,
@@ -66,7 +66,10 @@
 					_token: window.Laravel.csrfToken
 				}).then((response) => {
 					if(response.data=='sucsess')
-						window.location.href = '/';
+						if(href_back!=null && href_back[1]!=null)
+							window.location.href = href_back[1];
+						else
+							window.location.href = '/';
 					else{
 						this.$root.$emit('show-message', {title:'Ошибка автороизации',text:'Указанные логин или пароль не найдены!'});
 					}
@@ -77,7 +80,3 @@
         },
     }
 </script>
-
-<style lang="scss">
-    
-</style>
