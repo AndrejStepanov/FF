@@ -5,7 +5,7 @@
             <v-icon large  >stars</v-icon>
         </v-btn>
 
-        <v-toolbar-title>{{curSys}}</v-toolbar-title>
+        <v-toolbar-title>{{curentSystem}}</v-toolbar-title>
         <v-spacer/>
         <c-profile/>
         <v-toolbar-side-icon @click="$emit('clickRightDrawer');"  v-if="showRight"/>
@@ -24,7 +24,7 @@
             CProfile,
         },
         props: {
-            curSys:{type: String,  default: '' },
+            curentSystem:{type: String,  default: '' },
             showLeft:{type: Boolean,  default: false },
 			showRight:{type: Boolean,  default: false },
         },

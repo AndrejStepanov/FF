@@ -40,7 +40,7 @@
 			},
 			logout () {
 				// Native form submission is not yet supported
-				window._Vue.axios.post('/logout', {
+				window._Bus.axios.post('/logout', {
 					_token: window.Laravel.csrfToken
 				}).then((response) => {
 					if(response.statusText=='OK')

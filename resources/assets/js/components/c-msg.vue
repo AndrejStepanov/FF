@@ -1,9 +1,9 @@
 <template>
     <v-snackbar dense :class="type"  :timeout="timeout" :top="y === 'top'" :bottom="y === 'bottom'" :right="x === 'right'" :left="x === 'left'" 
-            :multi-line="mode_line === 'multi-line'" :vertical="mode_line === 'vertical'" v-model="snackbar"  >
+            :multi-line="modeLine === 'multi-line'" :vertical="modeLine === 'vertical'" v-model="snackbar"  >
         <span>
-            <span class='col_white bold'>{{title}}</span><br>
-            <span class='col_white' >{{text}}</span>
+            <span class='bold'>{{title}}</span><br>
+            <span >{{text}}</span>
         </span>
         <v-flex xs12 sm3>
             <v-btn flat icon class="primary" @click.native="snackbar = false">
@@ -16,31 +16,26 @@
 <script>
     export default {
         name:'c-msg',
-
-        data: () => ({     
-            snackbar: false,      
-            timeout:6000,
-            y:'top',
-            x:'right',
-            mode_line:'multi-line',
-            type:'error',
-            title:'Титул',
-            text:'Текст сообщения',
+        data: () => ({
+            snackbar:true,
         }),
-        mounted :function(){
-            this.$root.$on('show-message', function (obj) {
-                this.$root.$refs.msg.snackbar= false;   
-                this.$nextTick(function () {
-                    this.$root.$refs.msg.timeout_=obj.timeout||6000;
-                    this.$root.$refs.msg.title=obj.title||'Титул';
-                    this.$root.$refs.msg.text=(obj.status==401?'Необходимо авторизоваться!':obj.text)||'Текст сообщения';
-                    this.$root.$refs.msg.type=obj.type||'error';
-                    this.$root.$refs.msg.x=obj.x||'right';
-                    this.$root.$refs.msg.y=obj.y||'top';
-                    this.$root.$refs.msg.mode_line=obj.mode_line||'multi-line';
-                    this.$root.$refs.msg.snackbar=true;                
-                });    
-            });
-        }
+        watch: {
+            // эта функция запускается при любом изменении вопроса
+            snackbar: function (newsnackbar) {
+                if(newsnackbar!=false)
+                    return;
+                this.$store.dispatch('msgDeleting',this.id);
+            }
+        },
+        props:{
+            id: {type:  Number, required: true},
+            timeout: {type:  Number, required: true},
+            y: {type:  String, required: true},
+            x: {type:  String, required: true},
+            modeLine: {type:  String, required: true},
+            type: {type:  String, required: true},
+            title: {type:  String, required: true},
+            text: {type:  String, required: true},
+        },
     }
 </script>

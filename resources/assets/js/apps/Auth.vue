@@ -25,21 +25,21 @@
 			</v-container>
 		</v-content>
 
-		<c-head :cur_sys='cur_sys' />
+		<c-head :curentSystem='curentSystem' />
 		<c-footer app/>
-		<c-msg ref='msg'/>
+		<c-msg-list />
     </v-app>
 </template>
 
 <script>
     import CHead from '../components/c-head';
     import CFooter from '../components/c-footer';
-    import CMsg from '../components/c-msg';
+    import CMsgList from '../components/c-msg-list';
 	
     export default {
         data: () => ({
 			valid: false,
-			cur_sys: 'Авторизация',
+			curentSystem: 'Авторизация',
 			remember: '',
 			login: '',
 			nameRules: [
@@ -51,18 +51,19 @@
 			],
         }),
         components: {
-            CHead, CFooter,CMsg,
+            CHead, CFooter,CMsgList,
         },
         methods: {
 			submit () {
-				if (!this.$refs.form.validate()) 
+				let vm = this;
+				if (!vm.$refs.form.validate()) 
 					return;
 				let href_back=window.location.search.match(new RegExp('href_back=([^&=]+)'));
 				// Native form submission is not yet supported
-				window._Vue.axios.post('/login', {
-					login: this.login,
-					password: this.password,
-					remember: this.remember,
+				window._Bus.axios.post('/login', {
+					login: vm.login,
+					password: vm.password,
+					remember: vm.remember,
 					_token: window.Laravel.csrfToken
 				}).then((response) => {
 					if(response.data=='sucsess')
@@ -71,10 +72,10 @@
 						else
 							window.location.href = '/';
 					else{
-						this.$root.$emit('show-message', {title:'Ошибка автороизации',text:'Указанные логин или пароль не найдены!'});
+						vm.$store.dispatch('msgAdding', {title:vm.login,text:'Указанные логин или пароль не найдены!'});
 					}
 				}).catch((error) => {
-					this.$root.$emit('show-message', {title:'Ошибка автороизации',text:'Указанные логин или пароль не найдены!'});
+					vm.$store.dispatch('msgAdding', {title:vm.login,text:'Указанные логин или пароль не найдены!'});
 				});
 			},
         },

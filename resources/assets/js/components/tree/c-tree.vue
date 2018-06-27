@@ -231,12 +231,12 @@
 			handleRequestChildren(oriNode){
 				var vm = this;
 				if(!oriNode.model.childLoaded && oriNode.model.hasChild ){
-					window._Vue.axios.post( vm.socetHref, {
+					window._Bus.axios.post( vm.socetHref, {
 							type: vm.socetEvent ,
 							_token: window.Laravel.csrfToken,
 							parent_id: oriNode.model.id,
 						}).catch(
-							(error) => vm.$root.$emit('show-message', {title:'Ошибка запроса данных',text:'Запросить данные не удалось!', status:error.response.status})
+							(error) => vm.$store.dispatch('msgAdding', {title:'Ошибка запроса данных',text:'Запросить данные не удалось!', status:error.response.status})
 						);
 					oriNode.model.loading= true;
 				}
@@ -321,24 +321,17 @@
 					});
 					parent_childrens.forEach((node, i ) => {if(node.is_save==0) parent_childrens.splice(i,1)	});
 					recive.forEach((item, i ) => {if(item.is_check==0) parent_childrens.push(item) });
-					parent_childrens.sort(function (a, b) {
-						if (a[vm.textFieldName] > b[vm.textFieldName]) 
-							return 1;
-						if (a[vm.textFieldName] < b[vm.textFieldName]) 
-							return -1;
-						// a должно быть равным b
-						return 0;
-					});
+					parent_childrens.sort(function (a, b) {window._Fun.sort(a, b, vm.textFieldName, vm.textFieldName) });
 					parent_node.loading = false;
 					parent_node.childLoaded= true;
 					vm.initializeData(parent_childrens)
 					vm.tree_loading=false;
 				});
-				window._Vue.axios.post(vm.socetHref, {
+				window._Bus.axios.post(vm.socetHref, {
 					type: vm.socetEvent,
 					_token: window.Laravel.csrfToken
 				}).catch(
-					(error) => vm.$root.$emit('show-message', {title:'Ошибка запроса данных',text:'Запросить данные не удалось!', status:error.response.status})
+					(error) => vm.$store.dispatch('msgAdding', {title:'Ошибка запроса данных',text:'Запросить данные не удалось!', status:error.response.status})
 				);
 			}	
 		},

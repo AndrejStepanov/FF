@@ -1,20 +1,21 @@
 import Vue from 'vue';
 
+import _Fun from './functions.js';
+window._Fun=_Fun;
+
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
+import store from './stores/s-Auth';
 
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 Vue.use(VueAxios, axios);
-
-window._Vue={axios:axios, bus: new Vue() };
+window._Bus={axios:axios, bus: new Vue()};
 
 import Vuetify from 'vuetify';
-import _Fun from './functions.js';
-window._Fun=_Fun;
-Vue.use(Vuetify, {theme: _Fun.theme });
+Vue.use(Vuetify, {theme: _Fun.appTheme });
 
 import App from './apps/Auth.vue';
 
-new Vue(App).$mount('#app');
-_Fun.initTheme();
+window._Vue=new Vue({el:'#app', store, render: h=> h(App)});
+_Fun.appThemeInit();

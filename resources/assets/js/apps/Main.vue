@@ -29,22 +29,22 @@
 
         </v-content>
 
-        <c-head :showRight=true :showLeft=true :cur_sys='cur_sys'  @clickRightDrawer ="drawerRight = !drawerRight" @clickLeftDrawer="drawerLeft = !drawerLeft" app/>
+        <c-head :showRight=true :showLeft=true :curentSystem='curentSystem'  @clickRightDrawer ="drawerRight = !drawerRight" @clickLeftDrawer="drawerLeft = !drawerLeft" app/>
 		<c-footer app/>
-		<c-msg ref='msg'/>
+		<c-msg-list />
     </v-app>
 </template>
 
 <script>
     import CHead from '../components/c-head';
     import CFooter from '../components/c-footer';
-    import CMsg from '../components/c-msg';
+    import CMsgList from '../components/c-msg-list';
 
     export default {
         data: () => ({
             drawerLeft: true,
             drawerRight: true,
-            cur_sys: 'Объекты',
+            curentSystem: 'Объекты',
             systems: [
                 {name:'Объекты',title:'АРМы работы с объектами системы', icon: 'dashboard'},
             ],
@@ -55,13 +55,13 @@
             ],
         }),
         components: {
-            CHead,CFooter,CMsg,
+            CHead,CFooter,CMsgList,
         },
         methods: {
             choose_sys: function (name){
                 let newLinks=[],
                     cur_type='';
-                this.cur_sys=name;
+                this.curentSystem=name;
                 this.ALL_Links.forEach(link => {
                     if (link.system!=name )
                         return;
@@ -77,7 +77,7 @@
             },
         },
         created: function (){
-            this.choose_sys(this.cur_sys);
+            this.choose_sys(this.curentSystem);
         },
     }
 </script>
