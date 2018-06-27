@@ -33,7 +33,6 @@
         "uws": "^10.148.0",
         "vue": "^2.5.16",
         "vue-axios": "^2.1.1",
-        "vue-drag-resize": "^1.2.3",
         "vue-jstree": "^2.1.6",
         "vue-router": "^3.0.1",
         "vue-splitpane": "^1.0.2",

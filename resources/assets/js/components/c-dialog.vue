@@ -1,8 +1,8 @@
 <template>
 	<v-dialog v-model="showDialog" :persistent="dialogPersistent(dialogId)"  >
-		<vue-drag-resize :isActive="dragActive" :isDraggable="dragDraggable" :isResizable="dragResizable" :parentLimitation="dragLimitation" 
+		<c-drag-resize :isActive="dragActive" :isDraggable="dragDraggable" :isResizable="dragResizable" :preventActiveBehavior="dragActiveBehavior" :parentLimitation="dragLimitation" :sticks="dragSticks" :noLineStyle="dragNoLineStyle"
 			:w="maxWidth" :h="height" @resizing="changeSize($event)" :z=10 :x="x" :y="y" >
-			<v-toolbar  color="primary" >
+			<v-toolbar slot='header'  color="primary" >
 				<v-toolbar-side-icon/>
 				<v-toolbar-title >{{dialogTitle(dialogId)}}</v-toolbar-title>
 				<v-spacer/>
@@ -29,13 +29,13 @@
 					</v-card>
 				</v-flex>
 			</v-layout>
-		</vue-drag-resize>
+		</c-drag-resize>
 	</v-dialog>
 </template>
 
 <script>
 	import {mapGetters,mapActions} from 'vuex'
-	import vueDragResize from 'vue-drag-resize';
+	import cDragResize from './c-drag-resize/c-drag-resize';
     export default {
 		name:'c-dialog',
         data: () => ({
@@ -47,10 +47,13 @@
 			dialogId: {type: Number, required: true}, 
 			maxWidth: {type: Number, default: 500}, 
 			height: {type: Number, default: 200}, 
-			dragActive: {type: Boolean, default: false}, 
+			dragActive: {type: Boolean, default: true}, 
 			dragDraggable: {type: Boolean, default: true}, 
+			dragActiveBehavior: {type: Boolean, default: true}, 
 			dragResizable: {type: Boolean, default: true}, 
 			dragLimitation: {type: Boolean, default: false}, 
+			dragSticks: {type: Array, default: () =>{return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']}}, //тягальщики
+			dragNoLineStyle:{type: Boolean, default: true},
 		},
 		computed: {
 			showDialog:{
@@ -76,7 +79,7 @@
 			},
 		},
         components: {
-            vueDragResize
+            cDragResize
 		},
 		created: function (){
 			let vm=this

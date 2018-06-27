@@ -1911,7 +1911,7 @@ Emitter.prototype.hasListeners = function(event){
  */
 
 var keys = __webpack_require__(99);
-var hasBinary = __webpack_require__(68);
+var hasBinary = __webpack_require__(69);
 var sliceBuffer = __webpack_require__(105);
 var after = __webpack_require__(106);
 var utf8 = __webpack_require__(107);
@@ -7386,6 +7386,88 @@ function localstorage() {
 /* 57 */
 /***/ (function(module, exports) {
 
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports) {
+
 /**
  * Helpers.
  */
@@ -7541,7 +7623,7 @@ function plural(ms, n, name) {
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -7552,8 +7634,8 @@ function plural(ms, n, name) {
 var debug = __webpack_require__(92)('socket.io-parser');
 var Emitter = __webpack_require__(12);
 var binary = __webpack_require__(94);
-var isArray = __webpack_require__(63);
-var isBuf = __webpack_require__(64);
+var isArray = __webpack_require__(64);
+var isBuf = __webpack_require__(65);
 
 /**
  * Protocol version.
@@ -7964,7 +8046,7 @@ function error(msg) {
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {// browser shim for xmlhttprequest module
@@ -8008,7 +8090,7 @@ module.exports = function (opts) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8171,89 +8253,228 @@ Transport.prototype.onClose = function () {
 
 
 /***/ }),
-/* 61 */
-/***/ (function(module, exports) {
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
 
 /*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
 */
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
 
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
+var hasDocument = typeof document !== 'undefined'
 
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
 }
 
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+var listToStyles = __webpack_require__(121)
 
-	return '/*# ' + data + ' */';
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
 }
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 /**
@@ -8298,7 +8519,7 @@ module.exports = function parseuri(str) {
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -8309,7 +8530,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -8340,7 +8561,7 @@ function isBuf(obj) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -8349,13 +8570,13 @@ function isBuf(obj) {
  */
 
 var eio = __webpack_require__(95);
-var Socket = __webpack_require__(71);
+var Socket = __webpack_require__(72);
 var Emitter = __webpack_require__(12);
-var parser = __webpack_require__(58);
-var on = __webpack_require__(72);
-var bind = __webpack_require__(73);
+var parser = __webpack_require__(59);
+var on = __webpack_require__(73);
+var bind = __webpack_require__(74);
 var debug = __webpack_require__(53)('socket.io-client:manager');
-var indexOf = __webpack_require__(70);
+var indexOf = __webpack_require__(71);
 var Backoff = __webpack_require__(116);
 
 /**
@@ -8919,14 +9140,14 @@ Manager.prototype.onreconnect = function () {
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
  * Module dependencies
  */
 
-var XMLHttpRequest = __webpack_require__(59);
+var XMLHttpRequest = __webpack_require__(60);
 var XHR = __webpack_require__(98);
 var JSONP = __webpack_require__(112);
 var websocket = __webpack_require__(113);
@@ -8979,18 +9200,18 @@ function polling (opts) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * Module dependencies.
  */
 
-var Transport = __webpack_require__(60);
+var Transport = __webpack_require__(61);
 var parseqs = __webpack_require__(54);
 var parser = __webpack_require__(13);
 var inherit = __webpack_require__(55);
-var yeast = __webpack_require__(69);
+var yeast = __webpack_require__(70);
 var debug = __webpack_require__(56)('engine.io-client:polling');
 
 /**
@@ -9004,7 +9225,7 @@ module.exports = Polling;
  */
 
 var hasXHR2 = (function () {
-  var XMLHttpRequest = __webpack_require__(59);
+  var XMLHttpRequest = __webpack_require__(60);
   var xhr = new XMLHttpRequest({ xdomain: false });
   return null != xhr.responseType;
 })();
@@ -9230,7 +9451,7 @@ Polling.prototype.uri = function () {
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/* global Blob File */
@@ -9301,7 +9522,7 @@ function hasBinary (obj) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(100).Buffer))
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9376,7 +9597,7 @@ module.exports = yeast;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports) {
 
 
@@ -9391,7 +9612,7 @@ module.exports = function(arr, obj){
 };
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -9399,14 +9620,14 @@ module.exports = function(arr, obj){
  * Module dependencies.
  */
 
-var parser = __webpack_require__(58);
+var parser = __webpack_require__(59);
 var Emitter = __webpack_require__(12);
 var toArray = __webpack_require__(115);
-var on = __webpack_require__(72);
-var bind = __webpack_require__(73);
+var on = __webpack_require__(73);
+var bind = __webpack_require__(74);
 var debug = __webpack_require__(53)('socket.io-client:socket');
 var parseqs = __webpack_require__(54);
-var hasBin = __webpack_require__(68);
+var hasBin = __webpack_require__(69);
 
 /**
  * Module exports.
@@ -9835,7 +10056,7 @@ Socket.prototype.binary = function (binary) {
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports) {
 
 
@@ -9865,7 +10086,7 @@ function on (obj, ev, fn) {
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports) {
 
 /**
@@ -9891,227 +10112,6 @@ module.exports = function(obj, fn){
     return fn.apply(obj, args.concat(slice.call(arguments)));
   }
 };
-
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(121)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
 
 
 /***/ }),
@@ -10354,8 +10354,8 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_0_vuex
  */
 
 var url = __webpack_require__(90);
-var parser = __webpack_require__(58);
-var Manager = __webpack_require__(65);
+var parser = __webpack_require__(59);
+var Manager = __webpack_require__(66);
 var debug = __webpack_require__(53)('socket.io-client');
 
 /**
@@ -10440,8 +10440,8 @@ exports.connect = lookup;
  * @api public
  */
 
-exports.Manager = __webpack_require__(65);
-exports.Socket = __webpack_require__(71);
+exports.Manager = __webpack_require__(66);
+exports.Socket = __webpack_require__(72);
 
 
 /***/ }),
@@ -10453,7 +10453,7 @@ exports.Socket = __webpack_require__(71);
  * Module dependencies.
  */
 
-var parseuri = __webpack_require__(62);
+var parseuri = __webpack_require__(63);
 var debug = __webpack_require__(53)('socket.io-client:url');
 
 /**
@@ -10543,7 +10543,7 @@ exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = __webpack_require__(57);
+exports.humanize = __webpack_require__(58);
 
 /**
  * Active `debug` instances.
@@ -10976,7 +10976,7 @@ exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = __webpack_require__(57);
+exports.humanize = __webpack_require__(58);
 
 /**
  * Active `debug` instances.
@@ -11200,8 +11200,8 @@ function coerce(val) {
  * Module requirements
  */
 
-var isArray = __webpack_require__(63);
-var isBuf = __webpack_require__(64);
+var isArray = __webpack_require__(64);
+var isBuf = __webpack_require__(65);
 var toString = Object.prototype.toString;
 var withNativeBlob = typeof global.Blob === 'function' || toString.call(global.Blob) === '[object BlobConstructor]';
 var withNativeFile = typeof global.File === 'function' || toString.call(global.File) === '[object FileConstructor]';
@@ -11362,12 +11362,12 @@ module.exports.parser = __webpack_require__(13);
  * Module dependencies.
  */
 
-var transports = __webpack_require__(66);
+var transports = __webpack_require__(67);
 var Emitter = __webpack_require__(12);
 var debug = __webpack_require__(56)('engine.io-client:socket');
-var index = __webpack_require__(70);
+var index = __webpack_require__(71);
 var parser = __webpack_require__(13);
-var parseuri = __webpack_require__(62);
+var parseuri = __webpack_require__(63);
 var parseqs = __webpack_require__(54);
 
 /**
@@ -11501,8 +11501,8 @@ Socket.protocol = parser.protocol; // this is an int
  */
 
 Socket.Socket = Socket;
-Socket.Transport = __webpack_require__(60);
-Socket.transports = __webpack_require__(66);
+Socket.Transport = __webpack_require__(61);
+Socket.transports = __webpack_require__(67);
 Socket.parser = __webpack_require__(13);
 
 /**
@@ -12135,8 +12135,8 @@ try {
  * Module requirements.
  */
 
-var XMLHttpRequest = __webpack_require__(59);
-var Polling = __webpack_require__(67);
+var XMLHttpRequest = __webpack_require__(60);
+var Polling = __webpack_require__(68);
 var Emitter = __webpack_require__(12);
 var inherit = __webpack_require__(55);
 var debug = __webpack_require__(56)('engine.io-client:polling-xhr');
@@ -15152,7 +15152,7 @@ exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = __webpack_require__(57);
+exports.humanize = __webpack_require__(58);
 
 /**
  * Active `debug` instances.
@@ -15375,7 +15375,7 @@ function coerce(val) {
  * Module requirements.
  */
 
-var Polling = __webpack_require__(67);
+var Polling = __webpack_require__(68);
 var inherit = __webpack_require__(55);
 
 /**
@@ -15612,11 +15612,11 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
  * Module dependencies.
  */
 
-var Transport = __webpack_require__(60);
+var Transport = __webpack_require__(61);
 var parser = __webpack_require__(13);
 var parseqs = __webpack_require__(54);
 var inherit = __webpack_require__(55);
-var yeast = __webpack_require__(69);
+var yeast = __webpack_require__(70);
 var debug = __webpack_require__(56)('engine.io-client:websocket');
 var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 var NodeWebSocket;
@@ -16964,7 +16964,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(122)
 /* template */
-var __vue_template__ = __webpack_require__(146)
+var __vue_template__ = __webpack_require__(150)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -17013,7 +17013,7 @@ var content = __webpack_require__(120);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(74)("5bdd8f62", content, false);
+var update = __webpack_require__(62)("5bdd8f62", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -17032,7 +17032,7 @@ if(false) {
 /* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(61)(undefined);
+exports = module.exports = __webpack_require__(57)(undefined);
 // imports
 
 
@@ -17300,7 +17300,7 @@ var content = __webpack_require__(127);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(74)("7c63be22", content, false);
+var update = __webpack_require__(62)("7c63be22", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -17319,7 +17319,7 @@ if(false) {
 /* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(61)(undefined);
+exports = module.exports = __webpack_require__(57)(undefined);
 // imports
 
 
@@ -18250,7 +18250,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(134)
 /* template */
-var __vue_template__ = __webpack_require__(145)
+var __vue_template__ = __webpack_require__(149)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -18296,7 +18296,7 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog__ = __webpack_require__(135);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_c_dialog__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(3);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -18364,7 +18364,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(136)
 /* template */
-var __vue_template__ = __webpack_require__(138)
+var __vue_template__ = __webpack_require__(142)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -18409,8 +18409,8 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_drag_resize__ = __webpack_require__(137);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_drag_resize__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -18464,10 +18464,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		dialogId: { type: Number, required: true },
 		maxWidth: { type: Number, default: 500 },
 		height: { type: Number, default: 200 },
-		dragActive: { type: Boolean, default: false },
+		dragActive: { type: Boolean, default: true },
 		dragDraggable: { type: Boolean, default: true },
+		dragActiveBehavior: { type: Boolean, default: true },
 		dragResizable: { type: Boolean, default: true },
-		dragLimitation: { type: Boolean, default: false }
+		dragLimitation: { type: Boolean, default: false },
+		dragSticks: { type: Array, default: function _default() {
+				return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'];
+			} }, //тягальщики
+		dragNoLineStyle: { type: Boolean, default: true }
 	},
 	computed: _extends({
 		showDialog: {
@@ -18493,7 +18498,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		}
 	},
 	components: {
-		vueDragResize: __WEBPACK_IMPORTED_MODULE_1_vue_drag_resize___default.a
+		cDragResize: __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default.a
 	},
 	created: function created() {
 		var vm = this;
@@ -18507,10 +18512,695 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
-!function(t,i){ true?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.VueDragResize=i():t.VueDragResize=i()}(window,function(){return function(t){function i(n){if(e[n])return e[n].exports;var o=e[n]={i:n,l:!1,exports:{}};return t[n].call(o.exports,o,o.exports,i),o.l=!0,o.exports}var e={};return i.m=t,i.c=e,i.d=function(t,e,n){i.o(t,e)||Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:n})},i.r=function(t){Object.defineProperty(t,"__esModule",{value:!0})},i.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return i.d(e,"a",e),e},i.o=function(t,i){return Object.prototype.hasOwnProperty.call(t,i)},i.p="",i(i.s=44)}({0:function(t,i,e){var n=e(16);"string"==typeof n&&(n=[[t.i,n,""]]);var o={};o.transform=void 0;e(5)(n,o);n.locals&&(t.exports=n.locals)},1:function(t,i,e){"use strict";Object.defineProperty(i,"__esModule",{value:!0}),i.default={name:"vue-drag-resize",props:{isActive:{type:Boolean,default:!1},preventActiveBehavior:{type:Boolean,default:!1},isDraggable:{type:Boolean,default:!0},isResizable:{type:Boolean,default:!0},aspectRatio:{type:Boolean,default:!1},parentLimitation:{type:Boolean,default:!1},parentW:{type:Number,default:0,validator:function(t){return t>=0}},parentH:{type:Number,default:0,validator:function(t){return t>=0}},w:{type:Number,default:100,validator:function(t){return t>0}},h:{type:Number,default:100,validator:function(t){return t>0}},minw:{type:Number,default:50,validator:function(t){return t>0}},minh:{type:Number,default:50,validator:function(t){return t>0}},x:{type:Number,default:0,validator:function(t){return"number"==typeof t}},y:{type:Number,default:0,validator:function(t){return"number"==typeof t}},z:{type:[String,Number],default:"auto",validator:function(t){return"string"==typeof t?"auto"===t:t>=0}},dragHandle:{type:String,default:null},dragCancel:{type:String,default:null},sticks:{type:Array,default:function(){return["tl","tm","tr","mr","br","bm","bl","ml"]}},axis:{type:String,default:"both",validator:function(t){return-1!==["x","y","both","none"].indexOf(t)}}},data:function(){return{active:this.isActive,rawWidth:this.w,rawHeight:this.h,rawLeft:this.x,rawTop:this.y,rawRight:null,rawBottom:null,zIndex:this.z,aspectFactor:this.w/this.h,parentWidth:null,parentHeight:null,left:this.x,top:this.y,right:null,bottom:null,minWidth:this.minw,minHeight:this.minh}},created:function(){this.stickDrag=!1,this.bodyDrag=!1,this.stickAxis=null,this.stickStartPos={mouseX:0,mouseY:0,x:0,y:0,w:0,h:0},this.limits={minLeft:null,maxLeft:null,minRight:null,maxRight:null,minTop:null,maxTop:null,minBottom:null,maxBottom:null},this.currentStick=[]},mounted:function(){if(this.parentElement=this.$el.parentNode,this.parentWidth=this.parentW?this.parentW:this.parentElement.clientWidth,this.parentHeight=this.parentH?this.parentH:this.parentElement.clientHeight,this.rawRight=this.parentWidth-this.rawWidth-this.rawLeft,this.rawBottom=this.parentHeight-this.rawHeight-this.rawTop,document.documentElement.addEventListener("mousemove",this.move),document.documentElement.addEventListener("mouseup",this.up),document.documentElement.addEventListener("mouseleave",this.up),document.documentElement.addEventListener("mousedown",this.deselect),document.documentElement.addEventListener("touchmove",this.move,!0),document.documentElement.addEventListener("touchend touchcancel",this.up,!0),document.documentElement.addEventListener("touchstart",this.up,!0),this.dragHandle){var t=Array.prototype.slice.call(this.$el.querySelectorAll(this.dragHandle));for(var i in t)t[i].setAttribute("data-drag-handle",this._uid)}if(this.dragCancel){var e=Array.prototype.slice.call(this.$el.querySelectorAll(this.dragCancel));for(var n in e)e[n].setAttribute("data-drag-cancel",this._uid)}},beforeDestroy:function(){document.documentElement.removeEventListener("mousemove",this.move),document.documentElement.removeEventListener("mouseup",this.up),document.documentElement.removeEventListener("mouseleave",this.up),document.documentElement.removeEventListener("mousedown",this.deselect),document.documentElement.removeEventListener("touchmove",this.move,!0),document.documentElement.removeEventListener("touchend touchcancel",this.up,!0),document.documentElement.removeEventListener("touchstart",this.up,!0)},methods:{deselect:function(t){this.preventActiveBehavior||(this.active=!1)},move:function(t){(this.stickDrag||this.bodyDrag)&&(t.stopPropagation(),this.stickDrag&&this.stickMove(t),this.bodyDrag&&this.bodyMove(t))},up:function(t){this.stickDrag&&this.stickUp(t),this.bodyDrag&&this.bodyUp(t)},bodyDown:function(t){var i=t.target||t.srcElement;this.preventActiveBehavior||(this.active=!0),this.$emit("clicked"),this.isDraggable&&this.active&&(this.dragHandle&&i.getAttribute("data-drag-handle")!==this._uid.toString()||this.dragCancel&&i.getAttribute("data-drag-cancel")===this._uid.toString()||(this.bodyDrag=!0,this.stickStartPos.mouseX=t.x,this.stickStartPos.mouseY=t.y,this.stickStartPos.left=this.left,this.stickStartPos.right=this.right,this.stickStartPos.top=this.top,this.stickStartPos.bottom=this.bottom,this.parentLimitation&&(this.limits=this.calcDragLimitation())))},calcDragLimitation:function(){var t=this.parentWidth,i=this.parentHeight;return{minLeft:0,maxLeft:t-this.width,minRight:0,maxRight:t-this.width,minTop:0,maxTop:i-this.height,minBottom:0,maxBottom:i-this.height}},bodyMove:function(t){var i=this.stickStartPos,e={x:"y"!==this.axis&&"none"!==this.axis?i.mouseX-t.x:0,y:"x"!==this.axis&&"none"!==this.axis?i.mouseY-t.y:0};this.rawTop=i.top-e.y,this.rawBottom=i.bottom+e.y,this.rawLeft=i.left-e.x,this.rawRight=i.right+e.x,this.$emit("dragging",this.rect)},bodyUp:function(){this.bodyDrag=!1,this.$emit("dragging",this.rect),this.$emit("dragstop",this.rect),this.stickStartPos={mouseX:0,mouseY:0,x:0,y:0,w:0,h:0},this.limits={minLeft:null,maxLeft:null,minRight:null,maxRight:null,minTop:null,maxTop:null,minBottom:null,maxBottom:null}},stickDown:function(t,i){if(this.isResizable&&this.active){switch(this.stickDrag=!0,this.stickStartPos.mouseX=i.x,this.stickStartPos.mouseY=i.y,this.stickStartPos.left=this.left,this.stickStartPos.right=this.right,this.stickStartPos.top=this.top,this.stickStartPos.bottom=this.bottom,this.currentStick=t.split(""),this.stickAxis=null,this.currentStick[0]){case"b":case"t":this.stickAxis="y"}switch(this.currentStick[1]){case"r":case"l":this.stickAxis="y"===this.stickAxis?"xy":"x"}this.limits=this.calcResizeLimitation()}},calcResizeLimitation:function(){var t=this.minWidth,i=this.minHeight,e=this.aspectFactor,n=this.width,o=this.height,s=this.bottom,r=this.top,a=this.left,h=this.right,c=this.stickAxis,u=this.parentLimitation?0:null;this.aspectRatio&&(t/i>e?i=t/e:t=e*i);var l={minLeft:u,maxLeft:a+(n-t),minRight:u,maxRight:h+(n-t),minTop:u,maxTop:r+(o-i),minBottom:u,maxBottom:s+(o-i)};if(this.aspectRatio){var m={minLeft:a-Math.min(r,s)*e*2,maxLeft:a+(o-i)/2*e*2,minRight:h-Math.min(r,s)*e*2,maxRight:h+(o-i)/2*e*2,minTop:r-Math.min(a,h)/e*2,maxTop:r+(n-t)/2/e*2,minBottom:s-Math.min(a,h)/e*2,maxBottom:s+(n-t)/2/e*2};"x"===c?l={minLeft:Math.max(l.minLeft,m.minLeft),maxLeft:Math.min(l.maxLeft,m.maxLeft),minRight:Math.max(l.minRight,m.minRight),maxRight:Math.min(l.maxRight,m.maxRight)}:"y"===c&&(l={minTop:Math.max(l.minTop,m.minTop),maxTop:Math.min(l.maxTop,m.maxTop),minBottom:Math.max(l.minBottom,m.minBottom),maxBottom:Math.min(l.maxBottom,m.maxBottom)})}return l},stickMove:function(t){var i=this.stickStartPos,e={x:i.mouseX-t.x,y:i.mouseY-t.y};switch(this.currentStick[0]){case"b":this.rawBottom=i.bottom+e.y;break;case"t":this.rawTop=i.top-e.y}switch(this.currentStick[1]){case"r":this.rawRight=i.right+e.x;break;case"l":this.rawLeft=i.left-e.x}this.$emit("resizing",this.rect)},stickUp:function(){this.stickDrag=!1,this.stickStartPos={mouseX:0,mouseY:0,x:0,y:0,w:0,h:0},this.limits={minLeft:null,maxLeft:null,minRight:null,maxRight:null,minTop:null,maxTop:null,minBottom:null,maxBottom:null},this.rawTop=this.top,this.rawBottom=this.bottom,this.rawLeft=this.left,this.rawRight=this.right,this.stickAxis=null,this.$emit("resizing",this.rect),this.$emit("resizestop",this.rect)},aspectRatioCorrection:function(){if(this.aspectRatio){var t=this.bottom,i=this.top,e=this.left,n=this.right,o=this.width,s=this.height,r=this.aspectFactor,a=this.currentStick;if(o/s>r){var h=r*s;"l"===a[1]?this.left=e+o-h:this.right=n+o-h}else{var c=o/r;"t"===a[0]?this.top=i+s-c:this.bottom=t+s-c}}}},computed:{style:function(){return{top:this.top+"px",left:this.left+"px",width:this.width+"px",height:this.height+"px",zIndex:this.zIndex}},width:function(){return this.parentWidth-this.left-this.right},height:function(){return this.parentHeight-this.top-this.bottom},rect:function(){return{left:Math.round(this.left),top:Math.round(this.top),width:Math.round(this.width),height:Math.round(this.height)}}},watch:{rawLeft:function(t){var i=this.limits,e=this.stickAxis,n=this.aspectFactor,o=this.aspectRatio,s=this.left,r=this.bottom,a=this.top;if(null!==i.minLeft&&t<i.minLeft?t=i.minLeft:null!==i.maxLeft&&i.maxLeft<t&&(t=i.maxLeft),o&&"x"===e){var h=s-t;this.rawTop=a-h/n/2,this.rawBottom=r-h/n/2}this.left=t},rawRight:function(t){var i=this.limits,e=this.stickAxis,n=this.aspectFactor,o=this.aspectRatio,s=this.right,r=this.bottom,a=this.top;if(null!==i.minRight&&t<i.minRight?t=i.minRight:null!==i.maxRight&&i.maxRight<t&&(t=i.maxRight),o&&"x"===e){var h=s-t;this.rawTop=a-h/n/2,this.rawBottom=r-h/n/2}this.right=t},rawTop:function(t){var i=this.limits,e=this.stickAxis,n=this.aspectFactor,o=this.aspectRatio,s=this.right,r=this.left,a=this.top;if(null!==i.minTop&&t<i.minTop?t=i.minTop:null!==i.maxTop&&i.maxTop<t&&(t=i.maxTop),o&&"y"===e){var h=a-t;this.rawLeft=r-h*n/2,this.rawRight=s-h*n/2}this.top=t},rawBottom:function(t){var i=this.limits,e=this.stickAxis,n=this.aspectFactor,o=this.aspectRatio,s=this.right,r=this.left,a=this.bottom;if(null!==i.minBottom&&t<i.minBottom?t=i.minBottom:null!==i.maxBottom&&i.maxBottom<t&&(t=i.maxBottom),o&&"y"===e){var h=a-t;this.rawLeft=r-h*n/2,this.rawRight=s-h*n/2}this.bottom=t},width:function(){this.aspectRatioCorrection()},height:function(){this.aspectRatioCorrection()},active:function(t){t?this.$emit("activated"):this.$emit("deactivated")},isActive:function(t){this.active=t},z:function(t){(t>=0||"auto"===t)&&(this.zIndex=t)},aspectRatio:function(t){t&&(this.aspectFactor=this.width/this.height)},minw:function(t){t>0&&t<=this.width&&(this.minWidth=t)},minh:function(t){t>0&&t<=this.height&&(this.minHeight=t)},x:function(){if(!this.stickDrag&&!this.bodyDrag){this.parentLimitation&&(this.limits=this.calcDragLimitation());var t=this.x-this.left;this.rawLeft=this.x,this.rawRight=this.right-t}},y:function(){if(!this.stickDrag&&!this.bodyDrag){this.parentLimitation&&(this.limits=this.calcDragLimitation());var t=this.y-this.top;this.rawTop=this.y,this.rawBottom=this.bottom-t}},w:function(){if(!this.stickDrag&&!this.bodyDrag){this.currentStick=["m","r"],this.stickAxis="x",this.parentLimitation&&(this.limits=this.calcResizeLimitation());var t=this.width-this.w;this.rawRight=this.right+t}},h:function(){if(!this.stickDrag&&!this.bodyDrag){this.currentStick=["b","m"],this.stickAxis="y",this.parentLimitation&&(this.limits=this.calcResizeLimitation());var t=this.height-this.h;this.rawBottom=this.bottom+t}},parentW:function(t){this.right=t-this.width-this.left,this.parentWidth=t},parentH:function(t){this.bottom=t-this.height-this.top,this.parentHeight=t}}}},15:function(t,i){t.exports=function(t){var i="undefined"!=typeof window&&window.location;if(!i)throw new Error("fixUrls requires window.location");if(!t||"string"!=typeof t)return t;var e=i.protocol+"//"+i.host,n=e+i.pathname.replace(/\/[^\/]*$/,"/");return t.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi,function(t,i){var o=i.trim().replace(/^"(.*)"$/,function(t,i){return i}).replace(/^'(.*)'$/,function(t,i){return i});if(/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(o))return t;var s;return s=0===o.indexOf("//")?o:0===o.indexOf("/")?e+o:n+o.replace(/^\.\//,""),"url("+JSON.stringify(s)+")"})}},16:function(t,i,e){i=t.exports=e(6)(!1),i.push([t.i,'\n.vdr,.vdr.active:before{position:absolute;-webkit-box-sizing:border-box;box-sizing:border-box\n}\n.vdr.active:before{content:"";width:100%;height:100%;top:0;outline:1px dashed #d6d6d6\n}\n.vdr-stick{-webkit-box-sizing:border-box;box-sizing:border-box;position:absolute;width:8px;height:8px;font-size:1px;background:#fff;border:1px solid #6c6c6c;-webkit-box-shadow:0 0 2px #bbb;box-shadow:0 0 2px #bbb\n}\n.inactive .vdr-stick{display:none\n}\n.vdr-stick-tl{top:-4px;left:-4px;cursor:nwse-resize\n}\n.vdr-stick-tm{top:-4px;left:50%;margin-left:-4px;cursor:ns-resize\n}\n.vdr-stick-tr{top:-4px;right:-4px;cursor:nesw-resize\n}\n.vdr-stick-ml{left:-4px\n}\n.vdr-stick-ml,.vdr-stick-mr{top:50%;margin-top:-4px;cursor:ew-resize\n}\n.vdr-stick-mr{right:-4px\n}\n.vdr-stick-bl{bottom:-4px;left:-4px;cursor:nesw-resize\n}\n.vdr-stick-bm{bottom:-4px;left:50%;margin-left:-4px;cursor:ns-resize\n}\n.vdr-stick-br{bottom:-4px;right:-4px;cursor:nwse-resize\n}\n.vdr-stick.not-resizable{display:none\n}',""])},17:function(t,i,e){"use strict";var n=e(0),o=e.n(n);o.a},18:function(t,i,e){"use strict";e.r(i);var n=e(4),o=e(2);for(var s in o)"default"!==s&&function(t){e.d(i,t,function(){return o[t]})}(s);var r=(e(17),e(3)),a=Object(r.a)(o.default,n.a,n.b,!1,null,null,null);a.options.__file="src/components/vue-drag-resize.vue",i.default=a.exports},2:function(t,i,e){"use strict";e.r(i);var n=e(1),o=e.n(n);for(var s in n)"default"!==s&&function(t){e.d(i,t,function(){return n[t]})}(s);i.default=o.a},3:function(t,i,e){"use strict";function n(t,i,e,n,o,s,r,a){var h="function"==typeof t?t.options:t;i&&(h.render=i,h.staticRenderFns=e,h._compiled=!0),n&&(h.functional=!0),s&&(h._scopeId="data-v-"+s);var c;if(r?(c=function(t){t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext,t||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),o&&o.call(this,t),t&&t._registeredComponents&&t._registeredComponents.add(r)},h._ssrRegister=c):o&&(c=a?function(){o.call(this,this.$root.$options.shadowRoot)}:o),c)if(h.functional){h._injectStyles=c;var u=h.render;h.render=function(t,i){return c.call(i),u(t,i)}}else{var l=h.beforeCreate;h.beforeCreate=l?[].concat(l,c):[c]}return{exports:t,options:h}}e.d(i,"a",function(){return n})},4:function(t,i,e){"use strict";var n=function(){var t=this,i=t.$createElement,e=t._self._c||i;return e("div",{staticClass:"vdr",class:t.active?"active":"inactive",style:t.style,on:{mousedown:function(i){i.stopPropagation(),i.preventDefault(),t.bodyDown(i)},touchstart:function(i){i.stopPropagation(),i.preventDefault(),t.bodyDown(i)}}},[t._t("default"),t._v(" "),t._l(t.sticks,function(i){return e("div",{staticClass:"vdr-stick",class:["vdr-stick-"+i,t.isResizable?"":"not-resizable"],on:{mousedown:function(e){e.stopPropagation(),e.preventDefault(),t.stickDown(i,e)},touchstart:function(e){e.stopPropagation(),e.preventDefault(),t.stickDown(i,e)}}})})],2)},o=[];n._withStripped=!0;e.d(i,"a",function(){return n}),e.d(i,"b",function(){return o})},44:function(t,i,e){"use strict";function n(t){return t&&t.__esModule?t:{default:t}}Object.defineProperty(i,"__esModule",{value:!0});var o=e(18);Object.defineProperty(i,"default",{enumerable:!0,get:function(){return n(o).default}})},5:function(t,i,e){function n(t,i){for(var e=0;e<t.length;e++){var n=t[e],o=d[n.id];if(o){o.refs++;for(var s=0;s<o.parts.length;s++)o.parts[s](n.parts[s]);for(;s<n.parts.length;s++)o.parts.push(u(n.parts[s],i))}else{for(var r=[],s=0;s<n.parts.length;s++)r.push(u(n.parts[s],i));d[n.id]={id:n.id,refs:1,parts:r}}}}function o(t,i){for(var e=[],n={},o=0;o<t.length;o++){var s=t[o],r=i.base?s[0]+i.base:s[0],a=s[1],h=s[2],c=s[3],u={css:a,media:h,sourceMap:c};n[r]?n[r].parts.push(u):e.push(n[r]={id:r,parts:[u]})}return e}function s(t,i){var e=v(t.insertInto);if(!e)throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");var n=b[b.length-1];if("top"===t.insertAt)n?n.nextSibling?e.insertBefore(i,n.nextSibling):e.appendChild(i):e.insertBefore(i,e.firstChild),b.push(i);else{if("bottom"!==t.insertAt)throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");e.appendChild(i)}}function r(t){if(null===t.parentNode)return!1;t.parentNode.removeChild(t);var i=b.indexOf(t);i>=0&&b.splice(i,1)}function a(t){var i=document.createElement("style");return t.attrs.type="text/css",c(i,t.attrs),s(t,i),i}function h(t){var i=document.createElement("link");return t.attrs.type="text/css",t.attrs.rel="stylesheet",c(i,t.attrs),s(t,i),i}function c(t,i){Object.keys(i).forEach(function(e){t.setAttribute(e,i[e])})}function u(t,i){var e,n,o,s;if(i.transform&&t.css){if(!(s=i.transform(t.css)))return function(){};t.css=s}if(i.singleton){var c=x++;e=g||(g=a(i)),n=l.bind(null,e,c,!1),o=l.bind(null,e,c,!0)}else t.sourceMap&&"function"==typeof URL&&"function"==typeof URL.createObjectURL&&"function"==typeof URL.revokeObjectURL&&"function"==typeof Blob&&"function"==typeof btoa?(e=h(i),n=f.bind(null,e,i),o=function(){r(e),e.href&&URL.revokeObjectURL(e.href)}):(e=a(i),n=m.bind(null,e),o=function(){r(e)});return n(t),function(i){if(i){if(i.css===t.css&&i.media===t.media&&i.sourceMap===t.sourceMap)return;n(t=i)}else o()}}function l(t,i,e,n){var o=e?"":n.css;if(t.styleSheet)t.styleSheet.cssText=w(i,o);else{var s=document.createTextNode(o),r=t.childNodes;r[i]&&t.removeChild(r[i]),r.length?t.insertBefore(s,r[i]):t.appendChild(s)}}function m(t,i){var e=i.css,n=i.media;if(n&&t.setAttribute("media",n),t.styleSheet)t.styleSheet.cssText=e;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(e))}}function f(t,i,e){var n=e.css,o=e.sourceMap,s=void 0===i.convertToAbsoluteUrls&&o;(i.convertToAbsoluteUrls||s)&&(n=y(n)),o&&(n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */");var r=new Blob([n],{type:"text/css"}),a=t.href;t.href=URL.createObjectURL(r),a&&URL.revokeObjectURL(a)}var d={},p=function(t){var i;return function(){return void 0===i&&(i=t.apply(this,arguments)),i}}(function(){return window&&document&&document.all&&!window.atob}),v=function(t){var i={};return function(e){return void 0===i[e]&&(i[e]=t.call(this,e)),i[e]}}(function(t){return document.querySelector(t)}),g=null,x=0,b=[],y=e(15);t.exports=function(t,i){if("undefined"!=typeof DEBUG&&DEBUG&&"object"!=typeof document)throw new Error("The style-loader cannot be used in a non-browser environment");i=i||{},i.attrs="object"==typeof i.attrs?i.attrs:{},i.singleton||(i.singleton=p()),i.insertInto||(i.insertInto="head"),i.insertAt||(i.insertAt="bottom");var e=o(t,i);return n(e,i),function(t){for(var s=[],r=0;r<e.length;r++){var a=e[r],h=d[a.id];h.refs--,s.push(h)}if(t){n(o(t,i),i)}for(var r=0;r<s.length;r++){var h=s[r];if(0===h.refs){for(var c=0;c<h.parts.length;c++)h.parts[c]();delete d[h.id]}}}};var w=function(){var t=[];return function(i,e){return t[i]=e,t.filter(Boolean).join("\n")}}()},6:function(t,i){function e(t,i){var e=t[1]||"",o=t[3];if(!o)return e;if(i&&"function"==typeof btoa){var s=n(o);return[e].concat(o.sources.map(function(t){return"/*# sourceURL="+o.sourceRoot+t+" */"})).concat([s]).join("\n")}return[e].join("\n")}function n(t){return"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(t))))+" */"}t.exports=function(t){var i=[];return i.toString=function(){return this.map(function(i){var n=e(i,t);return i[2]?"@media "+i[2]+"{"+n+"}":n}).join("")},i.i=function(t,e){"string"==typeof t&&(t=[[null,t,""]]);for(var n={},o=0;o<this.length;o++){var s=this[o][0];"number"==typeof s&&(n[s]=!0)}for(o=0;o<t.length;o++){var r=t[o];"number"==typeof r[0]&&n[r[0]]||(e&&!r[2]?r[2]=e:e&&(r[2]="("+r[2]+") and ("+e+")"),i.push(r))}},i}}})});
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(138)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(140)
+/* template */
+var __vue_template__ = __webpack_require__(141)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\c-drag-resize\\c-drag-resize.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8724253a", Component.options)
+  } else {
+    hotAPI.reload("data-v-8724253a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ }),
 /* 138 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(139);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(62)("ff5f8dea", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8724253a\",\"scoped\":false,\"hasInlineConfig\":true}!./_c-drag-resize.css", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8724253a\",\"scoped\":false,\"hasInlineConfig\":true}!./_c-drag-resize.css");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(57)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: absolute;    -webkit-box-sizing: border-box;    box-sizing: border-box;\n}\n.cdr.active:before{    content: '';    width: 100%;    height: 100%;    position: absolute;    top: 0;    -webkit-box-sizing: border-box;    box-sizing: border-box;    outline: 1px dashed #d6d6d6;\n}\n.cdr.noLine.active:before{ outline: none;\n}\n.cdr>.cdr-stick {    -webkit-box-sizing: border-box;    box-sizing: border-box;    position: absolute;    width: var(--stick-size);    height: var(--stick-size);    font-size: 1px;    background: #ffffff;    border: 1px solid #6c6c6c;    -webkit-box-shadow: 0 0 2px #bbb;    box-shadow: 0 0 2px #bbb;\n}\n.cdr.noLine>.cdr-stick {   background: none;    border:none;    -webkit-box-shadow: none;    box-shadow: none;\n}\n.cdr>.inactive .cdr-stick {    display: none;\n}\n.cdr>.cdr-stick-tl {    top: calc(var(--stick-size)/-2);    left: calc(var(--stick-size)/-2);    cursor: nwse-resize;\n}\n.cdr>.cdr-stick-tm {    top: calc(var(--stick-size)/-2);    left: 50%;    margin-left: calc(var(--stick-size)/-2);    cursor: ns-resize;\n}\n.cdr>.cdr-stick-tr {    top: calc(var(--stick-size)/-2);    right: calc(var(--stick-size)/-2);    cursor: nesw-resize;\n}\n.cdr>.cdr-stick-ml {    top: 50%;    margin-top: calc(var(--stick-size)/-2);    left: calc(var(--stick-size)/-2);    cursor: ew-resize;\n}\n.cdr>.cdr-stick-mr {    top: 50%;    margin-top: calc(var(--stick-size)/-2);    right: calc(var(--stick-size)/-2);    cursor: ew-resize;\n}\n.cdr>.cdr-stick-bl {    bottom: calc(var(--stick-size)/-2);    left: calc(var(--stick-size)/-2);    cursor: nesw-resize;\n}\n.cdr>.cdr-stick-bm {    bottom: calc(var(--stick-size)/-2);    left: 50%;    margin-left: calc(var(--stick-size)/-2);    cursor: ns-resize;\n}\n.cdr>.cdr-stick-br {    bottom: calc(var(--stick-size)/-2);    right: calc(var(--stick-size)/-2);    cursor: nwse-resize;\n}\n.cdr>.cdr-stick.not-resizable{    display: none;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 140 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+	name: 'c-drag-resize',
+	props: {
+		isActive: { type: Boolean, default: false },
+		noLineStyle: { type: Boolean, default: false },
+		preventActiveBehavior: { type: Boolean, default: false },
+		isDraggable: { type: Boolean, default: true },
+		isResizable: { type: Boolean, default: true },
+		aspectRatio: { type: Boolean, default: false },
+		parentLimitation: { type: Boolean, default: false },
+		parentW: { type: Number, default: 0, validator: function validator(val) {
+				return val >= 0;
+			} },
+		parentH: { type: Number, default: 0, validator: function validator(val) {
+				return val >= 0;
+			} },
+		w: { type: Number, default: 100, validator: function validator(val) {
+				return val > 0;
+			} },
+		h: { type: Number, default: 100, validator: function validator(val) {
+				return val > 0;
+			} },
+		minw: { type: Number, default: 50, validator: function validator(val) {
+				return val > 0;
+			} },
+		minh: { type: Number, default: 50, validator: function validator(val) {
+				return val > 0;
+			} },
+		x: { type: Number, default: 0, validator: function validator(val) {
+				return typeof val === 'number';
+			} },
+		y: { type: Number, default: 0, validator: function validator(val) {
+				return typeof val === 'number';
+			} },
+		z: { type: [String, Number], default: 'auto', validator: function validator(val) {
+				var valid = typeof val === 'string' ? val === 'auto' : val >= 0;return valid;
+			} },
+		dragHandle: { type: String, default: null },
+		dragCancel: { type: String, default: null },
+		sticks: { type: Array, default: function _default() {
+				return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'];
+			} },
+		axis: { type: String, default: 'both', validator: function validator(val) {
+				return ['x', 'y', 'both', 'none'].indexOf(val) !== -1;
+			} }
+	},
+
+	data: function data() {
+		return {
+			active: this.isActive,
+			rawWidth: this.w,
+			rawHeight: this.h,
+			rawLeft: this.x,
+			rawTop: this.y,
+			rawRight: null,
+			rawBottom: null,
+			zIndex: this.z,
+			aspectFactor: this.w / this.h,
+			parentWidth: null,
+			parentHeight: null,
+			left: this.x,
+			top: this.y,
+			right: null,
+			bottom: null,
+			minWidth: this.minw,
+			minHeight: this.minh
+		};
+	},
+
+	created: function created() {
+		this.stickDrag = this.bodyDrag = false;
+		this.stickAxis = null;
+		this.stickStartPos = { mouseX: 0, mouseY: 0, x: 0, y: 0, w: 0, h: 0 };
+		this.limits = {
+			minLeft: null,
+			maxLeft: null,
+			minRight: null,
+			maxRight: null,
+			minTop: null,
+			maxTop: null,
+			minBottom: null,
+			maxBottom: null
+		};
+		this.currentStick = [];
+	},
+
+	mounted: function mounted() {
+		this.parentElement = this.$el.parentNode;
+		this.parentWidth = this.parentW ? this.parentW : this.parentElement.clientWidth;
+		this.parentHeight = this.parentH ? this.parentH : this.parentElement.clientHeight;
+
+		this.rawRight = this.parentWidth - this.rawWidth - this.rawLeft;
+		this.rawBottom = this.parentHeight - this.rawHeight - this.rawTop;
+
+		document.documentElement.addEventListener('mousemove', this.move);
+		document.documentElement.addEventListener('mouseup', this.up);
+		document.documentElement.addEventListener('mouseleave', this.up);
+
+		document.documentElement.addEventListener('mousedown', this.deselect);
+
+		document.documentElement.addEventListener('touchmove', this.move, true);
+		document.documentElement.addEventListener('touchend touchcancel', this.up, true);
+		document.documentElement.addEventListener('touchstart', this.up, true);
+
+		if (this.dragHandle) {
+			var dragHandles = Array.prototype.slice.call(this.$el.querySelectorAll(this.dragHandle));
+			for (var i in dragHandles) {
+				dragHandles[i].setAttribute('data-drag-handle', this._uid);
+			}
+		}
+
+		if (this.dragCancel) {
+			var cancelHandles = Array.prototype.slice.call(this.$el.querySelectorAll(this.dragCancel));
+			for (var _i in cancelHandles) {
+				cancelHandles[_i].setAttribute('data-drag-cancel', this._uid);
+			}
+		}
+	},
+
+	beforeDestroy: function beforeDestroy() {
+		document.documentElement.removeEventListener('mousemove', this.move);
+		document.documentElement.removeEventListener('mouseup', this.up);
+		document.documentElement.removeEventListener('mouseleave', this.up);
+
+		document.documentElement.removeEventListener('mousedown', this.deselect);
+
+		document.documentElement.removeEventListener('touchmove', this.move, true);
+		document.documentElement.removeEventListener('touchend touchcancel', this.up, true);
+		document.documentElement.removeEventListener('touchstart', this.up, true);
+	},
+
+	methods: {
+		deselect: function deselect(ev) {
+			if (this.preventActiveBehavior) return;
+			this.active = false;
+		},
+		move: function move(ev) {
+			if (!this.stickDrag && !this.bodyDrag) return;
+			ev.stopPropagation();
+			if (this.stickDrag) this.stickMove(ev);
+			if (this.bodyDrag) this.bodyMove(ev);
+		},
+		up: function up(ev) {
+			if (this.stickDrag) this.stickUp(ev);
+			if (this.bodyDrag) this.bodyUp(ev);
+		},
+
+		bodyDown: function bodyDown(ev) {
+			var target = ev.target || ev.srcElement;
+			if (!this.preventActiveBehavior) this.active = true;
+			this.$emit('clicked');
+			if (!this.isDraggable || !this.active) return;
+			if (this.dragHandle && target.getAttribute('data-drag-handle') !== this._uid.toString()) return;
+			if (this.dragCancel && target.getAttribute('data-drag-cancel') === this._uid.toString()) return;
+			this.bodyDrag = true;
+
+			this.stickStartPos.mouseX = ev.x;
+			this.stickStartPos.mouseY = ev.y;
+
+			this.stickStartPos.left = this.left;
+			this.stickStartPos.right = this.right;
+			this.stickStartPos.top = this.top;
+			this.stickStartPos.bottom = this.bottom;
+
+			if (this.parentLimitation) this.limits = this.calcDragLimitation();
+		},
+		calcDragLimitation: function calcDragLimitation() {
+			var parentWidth = this.parentWidth;
+			var parentHeight = this.parentHeight;
+
+			return {
+				minLeft: 0,
+				maxLeft: parentWidth - this.width,
+				minRight: 0,
+				maxRight: parentWidth - this.width,
+				minTop: 0,
+				maxTop: parentHeight - this.height,
+				minBottom: 0,
+				maxBottom: parentHeight - this.height
+			};
+		},
+		bodyMove: function bodyMove(ev) {
+			var stickStartPos = this.stickStartPos;
+			var delta = {
+				x: this.axis !== 'y' && this.axis !== 'none' ? stickStartPos.mouseX - ev.x : 0,
+				y: this.axis !== 'x' && this.axis !== 'none' ? stickStartPos.mouseY - ev.y : 0
+			};
+			this.rawTop = stickStartPos.top - delta.y;
+			this.rawBottom = stickStartPos.bottom + delta.y;
+			this.rawLeft = stickStartPos.left - delta.x;
+			this.rawRight = stickStartPos.right + delta.x;
+			this.$emit('dragging', this.rect);
+		},
+		bodyUp: function bodyUp() {
+			this.bodyDrag = false;
+			this.$emit('dragging', this.rect);
+			this.$emit('dragstop', this.rect);
+			this.stickStartPos = { mouseX: 0, mouseY: 0, x: 0, y: 0, w: 0, h: 0 };
+			this.limits = {
+				minLeft: null,
+				maxLeft: null,
+				minRight: null,
+				maxRight: null,
+				minTop: null,
+				maxTop: null,
+				minBottom: null,
+				maxBottom: null
+			};
+		},
+
+		stickDown: function stickDown(stick, ev) {
+			if (!this.isResizable || !this.active) return;
+			this.stickDrag = true;
+			this.stickStartPos.mouseX = ev.x;
+			this.stickStartPos.mouseY = ev.y;
+			this.stickStartPos.left = this.left;
+			this.stickStartPos.right = this.right;
+			this.stickStartPos.top = this.top;
+			this.stickStartPos.bottom = this.bottom;
+			this.currentStick = stick.split('');
+			this.stickAxis = null;
+
+			switch (this.currentStick[0]) {
+				case 'b':
+					this.stickAxis = 'y';break;
+				case 't':
+					this.stickAxis = 'y';break;
+			}
+			switch (this.currentStick[1]) {
+				case 'r':
+					this.stickAxis = this.stickAxis === 'y' ? 'xy' : 'x';break;
+				case 'l':
+					this.stickAxis = this.stickAxis === 'y' ? 'xy' : 'x';break;
+			}
+			this.limits = this.calcResizeLimitation();
+		},
+		calcResizeLimitation: function calcResizeLimitation() {
+			var minw = this.minWidth;
+			var minh = this.minHeight;
+			var aspectFactor = this.aspectFactor;
+			var width = this.width;
+			var height = this.height;
+			var bottom = this.bottom;
+			var top = this.top;
+			var left = this.left;
+			var right = this.right;
+			var stickAxis = this.stickAxis;
+			var parentLim = this.parentLimitation ? 0 : null;
+			if (this.aspectRatio) {
+				if (minw / minh > aspectFactor) minh = minw / aspectFactor;else minw = aspectFactor * minh;
+			}
+			var limits = {
+				minLeft: parentLim,
+				maxLeft: left + (width - minw),
+				minRight: parentLim,
+				maxRight: right + (width - minw),
+				minTop: parentLim,
+				maxTop: top + (height - minh),
+				minBottom: parentLim,
+				maxBottom: bottom + (height - minh)
+			};
+
+			if (this.aspectRatio) {
+				var aspectLimits = {
+					minLeft: left - Math.min(top, bottom) * aspectFactor * 2,
+					maxLeft: left + (height - minh) / 2 * aspectFactor * 2,
+
+					minRight: right - Math.min(top, bottom) * aspectFactor * 2,
+					maxRight: right + (height - minh) / 2 * aspectFactor * 2,
+
+					minTop: top - Math.min(left, right) / aspectFactor * 2,
+					maxTop: top + (width - minw) / 2 / aspectFactor * 2,
+
+					minBottom: bottom - Math.min(left, right) / aspectFactor * 2,
+					maxBottom: bottom + (width - minw) / 2 / aspectFactor * 2
+				};
+
+				if (stickAxis === 'x') limits = {
+					minLeft: Math.max(limits.minLeft, aspectLimits.minLeft),
+					maxLeft: Math.min(limits.maxLeft, aspectLimits.maxLeft),
+					minRight: Math.max(limits.minRight, aspectLimits.minRight),
+					maxRight: Math.min(limits.maxRight, aspectLimits.maxRight)
+				};else if (stickAxis === 'y') limits = {
+					minTop: Math.max(limits.minTop, aspectLimits.minTop),
+					maxTop: Math.min(limits.maxTop, aspectLimits.maxTop),
+					minBottom: Math.max(limits.minBottom, aspectLimits.minBottom),
+					maxBottom: Math.min(limits.maxBottom, aspectLimits.maxBottom)
+				};
+			}
+			return limits;
+		},
+		stickMove: function stickMove(ev) {
+			var stickStartPos = this.stickStartPos;
+			var delta = {
+				x: stickStartPos.mouseX - ev.x,
+				y: stickStartPos.mouseY - ev.y
+			};
+			switch (this.currentStick[0]) {
+				case 'b':
+					this.rawBottom = stickStartPos.bottom + delta.y;break;
+				case 't':
+					this.rawTop = stickStartPos.top - delta.y;break;
+			}
+			switch (this.currentStick[1]) {
+				case 'r':
+					this.rawRight = stickStartPos.right + delta.x;break;
+				case 'l':
+					this.rawLeft = stickStartPos.left - delta.x;break;
+			}
+			this.$emit('resizing', this.rect);
+		},
+		stickUp: function stickUp() {
+			this.stickDrag = false;
+			this.stickStartPos = {
+				mouseX: 0,
+				mouseY: 0,
+				x: 0,
+				y: 0,
+				w: 0,
+				h: 0
+			};
+			this.limits = {
+				minLeft: null,
+				maxLeft: null,
+				minRight: null,
+				maxRight: null,
+				minTop: null,
+				maxTop: null,
+				minBottom: null,
+				maxBottom: null
+			};
+			this.rawTop = this.top;
+			this.rawBottom = this.bottom;
+			this.rawLeft = this.left;
+			this.rawRight = this.right;
+
+			this.stickAxis = null;
+
+			this.$emit('resizing', this.rect);
+			this.$emit('resizestop', this.rect);
+		},
+		aspectRatioCorrection: function aspectRatioCorrection() {
+			if (!this.aspectRatio) return;
+			var bottom = this.bottom;
+			var top = this.top;
+			var left = this.left;
+			var right = this.right;
+			var width = this.width;
+			var height = this.height;
+			var aspectFactor = this.aspectFactor;
+			var currentStick = this.currentStick;
+			if (width / height > aspectFactor) {
+				var newWidth = aspectFactor * height;
+				if (currentStick[1] === 'l') this.left = left + width - newWidth;else this.right = right + width - newWidth;
+			} else {
+				var newHeight = width / aspectFactor;
+				if (currentStick[0] === 't') this.top = top + height - newHeight;else this.bottom = bottom + height - newHeight;
+			}
+		}
+	},
+
+	computed: {
+		style: function style() {
+			return {
+				top: this.top + 'px',
+				left: this.left + 'px',
+				width: this.width + 'px',
+				height: this.height + 'px',
+				zIndex: this.zIndex
+			};
+		},
+		width: function width() {
+			return this.parentWidth - this.left - this.right;
+		},
+		height: function height() {
+			return this.parentHeight - this.top - this.bottom;
+		},
+		rect: function rect() {
+			return {
+				left: Math.round(this.left),
+				top: Math.round(this.top),
+				width: Math.round(this.width),
+				height: Math.round(this.height)
+			};
+		}
+	},
+
+	watch: {
+		rawLeft: function rawLeft(newLeft) {
+			var limits = this.limits;
+			var stickAxis = this.stickAxis;
+			var aspectFactor = this.aspectFactor;
+			var aspectRatio = this.aspectRatio;
+			var left = this.left;
+			var bottom = this.bottom;
+			var top = this.top;
+
+			if (limits.minLeft !== null && newLeft < limits.minLeft) newLeft = limits.minLeft;else if (limits.maxLeft !== null && limits.maxLeft < newLeft) newLeft = limits.maxLeft;
+
+			if (aspectRatio && stickAxis === 'x') {
+				var delta = left - newLeft;
+				this.rawTop = top - delta / aspectFactor / 2;
+				this.rawBottom = bottom - delta / aspectFactor / 2;
+			}
+			this.left = newLeft;
+		},
+		rawRight: function rawRight(newRight) {
+			var limits = this.limits;
+			var stickAxis = this.stickAxis;
+			var aspectFactor = this.aspectFactor;
+			var aspectRatio = this.aspectRatio;
+			var right = this.right;
+			var bottom = this.bottom;
+			var top = this.top;
+
+			if (limits.minRight !== null && newRight < limits.minRight) newRight = limits.minRight;else if (limits.maxRight !== null && limits.maxRight < newRight) newRight = limits.maxRight;
+
+			if (aspectRatio && stickAxis === 'x') {
+				var delta = right - newRight;
+				this.rawTop = top - delta / aspectFactor / 2;
+				this.rawBottom = bottom - delta / aspectFactor / 2;
+			}
+			this.right = newRight;
+		},
+		rawTop: function rawTop(newTop) {
+			var limits = this.limits;
+			var stickAxis = this.stickAxis;
+			var aspectFactor = this.aspectFactor;
+			var aspectRatio = this.aspectRatio;
+			var right = this.right;
+			var left = this.left;
+			var top = this.top;
+
+			if (limits.minTop !== null && newTop < limits.minTop) newTop = limits.minTop;else if (limits.maxTop !== null && limits.maxTop < newTop) newTop = limits.maxTop;
+
+			if (aspectRatio && stickAxis === 'y') {
+				var delta = top - newTop;
+				this.rawLeft = left - delta * aspectFactor / 2;
+				this.rawRight = right - delta * aspectFactor / 2;
+			}
+			this.top = newTop;
+		},
+		rawBottom: function rawBottom(newBottom) {
+			var limits = this.limits;
+			var stickAxis = this.stickAxis;
+			var aspectFactor = this.aspectFactor;
+			var aspectRatio = this.aspectRatio;
+			var right = this.right;
+			var left = this.left;
+			var bottom = this.bottom;
+
+			if (limits.minBottom !== null && newBottom < limits.minBottom) newBottom = limits.minBottom;else if (limits.maxBottom !== null && limits.maxBottom < newBottom) newBottom = limits.maxBottom;
+
+			if (aspectRatio && stickAxis === 'y') {
+				var delta = bottom - newBottom;
+				this.rawLeft = left - delta * aspectFactor / 2;
+				this.rawRight = right - delta * aspectFactor / 2;
+			}
+			this.bottom = newBottom;
+		},
+		width: function width() {
+			this.aspectRatioCorrection();
+		},
+		height: function height() {
+			this.aspectRatioCorrection();
+		},
+		active: function active(isActive) {
+			if (isActive) this.$emit('activated');else this.$emit('deactivated');
+		},
+		isActive: function isActive(val) {
+			this.active = val;
+		},
+		z: function z(val) {
+			if (val >= 0 || val === 'auto') this.zIndex = val;
+		},
+		aspectRatio: function aspectRatio(val) {
+			if (val) this.aspectFactor = this.width / this.height;
+		},
+		minw: function minw(val) {
+			if (val > 0 && val <= this.width) this.minWidth = val;
+		},
+		minh: function minh(val) {
+			if (val > 0 && val <= this.height) this.minHeight = val;
+		},
+		x: function x() {
+			if (this.stickDrag || this.bodyDrag) return;
+			if (this.parentLimitation) this.limits = this.calcDragLimitation();
+			var delta = this.x - this.left;
+			this.rawLeft = this.x;
+			this.rawRight = this.right - delta;
+		},
+		y: function y() {
+			if (this.stickDrag || this.bodyDrag) return;
+			if (this.parentLimitation) this.limits = this.calcDragLimitation();
+			var delta = this.y - this.top;
+			this.rawTop = this.y;
+			this.rawBottom = this.bottom - delta;
+		},
+		w: function w() {
+			if (this.stickDrag || this.bodyDrag) return;
+			this.currentStick = ['m', 'r'];
+			this.stickAxis = 'x';
+			if (this.parentLimitation) this.limits = this.calcResizeLimitation();
+			var delta = this.width - this.w;
+			this.rawRight = this.right + delta;
+		},
+		h: function h() {
+			if (this.stickDrag || this.bodyDrag) return;
+			this.currentStick = ['b', 'm'];
+			this.stickAxis = 'y';
+			if (this.parentLimitation) this.limits = this.calcResizeLimitation();
+			var delta = this.height - this.h;
+			this.rawBottom = this.bottom + delta;
+		},
+		parentW: function parentW(val) {
+			this.right = val - this.width - this.left;
+			this.parentWidth = val;
+		},
+		parentH: function parentH(val) {
+			this.bottom = val - this.height - this.top;
+			this.parentHeight = val;
+		}
+	}
+});
+
+/***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "cdr",
+      class: [
+        _vm.active ? "active" : "inactive",
+        _vm.noLineStyle ? "noLine" : ""
+      ],
+      style: _vm.style
+    },
+    [
+      _c(
+        "div",
+        {
+          on: {
+            mousedown: function($event) {
+              _vm.bodyDown($event)
+            },
+            touchstart: function($event) {
+              _vm.bodyDown($event)
+            }
+          }
+        },
+        [_vm._t("header")],
+        2
+      ),
+      _vm._v(" "),
+      _vm._t("default"),
+      _vm._v(" "),
+      _vm._l(_vm.sticks, function(stick) {
+        return _c("div", {
+          staticClass: "cdr-stick",
+          class: ["cdr-stick-" + stick, _vm.isResizable ? "" : "not-resizable"],
+          on: {
+            mousedown: function($event) {
+              $event.stopPropagation()
+              $event.preventDefault()
+              _vm.stickDown(stick, $event)
+            },
+            touchstart: function($event) {
+              $event.stopPropagation()
+              $event.preventDefault()
+              _vm.stickDown(stick, $event)
+            }
+          }
+        })
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8724253a", module.exports)
+  }
+}
+
+/***/ }),
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -18531,13 +19221,16 @@ var render = function() {
     },
     [
       _c(
-        "vue-drag-resize",
+        "c-drag-resize",
         {
           attrs: {
             isActive: _vm.dragActive,
             isDraggable: _vm.dragDraggable,
             isResizable: _vm.dragResizable,
+            preventActiveBehavior: _vm.dragActiveBehavior,
             parentLimitation: _vm.dragLimitation,
+            sticks: _vm.dragSticks,
+            noLineStyle: _vm.dragNoLineStyle,
             w: _vm.maxWidth,
             h: _vm.height,
             z: 10,
@@ -18553,7 +19246,7 @@ var render = function() {
         [
           _c(
             "v-toolbar",
-            { attrs: { color: "primary" } },
+            { attrs: { slot: "header", color: "primary" }, slot: "header" },
             [
               _c("v-toolbar-side-icon"),
               _vm._v(" "),
@@ -18659,15 +19352,15 @@ if (false) {
 }
 
 /***/ }),
-/* 139 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(140)
+var __vue_script__ = __webpack_require__(144)
 /* template */
-var __vue_template__ = __webpack_require__(144)
+var __vue_template__ = __webpack_require__(148)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -18706,12 +19399,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 140 */
+/* 144 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(145);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__c_input__);
 //
 //
@@ -18775,15 +19468,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 141 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(142)
+var __vue_script__ = __webpack_require__(146)
 /* template */
-var __vue_template__ = __webpack_require__(143)
+var __vue_template__ = __webpack_require__(147)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -18822,7 +19515,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 142 */
+/* 146 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18878,7 +19571,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 143 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -18919,7 +19612,7 @@ if (false) {
 }
 
 /***/ }),
-/* 144 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -18973,7 +19666,7 @@ if (false) {
 }
 
 /***/ }),
-/* 145 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -19004,7 +19697,7 @@ if (false) {
 }
 
 /***/ }),
-/* 146 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
