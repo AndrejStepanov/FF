@@ -1,5 +1,5 @@
 let mix = require('laravel-mix');
-
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -19,7 +19,11 @@ mix.js('resources/assets/js/Main.js', 'public/js')
             alias: {
                 '@': path.resolve('resources/assets/sass')
             }
-        }
+        },
+        plugins: [
+            new CopyWebpackPlugin([
+                { from: 'resources/assets/js/functions.js', to: 'js' },
+            ]),
+        ],
     })
-   .sass('resources/assets/sass/app.scss', 'public/css').extract(['vue','vuetify']) ;
-
+   .sass('resources/assets/sass/app.scss', 'public/css').extract(['vue','vuetify']);

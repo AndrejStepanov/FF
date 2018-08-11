@@ -1,5 +1,5 @@
 <template>
-	<v-footer class='primary bold' fixed app>
+	<v-footer class='primary bold' :height="24" fixed app>
 		<span >FF - Конструктор форм</span>
 		<v-spacer></v-spacer>
 		<span>&copy;  2018</span>

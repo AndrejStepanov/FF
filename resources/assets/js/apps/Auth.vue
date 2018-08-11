@@ -59,24 +59,8 @@
 				if (!vm.$refs.form.validate()) 
 					return;
 				let href_back=window.location.search.match(new RegExp('href_back=([^&=]+)'));
-				// Native form submission is not yet supported
-				window._Bus.axios.post('/login', {
-					login: vm.login,
-					password: vm.password,
-					remember: vm.remember,
-					_token: window.Laravel.csrfToken
-				}).then((response) => {
-					if(response.data=='sucsess')
-						if(href_back!=null && href_back[1]!=null)
-							window.location.href = href_back[1];
-						else
-							window.location.href = '/';
-					else{
-						vm.$store.dispatch('msgAdding', {title:vm.login,text:'Указанные логин или пароль не найдены!'});
-					}
-				}).catch((error) => {
-					vm.$store.dispatch('msgAdding', {title:vm.login,text:'Указанные логин или пароль не найдены!'});
-				});
+				sendRequest({href:'/login', type:'login', needSucess:'Y', hrefBack:(href_back!=null?href_back[1]:'/'), def:{title:'Ошибка авторизации', text:'Указанные логин или пароль не найдены!'},
+					data:{login: vm.login, password: vm.password,	remember: vm.remember,	_token: window.Laravel.csrfToken},  })
 			},
         },
     }

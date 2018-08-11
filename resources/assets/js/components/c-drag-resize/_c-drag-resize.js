@@ -19,6 +19,7 @@ export default {
 		z: {type: [String, Number],default: 'auto',validator: (val) =>{let valid = (typeof val === 'string') ? val === 'auto' : val >= 0;return valid}},
 		dragHandle: {type: String,default: null},
 		dragCancel: {type: String,default: null},
+		reInitEvent: {type: String,default: null},
 		sticks: {type: Array,default:  () =>{return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']}},
 		axis: {type: String,default: 'both',validator:  (val) =>{return ['x', 'y', 'both', 'none'].indexOf(val) !== -1}},
 	},
@@ -46,10 +47,11 @@ export default {
 	},
 
 	created: function () {
-		this.stickDrag =  this.bodyDrag = false;
-		this.stickAxis = null;
-		this.stickStartPos = {mouseX: 0, mouseY: 0, x: 0, y: 0, w: 0, h: 0};
-		this.limits = {
+		let vm=this
+		vm.stickDrag =  vm.bodyDrag = false;
+		vm.stickAxis = null;
+		vm.stickStartPos = {mouseX: 0, mouseY: 0, x: 0, y: 0, w: 0, h: 0};
+		vm.limits = {
 			minLeft: null,
 			maxLeft: null,
 			minRight: null,
@@ -59,16 +61,12 @@ export default {
 			minBottom: null,
 			maxBottom: null
 		};
-		this.currentStick = [];
+		vm.currentStick = [];
+		//vm.$root.$on(vm.reInitEvent, (obj)=>{vm.initVals();}); надо как то придумать, что бы окно после этого вызова центроалось.		
 	},
 
 	mounted: function () {
-		this.parentElement = this.$el.parentNode;
-		this.parentWidth = this.parentW ? this.parentW : this.parentElement.clientWidth;
-		this.parentHeight = this.parentH ? this.parentH : this.parentElement.clientHeight;
-
-		this.rawRight = this.parentWidth - this.rawWidth - this.rawLeft;
-		this.rawBottom = this.parentHeight - this.rawHeight - this.rawTop;
+		this.initVals();
 
 		document.documentElement.addEventListener('mousemove', this.move);
 		document.documentElement.addEventListener('mouseup', this.up);
@@ -108,6 +106,14 @@ export default {
 	},
 
 	methods: {
+		initVals(){
+			this.parentElement = this.$el.parentNode;
+			this.parentWidth = this.parentW ? this.parentW : this.parentElement.clientWidth;
+			this.parentHeight = this.parentH ? this.parentH : this.parentElement.clientHeight;
+	
+			this.rawRight = this.parentWidth - this.rawWidth - this.rawLeft;
+			this.rawBottom = this.parentHeight - this.rawHeight - this.rawTop;
+		},
 		deselect(ev) {
 			if (this.preventActiveBehavior) 
 				return

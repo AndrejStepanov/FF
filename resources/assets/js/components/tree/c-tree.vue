@@ -231,13 +231,7 @@
 			handleRequestChildren(oriNode){
 				var vm = this;
 				if(!oriNode.model.childLoaded && oriNode.model.hasChild ){
-					window._Bus.axios.post( vm.socetHref, {
-							type: vm.socetEvent ,
-							_token: window.Laravel.csrfToken,
-							parent_id: oriNode.model.id,
-						}).catch(
-							(error) => vm.$store.dispatch('msgAdding', {title:'Ошибка запроса данных',text:'Запросить данные не удалось!', status:error.response.status})
-						);
+					sendRequest({href:vm.socetHref, type:vm.socetEvent, data:{parent_id: oriNode.model.id} })
 					oriNode.model.loading= true;
 				}
 			},
@@ -321,18 +315,13 @@
 					});
 					parent_childrens.forEach((node, i ) => {if(node.is_save==0) parent_childrens.splice(i,1)	});
 					recive.forEach((item, i ) => {if(item.is_check==0) parent_childrens.push(item) });
-					parent_childrens.sort(function (a, b) {window._Fun.sort(a, b, vm.textFieldName, vm.textFieldName) });
+					parent_childrens.sort(function (a, b) {sort(a, b, vm.textFieldName, vm.textFieldName) });
 					parent_node.loading = false;
 					parent_node.childLoaded= true;
 					vm.initializeData(parent_childrens)
 					vm.tree_loading=false;
 				});
-				window._Bus.axios.post(vm.socetHref, {
-					type: vm.socetEvent,
-					_token: window.Laravel.csrfToken
-				}).catch(
-					(error) => vm.$store.dispatch('msgAdding', {title:'Ошибка запроса данных',text:'Запросить данные не удалось!', status:error.response.status})
-				);
+				sendRequest({href:vm.socetHref, type:vm.socetEvent})
 			}	
 		},
 		mounted() {

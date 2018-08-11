@@ -39,17 +39,9 @@
 				window.location.href = "\\Авторизация?href_back="+window.location.href;
 			},
 			logout () {
+				let vm = this;
 				// Native form submission is not yet supported
-				window._Bus.axios.post('/logout', {
-					_token: window.Laravel.csrfToken
-				}).then((response) => {
-					if(response.statusText=='OK')
-						window.location.href = '/';
-					else
-						this.$root.bus.$emit('show-message', {title:'Ошибка при завершении сеанса',text:'Завершить сеанс не удалось!'});
-				}).catch((error) => {
-					this.$root.bus.$emit('show-message', {title:'Ошибка при завершении сеанса',text:'Завершить сеанс не удалось!'});
-				});
+				sendRequest({href:'/logout', type:'logout', needSucess:'Y', hrefBack:'/', def:{title:'Ошибка при завершении сеанса',text:'Завершить сеанс не удалось!'}} )
 			},
         },
     }

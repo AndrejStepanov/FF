@@ -15,7 +15,7 @@ export default {
 	},
 	actions:{
 		msgAdding({commit,getters,state},{timeout, y,x, modeLine, type, title, text,status}){
-			let id = Math.floor(Math.random() * window._Fun.MAX_ID)
+			let id = Math.floor(Math.random() * MAX_ID)
 			timeout=timeout||600000;
             y=y||'top';
             x=x||'right';

@@ -52,6 +52,22 @@ class LoginController extends Controller
     {
       return 'login';
     }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(\Illuminate\Http\Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return redirect('/sucsess');
+    }
+
     /**
      * Create a new controller instance.
      *

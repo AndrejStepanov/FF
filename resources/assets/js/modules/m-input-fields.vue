@@ -1,6 +1,8 @@
 <template>
-	<c-dialog :dialogId="dialogId" :maxWidth="maxWidth" :height="height">
-		<c-input-cols  :data="data" :dialogId="dialogId"  />
+	<c-dialog :dialogId="dialogId" :width="dialogWidthCalc" :height="dialogHeightCalc" :buttons='buttons' @dialogSave='dialogSave' >
+		<v-form v-model="inputsValid">
+			<c-input-cols  :inputs="inputs" :dialogId="dialogId" :inputsId="inputsId"  />
+		</v-form>
 	</c-dialog>
 </template>
 
@@ -12,57 +14,44 @@
 	export default {
 		name:'m-input-fields',
 		data: () => ({
-			todo:'',
-			data:[]
+			todo:{},
+			inputsValid: false,
+			dialogWidthCalc:10,
+			dialogHeightCalc:10,
+			inputsId:Math.floor(Math.random() * MAX_ID),
 		}),
 		computed: {
-			dataNsd() {
-				return [
-					{id:1, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:1,  },
-					{id:2, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:2,  },
-					{id:3, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
-					{id:4, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:4,  },
-					{id:5, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:5,  },
-					{id:6, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:6,  },
-					{id:7, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:7,  },
-					{id:8, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:8,  },
-					{id:9, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:9,  },
-					{id:10, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:10,  },
-					{id:11, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:11,  },
-					{id:12, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:12,  },
-					{id:13, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:13,  },
-					{id:14, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:14,  },
-					{id:15, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:15,  },
-					{id:16, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:16,  },
-					{id:17, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:17,  },
-					{id:18, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:18,  },
-					{id:19, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:19,  },
-					{id:20, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:20,  },
-					{id:21, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:21,  },
-					{id:22, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:22,  },
-					{id:23, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:23,  },
-					{id:24, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:24,  },
-					{id:25, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:25,  },
-					{id:26, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:26,  },
-					{id:27, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:27,  },
-					{id:28, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:28,  },
-					{id:29, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:29,  },
-					{id:30, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:30,  },
-					{id:31, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:31,  },
-					{id:32, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:32,  },
-					{id:33, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 		proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:33,  },
-					{id:34, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:34,  },
+			inputs() {
+				let vm=this
+				let data= [
+					{id:1, form:'object-tree-add', column_code:'obj_level', column_name:'Вложенность', column_desc:'Уровень вложенности объекта', 	proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:1, items:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
+					{id:2, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 					proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:2, items:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
+					{id:3, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', 			proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
 				]
+				return data.filter(row =>  row.form == vm.formName ).sort( (a, b) =>{return sort(a, b, 'sort_seq', 'sort_seq')})
+			},
+			buttons() {
+				let vm=this
+				let tmp = []
+				vm.dialogButtons.forEach((row)=> { tmp.push({...row, disabled: ( row.needCheck==true && !vm.inputsValid ? true :false ) }) })
+				return tmp
 			},
 		},
 		props:{
 			params: {type: Object, required: true},
 			formName: {type: String, default: ''}, 
+			socetHref: {type: String, default: '/data_command'},
 			eventName: {type: String, default: ''}, 
 			dialogTitle: {type: String, default: 'Ввод параметров'}, 
 			dialogId: {type: Number, required: true}, 
-			maxWidth: {type: Number, default: 500}, 
-			height: {type: Number, default: 200}, 
+			dialogWidth: {type: Number, default: 0}, 
+			dialogHeight: {type: Number, default: 0}, 
+			checkFunc: {type: Function, default: () => true },
+			saveFunc: {type: Function },
+			dialogButtons: {type: Array, default: () =>{return [	
+				{id:1, title:'Сохранить', icon:'done', allig:'left', click:'dialogSave' , needCheck:true}, 
+				{id:2, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose'}
+			] }},
 		},
 		components: {
 			CDialog,CInputCols,
@@ -70,14 +59,29 @@
 		methods: {
 			...mapActions({
 				dialogInit:'dialogInit',
-			})
+			}),
+			dialogSave(){
+				let vm=this
+				let params={...vm.todo, ...vm.params}
+				if (!vm.checkFunc(params))
+					return false
+				if(vm.saveFunc && !vm.saveFunc(params))
+					return false
+				else
+					if(!sendRequest({href:vm.socetHref, type:vm.eventName, data:params, handler:()=>vm.$store.dispatch('dialogShowChange',{daiologId_:vm.dialogId, isShow:false}) }) )
+						return false				
+			},
 		},
 		created: function (){
 			let vm=this
 			vm.dialogInit({daiologId:vm.dialogId, daiologTitle:vm.dialogTitle})
-			let dataNew = vm.dataNsd
-			dataNew=dataNew.filter(row =>  row.form == vm.formName ).sort( (a, b) =>{window._Fun.sort(a, b, 'sort_seq', 'sort_seq')});
-			dataNew.forEach((row )=>{ vm.data.push(row) });
+			vm.$root.$on('dialog'+vm.dialogId+'InputsCalc'+vm.inputsId, (obj)=>{
+				vm.dialogHeightCalc= vm.dialogHeight>0?vm.dialogHeight: ( obj.rowInColA *74 + 149> document.documentElement.clientHeight-100 ? document.documentElement.clientHeight-100 :  obj.rowInColA *74 + 149)
+				vm.dialogWidthCalc= vm.dialogWidth>0?vm.dialogWidth: obj.colsCnt*370
+			}); 
+			vm.$root.$on('dialog'+vm.dialogId+'InputsParams'+vm.inputsId, (obj)=>{
+				vm.todo[obj.param]=obj.value;
+			}); 
 		},
 	}
 </script>

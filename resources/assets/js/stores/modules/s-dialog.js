@@ -36,6 +36,10 @@ export default {
 			let dialog=getters.dialogFind(daiologId_);
 			if ( !dialog)
 				return;
+			if(!isShow)
+				window._Vue.$root.$emit('dialogClose'+daiologId_);
+			else
+				window._Vue.$root.$emit('dialogOpen'+daiologId_);
 			commit('dialogShowSet',{dialog, isShow});
 		},
 	},

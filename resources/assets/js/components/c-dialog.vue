@@ -1,7 +1,7 @@
 <template>
 	<v-dialog v-model="showDialog" :persistent="dialogPersistent(dialogId)"  >
 		<c-drag-resize :isActive="dragActive" :isDraggable="dragDraggable" :isResizable="dragResizable" :preventActiveBehavior="dragActiveBehavior" :parentLimitation="dragLimitation" :sticks="dragSticks" :noLineStyle="dragNoLineStyle"
-			:w="maxWidth" :h="height" @resizing="changeSize($event)" :z=10 :x="x" :y="y" >
+			:w="width" :h="height" @resizing="changeSize($event)"  :x="x" :y="y" :reInitEvent="dragReInitEvent">
 			<v-toolbar slot='header'  color="primary" >
 				<v-toolbar-side-icon/>
 				<v-toolbar-title >{{dialogTitle(dialogId)}}</v-toolbar-title>
@@ -9,7 +9,7 @@
 				<v-btn icon>
 					<v-icon>more_vert</v-icon>
 				</v-btn>
-				<v-btn icon @click.native="showDialog = false">
+				<v-btn icon @click.native="dialogClose">
 					<v-icon>clear</v-icon>
 				</v-btn>
 			</v-toolbar>
@@ -20,13 +20,11 @@
 
 			<v-layout row justify-center color="primary" >
 				<v-flex xs12>
-					<v-card dark color="primary">
-						<v-card-text class="px-0">			
-							<v-btn color="accent" @click="test" >Open Dialog 1</v-btn>
-							<v-btn color="accent" >Open Dialog 2</v-btn>
-							<v-btn color="accent" >Open Dialog 3</v-btn>
-						</v-card-text>
-					</v-card>
+					<v-toolbar slot='header' dense  color="primary" >		
+						<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>{{row.title}}</v-btn>
+						<v-spacer/>
+						<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>{{row.title}}</v-btn>
+					</v-toolbar>
 				</v-flex>
 			</v-layout>
 		</c-drag-resize>
@@ -42,11 +40,13 @@
 			heightSlot:'',
 			x:0,
 			y:0,
+			dragReInitEvent:'',
 		}),
 		props:{
 			dialogId: {type: Number, required: true}, 
-			maxWidth: {type: Number, default: 500}, 
-			height: {type: Number, default: 200}, 
+			width: {type: Number, default: 1}, 
+			height: {type: Number, default: 1}, 
+			buttons: {type: Array, default: () =>{return  [{id:1, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose', }] }},
 			dragActive: {type: Boolean, default: true}, 
 			dragDraggable: {type: Boolean, default: true}, 
 			dragActiveBehavior: {type: Boolean, default: true}, 
@@ -58,24 +58,40 @@
 		computed: {
 			showDialog:{
 				get(){return this.$store.getters.dialogIsShow(this.dialogId)},
-				set(value){
-					this.$store.dispatch('dialogShowChange',{daiologId_:this.dialogId, isShow:value}) 
-					if(!value)
-						this.$root.$emit('dialogClose'+this.dialogId);
-				},
+				set(value){if(!value)this.$store.dispatch('dialogShowChange',{daiologId_:this.dialogId, isShow:value})},
 			},
 			...mapGetters({
 				dialogTitle: 'dialogTitle',
 				dialogPersistent: 'dialogPersistent'
 			}),
+			buttonsLeft(){
+				return this.buttons.filter(row =>  row.allig == 'left' )
+			},
+			buttonsRight(){
+				return this.buttons.filter(row =>  row.allig != 'left' )
+			},
+			
 		},
 		methods: {
             changeSize(newRect) {
 				let vm=this
-				vm.heightSlot = newRect.height-145+'';
+				vm.heightSlot = newRect.height-130+'';
 			},
-			test(){
-				console.log(123);
+			buttonClick(button){
+				let vm=this
+				if(Array.isArray(button.click)  )
+					button.click.forEach(row=>vm.buttonClickFunc(row));
+				else
+					vm.buttonClickFunc(button.click)
+			},
+			buttonClickFunc(event){
+				if(event=='dialogClose')
+					this.dialogClose();
+				else
+					this.$emit(event);
+			},
+			dialogClose(){
+				this.showDialog = false;
 			},
 		},
         components: {
@@ -83,9 +99,13 @@
 		},
 		created: function (){
 			let vm=this
-			vm.heightSlot = vm.height-145+''
-			vm.x=(document.documentElement.clientWidth-vm.maxWidth)/2
-			vm.y=(document.documentElement.clientHeight-vm.height)/2
+			vm.dragReInitEvent='dialogDragReInit'+vm.dialogId;
+			vm.$root.$on('dialogOpen'+vm.dialogId, (obj)=>{
+				vm.changeSize({height:vm.height,width:vm.width})
+				vm.x=(document.documentElement.clientWidth-vm.width)/2
+				vm.y=(document.documentElement.clientHeight-vm.height)/2
+				window._Vue.$root.$emit(vm.dragReInitEvent); 
+			});      
 		},
     }
 </script>
