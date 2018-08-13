@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -39,6 +41,29 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $data=$request->all();
+        $this->validator($data)->validate();
+        if (count(User::where('login', $data['login'])->first())>0)
+            return error('Ошибка при регистрации','Пользователь с таким логином уже существует!');
+         if (count(User::where('name', $data['name'])->first())>0)
+            return error('Ошибка при регистрации','Пользователь с таким именем уже существует!');
+
+        event(new Registered($user = $this->create($data)));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user) ?: redirect($this->redirectPath());
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -48,6 +73,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'name' => 'required|string|max:255',
             'login' => 'required|string|max:255',
             'password' => 'required|string|confirmed',
         ]);
@@ -62,6 +88,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
+            'name' => $data['name'],
             'login' => $data['login'],
             'password' => bcrypt($data['password']),
         ]);

@@ -14,6 +14,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 mix.js('resources/assets/js/Main.js', 'public/js')
     .js('resources/assets/js/Obj-tree.js', 'public/js')
     .js('resources/assets/js/Auth.js', 'public/js')
+    .js('resources/assets/js/Register.js', 'public/js')
     .webpackConfig({
         resolve: {
             alias: {

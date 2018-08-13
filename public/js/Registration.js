@@ -1,4 +1,4 @@
-webpackJsonp([3],[
+webpackJsonp([2],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5494,6 +5494,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: 'c-profile',
@@ -5566,7 +5581,7 @@ var render = function() {
         },
         [
           _c("v-icon", [_vm._v("account_circle")]),
-          _vm._v("  " + _vm._s(_vm.UserName) + "\t\t\t")
+          _vm._v("\n\t\t " + _vm._s(_vm.UserName) + "\n\t")
         ],
         1
       ),
@@ -5577,11 +5592,11 @@ var render = function() {
             {
               staticClass: "secondary",
               attrs: { small: "" },
-              on: { click: _vm.login }
+              on: { click: _vm.registration }
             },
             [
               _c("v-icon", [_vm._v("edit")]),
-              _vm._v("\t\t\t Авторизоваться\t\t")
+              _vm._v("\n\t\tЗарегистрироваться\n\t")
             ],
             1
           )
@@ -5593,11 +5608,11 @@ var render = function() {
             {
               staticClass: "secondary",
               attrs: { small: "" },
-              on: { click: _vm.registration }
+              on: { click: _vm.login }
             },
             [
-              _c("v-icon", [_vm._v("person_add")]),
-              _vm._v("\t\t Зарегистрироваться\t")
+              _c("v-icon", [_vm._v("edit")]),
+              _vm._v("\n\t\tАвторизоваться\n\t")
             ],
             1
           )
@@ -5612,7 +5627,7 @@ var render = function() {
             },
             [
               _c("v-icon", [_vm._v("add")]),
-              _vm._v("\t\t\t Изменить пароль\t\t")
+              _vm._v("\n\t\tИзменить пароль\n\t")
             ],
             1
           )
@@ -5626,7 +5641,7 @@ var render = function() {
               attrs: { small: "" },
               on: { click: _vm.logout }
             },
-            [_c("v-icon", [_vm._v("delete")]), _vm._v("\t\t\t  Выйти\t\t\t\t")],
+            [_c("v-icon", [_vm._v("delete")]), _vm._v("\n\t\tВыйти\n\t")],
             1
           )
         : _vm._e()
@@ -6206,14 +6221,20 @@ if (false) {
 /* 147 */,
 /* 148 */,
 /* 149 */,
-/* 150 */
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(151);
+module.exports = __webpack_require__(157);
 
 
 /***/ }),
-/* 151 */
+/* 157 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6221,15 +6242,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_s_Auth__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_s_Registration__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_axios__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vuetify__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vuetify__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__apps_Auth_vue__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__apps_Auth_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__apps_Auth_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__apps_Registration_vue__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__apps_Registration_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__apps_Registration_vue__);
 
 
 
@@ -6246,13 +6267,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vuet
 
 
 
-window._Vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({ el: '#app', store: __WEBPACK_IMPORTED_MODULE_2__stores_s_Auth__["a" /* default */], render: function render(h) {
-    return h(__WEBPACK_IMPORTED_MODULE_6__apps_Auth_vue___default.a);
+window._Vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({ el: '#app', store: __WEBPACK_IMPORTED_MODULE_2__stores_s_Registration__["a" /* default */], render: function render(h) {
+    return h(__WEBPACK_IMPORTED_MODULE_6__apps_Registration_vue___default.a);
   } });
 appThemeInit();
 
 /***/ }),
-/* 152 */
+/* 158 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6282,15 +6303,15 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_0_vuex
 }));
 
 /***/ }),
-/* 153 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(154)
+var __vue_script__ = __webpack_require__(160)
 /* template */
-var __vue_template__ = __webpack_require__(155)
+var __vue_template__ = __webpack_require__(161)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -6307,7 +6328,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\apps\\Auth.vue"
+Component.options.__file = "resources\\assets\\js\\apps\\Registration.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -6316,9 +6337,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-79a59683", Component.options)
+    hotAPI.createRecord("data-v-131cbe14", Component.options)
   } else {
-    hotAPI.reload("data-v-79a59683", Component.options)
+    hotAPI.reload("data-v-131cbe14", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -6329,7 +6350,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 154 */
+/* 160 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6373,10 +6394,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -6386,13 +6403,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			valid: false,
-			curentSystem: 'Авторизация',
-			remember: '',
+			curentSystem: 'Регистрация',
 			login: '',
-			fieldRules: [function (v) {
-				return !!v || 'Поле обязательное';
-			}],
-			password: ''
+			password: '',
+			passwordConfirmation: '',
+			fieldRules: {
+				req: function req(v) {
+					return !!v || 'Поле обязательное';
+				},
+				min: function min(v) {
+					return v.length >= 6 || 'Минимум 6 знаков!';
+				},
+				passMatch: function passMatch() {
+					return password.value == passwordConfirmation.value || 'Не совпадает с паролем!';
+				}
+			}
 		};
 	},
 	components: {
@@ -6403,14 +6428,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			var vm = this;
 			if (!vm.$refs.form.validate()) return;
 			var href_back = window.location.search.match(new RegExp('href_back=([^&=]+)'));
-			sendRequest({ href: '/login', type: 'login', needSucess: 'Y', hrefBack: href_back != null ? href_back[1] : '/', def: { title: 'Ошибка авторизации', text: 'Указанные логин или пароль не найдены!' },
-				data: { login: vm.login, password: vm.password, remember: vm.remember, _token: window.Laravel.csrfToken } });
+			sendRequest({ href: '/registration', type: 'registration', needSucess: 'Y', hrefBack: href_back != null ? href_back[1] : '/', def: { title: 'Ошибка регистрации', text: 'Указаны не корректные данные!' },
+				data: { login: vm.login, password: vm.password, _token: window.Laravel.csrfToken } });
 		}
 	}
 });
 
 /***/ }),
-/* 155 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -6443,7 +6468,11 @@ var render = function() {
                           _c(
                             "v-toolbar",
                             { staticClass: "primary" },
-                            [_c("v-toolbar-title", [_vm._v("Авторизация")])],
+                            [
+                              _c("v-toolbar-title", [
+                                _vm._v("Регистрация новго пользователя")
+                              ])
+                            ],
                             1
                           ),
                           _vm._v(" "),
@@ -6468,7 +6497,10 @@ var render = function() {
                                       name: "Login",
                                       "prepend-icon": "person",
                                       label: "Пользователь",
-                                      rules: _vm.fieldRules,
+                                      rules: [
+                                        _vm.fieldRules.req,
+                                        _vm.fieldRules.min
+                                      ],
                                       type: "text"
                                     },
                                     on: {
@@ -6502,7 +6534,10 @@ var render = function() {
                                       name: "Password",
                                       "prepend-icon": "lock",
                                       label: "Пароль",
-                                      rules: _vm.fieldRules,
+                                      rules: [
+                                        _vm.fieldRules.req,
+                                        _vm.fieldRules.min
+                                      ],
                                       id: "password",
                                       type: "password"
                                     },
@@ -6532,10 +6567,17 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(" "),
-                                  _c("v-checkbox", {
+                                  _c("v-text-field", {
                                     attrs: {
-                                      name: "remember",
-                                      label: "Запомнить мои данные"
+                                      name: "passwordConfirmation",
+                                      "prepend-icon": "lock",
+                                      label: "Подтверждение",
+                                      rules: [
+                                        _vm.fieldRules.req,
+                                        _vm.fieldRules.passMatch
+                                      ],
+                                      id: "passwordConfirmation",
+                                      type: "password"
                                     },
                                     on: {
                                       keyup: function($event) {
@@ -6555,11 +6597,11 @@ var render = function() {
                                       }
                                     },
                                     model: {
-                                      value: _vm.remember,
+                                      value: _vm.passwordConfirmation,
                                       callback: function($$v) {
-                                        _vm.remember = $$v
+                                        _vm.passwordConfirmation = $$v
                                       },
-                                      expression: "remember"
+                                      expression: "passwordConfirmation"
                                     }
                                   })
                                 ],
@@ -6567,51 +6609,23 @@ var render = function() {
                               )
                             ],
                             1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-layout",
-                        {
-                          attrs: {
-                            row: "",
-                            "justify-center": "",
-                            color: "primary"
-                          }
-                        },
-                        [
+                          ),
+                          _vm._v(" "),
                           _c(
-                            "v-flex",
-                            { attrs: { xs12: "" } },
+                            "v-card-actions",
                             [
+                              _c("v-spacer"),
+                              _vm._v(" "),
                               _c(
-                                "v-toolbar",
+                                "v-btn",
                                 {
-                                  attrs: {
-                                    slot: "header",
-                                    dense: "",
-                                    color: "primary"
-                                  },
-                                  slot: "header"
+                                  staticClass: "accent",
+                                  attrs: { disabled: !_vm.valid },
+                                  on: { click: _vm.submit }
                                 },
                                 [
-                                  _c("v-spacer"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      staticClass: "accent",
-                                      attrs: { disabled: !_vm.valid },
-                                      on: { click: _vm.submit }
-                                    },
-                                    [
-                                      _c("v-icon", [_vm._v("input")]),
-                                      _vm._v(" Войти")
-                                    ],
-                                    1
-                                  )
+                                  _c("v-icon", [_vm._v("input")]),
+                                  _vm._v(" Зарегистрировать")
                                 ],
                                 1
                               )
@@ -6649,9 +6663,9 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-79a59683", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-131cbe14", module.exports)
   }
 }
 
 /***/ })
-],[150]);
+],[156]);
