@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Session\Store as SessionStore;
 
 class LoginController extends Controller
 {
@@ -29,8 +30,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected function redirectTo()
-    {
+    protected function redirectTo()  {
+        Request::session()->put('url.intended', '/sucsess');
         Ticket::insert(array(
             'input_date'  => date("Y-m-d H:i:s"),
             'finish_date' => date("Y-m-d H:i:s",time()+ ( 8 * 60 * 60)),
@@ -48,8 +49,7 @@ class LoginController extends Controller
         return '/sucsess';
     }
 
-    public function username()
-    {
+    public function username() {
       return 'login';
     }
 
@@ -59,8 +59,7 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function logout(\Illuminate\Http\Request $request)
-    {
+    public function logout(\Illuminate\Http\Request $request) {
         $this->guard()->logout();
 
         $request->session()->invalidate();
@@ -73,8 +72,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct()  {
         $this->middleware('guest')->except('logout');
     }
 }

@@ -53,17 +53,17 @@
 		window._Bus.axios.post(params.href, {type:params.type, _token: window.Laravel.csrfToken,...params.data,}
 			).then((response) => {
 				if(nvl(params.needSucess,'N')=='Y' && response.data!='sucsess'){
-					vm.$store.dispatch('msgAdding', { title:'Ошибка отправки данных', text:'Отправленные данные были отвергнуты!',...params.default, });
-					return false
+					window._Vue.$store.dispatch('msgAdding', { title:'Ошибка отправки данных', text:'Отправленные данные были отвергнуты!',...params.default, });
+					return;
 				}
 				if(nvl(params.hrefBack)!='')
-					window.location.href = params.hrefBack;
+					window.location.href = decodeURIComponent( params.hrefBack);
 				if(params.handler )
 					params.handler(response)
 			}).catch(
 				(error) =>
 					window._Vue.$store.dispatch('msgAdding', 
-						{title: error.response.data.title||params.default.title||'Ошибка отправки данных', text:error.response.data.message||params.default.text||'Отправить данные не удалось!', status:error.response.status})
+						{title: nvl(error.response.data,{}).title||nvl(params.default,{}).title||'Ошибка отправки данных', text:nvl(error.response.data,{}).message||nvl(params.default,{}).text||'Отправить данные не удалось!', status:error.response.status})
 			);
 		return true
 	}

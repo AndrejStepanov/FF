@@ -12,7 +12,7 @@
 */
 Route::get('/sucsess', function () { echo 'sucsess';} );
 Auth::routes();
-Route::get('/Авторизация', function () { return view('auth');});
+Route::get('/Авторизация', ['as' => 'Авторизация', function () { return view('auth');}]);
 Route::get('/', function () { return view('simple')->with('app_js', 'Main');});
 Route::get('/Работа_с_объектами', function () { return view('simple')->with('app_js', 'Obj-Tree');})->middleware('auth');
 Route::post('/socet_command', 'SocetCommandController@reciveCommand')->middleware('auth');//сюда стучатся для получения данных компоненты

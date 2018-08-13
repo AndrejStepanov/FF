@@ -13,7 +13,11 @@
         <div id="app"></div>
         <script>
             window.Laravel = <?php echo json_encode([ 'csrfToken' => csrf_token(),]); ?>;
-            window.User_info = <?php echo json_encode([ 'name' =>  !Auth::check()?'':Auth::user()->name,]); ?>;
+            window.User_info ={ 
+                @if (Auth::check())
+                    name : '{{Auth::user()->name}}', user_id : '{{Auth::user()->id}}', 
+                @endif
+            };
         </script>
         <script src="{{asset('js/manifest.js')}}"></script>
         <script src="{{asset('js/vendor.js')}}"></script>

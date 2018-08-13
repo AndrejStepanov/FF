@@ -32,11 +32,5 @@ function get_rus_month($num , $mode = null){
 }
 
 function error( $title = null, $message = null, $code = 400){
-	// check if $message is object and transforms it into an array
-	if (is_object($message)) { $message = $message->toArray(); }
-	switch ($code) {
-		default: $code_message = 'error_occured';	break;
-	}
-	$data = array(	'code'   => $code, 'message'  => $code_message, 'title'=>$title, 'message'  => $message);
-	return Response::json($data, $code);
+	return Response::json(array('title'=>$title, 'message'  => $message, 'code'   => $code,), $code);
 }
