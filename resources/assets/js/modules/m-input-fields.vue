@@ -27,7 +27,7 @@
 					{id:1, form:'object-tree-add', column_code:'obj_level', column_name:'Вложенность', column_desc:'Уровень вложенности объекта', 	proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:1, items:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
 					{id:2, form:'object-tree-add', column_code:'tree_group', column_name:'Тип', 		column_desc:'Тип объекта', 					proc_type:'AUTO::LIST', isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:2, items:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
 					{id:3, form:'object-tree-add', column_code:'tree_desc', column_name:'Название', 	column_desc:'Описание объекта', 			proc_type:'MAN',		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
-				]
+			]
 				return data.filter(row =>  row.form == vm.formName ).sort( (a, b) =>{return sort(a, b, 'sort_seq', 'sort_seq')})
 			},
 			buttons() {
@@ -42,7 +42,6 @@
 			formName: {type: String, default: ''}, 
 			socetHref: {type: String, default: '/data_command'},
 			eventName: {type: String, default: ''}, 
-			dialogTitle: {type: String, default: 'Ввод параметров'}, 
 			dialogId: {type: Number, required: true}, 
 			dialogWidth: {type: Number, default: 0}, 
 			dialogHeight: {type: Number, default: 0}, 
@@ -57,9 +56,6 @@
 			CDialog,CInputCols,
 		},
 		methods: {
-			...mapActions({
-				dialogInit:'dialogInit',
-			}),
 			dialogSave(){
 				let vm=this
 				let params={...vm.todo, ...vm.params}
@@ -74,7 +70,6 @@
 		},
 		created: function (){
 			let vm=this
-			vm.dialogInit({daiologId:vm.dialogId, daiologTitle:vm.dialogTitle})
 			vm.$root.$on('dialog'+vm.dialogId+'InputsCalc'+vm.inputsId, (obj)=>{
 				vm.dialogHeightCalc= vm.dialogHeight>0?vm.dialogHeight: ( obj.rowInColA *74 + 149> document.documentElement.clientHeight-100 ? document.documentElement.clientHeight-100 :  obj.rowInColA *74 + 149)
 				vm.dialogWidthCalc= vm.dialogWidth>0?vm.dialogWidth: obj.colsCnt*370

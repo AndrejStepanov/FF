@@ -6461,7 +6461,7 @@ var render = function() {
                             { staticClass: "primary" },
                             [
                               _c("v-toolbar-title", [
-                                _vm._v("Регистрация новго пользователя")
+                                _vm._v("Регистрация нового пользователя")
                               ])
                             ],
                             1

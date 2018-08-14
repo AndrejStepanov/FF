@@ -1,7 +1,7 @@
 <template>
-	<v-dialog v-model="showDialog" :persistent="dialogPersistent(dialogId)"  >
+	<v-dialog value = "true" :persistent="dialogPersistent(dialogId)"  >
 		<c-drag-resize :isActive="dragActive" :isDraggable="dragDraggable" :isResizable="dragResizable" :preventActiveBehavior="dragActiveBehavior" :parentLimitation="dragLimitation" :sticks="dragSticks" :noLineStyle="dragNoLineStyle"
-			:w="width" :h="height" @resizing="changeSize($event)"  :x="x" :y="y" :reInitEvent="dragReInitEvent">
+				:w="width" :h="height" @resizing="changeSize($event)"  :x="x" :y="y" :reInitEvent="dragReInitEvent">
 			<v-toolbar slot='header'  color="primary" >
 				<v-toolbar-side-icon/>
 				<v-toolbar-title >{{dialogTitle(dialogId)}}</v-toolbar-title>
@@ -38,8 +38,6 @@
 		name:'c-dialog',
         data: () => ({
 			heightSlot:'',
-			x:0,
-			y:0,
 			dragReInitEvent:'',
 		}),
 		props:{
@@ -56,10 +54,6 @@
 			dragNoLineStyle:{type: Boolean, default: true},
 		},
 		computed: {
-			showDialog:{
-				get(){return this.$store.getters.dialogIsShow(this.dialogId)},
-				set(value){if(!value)this.$store.dispatch('dialogShowChange',{daiologId_:this.dialogId, isShow:value})},
-			},
 			...mapGetters({
 				dialogTitle: 'dialogTitle',
 				dialogPersistent: 'dialogPersistent'
@@ -70,7 +64,12 @@
 			buttonsRight(){
 				return this.buttons.filter(row =>  row.allig != 'left' )
 			},
-			
+			x(){
+				return (document.documentElement.clientWidth-this.width)/2
+			},
+			y(){
+				return (document.documentElement.clientHeight-this.height)/2
+			},
 		},
 		methods: {
             changeSize(newRect) {
@@ -91,21 +90,14 @@
 					this.$emit(event);
 			},
 			dialogClose(){
-				this.showDialog = false;
+				this.$store.dispatch('dialogShowChange',{daiologId_:this.dialogId, isShow:false})
 			},
 		},
         components: {
             cDragResize
 		},
-		created: function (){
-			let vm=this
-			vm.dragReInitEvent='dialogDragReInit'+vm.dialogId;
-			vm.$root.$on('dialogOpen'+vm.dialogId, (obj)=>{
-				vm.changeSize({height:vm.height,width:vm.width})
-				vm.x=(document.documentElement.clientWidth-vm.width)/2
-				vm.y=(document.documentElement.clientHeight-vm.height)/2
-				window._Vue.$root.$emit(vm.dragReInitEvent); 
-			});      
+		mounted: function (){
+			this.changeSize({height:this.height,width:this.width})
 		},
     }
 </script>

@@ -2,18 +2,16 @@
 	<v-app dark>
 		<v-content>
 			<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
-				<!--<v-card-text class="headline">Дерево объектов</v-card-text>-->
 				<v-text-field name="treeSearch" class="check-size" append-icon="search" v-model="treeSearch"  single-line label="Поиск" id="treeSearch" @keyup.enter="treeSearchSubmit"/>
 				<v-btn block  small class="check-size accent" @click="dialogShow({daiologId_:treeAddDialogId,isShow:true})" > <v-icon>add</v-icon> Добавить</v-btn>
 				<c-tree :data = "treeData" class='margin-top tree-border-top'  allow-batch whole-row @item-click = "itemClick" :textFieldName="treeTextFieldName" :socetHref="treeSocetHref" :socetEvent="treeSocetEvent" :socetChanel="treeSocetChanel" :iconDic="iconDic" :typeFieldName="treeTypeFieldName"/>
 			</v-navigation-drawer>
-			<!--<c-loading v-if="dataLoading"/>-->
 		</v-content>
 
 		<c-head :showRight=false :showLeft=true :curentSystem='curentSystem'  @clickLeftDrawer="drawerLeft = !drawerLeft" app />
 		<c-footer app/>
 		<c-msg-list />
-		<m-input-fields :dialogId="treeAddDialogId"  formName="object-tree-add" :params="treeAddDialogParams" :socetHref="dataSocetHref" eventName="object-tree-add" dialogTitle="Параметры объекта" :maxWidth="700" :height="400" :checkFunc="objectTreeAddCheck"/>
+		<m-input-fields v-if="showTreeAddDialog(treeAddDialogId)" :dialogId="treeAddDialogId"  formName="object-tree-add" :params="treeAddDialogParams" :socetHref="dataSocetHref" eventName="object-tree-add" :checkFunc="objectTreeAddCheck"/>
 	</v-app >
 </template>
 
@@ -24,7 +22,7 @@
 	import CLoading from '../components/c-loading';
 	import CTree from '../components/tree/c-tree';
 	import MInputFields from '../modules/m-input-fields';
-	import {mapActions} from 'vuex'
+	import {mapActions, mapGetters} from 'vuex'
 
 	export default {
 		data: () => ({
@@ -47,6 +45,9 @@
 		components: {
 			CHead,CFooter,CMsgList,CLoading,CTree,MInputFields,
 		},
+		computed: {
+			showTreeAddDialog(treeAddDialogId){return this.dialogIsShow(treeAddDialogId)},
+		},
 		methods: {
 			itemClick(node) {
 				if(node.data.opened)
@@ -68,11 +69,15 @@
 				return;
 			},
 			...mapActions({
-				dialogShow:'dialogShowChange',
-			})
+				dialogShow:'dialogShowChange',dialogInit:'dialogInit',
+			}),
+			 ...mapGetters({
+				dialogIsShow:'dialogIsShow',
+			}),
 		},
 		created: function (){
-			
+			let vm=this
+			vm.dialogInit({daiologId:vm.treeAddDialogId, daiologTitle:"Параметры объекта"})
 		},
 	}
 </script>

@@ -6,7 +6,7 @@
 					<v-flex xs12 sm8 md4>
 						<v-card class="elevation-12">
 							<v-toolbar   class='primary'>
-								<v-toolbar-title>Регистрация новго пользователя</v-toolbar-title>
+								<v-toolbar-title>Регистрация нового пользователя</v-toolbar-title>
 							</v-toolbar>
 							<v-card-text>
 								<v-form v-model="valid" ref="form">

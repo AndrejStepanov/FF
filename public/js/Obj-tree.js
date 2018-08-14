@@ -17076,8 +17076,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
 
 
 
@@ -17112,6 +17110,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 	components: {
 		CHead: __WEBPACK_IMPORTED_MODULE_0__components_c_head___default.a, CFooter: __WEBPACK_IMPORTED_MODULE_1__components_c_footer___default.a, CMsgList: __WEBPACK_IMPORTED_MODULE_2__components_c_msg_list___default.a, CLoading: __WEBPACK_IMPORTED_MODULE_3__components_c_loading___default.a, CTree: __WEBPACK_IMPORTED_MODULE_4__components_tree_c_tree___default.a, MInputFields: __WEBPACK_IMPORTED_MODULE_5__modules_m_input_fields___default.a
 	},
+	computed: {
+		showTreeAddDialog: function showTreeAddDialog(treeAddDialogId) {
+			return this.dialogIsShow(treeAddDialogId);
+		}
+	},
 	methods: _extends({
 		itemClick: function itemClick(node) {
 			if (node.data.opened) node.data.closeChildren();else node.data.openChildren();
@@ -17130,9 +17133,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 			return;
 		}
 	}, Object(__WEBPACK_IMPORTED_MODULE_6_vuex__["b" /* mapActions */])({
-		dialogShow: 'dialogShowChange'
+		dialogShow: 'dialogShowChange', dialogInit: 'dialogInit'
+	}), Object(__WEBPACK_IMPORTED_MODULE_6_vuex__["c" /* mapGetters */])({
+		dialogIsShow: 'dialogIsShow'
 	})),
-	created: function created() {}
+	created: function created() {
+		var vm = this;
+		vm.dialogInit({ daiologId: vm.treeAddDialogId, daiologTitle: "Параметры объекта" });
+	}
 });
 
 /***/ }),
@@ -18308,7 +18316,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		formName: { type: String, default: '' },
 		socetHref: { type: String, default: '/data_command' },
 		eventName: { type: String, default: '' },
-		dialogTitle: { type: String, default: 'Ввод параметров' },
 		dialogId: { type: Number, required: true },
 		dialogWidth: { type: Number, default: 0 },
 		dialogHeight: { type: Number, default: 0 },
@@ -18323,9 +18330,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	components: {
 		CDialog: __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default.a, CInputCols: __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols___default.a
 	},
-	methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])({
-		dialogInit: 'dialogInit'
-	}), {
+	methods: {
 		dialogSave: function dialogSave() {
 			var vm = this;
 			var params = _extends({}, vm.todo, vm.params);
@@ -18334,10 +18339,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 					return vm.$store.dispatch('dialogShowChange', { daiologId_: vm.dialogId, isShow: false });
 				} })) return false;
 		}
-	}),
+	},
 	created: function created() {
 		var vm = this;
-		vm.dialogInit({ daiologId: vm.dialogId, daiologTitle: vm.dialogTitle });
 		vm.$root.$on('dialog' + vm.dialogId + 'InputsCalc' + vm.inputsId, function (obj) {
 			vm.dialogHeightCalc = vm.dialogHeight > 0 ? vm.dialogHeight : obj.rowInColA * 74 + 149 > document.documentElement.clientHeight - 100 ? document.documentElement.clientHeight - 100 : obj.rowInColA * 74 + 149;
 			vm.dialogWidthCalc = vm.dialogWidth > 0 ? vm.dialogWidth : obj.colsCnt * 370;
@@ -18447,8 +18451,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	data: function data() {
 		return {
 			heightSlot: '',
-			x: 0,
-			y: 0,
 			dragReInitEvent: ''
 		};
 	},
@@ -18469,16 +18471,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			} }, //тягальщики
 		dragNoLineStyle: { type: Boolean, default: true }
 	},
-	computed: _extends({
-		showDialog: {
-			get: function get() {
-				return this.$store.getters.dialogIsShow(this.dialogId);
-			},
-			set: function set(value) {
-				if (!value) this.$store.dispatch('dialogShowChange', { daiologId_: this.dialogId, isShow: value });
-			}
-		}
-	}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])({
+	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])({
 		dialogTitle: 'dialogTitle',
 		dialogPersistent: 'dialogPersistent'
 	}), {
@@ -18491,6 +18484,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			return this.buttons.filter(function (row) {
 				return row.allig != 'left';
 			});
+		},
+		x: function x() {
+			return (document.documentElement.clientWidth - this.width) / 2;
+		},
+		y: function y() {
+			return (document.documentElement.clientHeight - this.height) / 2;
 		}
 	}),
 	methods: {
@@ -18508,21 +18507,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			if (event == 'dialogClose') this.dialogClose();else this.$emit(event);
 		},
 		dialogClose: function dialogClose() {
-			this.showDialog = false;
+			this.$store.dispatch('dialogShowChange', { daiologId_: this.dialogId, isShow: false });
 		}
 	},
 	components: {
 		cDragResize: __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default.a
 	},
-	created: function created() {
-		var vm = this;
-		vm.dragReInitEvent = 'dialogDragReInit' + vm.dialogId;
-		vm.$root.$on('dialogOpen' + vm.dialogId, function (obj) {
-			vm.changeSize({ height: vm.height, width: vm.width });
-			vm.x = (document.documentElement.clientWidth - vm.width) / 2;
-			vm.y = (document.documentElement.clientHeight - vm.height) / 2;
-			window._Vue.$root.$emit(vm.dragReInitEvent);
-		});
+	mounted: function mounted() {
+		this.changeSize({ height: this.height, width: this.width });
 	}
 });
 
@@ -18612,7 +18604,7 @@ exports = module.exports = __webpack_require__(56)(undefined);
 
 
 // module
-exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: absolute;    -webkit-box-sizing: border-box;    box-sizing: border-box;\n}\n.cdr.active:before{    content: '';    width: 100%;    height: 100%;    position: absolute;    top: 0;    -webkit-box-sizing: border-box;    box-sizing: border-box;    outline: 1px dashed #d6d6d6;\n}\n.cdr.noLine.active:before{ outline: none;\n}\n.cdr>.cdr-stick {    -webkit-box-sizing: border-box;    box-sizing: border-box;    position: absolute;    width: var(--stick-size);    height: var(--stick-size);    font-size: 1px;    background: #ffffff;    border: 1px solid #6c6c6c;    -webkit-box-shadow: 0 0 2px #bbb;    box-shadow: 0 0 2px #bbb;\n}\n.cdr.noLine>.cdr-stick {   background: none;    border:none;    -webkit-box-shadow: none;    box-shadow: none;\n}\n.cdr>.inactive .cdr-stick {    display: none;\n}\n.cdr>.cdr-stick-tl {    top: calc(var(--stick-size)/-2);    left: calc(var(--stick-size)/-2);    cursor: nwse-resize;\n}\n.cdr>.cdr-stick-tm {    top: calc(var(--stick-size)/-2);    left: 50%;    margin-left: calc(var(--stick-size)/-2);    cursor: ns-resize;\n}\n.cdr>.cdr-stick-tr {    top: calc(var(--stick-size)/-2);    right: calc(var(--stick-size)/-2);    cursor: nesw-resize;\n}\n.cdr>.cdr-stick-ml {    top: 50%;    margin-top: calc(var(--stick-size)/-2);    left: calc(var(--stick-size)/-2);    cursor: ew-resize;\n}\n.cdr>.cdr-stick-mr {    top: 50%;    margin-top: calc(var(--stick-size)/-2);    right: calc(var(--stick-size)/-2);    cursor: ew-resize;\n}\n.cdr>.cdr-stick-bl {    bottom: calc(var(--stick-size)/-2);    left: calc(var(--stick-size)/-2);    cursor: nesw-resize;\n}\n.cdr>.cdr-stick-bm {    bottom: calc(var(--stick-size)/-2);    left: 50%;    margin-left: calc(var(--stick-size)/-2);    cursor: ns-resize;\n}\n.cdr>.cdr-stick-br {    bottom: calc(var(--stick-size)/-2);    right: calc(var(--stick-size)/-2);    cursor: nwse-resize;\n}\n.cdr>.cdr-stick.not-resizable{    display: none;\n}", ""]);
+exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: absolute;    -webkit-box-sizing: border-box;    box-sizing: border-box;\n}\n.cdr.active:before{    content: '';    width: 100%;    height: 100%;    position: absolute;    top: 0;    -webkit-box-sizing: border-box;    box-sizing: border-box;    outline: 1px dashed #d6d6d6;\n}\n.cdr.noLine.active:before{ outline: none;\n}\n.cdr>.cdr-stick {    -webkit-box-sizing: border-box;    box-sizing: border-box;    position: absolute;    width: var(--stick-size);    height: var(--stick-size);    font-size: 1px;    background: #ffffff;    border: 1px solid #6c6c6c;    -webkit-box-shadow: 0 0 2px #bbb;    box-shadow: 0 0 2px #bbb;\n}\n.cdr.noLine>.cdr-stick {   background: none;    border:none;    -webkit-box-shadow: none;    box-shadow: none;\n}\n.cdr>.inactive .cdr-stick {    display: none;\n}\n.cdr>.cdr-stick-tl {    top: calc(var(--stick-size)/-2);    left: calc(var(--stick-size)/-2);    cursor: nwse-resize;\n}\n.cdr>.cdr-stick-tm {    top: calc(var(--stick-size)/-2);    left: 50%;    margin-left: calc(var(--stick-size)/-2);    cursor: ns-resize;\n}\n.cdr>.cdr-stick-tr {    top: calc(var(--stick-size)/-2);    right: calc(var(--stick-size)/-2);    cursor: nesw-resize;\n}\n.cdr>.cdr-stick-ml {    top: 50%;    margin-top: calc(var(--stick-size)/-2);    left: calc(var(--stick-size)/-2);    cursor: ew-resize;\n}\n.cdr>.cdr-stick-mr {    top: 50%;    margin-top: calc(var(--stick-size)/-2);    right: calc(var(--stick-size)/-2);    cursor: ew-resize;\n}\n.cdr>.cdr-stick-bl {    left: calc(var(--stick-size)/-2);    cursor: nesw-resize;\n}\n.cdr>.cdr-stick-bm {    left: 50%;    margin-left: calc(var(--stick-size)/-2);    cursor: ns-resize;\n}\n.cdr>.cdr-stick-br {    right: calc(var(--stick-size)/-2);    cursor: nwse-resize;\n}\n.cdr>.cdr-stick.not-resizable{    display: none;\n}", ""]);
 
 // exports
 
@@ -19234,14 +19226,7 @@ var render = function() {
   return _c(
     "v-dialog",
     {
-      attrs: { persistent: _vm.dialogPersistent(_vm.dialogId) },
-      model: {
-        value: _vm.showDialog,
-        callback: function($$v) {
-          _vm.showDialog = $$v
-        },
-        expression: "showDialog"
-      }
+      attrs: { value: "true", persistent: _vm.dialogPersistent(_vm.dialogId) }
     },
     [
       _c(
@@ -19948,19 +19933,18 @@ var render = function() {
       _vm._v(" "),
       _c("c-msg-list"),
       _vm._v(" "),
-      _c("m-input-fields", {
-        attrs: {
-          dialogId: _vm.treeAddDialogId,
-          formName: "object-tree-add",
-          params: _vm.treeAddDialogParams,
-          socetHref: _vm.dataSocetHref,
-          eventName: "object-tree-add",
-          dialogTitle: "Параметры объекта",
-          maxWidth: 700,
-          height: 400,
-          checkFunc: _vm.objectTreeAddCheck
-        }
-      })
+      _vm.showTreeAddDialog(_vm.treeAddDialogId)
+        ? _c("m-input-fields", {
+            attrs: {
+              dialogId: _vm.treeAddDialogId,
+              formName: "object-tree-add",
+              params: _vm.treeAddDialogParams,
+              socetHref: _vm.dataSocetHref,
+              eventName: "object-tree-add",
+              checkFunc: _vm.objectTreeAddCheck
+            }
+          })
+        : _vm._e()
     ],
     1
   )
