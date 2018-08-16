@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use App\Providers\KonsomHasher;
 
 class RegisterController extends Controller
 {
@@ -87,10 +88,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $hasher = new KonsomHasher();
         return User::create([
             'name' => $data['name'],
             'login' => $data['login'],
-            'password' => bcrypt($data['password']),
+            'password' => $hasher->make($data['password']),
         ]);
     }
 }

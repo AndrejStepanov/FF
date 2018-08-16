@@ -22,7 +22,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-  
     use AuthenticatesUsers;
 
     /**
@@ -31,7 +30,11 @@ class LoginController extends Controller
      * @var string
      */
     protected function redirectTo()  {
-        Request::session()->put('url.intended', '/sucsess');
+        session()->put('url.intended', '/sucsess');
+        
+        Ticket::where('session_id', session()->getId() ) ->where('input_date','<=', date("Y-m-d H:i:s"))->where('finish_date','>=', date("Y-m-d H:i:s")) 
+            ->update(['finish_date' => date("Y-m-d H:i:s",time()-  1), 'logout_date' => date("Y-m-d H:i:s",time()-  1)]);
+        
         Ticket::insert(array(
             'input_date'  => date("Y-m-d H:i:s"),
             'finish_date' => date("Y-m-d H:i:s",time()+ ( 8 * 60 * 60)),
@@ -40,12 +43,17 @@ class LoginController extends Controller
             'cnt_attempts' => 0,
             'user_id' => Auth::user()->id,
             'user_name' => Auth::user()->name,
-            'session_id' => session_id(),
+            'session_id' => session()->getId(),
             'IP' => Request::ip(),
             'Client' => Request::server('HTTP_USER_AGENT'),
             'is_root'   => Auth::user()->is_root,
             'allow_objects'=>null,
+            'storage'=>Auth::user()->storage,
+            'password'=>Auth::user()->password,
+            'timestamps'=>Auth::user()->timestamps,
+            'email'=>Auth::user()->email,
           ));
+
         return '/sucsess';
     }
 
@@ -61,7 +69,8 @@ class LoginController extends Controller
      */
     public function logout(\Illuminate\Http\Request $request) {
         $this->guard()->logout();
-
+        Ticket::where('session_id', session()->getId() ) ->where('input_date','<=', date("Y-m-d H:i:s"))->where('finish_date','>=', date("Y-m-d H:i:s")) 
+            ->update(['finish_date' => date("Y-m-d H:i:s",time()-  1), 'logout_date' => date("Y-m-d H:i:s",time()-  1)]);
         $request->session()->invalidate();
 
         return redirect('/sucsess');

@@ -56,8 +56,8 @@
 					window._Vue.$store.dispatch('msgAdding', { title:'Ошибка отправки данных', text:'Отправленные данные были отвергнуты!',...params.default, });
 					return;
 				}
-				if(nvl(params.hrefBack)!='')
-					window.location.href = decodeURIComponent( params.hrefBack);
+				/*if(nvl(params.hrefBack)!='')
+					window.location.href = decodeURIComponent( params.hrefBack);*/
 				if(params.handler )
 					params.handler(response)
 			}).catch(
