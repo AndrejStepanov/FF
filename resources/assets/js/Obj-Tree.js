@@ -2,7 +2,7 @@
 import Vue from 'vue';
 
 import VueRouter from 'vue-router';
-Vue.use(VueRouter); 
+Vue.use(VueRouter);
 import store from './stores/s-Obj-Tree';
 
 import VueAxios from 'vue-axios';
