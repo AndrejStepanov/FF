@@ -3,8 +3,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Objects extends Model
-{
+class Objects extends Model{
 	use SoftDeletingTrait;
 
 	protected $table = '_object';
@@ -18,8 +17,7 @@ class Objects extends Model
 
     protected $fillable = ['obj_id', 'obj_group', 'obj_type', 'obj_path', 'obj_name', 'obj_desc', 'creator', 'guid_tree_id'];
 
-	public function tree()
-	{
+	public function tree()	{
 		return $this->belongsTo('Tree', 'tree_id', 'tree_id');
 	}
 }

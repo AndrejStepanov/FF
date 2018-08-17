@@ -189,6 +189,12 @@
 				else 
 					vm.handleSingleSelectItems(oriNode, oriItem)
 				vm.handleRequestChildren(oriNode)
+
+				if(node.data.opened)
+					oriNode.data.closeChildren();
+				else
+					oriNode.data.openChildren();
+					
 				vm.$emit('item-click', oriNode, oriItem, e)
 			},
 			handleSingleSelectItems(oriNode, oriItem) {

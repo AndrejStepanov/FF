@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Events\ObjTreeData ;
-class Tree extends Model
-{
+class Tree extends Model{
 
 	protected $table = '_tree';
 	protected $primaryKey = 'tree_id';
@@ -29,8 +28,7 @@ class Tree extends Model
 		event(new ObjTreeData(json_encode($data)));
 	}
 
-	public function objects()
-	{
+	public function objects()	{
 		return $this->hasMany('Objects', 'tree_id', 'tree_id');
 	}
 }

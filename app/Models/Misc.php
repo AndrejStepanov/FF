@@ -4,8 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Misc extends Model
-{
+class Misc extends Model{
 	use SoftDeletingTrait;
 
 	protected $table = '_misc';
@@ -19,8 +18,7 @@ class Misc extends Model
 
     protected $fillable = ['misc_id', 'tree_id', 'misc_type', 'misc_name', 'misc_file', 'misc_size', 'tree_desc', 'tree_path', 'seq_num'];
 
-	public function tree()
-	{
+	public function tree()	{
 		return $this->hasMany('Tree', 'tree_id', 'tree_id');
 	}
 }

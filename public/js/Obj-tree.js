@@ -17076,6 +17076,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -17095,10 +17096,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 			curentSystem: 'Работа с объектами',
 			treeSocetHref: '/socet_command',
 			dataSocetHref: '/data_command',
-			treeSocetEvent: 'object-tree-by-root',
-			treeSocetChanel: 'channel-ObjTreeData',
-			treeTextFieldName: 'tree_name',
-			treeTypeFieldName: 'tree_group',
 			treeData: [{}],
 			treeSearch: '',
 			treeSearchValid: false,
@@ -17117,7 +17114,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 	},
 	methods: _extends({
 		itemClick: function itemClick(node) {
-			if (node.data.opened) node.data.closeChildren();else node.data.openChildren();
 			this.treeAddDialogParams.treeId = node.model.id;
 		},
 		objectTreeAddCheck: function objectTreeAddCheck(params) {
@@ -17573,6 +17569,9 @@ var ITEM_HEIGHT_LARGE = 32;
 				if (vm.allowBatch) vm.handleBatchSelectItems(oriNode, oriItem);
 			} else vm.handleSingleSelectItems(oriNode, oriItem);
 			vm.handleRequestChildren(oriNode);
+
+			if (node.data.opened) oriNode.data.closeChildren();else oriNode.data.openChildren();
+
 			vm.$emit('item-click', oriNode, oriItem, e);
 		},
 		handleSingleSelectItems: function handleSingleSelectItems(oriNode, oriItem) {
@@ -18315,7 +18314,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		params: { type: Object, required: true },
 		formName: { type: String, default: '' },
 		socetHref: { type: String, default: '/data_command' },
-		eventName: { type: String, default: '' },
+		socetEvent: { type: String, default: '' },
 		dialogId: { type: Number, required: true },
 		dialogWidth: { type: Number, default: 0 },
 		dialogHeight: { type: Number, default: 0 },
@@ -18335,7 +18334,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			var vm = this;
 			var params = _extends({}, vm.todo, vm.params);
 			if (!vm.checkFunc(params)) return false;
-			if (vm.saveFunc && !vm.saveFunc(params)) return false;else if (!sendRequest({ href: vm.socetHref, type: vm.eventName, data: params, handler: function handler() {
+			if (vm.saveFunc && !vm.saveFunc(params)) return false;else if (!sendRequest({ href: vm.socetHref, type: vm.socetEvent, data: params, handler: function handler() {
 					return vm.$store.dispatch('dialogShowChange', { daiologId_: vm.dialogId, isShow: false });
 				} })) return false;
 		}
@@ -19899,12 +19898,12 @@ var render = function() {
                   data: _vm.treeData,
                   "allow-batch": "",
                   "whole-row": "",
-                  textFieldName: _vm.treeTextFieldName,
+                  textFieldName: "tree_name",
+                  typeFieldName: "tree_group",
                   socetHref: _vm.treeSocetHref,
-                  socetEvent: _vm.treeSocetEvent,
-                  socetChanel: _vm.treeSocetChanel,
-                  iconDic: _vm.iconDic,
-                  typeFieldName: _vm.treeTypeFieldName
+                  socetEvent: "'object.tree.by.root'",
+                  socetChanel: "channel.ObjTreeData",
+                  iconDic: _vm.iconDic
                 },
                 on: { "item-click": _vm.itemClick }
               })
@@ -19940,7 +19939,7 @@ var render = function() {
               formName: "object-tree-add",
               params: _vm.treeAddDialogParams,
               socetHref: _vm.dataSocetHref,
-              eventName: "object-tree-add",
+              socetEvent: "object.tree.add",
               checkFunc: _vm.objectTreeAddCheck
             }
           })

@@ -41,7 +41,7 @@
 			params: {type: Object, required: true},
 			formName: {type: String, default: ''}, 
 			socetHref: {type: String, default: '/data_command'},
-			eventName: {type: String, default: ''}, 
+			socetEvent: {type: String, default: ''}, 
 			dialogId: {type: Number, required: true}, 
 			dialogWidth: {type: Number, default: 0}, 
 			dialogHeight: {type: Number, default: 0}, 
@@ -64,7 +64,7 @@
 				if(vm.saveFunc && !vm.saveFunc(params))
 					return false
 				else
-					if(!sendRequest({href:vm.socetHref, type:vm.eventName, data:params, handler:()=>vm.$store.dispatch('dialogShowChange',{daiologId_:vm.dialogId, isShow:false}) }) )
+					if(!sendRequest({href:vm.socetHref, type:vm.socetEvent, data:params, handler:()=>vm.$store.dispatch('dialogShowChange',{daiologId_:vm.dialogId, isShow:false}) }) )
 						return false				
 			},
 		},

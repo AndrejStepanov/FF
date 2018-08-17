@@ -6,8 +6,7 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Request;
 
-class Handler extends ExceptionHandler
-{
+class Handler extends ExceptionHandler{
 	/**
 	 * A list of the exception types that are not reported.
 	 *
@@ -35,8 +34,7 @@ class Handler extends ExceptionHandler
 	 * @param  \Exception  $exception
 	 * @return void
 	 */
-	public function report(Exception $exception)
-	{
+	public function report(Exception $exception)	{
 		parent::report($exception);
 	}
 
@@ -47,10 +45,9 @@ class Handler extends ExceptionHandler
 	 * @param  \Exception  $exception
 	 * @return \Illuminate\Http\Response
 	 */
-	public function render($request, Exception $exception)
-	{
-		if(Request::path()=='login')
-			return error('Ошибка при авторизации', 'Указанные логи и пароль ненайдены!' );
+	public function render($request, Exception $exception)	{
+		/*if(Request::path()=='login')
+			return error('Ошибка при авторизации', 'Указанные логи и пароль ненайдены!' );*/
 		return parent::render($request, $exception);
 	}
 	/**
@@ -60,8 +57,7 @@ class Handler extends ExceptionHandler
 	 * @param  \Illuminate\Auth\AuthenticationException  $exception
 	 * @return \Illuminate\Http\Response
 	 */
-	protected function unauthenticated( $request, \Illuminate\Auth\AuthenticationException  $exception)
-	{
+	protected function unauthenticated( $request, \Illuminate\Auth\AuthenticationException  $exception)	{
 		return $request->expectsJson()
 					? response()->json(['message' => $exception->getMessage()], 401)
 					: redirect()->guest(route('Авторизация', $parameters=['href_back'=>Request::url().'?'.http_build_query( Request::query() ) ] ));

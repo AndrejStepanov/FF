@@ -14,7 +14,7 @@ use App\Queues\Amqp;
 use App\Models\Ticket;
 
 class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,   CanResetPasswordContract{
-    use Authenticatable, Authorizable, CanResetPassword;
+	use Authenticatable, Authorizable, CanResetPassword;
 	/**
 	 * The hasher implementation.
 	 * @var \Illuminate\Contracts\Hashing\Hasher
@@ -42,14 +42,27 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 		$this->queuePort = $queuePort;
 		$this->queueUser = $queueUser;
 		$this->queuePassword = $queuePassword;
-    }
-    
+	}
+	
 	/**
 	 * Откуда пользователь - наш или удаленный
 	 * @var string
 	 */
-    public $storage;
-    public $id;
+	public $storage;
+	/**
+	 * Идентификатор внутрннего пользователя
+	 * @var string
+	 */
+	public $id;
+	/**
+	 * Идентификатор внешнего пользователя
+	 * @var string
+	 */
+	public $userId;
+	/**
+	 * хеш пароля, под которым зашел пользователь
+	 * @var string
+	 */
 	public $password;
 	public $timestamps;
 	public $remember_token;
@@ -59,24 +72,48 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 */
 	public $email;
 	public $name;
-	public $is_root;
+	public $isRoot;
+	public $dateSt;
+	public $dateFn;
+
 	/**
 	 * Поиск по параметрам авторизации
 	 * @param  array  $credentials
 	 * @return \Illuminate\Contracts\Auth\Authenticatable
 	 */
-    public function findByCredentials($credentials){
-        $this->is_root='N';
-        $this->password=$credentials['password'];
+	public function findByCredentials($credentials){
+		$this->isRoot='N';
 		$data = $this->createModel()->newQuery()->where('login', $credentials['login'])->first();
-        if( isset($data) &&  $this->hasher-> check ($this->password, $data ['password'])){
+		if( isset($data) &&  $this->hasher-> check ($credentials['password'], $data ['password'])){
 			$this->id=$data['id'];
 			$this->storage='home';
-            $this->is_root=$data['is_root'];
+			$this->isRoot=$data['is_root'];
 			$this->name=$data['name'];
-			$this->password=$this->hasher->make($this->password);
-            return $this;
+			$this->email=$data['email1'];
+			$this->password=$this->hasher->make($credentials['password']);
+			$this->dateSt  = time();
+			$this->dateFn  = time()+ ( 8 * 60 * 60);
+			return $this;
 		}
+	}
+
+	/**
+	 * Запись в сессию
+	 * @param  array  $credentials
+	 * @return \Illuminate\Contracts\Auth\Authenticatable
+	 */
+	public function save(){
+        session()->push('authStorage',$this->storage);
+        session()->push('authId',$this->id);
+        session()->push('authUserId',$this->userId);
+        session()->push('authPassword',$this->password);
+        session()->push('authTimestamps',$this->timestamps);
+        session()->push('authRememberToken',$this->remember_token);
+        session()->push('authEmail',$this->email);
+        session()->push('authName',$this->name);
+        session()->push('authIsRoot',$this->isRoot);
+        session()->push('authDateSt', $this->dateSt);
+        session()->push('authDateFn', $this->dateFn);
 	}
 
 	/**
@@ -84,22 +121,27 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 * @param  array  $credentials
 	 * @return \Illuminate\Contracts\Auth\Authenticatable
 	 */
-    public function findById($identifier){
-		$data=Ticket::where('session_id', session()->getId())->where('user_id', $identifier )->where('input_date','<=', date("Y-m-d H:i:s"))->where('finish_date','>=', date("Y-m-d H:i:s"))->first();
-		$this->id=$data['id'];
-		$this->storage=$data['storage'];
-		$this->is_root=$data['is_root'];
-		$this->name=$data['user_name'];
-		$this->password=$data['password'];
-		return $this;
-    }
-
+	public function findById($identifier){
+		$this->storage= session()->get('authStorage')[0];
+		$this->id= session()->get('authId')[0];
+		$this->userId= session()->get('authUserId')[0];
+		$this->password= session()->get('authPassword')[0];
+		$this->timestamps= session()->get('authTimestamps')[0];
+		$this->remember_token= session()->get('authRememberToken')[0];
+		$this->email= session()->get('authEmail')[0];
+		$this->name= session()->get('authName')[0];
+		$this->isRoot= session()->get('authIsRoot')[0];
+		$this->dateSt= session()->get('authDateSt')[0];
+		$this->dateFn= session()->get('authDateFn')[0];
+		if(  $this->dateFn > time())
+			return $this;
+	}
 	/**
 	 * Поиск по идентификатору
 	 * @param  array  $credentials
 	 * @return \Illuminate\Contracts\Auth\Authenticatable
 	 */
-    public function findByToken($identifier, $token){
+	public function findByToken($identifier, $token){
 		return $this->findById($identifier);
 	}
 
@@ -111,7 +153,7 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	public function createModel()    {
 		$class = '\\'.ltrim($this->model, '\\');
 		return new $class;
-    }
+	}
 
 	/**
 	 * Get the name of the unique identifier for the user.
@@ -119,6 +161,6 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 */
 	public function getKeyName()    {
 		return 'id';
-    }  
-    
+	}  
+	
 }

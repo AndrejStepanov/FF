@@ -4,8 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Alias extends Model
-{
+class Alias extends Model{
 	use SoftDeletingTrait;
 
 	protected $table = '_alias';
@@ -19,8 +18,7 @@ class Alias extends Model
 
     protected $fillable = ['alias_id', 'obj_id', 'src_path', 'alias_name', 'get_param', 'tree_name', 'tree_desc', 'tree_path', 'seq_num'];
 
-	public function objects()
-	{
+	public function objects()	{
 		return $this->belongsTo('Objects', 'obj_id', 'obj_id');
 	}
 }

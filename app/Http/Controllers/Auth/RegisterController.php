@@ -10,8 +10,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Providers\KonsomHasher;
 
-class RegisterController extends Controller
-{
+class RegisterController extends Controller{
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -37,8 +36,7 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct()    {
         $this->middleware('guest');
     }
 
@@ -49,8 +47,7 @@ class RegisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
-    {
+    public function register(Request $request)    {
         $data=$request->all();
         $this->validator($data)->validate();
         if (count(User::where('login', $data['login'])->first())>0)
@@ -71,8 +68,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
+    protected function validator(array $data)    {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'login' => 'required|string|max:255',
@@ -86,8 +82,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
-    {
+    protected function create(array $data)    {
         $hasher = new KonsomHasher();
         return User::create([
             'name' => $data['name'],

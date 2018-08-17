@@ -4,14 +4,15 @@
 			<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
 				<v-text-field name="treeSearch" class="check-size" append-icon="search" v-model="treeSearch"  single-line label="Поиск" id="treeSearch" @keyup.enter="treeSearchSubmit"/>
 				<v-btn block  small class="check-size accent" @click="dialogShow({daiologId_:treeAddDialogId,isShow:true})" > <v-icon>add</v-icon> Добавить</v-btn>
-				<c-tree :data = "treeData" class='margin-top tree-border-top'  allow-batch whole-row @item-click = "itemClick" :textFieldName="treeTextFieldName" :socetHref="treeSocetHref" :socetEvent="treeSocetEvent" :socetChanel="treeSocetChanel" :iconDic="iconDic" :typeFieldName="treeTypeFieldName"/>
+				<c-tree :data = "treeData" class='margin-top tree-border-top'  allow-batch whole-row @item-click = "itemClick" textFieldName="tree_name" typeFieldName="tree_group"  
+					:socetHref="treeSocetHref" socetEvent="'object.tree.by.root'" socetChanel="channel.ObjTreeData" :iconDic="iconDic" />
 			</v-navigation-drawer>
 		</v-content>
 
 		<c-head :showRight=false :showLeft=true :curentSystem='curentSystem'  @clickLeftDrawer="drawerLeft = !drawerLeft" app />
 		<c-footer app/>
 		<c-msg-list />
-		<m-input-fields v-if="showTreeAddDialog(treeAddDialogId)" :dialogId="treeAddDialogId"  formName="object-tree-add" :params="treeAddDialogParams" :socetHref="dataSocetHref" eventName="object-tree-add" :checkFunc="objectTreeAddCheck"/>
+		<m-input-fields v-if="showTreeAddDialog(treeAddDialogId)" :dialogId="treeAddDialogId"  formName="object-tree-add" :params="treeAddDialogParams" :socetHref="dataSocetHref" socetEvent="object.tree.add" :checkFunc="objectTreeAddCheck"/>
 	</v-app >
 </template>
 
@@ -31,10 +32,6 @@
 			curentSystem: 'Работа с объектами',
 			treeSocetHref: '/socet_command',
 			dataSocetHref: '/data_command',			
-			treeSocetEvent: 'object-tree-by-root',
-			treeSocetChanel: 'channel-ObjTreeData',
-			treeTextFieldName: 'tree_name',
-			treeTypeFieldName: 'tree_group',
 			treeData: [{}],
 			treeSearch: '',
 			treeSearchValid: false,
@@ -50,10 +47,6 @@
 		},
 		methods: {
 			itemClick(node) {
-				if(node.data.opened)
-					node.data.closeChildren();
-				else
-					node.data.openChildren();
 				this.treeAddDialogParams.treeId = node.model.id;
 			},
 			objectTreeAddCheck(params){
