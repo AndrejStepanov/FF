@@ -19901,7 +19901,7 @@ var render = function() {
                   textFieldName: "tree_name",
                   typeFieldName: "tree_group",
                   socetHref: _vm.treeSocetHref,
-                  socetEvent: "'object.tree.by.root'",
+                  socetEvent: "object.tree.by.root",
                   socetChanel: "channel.ObjTreeData",
                   iconDic: _vm.iconDic
                 },

@@ -5,7 +5,7 @@
 				<v-text-field name="treeSearch" class="check-size" append-icon="search" v-model="treeSearch"  single-line label="Поиск" id="treeSearch" @keyup.enter="treeSearchSubmit"/>
 				<v-btn block  small class="check-size accent" @click="dialogShow({daiologId_:treeAddDialogId,isShow:true})" > <v-icon>add</v-icon> Добавить</v-btn>
 				<c-tree :data = "treeData" class='margin-top tree-border-top'  allow-batch whole-row @item-click = "itemClick" textFieldName="tree_name" typeFieldName="tree_group"  
-					:socetHref="treeSocetHref" socetEvent="'object.tree.by.root'" socetChanel="channel.ObjTreeData" :iconDic="iconDic" />
+					:socetHref="treeSocetHref" socetEvent="object.tree.by.root" socetChanel="channel.ObjTreeData" :iconDic="iconDic" />
 			</v-navigation-drawer>
 		</v-content>
 
