@@ -29,9 +29,9 @@ class AuthChange extends Event implements ShouldBroadcast {
      * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()    {
-        return ['channel.AuthChange.'.csrf_token()];
+        return ['channel.AuthChange.'.$this->data['oldTicket']];
     }
     public function broadcastAs()	{
-        return 'session.'.$data['type'];            
+        return 'session.'.$this->data['type'];            
     }
 }

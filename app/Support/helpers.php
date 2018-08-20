@@ -34,3 +34,10 @@ function get_rus_month($num , $mode = null){
 function error( $title = null, $message = null, $code = 400){
 	return Response::json(array('title'=>$title, 'message'  => $message, 'code'   => $code,), $code);
 }
+
+function getTicket(){
+	return  md5(session()->getId()) ;
+}
+function checkTicket($ticket){
+	return  md5(session()->getId())==$ticket ;
+}

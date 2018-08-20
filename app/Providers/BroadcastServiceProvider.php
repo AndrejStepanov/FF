@@ -16,8 +16,8 @@ class BroadcastServiceProvider extends ServiceProvider{
 
         require base_path('routes/channels.php');
 
-        Broadcast::channel('channel.AuthChange.*', function ($user, $csrf_token) {
-            return csrf_token() === $csrf_token;
+        Broadcast::channel('channel.AuthChange.*', function ($user, $ticket) {
+            return checkTicket($ticket);
           });
     }
 }

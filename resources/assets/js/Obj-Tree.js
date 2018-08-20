@@ -1,9 +1,14 @@
-//require('./bootstrap');
 import Vue from 'vue';
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
-import store from './stores/s-Obj-Tree';
+
+import Vuex from 'vuex';
+import msg from './stores/s-Msg';
+import profile from './stores/s-profile';
+import dialog from './stores/s-dialog';
+Vue.use(Vuex);
+let  store = new Vuex.Store({modules: {	msg, dialog, profile}  })
 
 import VueAxios from 'vue-axios';
 import axios from 'axios';

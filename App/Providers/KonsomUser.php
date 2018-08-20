@@ -75,6 +75,7 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	public $isRoot;
 	public $dateSt;
 	public $dateFn;
+	public $oldTicket;
 
 	/**
 	 * Поиск по параметрам авторизации

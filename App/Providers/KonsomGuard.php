@@ -15,6 +15,7 @@ use Illuminate\Contracts\Auth\SupportsBasicAuth;
 use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use App\Models\Ticket;
 
 class KonsomGuard implements StatefulGuard, SupportsBasicAuth
 {
@@ -366,6 +367,10 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth
      * @return void
      */
     public function login(AuthenticatableContract $user, $remember = false)   {
+        $ticket = new Ticket();
+        $user ->oldTicket =getTicket();
+        $ticket->closeTicket( );        
+        
         $this->updateSession($user->getAuthIdentifier());
 
         // If the user should be permanently "remembered" by the application we will
@@ -437,7 +442,7 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth
      */
     public function logout()    {
         $user = $this->user();
-
+        
         // If we have an event dispatcher instance, we can fire off the logout event
         // so any further processing can be done. This allows the developer to be
         // listening for anytime a user signs out of this application manually.

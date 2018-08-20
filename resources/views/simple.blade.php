@@ -12,10 +12,10 @@
     <body>
         <div id="app"></div>
         <script>
-            window.Laravel = <?php  echo json_encode([ 'csrfToken' => csrf_token(),]); ?>;
+            window.Laravel = { 'csrfToken': "{{ csrf_token() }}", 'ticket': "{{ getTicket() }}", }
             window.User_info ={ 
                 @if (Auth::check())
-                    name : '{{Auth::user()->name}}', sysId : '{{Auth::user()->id}}', userId : '{{Auth::user()->userId}}', 
+                    name : '{{Auth::user()->name}}', sysId : '{{Auth::user()->id}}', userId : '{{Auth::user()->userId}}', isRoot : '{{Auth::user()->isRoot}}', 
                 @endif
             };
         </script>
