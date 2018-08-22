@@ -37,7 +37,7 @@
 	export default {
 		name: 'c-tree',
 		props: {
-			data: {type: Array},
+			data: {type: Array, default:()=> {return [{}]} },
 			iconDic: {type: Object},
 			size: {type: String, validator: value => ['large', 'small'].indexOf(value) > -1},
 			showCheckbox: {type: Boolean, default: false},
@@ -190,7 +190,7 @@
 					vm.handleSingleSelectItems(oriNode, oriItem)
 				vm.handleRequestChildren(oriNode)
 
-				if(node.data.opened)
+				if(oriNode.data.opened)
 					oriNode.data.closeChildren();
 				else
 					oriNode.data.openChildren();

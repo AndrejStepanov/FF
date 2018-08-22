@@ -33,7 +33,8 @@
 		},
 		methods: {
 			login(){
-				window.location.href = "\\Авторизация?href_back="+window.location.href;
+				this.$root.$emit('authNeedDialog'); 
+				//window.location.href = "\\Авторизация?href_back="+window.location.href;
 			},
 			registration(){
 				window.location.href = "\\Регистрация?href_back="+window.location.href;
@@ -50,11 +51,13 @@
 				.listen('.session.open', (e) => {
 					this.$store.dispatch('userLogin',{userName:e.data.name,userId:e.data.userId, sysId:e.data.sysId, isRoot:e.data.isRoot});
 					vm.subscribeTicket(e.data.newTicket)
+					vm.$store.dispatch('msgAdding', {title:'Авторизация',text:'Выполнен вход под пользователем '+e.data.name+'!', type:'success'});
 				})
 				.listen('.session.close', (e) => {
 					if(this.userId()!='' && this.userId()==e.data.userId || this.sysId()!='' && this.sysId()==e.data.sysId)
 						this.$store.dispatch('userLogout');
 					vm.subscribeTicket(e.data.newTicket)
+					vm.$store.dispatch('msgAdding', {title:'Авторизация',text:'Пользователь завершил свой сеанс!', type:'success'});
 				});
 			},
 		},

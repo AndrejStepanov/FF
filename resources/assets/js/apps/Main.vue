@@ -1,44 +1,37 @@
 <template>
-    <v-app dark>
-        <v-content>
-            <v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
-                <v-list dense>
-                    <v-list-tile v-for="item in systems" :key="item.name" @click="choose_sys( item.name );">
-                        <v-list-tile-action>
-                            <v-icon>{{ item.icon }}</v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                </v-list>
-            </v-navigation-drawer>
-            <v-navigation-drawer fixed v-model="drawerRight" right  :clipped="$vuetify.breakpoint.width  > 1264"  app >
-                <v-list dense>
-                    <v-list-tile v-for="item in Links" :key="item.name" v-bind:href="item.is_new_type==1?'':item.href" >                        
-                        <v-list-tile-action v-if="item.is_new_type==0 " >
-                            <v-icon>{{ item.icon }}</v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-content >
-                            <v-list-tile-title v-if="item.is_new_type==1 " >{{ item.type  }}</v-list-tile-title>
-                            <v-list-tile-title v-else>{{ item.name }} </v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                </v-list>
-            </v-navigation-drawer>
+    <c-app :curentSystem="curentSystem" :showLeft=true :showRight=true   >
+        <v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
+            <v-list dense>
+                <v-list-tile v-for="item in systems" :key="item.name" @click="choose_sys( item.name );">
+                    <v-list-tile-action>
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
+        <v-navigation-drawer fixed v-model="drawerRight" right  :clipped="$vuetify.breakpoint.width  > 1264"  app >
+            <v-list dense>
+                <v-list-tile v-for="item in Links" :key="item.name" v-bind:href="item.is_new_type==1?'':item.href" >                        
+                    <v-list-tile-action v-if="item.is_new_type==0 " >
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content >
+                        <v-list-tile-title v-if="item.is_new_type==1 " >{{ item.type  }}</v-list-tile-title>
+                        <v-list-tile-title v-else>{{ item.name }} </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
 
-        </v-content>
+    </c-app>
 
-        <c-head :showRight=true :showLeft=true :curentSystem='curentSystem'  @clickRightDrawer ="drawerRight = !drawerRight" @clickLeftDrawer="drawerLeft = !drawerLeft" app/>
-		<c-footer app/>
-		<c-msg-list />
-    </v-app>
 </template>
 
 <script>
-    import CHead from '../components/c-head';
-    import CFooter from '../components/c-footer';
-    import CMsgList from '../components/c-msg-list';
+    import CApp from '../components/c-app';
 
     export default {
         data: () => ({
@@ -55,29 +48,33 @@
             ],
         }),
         components: {
-            CHead,CFooter,CMsgList,
+            CApp,
         },
         methods: {
             choose_sys: function (name){
+                let vm=this
                 let newLinks=[],
                     cur_type='';
-                this.curentSystem=name;
-                this.ALL_Links.forEach(link => {
+                vm.curentSystem=name;
+                vm.ALL_Links.forEach(link => {
                     if (link.system!=name )
                         return;
                     if(cur_type!=link.type)
                        newLinks.push({...link,is_new_type:1,name:link.type});
                     newLinks.push(link);
                 });
-                this.Links=newLinks;
-                this.systems.forEach(system => {
-                    if (system.name==name )
-                       this.title=system.title ;      
-                });
+                vm.Links=newLinks;
             },
         },
         created: function (){
-            this.choose_sys(this.curentSystem);
+            let vm=this
+            vm.choose_sys(vm.curentSystem);
+			vm.$root.$on('headDrawerLeftClick', (obj)=>{
+				vm.drawerLeft=!vm.drawerLeft;
+            }); 
+			vm.$root.$on('headDrawerRightClick', (obj)=>{
+				vm.drawerRight=!vm.drawerRight;
+			});
         },
     }
 </script>

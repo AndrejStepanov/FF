@@ -1,49 +1,38 @@
 <template>
-	<v-app dark>
-		<v-content>
-			<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
-				<v-text-field name="treeSearch" class="check-size" append-icon="search" v-model="treeSearch"  single-line label="Поиск" id="treeSearch" @keyup.enter="treeSearchSubmit"/>
-				<v-btn block  small class="check-size accent" @click="dialogShow({daiologId_:treeAddDialogId,isShow:true})" > <v-icon>add</v-icon> Добавить</v-btn>
-				<c-tree :data = "treeData" class='margin-top tree-border-top'  allow-batch whole-row @item-click = "itemClick" textFieldName="tree_name" typeFieldName="tree_group"  
-					:socetHref="treeSocetHref" socetEvent="object.tree.by.root" socetChanel="channel.ObjTreeData" :iconDic="iconDic" />
-			</v-navigation-drawer>
-		</v-content>
+	<c-app curentSystem="Работа с объектами"  >
+		<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
+			<v-text-field name="treeSearch" class="check-size" append-icon="search" v-model="treeSearch"  single-line label="Поиск" id="treeSearch" @keyup.enter="treeSearchSubmit"/>
+			<v-btn block  small class="check-size accent" @click="dialogShow({daiologId_:treeAddDialogId,isShow:true})" > <v-icon>add</v-icon> Добавить</v-btn>
+			<c-tree class='margin-top tree-border-top'  allow-batch whole-row @item-click = "itemClick" textFieldName="tree_name" typeFieldName="tree_group"  
+				socetHref="/socet_command" socetEvent="object.tree.by.root" socetChanel="channel.ObjTreeData" :iconDic="iconDic" />
+		</v-navigation-drawer>
 
-		<c-head :showRight=false :showLeft=true :curentSystem='curentSystem'  @clickLeftDrawer="drawerLeft = !drawerLeft" app />
-		<c-footer app/>
-		<c-msg-list />
-		<m-input-fields v-if="showTreeAddDialog(treeAddDialogId)" :dialogId="treeAddDialogId"  formName="object-tree-add" :params="treeAddDialogParams" :socetHref="dataSocetHref" socetEvent="object.tree.add" :checkFunc="objectTreeAddCheck"/>
-	</v-app >
+		<m-input-fields v-if="showTreeAddDialog(treeAddDialogId)" :dialogId="treeAddDialogId"  :formName="treeAddDialogmName" :params="treeAddDialogParams" socetHref="/data_command" socetEvent="object.tree.add" :checkFunc="objectTreeAddCheck"/>
+	</c-app>
 </template>
 
 <script>
-	import CHead from '../components/c-head';
-	import CFooter from '../components/c-footer';
-	import CMsgList from '../components/c-msg-list';
+	import CApp from '../components/c-app';
 	import CLoading from '../components/c-loading';
 	import CTree from '../components/tree/c-tree';
-	import MInputFields from '../modules/m-input-fields';
 	import {mapActions, mapGetters} from 'vuex'
 
 	export default {
 		data: () => ({
 			drawerLeft: true,
-			dataLoading:true,
-			curentSystem: 'Работа с объектами',
-			treeSocetHref: '/socet_command',
-			dataSocetHref: '/data_command',			
-			treeData: [{}],
+			dataLoading:true,		
 			treeSearch: '',
-			treeSearchValid: false,
 			iconDic:{'misc':'photo_library', 'object':'description', 'filter':'filter_list', 'filter':'filter_list', 'input':'input', 'default':'folder_open',  },
-			treeAddDialogId: Math.floor(Math.random() * MAX_ID),		
+			treeAddDialogId: Math.floor(Math.random() * MAX_ID),			
 			treeAddDialogParams: {},							
+			treeAddDialogmName: "object-tree-add",							
 		}),
 		components: {
-			CHead,CFooter,CMsgList,CLoading,CTree,MInputFields,
+			CApp,CLoading,CTree,
+			MInputFields: (resolve) => require(['../modules/m-input-fields.vue'], resolve),
 		},
 		computed: {
-			showTreeAddDialog(treeAddDialogId){return this.dialogIsShow(treeAddDialogId)},
+			showTreeAddDialog(treeAddDialogId){return this.dialogIsShow(treeAddDialogId)},		
 		},
 		methods: {
 			itemClick(node) {
@@ -51,7 +40,7 @@
 			},
 			objectTreeAddCheck(params){
 				let vm=this
-				if(params.obj_level=='inside' && !params.treeId  ){
+				if(params.obj_level=='inside' && nvl(params.treeId)==0  ){
 					vm.$store.dispatch('msgAdding', {title:'Ошибка при добавлении элемента',text:'Для добавления вложенного элемента, необходимо выбрать родительский элемент!'});
 					return false;
 				}
@@ -70,7 +59,7 @@
 		},
 		created: function (){
 			let vm=this
-			vm.dialogInit({daiologId:vm.treeAddDialogId, daiologTitle:"Параметры объекта"})
+			vm.dialogInit({daiologId:vm.treeAddDialogId, daiologTitle:"Параметры объекта", dialogName:vm.treeAddDialogmName})
 		},
 	}
 </script>

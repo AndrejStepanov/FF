@@ -21,9 +21,9 @@
 			<v-layout row justify-center color="primary" >
 				<v-flex xs12>
 					<v-toolbar slot='header' dense  color="primary" >		
-						<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>{{row.title}}</v-btn>
+						<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{row.title}}</v-btn>
 						<v-spacer/>
-						<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>{{row.title}}</v-btn>
+						<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{row.title}}</v-btn>
 					</v-toolbar>
 				</v-flex>
 			</v-layout>

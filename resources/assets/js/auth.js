@@ -6,8 +6,9 @@ Vue.use(VueRouter);
 import Vuex from 'vuex';
 import msg from './stores/s-Msg';
 import profile from './stores/s-profile';
+import dialog from './stores/s-dialog';
 Vue.use(Vuex);
-let  store = new Vuex.Store({modules: {	msg,profile}  })
+let  store = new Vuex.Store({modules: {	msg, dialog, profile}  })
 
 import VueAxios from 'vue-axios';
 import axios from 'axios';

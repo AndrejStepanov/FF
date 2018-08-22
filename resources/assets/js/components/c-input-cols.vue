@@ -21,7 +21,7 @@
 		props:{
 			inputs: {type: Array, required: true},
 			dialogId: {type: Number},
-			inputsId: {type: Number},
+			inputsColId: {type: Number},
 		},
         components: {
             CInput,
@@ -29,7 +29,7 @@
         methods: {
 		},
 		computed: {
-			inputChangeEvent(){ return 'dialog'+this.dialogId+'InputsParams'+this.inputsId},
+			inputChangeEvent(){ return 'dialog'+this.dialogId+'InputsParams'+this.inputsColId},
 			classes () {
 				return [
 					{'xs12': this.colsCnt==1},
@@ -65,7 +65,7 @@
 						col++;
 					colsData[col].push(row);
 				});
-				vm.$root.$emit('dialog'+vm.dialogId+'InputsCalc'+vm.inputsId, {rowInColA,colsCnt:vm.colsCnt}); 
+				vm.$root.$emit('dialog'+vm.dialogId+'InputsCalc'+vm.inputsColId, {rowInColA,colsCnt:vm.colsCnt}); 
 				return colsData
 			},
 		},

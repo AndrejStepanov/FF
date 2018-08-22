@@ -46,8 +46,8 @@ class Handler extends ExceptionHandler{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function render($request, Exception $exception)	{
-		/*if(Request::path()=='login')
-			return error('Ошибка при авторизации', 'Указанные логи и пароль ненайдены!' );*/
+		if(Request::path()=='login')
+			return error('Ошибка при авторизации', 'Указанные логи и пароль ненайдены!' );
 		return parent::render($request, $exception);
 	}
 	/**
