@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\KonsomGuard;
-use App\Providers\KonsomProvider;
+use App\Providers\KonsomAuthProvider;
 use App\Providers\KonsomHasher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -30,8 +30,8 @@ class AuthServiceProvider extends ServiceProvider{
   public function boot()    {
     $this->registerPolicies();
     // add custom guard provider
-    Auth::provider('konsomProvider', function ($app, array $config) {
-      return new KonsomProvider( new KonsomHasher(), $config['model'], $app['config']['amqp.defaults.host'],$app['config']['amqp.defaults.port'],$app['config']['amqp.defaults.user'],$app['config']['amqp.defaults.password'] );
+    Auth::provider('KonsomAuthProvider', function ($app, array $config) {
+      return new KonsomAuthProvider( new KonsomHasher(), $config['model'], $app['config']['amqp.defaults.host'],$app['config']['amqp.defaults.port'],$app['config']['amqp.defaults.user'],$app['config']['amqp.defaults.password'] );
     });
     
     // add  guard

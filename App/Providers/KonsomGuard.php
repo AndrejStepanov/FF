@@ -17,8 +17,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use App\Models\Ticket;
 
-class KonsomGuard implements StatefulGuard, SupportsBasicAuth
-{
+class KonsomGuard implements StatefulGuard, SupportsBasicAuth{
     use GuardHelpers, Macroable;
 
     /**

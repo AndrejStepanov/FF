@@ -9,7 +9,7 @@ use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use App\Providers\KonsomUser;
 
-class KonsomProvider implements UserProvider{
+class KonsomAuthProvider implements UserProvider{
 	/**
 	 * The hasher implementation.
 	 * @var \Illuminate\Contracts\Hashing\Hasher

@@ -29,7 +29,7 @@
 		}),
 		components: {
 			CApp,CLoading,CTree,
-			MInputFields: (resolve) => require(['../modules/m-input-fields.vue'], resolve),
+			MInputFields: (resolve) =>{console.log(321); require(['../modules/m-input-fields.vue'], resolve) },
 		},
 		computed: {
 			showTreeAddDialog(treeAddDialogId){return this.dialogIsShow(treeAddDialogId)},		
@@ -37,6 +37,9 @@
 		methods: {
 			itemClick(node) {
 				this.treeAddDialogParams.treeId = node.model.id;
+			},
+			windowLoaded(){
+				console.log(123)
 			},
 			objectTreeAddCheck(params){
 				let vm=this
@@ -49,6 +52,9 @@
 			treeSearchSubmit () {
 				console.log(this.treeSearch);
 				return;
+			},
+			beginLoad(){
+				console.log(123);
 			},
 			...mapActions({
 				dialogShow:'dialogShowChange',dialogInit:'dialogInit',

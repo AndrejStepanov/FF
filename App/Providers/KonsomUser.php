@@ -96,6 +96,7 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 			$this->dateFn  = time()+ ( 8 * 60 * 60);
 			return $this;
 		}
+		throw new \App\Exceptions\KonsomException('Ошибка при авторизации', 'Указанные логин и пароль не найдены!');
 	}
 
 	/**

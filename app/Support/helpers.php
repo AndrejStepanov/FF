@@ -1,4 +1,6 @@
 <?php
+use App\Exceptions\KonsomException;
+		
 /**
 *	Функция проверяет существование указанной переменной
 *	
@@ -32,7 +34,14 @@ function get_rus_month($num , $mode = null){
 }
 
 function error( $title = null, $message = null, $code = 400){
-	return Response::json(array('title'=>$title, 'message'  => $message, 'code'   => $code,), $code);
+	throw new KonsomException( $title,$message,$code); 
+}
+
+function makeErrResponse($params, $code){
+	if(config('app.debug'))
+		return response()->json(array('title'=>$params['title'], 'message'  => $params['message'], 'file'=>$params['file'], 'line'=>$params['line'], 'trace'=> $params['trace'],   ), $code);
+	else
+		return response()->json(array('title'=>$params['title'], 'message'  => $params['message']), $code );
 }
 
 function getTicket(){

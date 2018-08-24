@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler{
 	/**
@@ -13,7 +15,8 @@ class Handler extends ExceptionHandler{
 	 * @var array
 	 */
 	protected $dontReport = [
-		//
+		TokenMismatchException::class,
+		HttpException::class
 	];
 
 	/**
@@ -34,7 +37,7 @@ class Handler extends ExceptionHandler{
 	 * @param  \Exception  $exception
 	 * @return void
 	 */
-	public function report(Exception $exception)	{
+	public function report(Exception $exception){
 		parent::report($exception);
 	}
 
@@ -45,10 +48,14 @@ class Handler extends ExceptionHandler{
 	 * @param  \Exception  $exception
 	 * @return \Illuminate\Http\Response
 	 */
-	public function render($request, Exception $exception)	{
-		if(Request::path()=='login')
-			return error('Ошибка при авторизации', 'Указанные логи и пароль ненайдены!' );
-		return parent::render($request, $exception);
+	public function render($request, Exception $exception){
+		$title='Системная ошибка';
+		$code=400;
+		if (method_exists($exception, 'getTitle')) 
+			$title = $exception->getTitle();
+		if ($exception instanceof \App\Exceptions\KonsomException)  
+			$code=$exception->getCode();
+		return makeErrResponse(array('title'=>$title, 'message'  => $exception->getMessage(), 'file'=>$exception->getFile(), 'line'=>$exception->getLine(), 'trace'=> json_encode($exception->getTrace()),   ), $code);
 	}
 	/**
 	 * Convert an authentication exception into a response.

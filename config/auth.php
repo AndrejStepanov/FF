@@ -48,7 +48,7 @@ return [
 
         'custom' => [
             'driver' => 'konsomGuard',
-            'provider' => 'konsomProvider',
+            'provider' => 'KonsomAuthProvider',
         ],
     ],
 
@@ -74,8 +74,8 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'konsomProvider' => [
-            'driver' => 'konsomProvider',
+        'KonsomAuthProvider' => [
+            'driver' => 'KonsomAuthProvider',
             'model' => App\Models\User::class,
         ],
         // 'users' => [

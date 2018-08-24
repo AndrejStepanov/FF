@@ -4,9 +4,9 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import Vuex from 'vuex';
-import msg from './stores/s-Msg';
-import profile from './stores/s-profile';
-import dialog from './stores/s-dialog';
+import msg from '../stores/s-Msg';
+import profile from '../stores/s-profile';
+import dialog from '../stores/s-dialog';
 Vue.use(Vuex);
 let  store = new Vuex.Store({modules: {	msg, dialog, profile}  })
 
@@ -25,7 +25,7 @@ window.Echo = new Echo({
 	host: window.location.hostname + ':6001'
 });
 
-import App from './apps/Auth.vue';
+import App from '../apps/Register.vue';
 
 window._Vue=new Vue({el:'#app', store, render: h=> h(App)});
 appThemeInit();

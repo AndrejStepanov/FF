@@ -11,10 +11,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
  |
  */
 
-mix.js('resources/assets/js/Main.js', 'public/js')
-    .js('resources/assets/js/Obj-tree.js', 'public/js')
-    .js('resources/assets/js/Auth.js', 'public/js')
-    .js('resources/assets/js/Register.js', 'public/js')
+mix.js('resources/assets/js/main/Main.js', 'public/js')
+    .js('resources/assets/js/main/Obj-tree.js', 'public/js')
+    .js('resources/assets/js/main/Auth.js', 'public/js')
+    .js('resources/assets/js/main/Register.js', 'public/js')
     .webpackConfig({
         resolve: {
             alias: {
@@ -23,8 +23,9 @@ mix.js('resources/assets/js/Main.js', 'public/js')
         },
         plugins: [
             new CopyWebpackPlugin([
-                { from: 'resources/assets/js/functions.js', to: 'js' },
+                { from: 'resources/assets/js/helpers/functions.js', to: 'js' },
             ]),
         ],
     })
-   .sass('resources/assets/sass/app.scss', 'public/css').extract(['vue','vuetify']);
+   .sass('resources/assets/sass/app.scss', 'public/css')
+   .extract(['vue','vuetify','vue-axios','axios','vuex','vue-router','socket.io-client','laravel-echo']);
