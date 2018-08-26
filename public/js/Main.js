@@ -1,4 +1,4 @@
-webpackJsonp([4],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ (function(module, exports) {
@@ -205,15 +205,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 115:
+/***/ 116:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(116)
+var __vue_script__ = __webpack_require__(117)
 /* template */
-var __vue_template__ = __webpack_require__(117)
+var __vue_template__ = __webpack_require__(118)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -253,7 +253,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 116:
+/***/ 117:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -339,7 +339,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 117:
+/***/ 118:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -477,7 +477,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 118:
+/***/ 119:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -913,6 +913,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
 
 
 
@@ -989,6 +990,14 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(1);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1005,19 +1014,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'c-msg',
     data: function data() {
         return {
-            snackbar: true
+            snackbar: true,
+            traceDialogWidth: 1024,
+            traceDialogHeight: 600,
+            traceDialogId: Math.floor(Math.random() * MAX_ID)
         };
-    },
-    watch: {
-        // эта функция запускается при любом изменении вопроса
-        snackbar: function snackbar(newsnackbar) {
-            if (newsnackbar != false) return;
-            this.$store.dispatch('msgDeleting', this.id);
-        }
     },
     props: {
         id: { type: Number, required: true },
@@ -1027,7 +1033,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         modeLine: { type: String, required: true },
         type: { type: String, required: true },
         title: { type: String, required: true },
-        text: { type: String, required: true }
+        text: { type: String, required: true },
+        trace: { type: String, required: true },
+        status: { type: Number, required: true },
+        file: { type: String, required: true },
+        line: { type: Number, required: true }
+    },
+    watch: {
+        // эта функция запускается при любом изменении вопроса
+        snackbar: function snackbar(newsnackbar) {
+            if (newsnackbar != false) return;
+            this.$store.dispatch('msgDeleting', this.id);
+        }
+    },
+    components: {
+        MErrorDesc: function MErrorDesc(resolve) {
+            return __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(40)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        }
+    },
+    computed: {
+        showTraceDialog: function showTraceDialog(traceDialogId) {
+            return this.dialogIsShow(traceDialogId);
+        }
+    },
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])({
+        traceDialogShow: 'dialogShowChange', dialogInit: 'dialogInit'
+    }), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])({
+        dialogIsShow: 'dialogIsShow'
+    })),
+    created: function created() {
+        var vm = this;
+        vm.dialogInit({ daiologId: vm.traceDialogId, daiologTitle: "Трассировка", dialogName: 'trace_' + vm.traceDialogId });
     }
 });
 
@@ -1087,10 +1123,48 @@ var render = function() {
             },
             [_c("v-icon", [_vm._v("close")])],
             1
-          )
+          ),
+          _vm._v(" "),
+          _vm.trace != ""
+            ? _c(
+                "v-btn",
+                {
+                  staticClass: "primary",
+                  attrs: { icon: "" },
+                  nativeOn: {
+                    click: function($event) {
+                      _vm.traceDialogShow({
+                        daiologId_: _vm.traceDialogId,
+                        isShow: true
+                      })
+                    }
+                  }
+                },
+                [_c("v-icon", [_vm._v("description")])],
+                1
+              )
+            : _vm._e()
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _vm.showTraceDialog(_vm.traceDialogId)
+        ? _c("m-error-desc", {
+            attrs: {
+              dialogId: _vm.traceDialogId,
+              id: _vm.id,
+              type: _vm.type,
+              title: _vm.title,
+              text: _vm.text,
+              trace: _vm.trace,
+              status: _vm.status,
+              file: _vm.file,
+              line: _vm.line,
+              dialogWidth: _vm.traceDialogWidth,
+              dialogHeight: _vm.traceDialogHeight
+            }
+          })
+        : _vm._e()
     ],
     1
   )
@@ -1128,7 +1202,11 @@ var render = function() {
           modeLine: msg.modeLine,
           type: msg.type,
           title: msg.title,
-          text: msg.text
+          text: msg.text,
+          trace: msg.trace,
+          status: msg.status,
+          file: msg.file,
+          line: msg.line
         }
       })
     })
@@ -1237,7 +1315,10 @@ if (false) {
 			    type = _ref2.type,
 			    title = _ref2.title,
 			    text = _ref2.text,
-			    status = _ref2.status;
+			    status = _ref2.status,
+			    trace = _ref2.trace,
+			    file = _ref2.file,
+			    line = _ref2.line;
 
 			var id = Math.floor(Math.random() * MAX_ID);
 			timeout = timeout || 600000;
@@ -1247,7 +1328,11 @@ if (false) {
 			type = type || 'error';
 			title = title || 'Титул';
 			text = text = (status == 401 ? 'Необходимо авторизоваться!' : text) || 'Текст сообщения';
-			commit('msgAdd', { id: id, timeout: timeout, y: y, x: x, modeLine: modeLine, type: type, title: title, text: text });
+			status = status || '';
+			trace = trace || '';
+			file = file || '';
+			line = line || '';
+			commit('msgAdd', { id: id, timeout: timeout, y: y, x: x, modeLine: modeLine, type: type, title: title, text: text, status: status, trace: trace, file: file, line: line });
 		},
 		msgDeleting: function msgDeleting(_ref3, msgId) {
 			var commit = _ref3.commit,
@@ -1268,9 +1353,13 @@ if (false) {
 			    modeLine = _ref4.modeLine,
 			    type = _ref4.type,
 			    title = _ref4.title,
-			    text = _ref4.text;
+			    text = _ref4.text,
+			    status = _ref4.status,
+			    trace = _ref4.trace,
+			    file = _ref4.file,
+			    line = _ref4.line;
 
-			state.msgs.push({ id: id, timeout: timeout, y: y, x: x, modeLine: modeLine, type: type, title: title, text: text });
+			state.msgs.push({ id: id, timeout: timeout, y: y, x: x, modeLine: modeLine, type: type, title: title, text: text, status: status, trace: trace, file: file, line: line });
 		},
 		msgDelete: function msgDelete(state, idx) {
 			state.msgs.splice(idx, 1);
@@ -1448,16 +1537,16 @@ if (false) {
 
 /***/ }),
 
-/***/ 66:
+/***/ 67:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(67);
-module.exports = __webpack_require__(118);
+__webpack_require__(68);
+module.exports = __webpack_require__(119);
 
 
 /***/ }),
 
-/***/ 67:
+/***/ 68:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1477,7 +1566,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_vuetify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_laravel_echo__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_laravel_echo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_laravel_echo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apps_Main_vue__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apps_Main_vue__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apps_Main_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__apps_Main_vue__);
 
 
@@ -1683,4 +1772,4 @@ module.exports = Component.exports
 
 /***/ })
 
-},[66]);
+},[67]);

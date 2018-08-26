@@ -45,6 +45,10 @@ function nvl(val,replace=0){
 	if(!val || val==undefined || val=='' ) return replace; else return val;
 }
 
+function nvlo(val,replace={}){
+	if(!val || val==undefined || val=='' ) return replace; else return val;
+}
+
 function sendRequest  (params){
 	if( this.nvl(params.type)==0 || this.nvl(params.href)==0  ){
 		window._Vue.$store.dispatch('msgAdding', {title:'Ошибка отправки данных',text:'Неуказанн адрес для отправки!'})
@@ -64,7 +68,8 @@ function sendRequest  (params){
 		}).catch(
 			(error) =>
 				window._Vue.$store.dispatch('msgAdding', 
-					{title: nvl(error.response.data,{}).title||nvl(params.default,{}).title||'Ошибка отправки данных', text:nvl(error.response.data,{}).message||nvl(params.default,{}).text||'Отправить данные не удалось!', status:error.response.status})
+					{title: nvlo(error.response.data).title||nvlo(params.default).title||'Ошибка отправки данных', text:nvlo(error.response.data).message||nvlo(params.default).text||'Отправить данные не удалось!', 
+					status:error.response.status, trace:nvlo(error.response.data).trace, file:nvlo(error.response.data).file, line:nvlo(error.response.data).line})
 		);
 	return true
 }

@@ -29,7 +29,7 @@
 		}),
 		components: {
 			CApp,CLoading,CTree,
-			MInputFields: (resolve) =>{console.log(321); require(['../modules/m-input-fields.vue'], resolve) },
+			MInputFields: (resolve) =>{ require(['../modules/m-input-fields.vue'], resolve) },
 		},
 		computed: {
 			showTreeAddDialog(treeAddDialogId){return this.dialogIsShow(treeAddDialogId)},		

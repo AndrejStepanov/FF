@@ -1,118 +1,4 @@
-webpackJsonp([0,1],{
-
-/***/ 147:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_c_dialog__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__ = __webpack_require__(156);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(1);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-	name: 'm-input-fields',
-	data: function data() {
-		return {
-			todo: {},
-			inputsValid: false,
-			dialogWidthCalc: 10,
-			dialogHeightCalc: 10,
-			inputsColId: Math.floor(Math.random() * MAX_ID)
-		};
-	},
-	computed: {
-		inputs: function inputs() {
-			var vm = this;
-			var data = [{ id: 1, form: 'object-tree-add', column_code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', proc_type: 'AUTO::LIST', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, items: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', column_code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', proc_type: 'AUTO::LIST', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, items: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', column_code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', proc_type: 'MAN', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }, { id: 4, form: 'auth-login', column_code: 'login', column_name: 'Пользователь', column_desc: 'Логин пользователя', proc_type: 'MAN', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 1 }, { id: 5, form: 'auth-login', column_code: 'password', column_name: 'Пароль', column_desc: 'Пароль пользователя', proc_type: 'PASSWORD', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 2 }, { id: 6, form: 'auth-login', column_code: 'remember', column_name: 'Запомнить мои данные', column_desc: 'Запомнить данные пользователя', proc_type: 'BOOL', isNull: 'Y', column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
-			return data.filter(function (row) {
-				return row.form == vm.formName;
-			}).sort(function (a, b) {
-				return sort(a, b, 'sort_seq', 'sort_seq');
-			});
-		},
-		buttons: function buttons() {
-			var vm = this;
-			var tmp = [],
-			    buttons = [];
-			if (vm.formName == 'auth-login') buttons = authButtons;else buttons = vm.dialogButtons;
-			buttons.forEach(function (row) {
-				tmp.push(_extends({}, row, { disabled: row.needCheck == true && !vm.inputsValid ? true : false }));
-			});
-			return tmp;
-		}
-	},
-	props: {
-		params: { type: Object },
-		hrefBack: { type: String, default: '' },
-		formName: { type: String, default: '' },
-		socetHref: { type: String, default: '/data_command' },
-		socetEvent: { type: String, default: '' },
-		dialogId: { type: Number, required: true },
-		dialogWidth: { type: Number, default: 0 },
-		dialogHeight: { type: Number, default: 0 },
-		checkFunc: { type: Function, default: function _default() {
-				return true;
-			} },
-		saveFunc: { type: Function },
-		dialogButtons: { type: Array, default: function _default() {
-				return [{ id: 1, title: 'Сохранить', icon: 'done', allig: 'left', click: 'dialogSave', needCheck: true }, { id: 2, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
-			} }
-	},
-	components: {
-		CDialog: __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default.a, CInputCols: __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols___default.a
-	},
-	methods: {
-		dialogSave: function dialogSave() {
-			var vm = this;
-			if (!vm.$refs[vm.formName].validate()) return;
-			var params = _extends({}, vm.todo, vm.params);
-			if (!vm.checkFunc(params)) return false;
-			if (vm.saveFunc && !vm.saveFunc(params)) return false;else if (!sendRequest({ href: vm.socetHref, type: vm.socetEvent, data: params, hrefBack: vm.hrefBack, handler: function handler() {
-					return vm.$store.dispatch('dialogShowChange', { daiologId_: vm.dialogId, isShow: false });
-				} })) return false;
-		},
-		paramSave: function paramSave(obj) {
-			var vm = this;
-			vm.todo[obj.param] = obj.value;
-		}
-	},
-	created: function created() {
-		var _this = this;
-
-		var vm = this;
-		vm.$root.$on('dialog' + vm.dialogId + 'InputsCalc' + vm.inputsColId, function (obj) {
-			vm.dialogHeightCalc = vm.dialogHeight > 0 ? vm.dialogHeight : obj.rowInColA * 74 + 149 > document.documentElement.clientHeight - 100 ? document.documentElement.clientHeight - 100 : obj.rowInColA * 74 + 149;
-			vm.dialogWidthCalc = vm.dialogWidth > 0 ? vm.dialogWidth : obj.colsCnt * 370;
-		});
-		vm.$root.$on('dialog' + vm.dialogId + 'InputsParams' + vm.inputsColId, function (obj) {
-			var vm = _this;
-			vm.paramSave(obj);
-		});
-		vm.$root.$on('dialog' + vm.dialogId + 'Send', function (obj) {
-			var vm = _this;
-			vm.paramSave(obj);
-			vm.dialogSave();
-		});
-	}
-});
-
-/***/ }),
+webpackJsonp([0,2],{
 
 /***/ 148:
 /***/ (function(module, exports, __webpack_require__) {
@@ -344,7 +230,7 @@ var content = __webpack_require__(152);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(46)("ff5f8dea", content, false);
+var update = __webpack_require__(47)("ff5f8dea", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -364,7 +250,7 @@ if(false) {
 /***/ 152:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(45)(undefined);
+exports = module.exports = __webpack_require__(46)(undefined);
 // imports
 
 
@@ -1060,7 +946,7 @@ var render = function() {
           _c(
             "v-card",
             {
-              staticStyle: { overflow: "auto" },
+              staticStyle: { "overflow-y": "auto" },
               attrs: { height: _vm.heightSlot }
             },
             [_vm._t("default")],
@@ -1164,14 +1050,128 @@ if (false) {
 /***/ }),
 
 /***/ 156:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_c_dialog__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(1);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	name: 'm-input-fields',
+	data: function data() {
+		return {
+			todo: {},
+			inputsValid: false,
+			dialogWidthCalc: 10,
+			dialogHeightCalc: 10,
+			inputsColId: Math.floor(Math.random() * MAX_ID)
+		};
+	},
+	computed: {
+		inputs: function inputs() {
+			var vm = this;
+			var data = [{ id: 1, form: 'object-tree-add', column_code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', proc_type: 'AUTO::LIST', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, items: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', column_code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', proc_type: 'AUTO::LIST', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, items: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', column_code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', proc_type: 'MAN', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }, { id: 4, form: 'auth-login', column_code: 'login', column_name: 'Пользователь', column_desc: 'Логин пользователя', proc_type: 'MAN', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 1 }, { id: 5, form: 'auth-login', column_code: 'password', column_name: 'Пароль', column_desc: 'Пароль пользователя', proc_type: 'PASSWORD', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 2 }, { id: 6, form: 'auth-login', column_code: 'remember', column_name: 'Запомнить мои данные', column_desc: 'Запомнить данные пользователя', proc_type: 'BOOL', isNull: 'Y', column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
+			return data.filter(function (row) {
+				return row.form == vm.formName;
+			}).sort(function (a, b) {
+				return sort(a, b, 'sort_seq', 'sort_seq');
+			});
+		},
+		buttons: function buttons() {
+			var vm = this;
+			var tmp = [],
+			    buttons = [];
+			if (vm.formName == 'auth-login') buttons = authButtons;else buttons = vm.dialogButtons;
+			buttons.forEach(function (row) {
+				tmp.push(_extends({}, row, { disabled: row.needCheck == true && !vm.inputsValid ? true : false }));
+			});
+			return tmp;
+		}
+	},
+	props: {
+		params: { type: Object },
+		hrefBack: { type: String, default: '' },
+		formName: { type: String, default: '' },
+		socetHref: { type: String, default: '/data_command' },
+		socetEvent: { type: String, default: '' },
+		dialogId: { type: Number, required: true },
+		dialogWidth: { type: Number, default: 0 },
+		dialogHeight: { type: Number, default: 0 },
+		checkFunc: { type: Function, default: function _default() {
+				return true;
+			} },
+		saveFunc: { type: Function },
+		dialogButtons: { type: Array, default: function _default() {
+				return [{ id: 1, title: 'Сохранить', icon: 'done', allig: 'left', click: 'dialogSave', needCheck: true }, { id: 2, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
+			} }
+	},
+	components: {
+		CDialog: __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default.a, CInputCols: __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols___default.a
+	},
+	methods: {
+		dialogSave: function dialogSave() {
+			var vm = this;
+			if (!vm.$refs[vm.formName].validate()) return;
+			var params = _extends({}, vm.todo, vm.params);
+			if (!vm.checkFunc(params)) return false;
+			if (vm.saveFunc && !vm.saveFunc(params)) return false;else if (!sendRequest({ href: vm.socetHref, type: vm.socetEvent, data: params, hrefBack: vm.hrefBack, handler: function handler() {
+					return vm.$store.dispatch('dialogShowChange', { daiologId_: vm.dialogId, isShow: false });
+				} })) return false;
+		},
+		paramSave: function paramSave(obj) {
+			var vm = this;
+			vm.todo[obj.param] = obj.value;
+		}
+	},
+	created: function created() {
+		var _this = this;
+
+		var vm = this;
+		vm.$root.$on('dialog' + vm.dialogId + 'InputsCalc' + vm.inputsColId, function (obj) {
+			vm.dialogHeightCalc = vm.dialogHeight > 0 ? vm.dialogHeight : obj.rowInColA * 74 + 149 > document.documentElement.clientHeight - 100 ? document.documentElement.clientHeight - 100 : obj.rowInColA * 74 + 149;
+			vm.dialogWidthCalc = vm.dialogWidth > 0 ? vm.dialogWidth : obj.colsCnt * 370;
+		});
+		vm.$root.$on('dialog' + vm.dialogId + 'InputsParams' + vm.inputsColId, function (obj) {
+			var vm = _this;
+			vm.paramSave(obj);
+		});
+		vm.$root.$on('dialog' + vm.dialogId + 'Send', function (obj) {
+			var vm = _this;
+			vm.paramSave(obj);
+			vm.dialogSave();
+		});
+	}
+});
+
+/***/ }),
+
+/***/ 157:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(157)
+var __vue_script__ = __webpack_require__(158)
 /* template */
-var __vue_template__ = __webpack_require__(161)
+var __vue_template__ = __webpack_require__(162)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1211,12 +1211,12 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 157:
+/***/ 158:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(159);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__c_input__);
 //
 //
@@ -1289,15 +1289,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 158:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(159)
+var __vue_script__ = __webpack_require__(160)
 /* template */
-var __vue_template__ = __webpack_require__(160)
+var __vue_template__ = __webpack_require__(161)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1337,7 +1337,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 159:
+/***/ 160:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1420,7 +1420,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 160:
+/***/ 161:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1550,7 +1550,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 161:
+/***/ 162:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1607,7 +1607,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 162:
+/***/ 163:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1671,9 +1671,9 @@ if (false) {
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(147)
+var __vue_script__ = __webpack_require__(156)
 /* template */
-var __vue_template__ = __webpack_require__(162)
+var __vue_template__ = __webpack_require__(163)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1713,7 +1713,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 45:
+/***/ 46:
 /***/ (function(module, exports) {
 
 /*
@@ -1796,7 +1796,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 46:
+/***/ 47:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1815,7 +1815,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(65)
+var listToStyles = __webpack_require__(66)
 
 /*
 type StyleObject = {
@@ -2018,7 +2018,7 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 65:
+/***/ 66:
 /***/ (function(module, exports) {
 
 /**

@@ -49,6 +49,8 @@ class Handler extends ExceptionHandler{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function render($request, Exception $exception){
+		if(!$request->expectsJson())
+			return parent::render($request, $exception);
 		$title='Системная ошибка';
 		$code=400;
 		if (method_exists($exception, 'getTitle')) 
