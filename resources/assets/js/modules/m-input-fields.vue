@@ -9,7 +9,7 @@
 <script>
 	import CDialog from '../components/c-dialog';
 	import CInputCols from '../components/c-input-cols';
-	import {mapActions} from 'vuex'
+	import {mapActions, mapGetters} from 'vuex'
 
 	export default {
 		name:'m-input-fields',
@@ -20,7 +20,26 @@
 			dialogHeightCalc:10,
 			inputsColId:Math.floor(Math.random() * MAX_ID),
 		}),
+		props:{
+			params: {type: Object},
+			hrefBack: {type: String, default: ''},
+			socetHref: {type: String, default: '/data_command'},
+			socetEvent: {type: String, default: ''}, 
+			dialogId: {type: Number, required: true}, 
+			dialogWidth: {type: Number, default: 0}, 
+			dialogHeight: {type: Number, default: 0}, 
+			checkFunc: {type: Function, default: () => true },
+			saveFunc: {type: Function },
+			dialogButtons: {type: Array, default: () =>{return [	
+				{id:1, title:'Сохранить', icon:'done', allig:'left', click:'dialogSave' , needCheck:true}, 
+				{id:2, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose'}
+			] }},
+		},
 		computed: {
+			...mapGetters({
+				dialogName:'dialogName',
+			}),
+			formName(){return this.dialogName(this.dialogId)}, 
 			inputs() {
 				let vm=this
 				let data= [
@@ -44,22 +63,6 @@
 				buttons.forEach((row)=> { tmp.push({...row, disabled: ( row.needCheck==true && !vm.inputsValid ? true :false ) }) })
 				return tmp
 			},
-		},
-		props:{
-			params: {type: Object},
-			hrefBack: {type: String, default: ''},
-			formName: {type: String, default: ''}, 
-			socetHref: {type: String, default: '/data_command'},
-			socetEvent: {type: String, default: ''}, 
-			dialogId: {type: Number, required: true}, 
-			dialogWidth: {type: Number, default: 0}, 
-			dialogHeight: {type: Number, default: 0}, 
-			checkFunc: {type: Function, default: () => true },
-			saveFunc: {type: Function },
-			dialogButtons: {type: Array, default: () =>{return [	
-				{id:1, title:'Сохранить', icon:'done', allig:'left', click:'dialogSave' , needCheck:true}, 
-				{id:2, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose'}
-			] }},
 		},
 		components: {
 			CDialog,CInputCols,

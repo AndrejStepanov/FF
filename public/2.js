@@ -140,6 +140,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			return (document.documentElement.clientHeight - this.height) / 2;
 		}
 	}),
+	components: {
+		cDragResize: __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default.a
+	},
 	methods: {
 		changeSize: function changeSize(newRect) {
 			var vm = this;
@@ -157,9 +160,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		dialogClose: function dialogClose() {
 			this.$store.dispatch('dialogShowChange', { daiologId_: this.dialogId, isShow: false });
 		}
-	},
-	components: {
-		cDragResize: __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default.a
 	},
 	mounted: function mounted() {
 		this.changeSize({ height: this.height, width: this.width });
@@ -1085,7 +1085,28 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			inputsColId: Math.floor(Math.random() * MAX_ID)
 		};
 	},
-	computed: {
+	props: {
+		params: { type: Object },
+		hrefBack: { type: String, default: '' },
+		socetHref: { type: String, default: '/data_command' },
+		socetEvent: { type: String, default: '' },
+		dialogId: { type: Number, required: true },
+		dialogWidth: { type: Number, default: 0 },
+		dialogHeight: { type: Number, default: 0 },
+		checkFunc: { type: Function, default: function _default() {
+				return true;
+			} },
+		saveFunc: { type: Function },
+		dialogButtons: { type: Array, default: function _default() {
+				return [{ id: 1, title: 'Сохранить', icon: 'done', allig: 'left', click: 'dialogSave', needCheck: true }, { id: 2, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
+			} }
+	},
+	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["mapGetters"])({
+		dialogName: 'dialogName'
+	}), {
+		formName: function formName() {
+			return this.dialogName(this.dialogId);
+		},
 		inputs: function inputs() {
 			var vm = this;
 			var data = [{ id: 1, form: 'object-tree-add', column_code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', proc_type: 'AUTO::LIST', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, items: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', column_code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', proc_type: 'AUTO::LIST', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, items: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', column_code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', proc_type: 'MAN', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }, { id: 4, form: 'auth-login', column_code: 'login', column_name: 'Пользователь', column_desc: 'Логин пользователя', proc_type: 'MAN', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 1 }, { id: 5, form: 'auth-login', column_code: 'password', column_name: 'Пароль', column_desc: 'Пароль пользователя', proc_type: 'PASSWORD', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 2 }, { id: 6, form: 'auth-login', column_code: 'remember', column_name: 'Запомнить мои данные', column_desc: 'Запомнить данные пользователя', proc_type: 'BOOL', isNull: 'Y', column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
@@ -1105,24 +1126,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			});
 			return tmp;
 		}
-	},
-	props: {
-		params: { type: Object },
-		hrefBack: { type: String, default: '' },
-		formName: { type: String, default: '' },
-		socetHref: { type: String, default: '/data_command' },
-		socetEvent: { type: String, default: '' },
-		dialogId: { type: Number, required: true },
-		dialogWidth: { type: Number, default: 0 },
-		dialogHeight: { type: Number, default: 0 },
-		checkFunc: { type: Function, default: function _default() {
-				return true;
-			} },
-		saveFunc: { type: Function },
-		dialogButtons: { type: Array, default: function _default() {
-				return [{ id: 1, title: 'Сохранить', icon: 'done', allig: 'left', click: 'dialogSave', needCheck: true }, { id: 2, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
-			} }
-	},
+	}),
 	components: {
 		CDialog: __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default.a, CInputCols: __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols___default.a
 	},
@@ -1245,10 +1249,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		dialogId: { type: Number },
 		inputsColId: { type: Number }
 	},
-	components: {
-		CInput: __WEBPACK_IMPORTED_MODULE_0__c_input___default.a
-	},
-	methods: {},
 	computed: {
 		inputChangeEvent: function inputChangeEvent() {
 			return 'dialog' + this.dialogId + 'InputsParams' + this.inputsColId;
@@ -1284,6 +1284,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			return colsData;
 		}
 	},
+	components: {
+		CInput: __WEBPACK_IMPORTED_MODULE_0__c_input___default.a
+	},
+	methods: {},
 	created: function created() {}
 });
 
@@ -1366,7 +1370,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			show: false
 		};
 	},
-	watch: {},
 	props: {
 		id: { type: Number, required: true },
 		columnCode: { type: String, required: true },
@@ -1392,17 +1395,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			if (vm.procType != 'PASSWORD') return vm.procType;else if (vm.show) return 'text';else return 'password';
 		}
 	},
-	created: function created() {
-		var vm = this;
-		vm.disabled = vm.type == 'DISABLED';
-		vm.readonly = vm.type == 'READONLY';
-		if (vm.isNull == 'N') {
-			vm.isNeed = true;
-			vm.rules.push(function (v) {
-				return !!v || 'Поле обязательное';
-			});
-		}
-	},
+	watch: {},
 	methods: {
 		setNewVal: function setNewVal(value) {
 			var vm = this;
@@ -1414,6 +1407,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		submit: function submit() {
 			var vm = this;
 			vm.$root.$emit('dialog' + vm.dialogId + 'Send', { param: this.columnCode, value: vm.value });
+		}
+	},
+	created: function created() {
+		var vm = this;
+		vm.disabled = vm.type == 'DISABLED';
+		vm.readonly = vm.type == 'READONLY';
+		if (vm.isNull == 'N') {
+			vm.isNeed = true;
+			vm.rules.push(function (v) {
+				return !!v || 'Поле обязательное';
+			});
 		}
 	}
 });

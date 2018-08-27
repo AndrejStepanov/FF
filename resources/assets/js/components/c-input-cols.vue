@@ -23,11 +23,6 @@
 			dialogId: {type: Number},
 			inputsColId: {type: Number},
 		},
-        components: {
-            CInput,
-        },
-        methods: {
-		},
 		computed: {
 			inputChangeEvent(){ return 'dialog'+this.dialogId+'InputsParams'+this.inputsColId},
 			classes () {
@@ -68,6 +63,11 @@
 				vm.$root.$emit('dialog'+vm.dialogId+'InputsCalc'+vm.inputsColId, {rowInColA,colsCnt:vm.colsCnt}); 
 				return colsData
 			},
+		},
+        components: {
+            CInput,
+        },
+        methods: {
 		},
         created: function (){
 			

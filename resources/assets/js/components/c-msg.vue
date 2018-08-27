@@ -1,72 +1,55 @@
 <template>
-    <v-snackbar dense :class="type"  :timeout="timeout" :top="y === 'top'" :bottom="y === 'bottom'" :right="x === 'right'" :left="x === 'left'" 
-            :multi-line="modeLine === 'multi-line'" :vertical="modeLine === 'vertical'" v-model="snackbar"  >
+    <v-snackbar dense v-model="snackbar" :class="msg.type"  :timeout="timeoutCur" :top="msg.y === 'top'" :bottom="msg.y === 'bottom'" :right="msg.x === 'right'" :left="msg.x === 'left'" 
+            :multi-line="msg.modeLine === 'multi-line'" :vertical="msg.modeLine === 'vertical'" @click="snackClcik" >
         <span>
-            <span class='bold'>{{title}}</span><br>
-            <span >{{text}}</span>
+            <span class='bold'>{{msg.title}}</span><br>
+            <span >{{msg.text}}</span>
         </span>
         <v-flex xs12 sm3>
            <v-btn flat icon class="primary" @click.native="snackbar = false">
                 <v-icon>close</v-icon>
             </v-btn>
-            <v-btn v-if="trace!=''" icon class="primary" @click.native="traceDialogShow({daiologId_:traceDialogId,isShow:true})">
+            <v-btn v-if="traceAble" icon class="primary" @click.native="$emit('traceDialogShow', msg.id) ">
                 <v-icon>description</v-icon>
             </v-btn>
         </v-flex>
-        <m-error-desc v-if="showTraceDialog(traceDialogId)" :dialogId="traceDialogId" :id="id" :type="type" :title="title" :text="text" :trace="trace"  :status="status"  :file="file"  :line="line" 
-            :dialogWidth="traceDialogWidth" :dialogHeight="traceDialogHeight"   />
     </v-snackbar>
 </template>
  
 <script>
-    import {mapActions, mapGetters} from 'vuex'
     export default {
         name:'c-msg',
         data: () => ({
             snackbar:true,
-            traceDialogWidth:1024,
-            traceDialogHeight:600,
-            traceDialogId:Math.floor(Math.random() * MAX_ID),
+            timeoutCur:0,
         }),
         props:{
-            id: {type:  Number, required: true},
-            timeout: {type:  Number, required: true},
-            y: {type:  String, required: true},
-            x: {type:  String, required: true},
-            modeLine: {type:  String, required: true},
-            type: {type:  String, required: true},
-            title: {type:  String, required: true},
-            text: {type:  String, required: true},
-            trace: {type:  String, required: true},
-            status: {type:  Number, required: true},
-            file: {type:  String, required: true},
-            line: {type:  Number, required: true},
+            msg: {
+				type: Object, default: function () {return {id:0, 'timeout':0, 'y': 'bottom', 'x': 'right', 'modeLine':'multi-line', 'type':'error', 'title':'', 'text':'', 'line':0, 'trace':'', } }
+			},
+        },
+		computed: {
+            traceAble(){return this.msg.trace!=''}
         },
         watch: {
             // эта функция запускается при любом изменении вопроса
             snackbar: function (newsnackbar) {
                 if(newsnackbar!=false)
                     return;
-                this.$store.dispatch('msgDeleting',this.id);
+                this.$store.dispatch('msgDeleting',this.msg.id);
             },
         },
         components: {
-			MErrorDesc: (resolve) => require(['../modules/m-error-desc.vue'], resolve),
-        },
-		computed: {
-			showTraceDialog(traceDialogId){return this.dialogIsShow(traceDialogId)},			
         },
         methods: {
-			...mapActions({
-				traceDialogShow:'dialogShowChange',dialogInit:'dialogInit',
-			}),
-			 ...mapGetters({
-				dialogIsShow:'dialogIsShow',
-			}),
+            snackClcik(){
+                let vm=this
+                vm.timeoutCur=999999
+            }
 		},
 		created: function (){
 			let vm=this
-			vm.dialogInit({daiologId:vm.traceDialogId, daiologTitle:"Трассировка", dialogName:'trace_'+vm.traceDialogId})
+            vm.timeoutCur=vm.msg.timeout
 		},
     }
 </script>

@@ -140,13 +140,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {};
     },
-    components: {
-        CProfile: __WEBPACK_IMPORTED_MODULE_0__c_profile___default.a
-    },
     props: {
         curentSystem: { type: String, default: '' },
         showLeft: { type: Boolean, default: false },
         showRight: { type: Boolean, default: false }
+    },
+    components: {
+        CProfile: __WEBPACK_IMPORTED_MODULE_0__c_profile___default.a
     },
     methods: {
         toolbarClicked: function toolbarClicked(side) {
@@ -234,12 +234,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			userTicket: ''
 		};
 	},
-	mounted: function mounted() {
-		var vm = this;
-		var User_info = window.User_info || {};
-		if (nvl(User_info.name) != '') vm.$store.dispatch('userLogin', { userName: User_info.name, userId: User_info.userId, sysId: User_info.sysId, isRoot: User_info.isRoot });
-		vm.subscribeTicket(window.Laravel.ticket);
-	},
 	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])({
 		userName: 'getUserName',
 		userId: 'getUserId',
@@ -272,6 +266,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 				vm.$store.dispatch('msgAdding', { title: 'Авторизация', text: 'Пользователь завершил свой сеанс!', type: 'success' });
 			});
 		}
+	},
+	mounted: function mounted() {
+		var vm = this;
+		var User_info = window.User_info || {};
+		if (nvl(User_info.name) != '') vm.$store.dispatch('userLogin', { userName: User_info.name, userId: User_info.userId, sysId: User_info.sysId, isRoot: User_info.isRoot });
+		vm.subscribeTicket(window.Laravel.ticket);
 	}
 });
 
@@ -813,23 +813,51 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 
+//:msg="msgCur"
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'c-msg-list',
-
     data: function data() {
-        return {};
+        return {
+            traceDialogWidth: 1024,
+            traceDialogHeight: 600,
+            traceDialogId: Math.floor(Math.random() * MAX_ID),
+            msgCur: { 'id': 0, 'title': '', 'text': '', 'trace': '', 'status': 0, 'file': '', 'line': 0 }
+        };
     },
     computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])({
-        msgCurrent: 'msgCurrent'
+        msgCurrent: 'msgCurrent', dialogIsShow: 'dialogIsShow'
     }), {
         sizeTotal: function sizeTotal() {
             return "height:" + _this.msgCurrent.length * 25 + "px";
+        },
+        traceDialogIsShow: function traceDialogIsShow() {
+            return this.dialogIsShow(this.traceDialogId);
         }
     }),
     components: {
-        CMsg: __WEBPACK_IMPORTED_MODULE_1__components_c_msg___default.a
+        CMsg: __WEBPACK_IMPORTED_MODULE_1__components_c_msg___default.a, MErrorDesc: function MErrorDesc(resolve) {
+            return __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(40)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+        }
+    },
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])({
+        dialogShowChange: 'dialogShowChange', dialogInit: 'dialogInit'
+    }), {
+        traceDialogShow: function traceDialogShow(id) {
+            var vm = this;
+            var tmp = vm.msgCurrent.find(function (msg) {
+                return msg.id == id;
+            });
+            if (!tmp) window._Vue.$store.dispatch('msgAdding', { title: 'Ошибка отображения трассировки', text: 'Трассировка не найдена' });
+            vm.msgCur = _extends({ id: id }, tmp);
+            if (!vm.traceDialogIsShow) vm.dialogShowChange({ daiologId_: vm.traceDialogId, isShow: true });
+        }
+    }),
+    created: function created() {
+        var vm = this;
+        vm.dialogInit({ daiologId: vm.traceDialogId, daiologTitle: "Трассировка", dialogName: 'trace_' + vm.traceDialogId });
     }
 });
 
@@ -888,9 +916,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(1);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 //
 //
 //
@@ -909,59 +934,44 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'c-msg',
     data: function data() {
         return {
             snackbar: true,
-            traceDialogWidth: 1024,
-            traceDialogHeight: 600,
-            traceDialogId: Math.floor(Math.random() * MAX_ID)
+            timeoutCur: 0
         };
     },
     props: {
-        id: { type: Number, required: true },
-        timeout: { type: Number, required: true },
-        y: { type: String, required: true },
-        x: { type: String, required: true },
-        modeLine: { type: String, required: true },
-        type: { type: String, required: true },
-        title: { type: String, required: true },
-        text: { type: String, required: true },
-        trace: { type: String, required: true },
-        status: { type: Number, required: true },
-        file: { type: String, required: true },
-        line: { type: Number, required: true }
+        msg: {
+            type: Object, default: function _default() {
+                return { id: 0, 'timeout': 0, 'y': 'bottom', 'x': 'right', 'modeLine': 'multi-line', 'type': 'error', 'title': '', 'text': '', 'line': 0, 'trace': '' };
+            }
+        }
+    },
+    computed: {
+        traceAble: function traceAble() {
+            return this.msg.trace != '';
+        }
     },
     watch: {
         // эта функция запускается при любом изменении вопроса
         snackbar: function snackbar(newsnackbar) {
             if (newsnackbar != false) return;
-            this.$store.dispatch('msgDeleting', this.id);
+            this.$store.dispatch('msgDeleting', this.msg.id);
         }
     },
-    components: {
-        MErrorDesc: function MErrorDesc(resolve) {
-            return __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(40)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+    components: {},
+    methods: {
+        snackClcik: function snackClcik() {
+            var vm = this;
+            vm.timeoutCur = 999999;
         }
     },
-    computed: {
-        showTraceDialog: function showTraceDialog(traceDialogId) {
-            return this.dialogIsShow(traceDialogId);
-        }
-    },
-    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])({
-        traceDialogShow: 'dialogShowChange', dialogInit: 'dialogInit'
-    }), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])({
-        dialogIsShow: 'dialogIsShow'
-    })),
     created: function created() {
         var vm = this;
-        vm.dialogInit({ daiologId: vm.traceDialogId, daiologTitle: "Трассировка", dialogName: 'trace_' + vm.traceDialogId });
+        vm.timeoutCur = vm.msg.timeout;
     }
 });
 
@@ -977,17 +987,18 @@ var render = function() {
   return _c(
     "v-snackbar",
     {
-      class: _vm.type,
+      class: _vm.msg.type,
       attrs: {
         dense: "",
-        timeout: _vm.timeout,
-        top: _vm.y === "top",
-        bottom: _vm.y === "bottom",
-        right: _vm.x === "right",
-        left: _vm.x === "left",
-        "multi-line": _vm.modeLine === "multi-line",
-        vertical: _vm.modeLine === "vertical"
+        timeout: _vm.timeoutCur,
+        top: _vm.msg.y === "top",
+        bottom: _vm.msg.y === "bottom",
+        right: _vm.msg.x === "right",
+        left: _vm.msg.x === "left",
+        "multi-line": _vm.msg.modeLine === "multi-line",
+        vertical: _vm.msg.modeLine === "vertical"
       },
+      on: { click: _vm.snackClcik },
       model: {
         value: _vm.snackbar,
         callback: function($$v) {
@@ -998,10 +1009,10 @@ var render = function() {
     },
     [
       _c("span", [
-        _c("span", { staticClass: "bold" }, [_vm._v(_vm._s(_vm.title))]),
+        _c("span", { staticClass: "bold" }, [_vm._v(_vm._s(_vm.msg.title))]),
         _c("br"),
         _vm._v(" "),
-        _c("span", [_vm._v(_vm._s(_vm.text))])
+        _c("span", [_vm._v(_vm._s(_vm.msg.text))])
       ]),
       _vm._v(" "),
       _c(
@@ -1023,7 +1034,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm.trace != ""
+          _vm.traceAble
             ? _c(
                 "v-btn",
                 {
@@ -1031,10 +1042,7 @@ var render = function() {
                   attrs: { icon: "" },
                   nativeOn: {
                     click: function($event) {
-                      _vm.traceDialogShow({
-                        daiologId_: _vm.traceDialogId,
-                        isShow: true
-                      })
+                      _vm.$emit("traceDialogShow", _vm.msg.id)
                     }
                   }
                 },
@@ -1044,25 +1052,7 @@ var render = function() {
             : _vm._e()
         ],
         1
-      ),
-      _vm._v(" "),
-      _vm.showTraceDialog(_vm.traceDialogId)
-        ? _c("m-error-desc", {
-            attrs: {
-              dialogId: _vm.traceDialogId,
-              id: _vm.id,
-              type: _vm.type,
-              title: _vm.title,
-              text: _vm.text,
-              trace: _vm.trace,
-              status: _vm.status,
-              file: _vm.file,
-              line: _vm.line,
-              dialogWidth: _vm.traceDialogWidth,
-              dialogHeight: _vm.traceDialogHeight
-            }
-          })
-        : _vm._e()
+      )
     ],
     1
   )
@@ -1089,25 +1079,27 @@ var render = function() {
   return _c(
     "div",
     { staticStyle: {}, attrs: { id: "block_message" } },
-    _vm._l(_vm.msgCurrent, function(msg) {
-      return _c("c-msg", {
-        key: msg.id,
-        attrs: {
-          id: msg.id,
-          timeout: msg.timeout,
-          y: msg.y,
-          x: msg.x,
-          modeLine: msg.modeLine,
-          type: msg.type,
-          title: msg.title,
-          text: msg.text,
-          trace: msg.trace,
-          status: msg.status,
-          file: msg.file,
-          line: msg.line
-        }
-      })
-    })
+    [
+      _vm._l(_vm.msgCurrent, function(msg) {
+        return _c("c-msg", {
+          key: msg.id,
+          attrs: { msg: msg },
+          on: { traceDialogShow: _vm.traceDialogShow }
+        })
+      }),
+      _vm._v(" "),
+      _vm.traceDialogIsShow
+        ? _c("m-error-desc", {
+            attrs: {
+              dialogId: _vm.traceDialogId,
+              dialogWidth: _vm.traceDialogWidth,
+              dialogHeight: _vm.traceDialogHeight,
+              msg: _vm.msgCur
+            }
+          })
+        : _vm._e()
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -1152,7 +1144,6 @@ var render = function() {
             attrs: {
               dialogId: _vm.loginDialogId,
               hrefBack: _vm.authHrefBack,
-              formName: _vm.authFormName,
               socetHref: "/login",
               socetEvent: "auth.login"
             }
@@ -1366,22 +1357,25 @@ if (false) {
 		dialogIsShow: function dialogIsShow(state, getters) {
 			return function (daiologId) {
 				var dialog = getters.dialogFindById(daiologId);
-				if (!dialog) return false;
-				return dialog.isShow;
+				return !dialog ? false : dialog.isShow;
 			};
 		},
 		dialogPersistent: function dialogPersistent(state, getters) {
 			return function (daiologId) {
 				var dialog = getters.dialogFindById(daiologId);
-				if (!dialog) return false;
-				return dialog.persistent;
+				return !dialog ? false : dialog.persistent;
 			};
 		},
 		dialogTitle: function dialogTitle(state, getters) {
 			return function (daiologId) {
 				var dialog = getters.dialogFindById(daiologId);
-				if (!dialog) return 'Название диалога!';
-				return dialog.Title;
+				return !dialog ? 'Заголовок диалога!' : dialog.title;
+			};
+		},
+		dialogName: function dialogName(state, getters) {
+			return function (daiologId) {
+				var dialog = getters.dialogFindById(daiologId);
+				return !dialog ? 'Название диалога!' : dialog.name;
 			};
 		}
 	},
@@ -1421,7 +1415,7 @@ if (false) {
 			    daiologPersistent = _ref5.daiologPersistent,
 			    dialogName = _ref5.dialogName;
 
-			state.dialogs.push({ id: daiologId, isShow: false, Title: daiologTitle, persistent: daiologPersistent, name: dialogName });
+			state.dialogs.push({ id: daiologId, isShow: false, title: daiologTitle, persistent: daiologPersistent, name: dialogName });
 		},
 		dialogShowSet: function dialogShowSet(state, _ref6) {
 			var dialog = _ref6.dialog,
@@ -1518,7 +1512,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
-			authFormName: "auth-login",
 			loginDialogId: Math.floor(Math.random() * MAX_ID)
 		};
 	},
@@ -1528,15 +1521,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		showLeft: { type: Boolean, default: false },
 		showRight: { type: Boolean, default: false }
 	},
+	computed: {
+		showLoginDialog: function showLoginDialog(loginDialogId) {
+			return this.dialogIsShow(loginDialogId);
+		}
+	},
 	components: {
 		CHead: __WEBPACK_IMPORTED_MODULE_0__components_c_head___default.a, CFooter: __WEBPACK_IMPORTED_MODULE_1__components_c_footer___default.a, CMsgList: __WEBPACK_IMPORTED_MODULE_2__components_c_msg_list___default.a,
 		MInputFields: function MInputFields(resolve) {
 			return __webpack_require__.e/* require */(0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(35)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
-		}
-	},
-	computed: {
-		showLoginDialog: function showLoginDialog(loginDialogId) {
-			return this.dialogIsShow(loginDialogId);
 		}
 	},
 	methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["mapActions"])({
@@ -1546,7 +1539,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	})),
 	created: function created() {
 		var vm = this;
-		vm.dialogInit({ daiologId: vm.loginDialogId, daiologTitle: "Авторизация", dialogName: vm.authFormName });
+		vm.dialogInit({ daiologId: vm.loginDialogId, daiologTitle: "Авторизация", dialogName: "auth-login" });
 		vm.$root.$on('authNeedDialog', function (obj) {
 			vm.dialogShow({ daiologId_: vm.loginDialogId, isShow: true });
 		});

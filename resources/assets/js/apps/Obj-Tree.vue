@@ -7,7 +7,7 @@
 				socetHref="/socet_command" socetEvent="object.tree.by.root" socetChanel="channel.ObjTreeData" :iconDic="iconDic" />
 		</v-navigation-drawer>
 
-		<m-input-fields v-if="showTreeAddDialog(treeAddDialogId)" :dialogId="treeAddDialogId"  :formName="treeAddDialogmName" :params="treeAddDialogParams" socetHref="/data_command" socetEvent="object.tree.add" :checkFunc="objectTreeAddCheck"/>
+		<m-input-fields v-if="showTreeAddDialog(treeAddDialogId)" :dialogId="treeAddDialogId" :params="treeAddDialogParams" socetHref="/data_command" socetEvent="object.tree.add" :checkFunc="objectTreeAddCheck"/>
 	</c-app>
 </template>
 
@@ -24,22 +24,18 @@
 			treeSearch: '',
 			iconDic:{'misc':'photo_library', 'object':'description', 'filter':'filter_list', 'filter':'filter_list', 'input':'input', 'default':'folder_open',  },
 			treeAddDialogId: Math.floor(Math.random() * MAX_ID),			
-			treeAddDialogParams: {},							
-			treeAddDialogmName: "object-tree-add",							
+			treeAddDialogParams: {},														
 		}),
+		computed: {
+			showTreeAddDialog(treeAddDialogId){return this.dialogIsShow(treeAddDialogId)},		
+		},
 		components: {
 			CApp,CLoading,CTree,
 			MInputFields: (resolve) =>{ require(['../modules/m-input-fields.vue'], resolve) },
 		},
-		computed: {
-			showTreeAddDialog(treeAddDialogId){return this.dialogIsShow(treeAddDialogId)},		
-		},
 		methods: {
 			itemClick(node) {
 				this.treeAddDialogParams.treeId = node.model.id;
-			},
-			windowLoaded(){
-				console.log(123)
 			},
 			objectTreeAddCheck(params){
 				let vm=this
@@ -53,9 +49,6 @@
 				console.log(this.treeSearch);
 				return;
 			},
-			beginLoad(){
-				console.log(123);
-			},
 			...mapActions({
 				dialogShow:'dialogShowChange',dialogInit:'dialogInit',
 			}),
@@ -65,7 +58,7 @@
 		},
 		created: function (){
 			let vm=this
-			vm.dialogInit({daiologId:vm.treeAddDialogId, daiologTitle:"Параметры объекта", dialogName:vm.treeAddDialogmName})
+			vm.dialogInit({daiologId:vm.treeAddDialogId, daiologTitle:"Параметры объекта", dialogName:"object-tree-add"})
 		},
 	}
 </script>

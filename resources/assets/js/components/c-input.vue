@@ -20,8 +20,6 @@
 			readonly:false,
 			show:false,
 		}),
-		watch: {
-		},
 		props:{
 			id: {type:  Number, required: true},
 			columnCode: {type:  String, required: true},
@@ -55,14 +53,7 @@
 					return 'password'
 			},
 		},
-		created: function (){
-			let vm=this
-			vm.disabled=vm.type=='DISABLED'
-			vm.readonly=vm.type=='READONLY'
-			if(vm.isNull=='N'){
-				vm.isNeed =true
-				vm.rules.push(v => !!v || 'Поле обязательное');
-			}             
+		watch: {
 		},
 		methods: {
 			setNewVal(value){
@@ -77,6 +68,15 @@
 				vm.$root.$emit('dialog'+vm.dialogId+'Send',{param:this.columnCode,value:vm.value} )
 			}
 				
+		},
+		created: function (){
+			let vm=this
+			vm.disabled=vm.type=='DISABLED'
+			vm.readonly=vm.type=='READONLY'
+			if(vm.isNull=='N'){
+				vm.isNeed =true
+				vm.rules.push(v => !!v || 'Поле обязательное');
+			}             
 		},
 	}
 </script>

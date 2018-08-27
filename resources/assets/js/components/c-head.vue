@@ -20,13 +20,13 @@
 
         data: () => ({            
         }),
-        components: {
-            CProfile,
-        },
         props: {
             curentSystem:{type: String,  default: '' },
             showLeft:{type: Boolean,  default: false },
 			showRight:{type: Boolean,  default: false },
+        },
+       components: {
+            CProfile,
         },
         methods:{
             toolbarClicked(side){

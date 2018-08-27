@@ -71,6 +71,9 @@
 				return (document.documentElement.clientHeight-this.height)/2
 			},
 		},
+        components: {
+            cDragResize
+		},
 		methods: {
             changeSize(newRect) {
 				let vm=this
@@ -92,9 +95,6 @@
 			dialogClose(){
 				this.$store.dispatch('dialogShowChange',{daiologId_:this.dialogId, isShow:false})
 			},
-		},
-        components: {
-            cDragResize
 		},
 		mounted: function (){
 			this.changeSize({height:this.height,width:this.width})

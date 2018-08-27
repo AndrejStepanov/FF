@@ -11,21 +11,19 @@ export default {
 		},
 		dialogIsShow: (state, getters) => daiologId =>{
 			let dialog=getters.dialogFindById(daiologId);
-			if ( !dialog)
-				return false;
-			return dialog.isShow;
+			return !dialog ? false : dialog.isShow
 		},
 		dialogPersistent: (state, getters) => daiologId =>{
 			let dialog=getters.dialogFindById(daiologId);
-			if ( !dialog)
-				return false;
-			return dialog.persistent;
+			return !dialog ? false : dialog.persistent
 		},
 		dialogTitle: (state, getters) => daiologId =>{
 			let dialog=getters.dialogFindById(daiologId);
-			if ( !dialog)
-				return 'Название диалога!';
-			return dialog.Title;
+			return !dialog ? 'Заголовок диалога!' : dialog.title
+		},
+		dialogName: (state, getters) => daiologId =>{
+			let dialog=getters.dialogFindById(daiologId);
+			return !dialog ? 'Название диалога!' : dialog.name
 		},
 	},
 	actions:{	
@@ -52,7 +50,7 @@ export default {
 	},
 	mutations:{
 		dialogAdd(state, {daiologId,daiologTitle,daiologPersistent,dialogName}){
-			state.dialogs.push({id:daiologId, isShow:false, Title:daiologTitle, persistent:daiologPersistent, name:dialogName});
+			state.dialogs.push({id:daiologId, isShow:false, title:daiologTitle, persistent:daiologPersistent, name:dialogName});
 		},
 		dialogShowSet(state, {dialog, isShow}){
 			dialog.isShow =isShow;

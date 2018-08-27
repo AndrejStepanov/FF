@@ -16,14 +16,7 @@
 			fab: false,
 			hover: false,
 			userTicket:'',
-		}),
-	 	mounted: function (){	
-			let vm=this
-			let User_info = window.User_info||{}
-			if(nvl(User_info.name)!='')
-				vm.$store.dispatch('userLogin',{userName:User_info.name,userId:User_info.userId, sysId:User_info.sysId, isRoot:User_info.isRoot})
-			vm.subscribeTicket(window.Laravel.ticket)
-		},		
+		}),		
 		computed: {
 			...mapGetters({
 				userName: 'getUserName',
@@ -60,6 +53,13 @@
 					vm.$store.dispatch('msgAdding', {title:'Авторизация',text:'Пользователь завершил свой сеанс!', type:'success'});
 				});
 			},
+		},
+	 	mounted: function (){	
+			let vm=this
+			let User_info = window.User_info||{}
+			if(nvl(User_info.name)!='')
+				vm.$store.dispatch('userLogin',{userName:User_info.name,userId:User_info.userId, sysId:User_info.sysId, isRoot:User_info.isRoot})
+			vm.subscribeTicket(window.Laravel.ticket)
 		},
 	}
 </script>

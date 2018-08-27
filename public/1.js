@@ -140,6 +140,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			return (document.documentElement.clientHeight - this.height) / 2;
 		}
 	}),
+	components: {
+		cDragResize: __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default.a
+	},
 	methods: {
 		changeSize: function changeSize(newRect) {
 			var vm = this;
@@ -157,9 +160,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		dialogClose: function dialogClose() {
 			this.$store.dispatch('dialogShowChange', { daiologId_: this.dialogId, isShow: false });
 		}
-	},
-	components: {
-		cDragResize: __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default.a
 	},
 	mounted: function mounted() {
 		this.changeSize({ height: this.height, width: this.width });
@@ -1050,6 +1050,48 @@ if (false) {
 /***/ }),
 
 /***/ 164:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(165);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(47)("3a358888", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6d105e4a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./m-error-desc.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6d105e4a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./m-error-desc.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 165:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(46)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.overXAutoLi>li {overflow-x: auto;\n}\n.traceLine{clear: right;    display: block; font-size: 11px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 166:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1086,11 +1128,23 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		return {
 			inputsValid: true,
 			dialogWidthCalc: 10,
-			dialogHeightCalc: 10,
-			traceObj: ''
+			dialogHeightCalc: 10
 		};
 	},
-	computed: {
+	props: {
+		dialogId: { type: Number, required: true },
+		dialogWidth: { type: Number, default: 0 },
+		dialogHeight: { type: Number, default: 0 },
+		dialogButtons: { type: Array, default: function _default() {
+				return [{ id: 1, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
+			} },
+		msg: {
+			type: Object, default: function _default() {
+				return { 'id': 0, 'title': '', 'text': '', 'trace': '', 'status': 0, 'file': '', 'line': 0 };
+			}
+		}
+	},
+	computed: _extends({
 		buttons: function buttons() {
 			var vm = this;
 			var tmp = [],
@@ -1101,22 +1155,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			});
 			return tmp;
 		}
-	},
-	props: {
-		formName: { type: String, default: '' },
-		dialogId: { type: Number, required: true },
-		dialogWidth: { type: Number, default: 0 },
-		dialogHeight: { type: Number, default: 0 },
-		dialogButtons: { type: Array, default: function _default() {
-				return [{ id: 1, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
-			} },
-		title: { type: String, required: true },
-		text: { type: String, required: true },
-		trace: { type: String, required: true },
-		status: { type: Number, required: true },
-		file: { type: String, required: true },
-		line: { type: Number, required: true }
-	},
+	}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["mapGetters"])({
+		dialogName: 'dialogName'
+	}), {
+		formName: function formName() {
+			return this.dialogName(this.dialogId);
+		},
+		traceObj: function traceObj() {
+			return JSON.parse(this.msg.trace);
+		}
+	}),
 	components: {
 		CDialog: __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default.a
 	},
@@ -1125,13 +1173,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		var vm = this;
 		vm.dialogWidthCalc = vm.dialogWidth > document.documentElement.clientWidth - 100 ? document.documentElement.clientWidth - 100 : vm.dialogWidth;
 		vm.dialogHeightCalc = vm.dialogHeight > document.documentElement.clientHeight - 100 ? document.documentElement.clientHeight - 100 : vm.dialogHeight;
-		vm.traceObj = JSON.parse(vm.trace);
 	}
 });
 
 /***/ }),
 
-/***/ 165:
+/***/ 167:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1155,12 +1202,15 @@ var render = function() {
         [
           _c(
             "v-expansion-panel-content",
-            { attrs: { "hide-actions": "" } },
             [
               _c("template", { slot: "header" }, [
-                _vm._v(_vm._s(_vm.title) + " : " + _vm._s(_vm.text) + " "),
+                _vm._v(
+                  _vm._s(_vm.msg.title) + " : " + _vm._s(_vm.msg.text) + " "
+                ),
                 _c("br"),
-                _vm._v(" " + _vm._s(_vm.file) + " - " + _vm._s(_vm.line))
+                _vm._v(
+                  " " + _vm._s(_vm.msg.file) + " (" + _vm._s(_vm.msg.line) + ")"
+                )
               ]),
               _vm._v(" "),
               _c(
@@ -1211,61 +1261,19 @@ if (false) {
 
 /***/ }),
 
-/***/ 175:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(176);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(47)("3a358888", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6d105e4a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./m-error-desc.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6d105e4a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./m-error-desc.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 176:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(46)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.overXAutoLi>li {overflow-x: auto;\n}\n.traceLine{clear: right;    display: block; font-size: 11px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(175)
+  __webpack_require__(164)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(164)
+var __vue_script__ = __webpack_require__(166)
 /* template */
-var __vue_template__ = __webpack_require__(165)
+var __vue_template__ = __webpack_require__(167)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
