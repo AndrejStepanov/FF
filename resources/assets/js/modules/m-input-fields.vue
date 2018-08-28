@@ -30,10 +30,10 @@
 			dialogHeight: {type: Number, default: 0}, 
 			checkFunc: {type: Function, default: () => true },
 			saveFunc: {type: Function },
-			dialogButtons: {type: Array, default: () =>{return [	
+			dialogButtons: {type: Array, default: () => {return [
 				{id:1, title:'Сохранить', icon:'done', allig:'left', click:'dialogSave' , needCheck:true}, 
 				{id:2, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose'}
-			] }},
+			] } },
 		},
 		computed: {
 			...mapGetters({
@@ -50,6 +50,7 @@
 					{id:4, form:'auth-login', 		column_code:'login', 		column_name:'Пользователь', 			column_desc:'Логин пользователя', 				proc_type:'MAN', 		isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:1,  },
 					{id:5, form:'auth-login', 		column_code:'password',		column_name:'Пароль', 					column_desc:'Пароль пользователя', 				proc_type:'PASSWORD', 	isNull:'N', column_type:'String', column_size:30, css_class:'', sort_seq:2,  },
 					{id:6, form:'auth-login', 		column_code:'remember',		column_name:'Запомнить мои данные', 	column_desc:'Запомнить данные пользователя', 	proc_type:'BOOL',		isNull:'Y', column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
+					
 				]
 				return data.filter(row =>  row.form == vm.formName ).sort( (a, b) =>{return sort(a, b, 'sort_seq', 'sort_seq')})
 			},

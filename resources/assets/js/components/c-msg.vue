@@ -1,19 +1,23 @@
 <template>
-    <v-snackbar dense v-model="snackbar" :class="msg.type"  :timeout="timeoutCur" :top="msg.y === 'top'" :bottom="msg.y === 'bottom'" :right="msg.x === 'right'" :left="msg.x === 'left'" 
-            :multi-line="msg.modeLine === 'multi-line'" :vertical="msg.modeLine === 'vertical'" @click="snackClcik" >
-        <span>
-            <span class='bold'>{{msg.title}}</span><br>
-            <span >{{msg.text}}</span>
-        </span>
-        <v-flex xs12 sm3>
-           <v-btn flat icon class="primary" @click.native="snackbar = false">
-                <v-icon>close</v-icon>
-            </v-btn>
-            <v-btn v-if="traceAble" icon class="primary" @click.native="$emit('traceDialogShow', msg.id) ">
-                <v-icon>description</v-icon>
-            </v-btn>
-        </v-flex>
-    </v-snackbar>
+    <v-slide-x-transition>
+        <div v-show="visibility">
+            <v-snackbar  transition="scale-transition" dense v-model="snackbar" :class="msg.type+'--content'"  :timeout="timeoutCur" :top="msg.y === 'top'" :bottom="msg.y === 'bottom'" :right="msg.x === 'right'" :left="msg.x === 'left'" 
+                    :multi-line="msg.modeLine === 'multi-line'" :vertical="msg.modeLine === 'vertical'" @click="snackClcik" >
+                <span>
+                    <span class='bold'>{{msg.title}}</span><br>
+                    <span >{{msg.text}}</span>
+                </span>
+                <v-flex xs12 sm3 >
+                    <v-btn flat icon class="accent" @click.native="snackbar = false">
+                        <v-icon>close</v-icon>
+                    </v-btn>
+                    <v-btn v-if="traceAble" icon class="accent" @click.native="$emit('traceDialogShow', msg.id) ">
+                        <v-icon>description</v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-snackbar>
+        </div>
+    </v-slide-x-transition>
 </template>
  
 <script>
@@ -22,6 +26,7 @@
         data: () => ({
             snackbar:true,
             timeoutCur:0,
+            visibility:false,
         }),
         props:{
             msg: {
@@ -36,7 +41,9 @@
             snackbar: function (newsnackbar) {
                 if(newsnackbar!=false)
                     return;
-                this.$store.dispatch('msgDeleting',this.msg.id);
+                let vm=this
+                vm.visibility=false;
+                setTimeout(()=>{vm.$store.dispatch('msgDeleting',vm.msg.id);},1000);                
             },
         },
         components: {
@@ -50,6 +57,7 @@
 		created: function (){
 			let vm=this
             vm.timeoutCur=vm.msg.timeout
+            setTimeout(()=>{vm.visibility=true;},10);
 		},
     }
 </script>

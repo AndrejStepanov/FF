@@ -1,6 +1,6 @@
 <template>
     <div id="block_message" style="sizeTotal">
-        <c-msg  v-for="msg in msgCurrent"  v-bind:key="msg.id" :msg="msg" @traceDialogShow="traceDialogShow"  />
+        <c-msg v-for="msg in msgCurrent"  v-bind:key="msg.id" :msg="msg" @traceDialogShow="traceDialogShow"  />
         <m-error-desc v-if="traceDialogIsShow" :dialogId="traceDialogId"  :dialogWidth="traceDialogWidth" :dialogHeight="traceDialogHeight"  :msg="msgCur" />
     </div>
 </template>

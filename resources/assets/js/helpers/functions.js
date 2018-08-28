@@ -16,14 +16,20 @@ function appThemeInit(){
 		styleSheet = document.styleSheets[document.styleSheets.length-1]
 	}
 	styleElt.innerHTML = styleSheet.cssText = 
-		'.accent-color					{color: '+appTheme.accent+';} '+
-		'.primary--text 				{color: white !important;} '+
-		'.margin-5px	 				{color: white !important;} '+
-		'.top-center 					{top:50%;} '+
-		'.max-height 					{height: 100%;} '+
-		'DIV#block_message				{position: fixed;z-index: 800;right: 0px;bottom: 15px;padding: 10px;width: 450px;overflow: auto;vertical-align: middle;text-valign: middle;} '+
-		'DIV#block_message>Div.snack	{display: block;position: relative;height: auto;margin-top: 5px;} '+
-		'.secondary-color 				{color: '+appTheme.secondary+';}'
+		'.accent-color								{color: '+appTheme.accent+';} '+
+		'.primary--text 							{color: white !important;} '+
+		'.margin-5px	 							{color: white !important;} '+
+		'.top-center 								{top:50%;} '+
+		'.max-height 								{height: 100%;} '+
+		'DIV#block_message							{position: fixed;z-index: 800;right: 0px;bottom: 15px;padding: 10px;width: 450px;overflow: auto;vertical-align: middle;text-valign: middle;} '+
+		'DIV#block_message>Div,'+
+		'DIV#block_message>Div>Div					{display: block;position: relative;height: auto;margin-top: 5px;     background-color: transparent;} '+
+		'DIV#block_message>Div>Div>Div				{border-radius: 20px;} '+
+		'DIV#block_message Div.error--content>Div	{background-color: '+appTheme.error+';} '+
+		'DIV#block_message Div.warning--content>Div	{background-color: '+appTheme.warning+';} '+
+		'DIV#block_message Div.info--content>Div	{background-color: '+appTheme.info+';} '+
+		'DIV#block_message Div.success--content>Div	{background-color: '+appTheme.success+';} '+
+		'.secondary-color 							{color: '+appTheme.secondary+';}'
 	
 }
 

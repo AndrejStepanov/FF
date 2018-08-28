@@ -934,13 +934,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'c-msg',
     data: function data() {
         return {
             snackbar: true,
-            timeoutCur: 0
+            timeoutCur: 0,
+            visibility: false
         };
     },
     props: {
@@ -959,7 +964,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // эта функция запускается при любом изменении вопроса
         snackbar: function snackbar(newsnackbar) {
             if (newsnackbar != false) return;
-            this.$store.dispatch('msgDeleting', this.msg.id);
+            var vm = this;
+            vm.visibility = false;
+            setTimeout(function () {
+                vm.$store.dispatch('msgDeleting', vm.msg.id);
+            }, 1000);
         }
     },
     components: {},
@@ -972,6 +981,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var vm = this;
         vm.timeoutCur = vm.msg.timeout;
+        setTimeout(function () {
+            vm.visibility = true;
+        }, 10);
     }
 });
 
@@ -984,78 +996,99 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-snackbar",
-    {
-      class: _vm.msg.type,
-      attrs: {
-        dense: "",
-        timeout: _vm.timeoutCur,
-        top: _vm.msg.y === "top",
-        bottom: _vm.msg.y === "bottom",
-        right: _vm.msg.x === "right",
-        left: _vm.msg.x === "left",
-        "multi-line": _vm.msg.modeLine === "multi-line",
-        vertical: _vm.msg.modeLine === "vertical"
+  return _c("v-slide-x-transition", [
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.visibility,
+            expression: "visibility"
+          }
+        ]
       },
-      on: { click: _vm.snackClcik },
-      model: {
-        value: _vm.snackbar,
-        callback: function($$v) {
-          _vm.snackbar = $$v
-        },
-        expression: "snackbar"
-      }
-    },
-    [
-      _c("span", [
-        _c("span", { staticClass: "bold" }, [_vm._v(_vm._s(_vm.msg.title))]),
-        _c("br"),
-        _vm._v(" "),
-        _c("span", [_vm._v(_vm._s(_vm.msg.text))])
-      ]),
-      _vm._v(" "),
-      _c(
-        "v-flex",
-        { attrs: { xs12: "", sm3: "" } },
-        [
-          _c(
-            "v-btn",
-            {
-              staticClass: "primary",
-              attrs: { flat: "", icon: "" },
-              nativeOn: {
-                click: function($event) {
-                  _vm.snackbar = false
-                }
-              }
+      [
+        _c(
+          "v-snackbar",
+          {
+            class: _vm.msg.type + "--content",
+            attrs: {
+              transition: "scale-transition",
+              dense: "",
+              timeout: _vm.timeoutCur,
+              top: _vm.msg.y === "top",
+              bottom: _vm.msg.y === "bottom",
+              right: _vm.msg.x === "right",
+              left: _vm.msg.x === "left",
+              "multi-line": _vm.msg.modeLine === "multi-line",
+              vertical: _vm.msg.modeLine === "vertical"
             },
-            [_c("v-icon", [_vm._v("close")])],
-            1
-          ),
-          _vm._v(" "),
-          _vm.traceAble
-            ? _c(
-                "v-btn",
-                {
-                  staticClass: "primary",
-                  attrs: { icon: "" },
-                  nativeOn: {
-                    click: function($event) {
-                      _vm.$emit("traceDialogShow", _vm.msg.id)
+            on: { click: _vm.snackClcik },
+            model: {
+              value: _vm.snackbar,
+              callback: function($$v) {
+                _vm.snackbar = $$v
+              },
+              expression: "snackbar"
+            }
+          },
+          [
+            _c("span", [
+              _c("span", { staticClass: "bold" }, [
+                _vm._v(_vm._s(_vm.msg.title))
+              ]),
+              _c("br"),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.msg.text))])
+            ]),
+            _vm._v(" "),
+            _c(
+              "v-flex",
+              { attrs: { xs12: "", sm3: "" } },
+              [
+                _c(
+                  "v-btn",
+                  {
+                    staticClass: "accent",
+                    attrs: { flat: "", icon: "" },
+                    nativeOn: {
+                      click: function($event) {
+                        _vm.snackbar = false
+                      }
                     }
-                  }
-                },
-                [_c("v-icon", [_vm._v("description")])],
-                1
-              )
-            : _vm._e()
-        ],
-        1
-      )
-    ],
-    1
-  )
+                  },
+                  [_c("v-icon", [_vm._v("close")])],
+                  1
+                ),
+                _vm._v(" "),
+                _vm.traceAble
+                  ? _c(
+                      "v-btn",
+                      {
+                        staticClass: "accent",
+                        attrs: { icon: "" },
+                        nativeOn: {
+                          click: function($event) {
+                            _vm.$emit("traceDialogShow", _vm.msg.id)
+                          }
+                        }
+                      },
+                      [_c("v-icon", [_vm._v("description")])],
+                      1
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
