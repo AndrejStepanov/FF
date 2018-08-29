@@ -1,6 +1,6 @@
 <template>
 	<c-dialog :dialogId="dialogId" :width="dialogWidthCalc" :height="dialogHeightCalc" :buttons='buttons' >
-		<v-expansion-panel class="overXAutoLi">
+		<v-expansion-panel class="overXAutoLi" v-model="panel" expand>
 			<v-expansion-panel-content >
 				<template slot="header">{{msg.title}} : {{msg.text}} <br> {{msg.file}} ({{msg.line}})</template>
 				<v-card>
@@ -24,6 +24,7 @@
 		name:'m-error-desc',
 		data: () => ({
 			inputsValid:true,
+			panel: [true],
 			dialogWidthCalc:10,
 			dialogHeightCalc:10,
 		}),

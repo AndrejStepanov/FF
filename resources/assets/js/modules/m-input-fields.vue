@@ -92,6 +92,7 @@
 			vm.$root.$on('dialog'+vm.dialogId+'InputsCalc'+vm.inputsColId, (obj)=>{
 				vm.dialogHeightCalc= vm.dialogHeight>0?vm.dialogHeight: ( obj.rowInColA *74 + 149> document.documentElement.clientHeight-100 ? document.documentElement.clientHeight-100 :  obj.rowInColA *74 + 149)
 				vm.dialogWidthCalc= vm.dialogWidth>0?vm.dialogWidth: obj.colsCnt*370
+				vm.dialogWidthCalc= vm.dialogWidthCalc<670?670:vm.dialogWidthCalc;
 			}); 
 			vm.$root.$on('dialog'+vm.dialogId+'InputsParams'+vm.inputsColId, (obj)=>{
 				let vm=this

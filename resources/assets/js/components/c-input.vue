@@ -1,4 +1,4 @@
-<template> <!--:counter="columnSize"-->
+<template> 
 	<v-select v-if="procType=='AUTO::LIST'" v-model="value" :label="columnName" :hint="columnDesc"  clearable  :rules="rules" @change="setNewVal" @keyup.enter="submit"
 		:disabled="disabled" :readonly="readonly"  :required="isNeed"  :multi-line="columnSize>50" :prepend-icon="isNeedIcon"  :tabindex="sortSeq" :type="columnType" :items="curItems" />
 	<v-checkbox v-else-if="procType=='BOOL'" v-model="value" :label="columnName" :hint="columnDesc"  clearable  :rules="rules" @change="setNewVal" @keyup.enter="submit"

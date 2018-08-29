@@ -1,5 +1,5 @@
 <template>
-	<v-dialog value = "true" :persistent="dialogPersistent(dialogId)"  >
+	<v-dialog value = "true" :persistent="dialogPersistent(dialogId)" no-click-animation >
 		<c-drag-resize :isActive="dragActive" :isDraggable="dragDraggable" :isResizable="dragResizable" :preventActiveBehavior="dragActiveBehavior" :parentLimitation="dragLimitation" :sticks="dragSticks" :noLineStyle="dragNoLineStyle"
 				:w="width" :h="height" @resizing="changeSize($event)"  :x="x" :y="y" :reInitEvent="dragReInitEvent">
 			<v-toolbar slot='header'  color="primary" >

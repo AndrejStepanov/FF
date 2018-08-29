@@ -1,4 +1,4 @@
-webpackJsonp([7],{
+webpackJsonp([8],{
 
 /***/ 0:
 /***/ (function(module, exports) {
@@ -397,120 +397,6 @@ if (false) {
 
 /***/ }),
 
-/***/ 137:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(138);
-
-
-/***/ }),
-
-/***/ 138:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_s_Msg__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_s_profile__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__stores_s_dialog__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_axios__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vue_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vuetify__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_vuetify__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_laravel_echo__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_laravel_echo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_laravel_echo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apps_Auth_vue__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apps_Auth_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__apps_Auth_vue__);
-
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["default"]);
-
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["default"]);
-var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["default"].Store({ modules: { msg: __WEBPACK_IMPORTED_MODULE_3__stores_s_Msg__["a" /* default */], dialog: __WEBPACK_IMPORTED_MODULE_5__stores_s_dialog__["a" /* default */], profile: __WEBPACK_IMPORTED_MODULE_4__stores_s_profile__["a" /* default */] } });
-
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_6_vue_axios___default.a, __WEBPACK_IMPORTED_MODULE_7_axios___default.a);
-window._Bus = { axios: __WEBPACK_IMPORTED_MODULE_7_axios___default.a, bus: new __WEBPACK_IMPORTED_MODULE_0_vue___default.a() };
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_8_vuetify___default.a, { theme: appTheme });
-
-window.io = __webpack_require__(33);
-
-window.Echo = new __WEBPACK_IMPORTED_MODULE_9_laravel_echo___default.a({
-	broadcaster: 'socket.io',
-	host: window.location.hostname + ':6001'
-});
-
-
-
-window._Vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({ el: '#app', store: store, render: function render(h) {
-		return h(__WEBPACK_IMPORTED_MODULE_10__apps_Auth_vue___default.a);
-	} });
-appThemeInit();
-
-/***/ }),
-
-/***/ 139:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(140)
-/* template */
-var __vue_template__ = __webpack_require__(141)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\apps\\Auth.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-79a59683", Component.options)
-  } else {
-    hotAPI.reload("data-v-79a59683", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
 /***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -579,7 +465,121 @@ if (false) {
 
 /***/ }),
 
-/***/ 140:
+/***/ 144:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(145);
+
+
+/***/ }),
+
+/***/ 145:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_s_Msg__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_s_profile__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__stores_s_dialog__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_axios__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vue_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vuetify__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_vuetify__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_laravel_echo__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_laravel_echo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_laravel_echo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apps_Auth_vue__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apps_Auth_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__apps_Auth_vue__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["default"]);
+
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["default"]);
+var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["default"].Store({ modules: { msg: __WEBPACK_IMPORTED_MODULE_3__stores_s_Msg__["a" /* default */], dialog: __WEBPACK_IMPORTED_MODULE_5__stores_s_dialog__["a" /* default */], profile: __WEBPACK_IMPORTED_MODULE_4__stores_s_profile__["a" /* default */] } });
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_6_vue_axios___default.a, __WEBPACK_IMPORTED_MODULE_7_axios___default.a);
+window._Bus = { axios: __WEBPACK_IMPORTED_MODULE_7_axios___default.a, bus: new __WEBPACK_IMPORTED_MODULE_0_vue___default.a() };
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_8_vuetify___default.a, { theme: appTheme });
+
+window.io = __webpack_require__(30);
+
+window.Echo = new __WEBPACK_IMPORTED_MODULE_9_laravel_echo___default.a({
+	broadcaster: 'socket.io',
+	host: window.location.hostname + ':6001'
+});
+
+
+
+window._Vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({ el: '#app', store: store, render: function render(h) {
+		return h(__WEBPACK_IMPORTED_MODULE_10__apps_Auth_vue___default.a);
+	} });
+appThemeInit();
+
+/***/ }),
+
+/***/ 146:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(147)
+/* template */
+var __vue_template__ = __webpack_require__(148)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\apps\\Auth.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-79a59683", Component.options)
+  } else {
+    hotAPI.reload("data-v-79a59683", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 147:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -619,7 +619,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 141:
+/***/ 148:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -723,13 +723,13 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-footer",
-    { staticClass: "primary bold", attrs: { height: 24, fixed: "", app: "" } },
+    { staticClass: "primary bold", attrs: { height: 24, fixed: "" } },
     [
-      _c("span", [_vm._v("FF - Конструктор форм")]),
+      _c("span", [_vm._v("   FF - Конструктор форм")]),
       _vm._v(" "),
       _c("v-spacer"),
       _vm._v(" "),
-      _c("span", [_vm._v("©  2018")])
+      _c("span", [_vm._v("©  2018   ")])
     ],
     1
   )
@@ -839,7 +839,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     }),
     components: {
         CMsg: __WEBPACK_IMPORTED_MODULE_1__components_c_msg___default.a, MErrorDesc: function MErrorDesc(resolve) {
-            return __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(40)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+            return __webpack_require__.e/* require */(1).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(38)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
         }
     },
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])({
@@ -938,53 +938,68 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'c-msg',
-    data: function data() {
-        return {
-            snackbar: true,
-            timeoutCur: 0,
-            visibility: false
-        };
-    },
-    props: {
-        msg: {
-            type: Object, default: function _default() {
-                return { id: 0, 'timeout': 0, 'y': 'bottom', 'x': 'right', 'modeLine': 'multi-line', 'type': 'error', 'title': '', 'text': '', 'line': 0, 'trace': '' };
-            }
-        }
-    },
-    computed: {
-        traceAble: function traceAble() {
-            return this.msg.trace != '';
-        }
-    },
-    watch: {
-        // эта функция запускается при любом изменении вопроса
-        snackbar: function snackbar(newsnackbar) {
-            if (newsnackbar != false) return;
-            var vm = this;
-            vm.visibility = false;
-            setTimeout(function () {
-                vm.$store.dispatch('msgDeleting', vm.msg.id);
-            }, 1000);
-        }
-    },
-    components: {},
-    methods: {
-        snackClcik: function snackClcik() {
-            var vm = this;
-            vm.timeoutCur = 999999;
-        }
-    },
-    created: function created() {
-        var vm = this;
-        vm.timeoutCur = vm.msg.timeout;
-        setTimeout(function () {
-            vm.visibility = true;
-        }, 10);
-    }
+	name: 'c-msg',
+	data: function data() {
+		return {
+			snackbar: true,
+			timeoutCur: 0,
+			visibility: false
+		};
+	},
+	props: {
+		msg: {
+			type: Object, default: function _default() {
+				return { id: 0, 'timeout': 0, 'y': 'bottom', 'x': 'right', 'modeLine': 'multi-line', 'type': 'error', 'title': '', 'text': '', 'line': 0, 'trace': '' };
+			}
+		}
+	},
+	computed: {
+		traceAble: function traceAble() {
+			return this.msg.trace != '';
+		}
+	},
+	watch: {
+		// эта функция запускается при любом изменении вопроса
+		snackbar: function snackbar(newsnackbar) {
+			if (newsnackbar != false) return;
+			var vm = this;
+			vm.visibility = false;
+			setTimeout(function () {
+				vm.$store.dispatch('msgDeleting', vm.msg.id);
+			}, 1000);
+		}
+	},
+	components: {},
+	methods: {
+		snackClcik: function snackClcik() {
+			var vm = this;
+			vm.timeoutCur = 999999;
+		}
+	},
+	created: function created() {
+		var vm = this;
+		vm.timeoutCur = vm.msg.timeout;
+		setTimeout(function () {
+			vm.visibility = true;
+		}, 10);
+	}
 });
 
 /***/ }),
@@ -1035,50 +1050,111 @@ var render = function() {
             }
           },
           [
-            _c("span", [
-              _c("span", { staticClass: "bold" }, [
-                _vm._v(_vm._s(_vm.msg.title))
-              ]),
-              _c("br"),
-              _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(_vm.msg.text))])
-            ]),
-            _vm._v(" "),
             _c(
-              "v-flex",
-              { attrs: { xs12: "", sm3: "" } },
+              "v-container",
+              { attrs: { "grid-list-xl": "", "text-xs-left": "" } },
               [
                 _c(
-                  "v-btn",
+                  "v-layout",
                   {
-                    staticClass: "accent",
-                    attrs: { flat: "", icon: "" },
-                    nativeOn: {
-                      click: function($event) {
-                        _vm.snackbar = false
-                      }
+                    attrs: {
+                      "align-start": "",
+                      "justify-start": "",
+                      row: "",
+                      "fill-height": "",
+                      wrap: ""
                     }
                   },
-                  [_c("v-icon", [_vm._v("close")])],
-                  1
-                ),
-                _vm._v(" "),
-                _vm.traceAble
-                  ? _c(
-                      "v-btn",
-                      {
-                        staticClass: "accent",
-                        attrs: { icon: "" },
-                        nativeOn: {
-                          click: function($event) {
-                            _vm.$emit("traceDialogShow", _vm.msg.id)
-                          }
-                        }
-                      },
-                      [_c("v-icon", [_vm._v("description")])],
+                  [
+                    _c(
+                      "v-flex",
+                      { staticClass: "dispContent", attrs: { xs12: "" } },
+                      [
+                        _c(
+                          "v-layout",
+                          {
+                            attrs: {
+                              "align-start": "",
+                              "justify-space-between": "",
+                              row: "",
+                              "fill-height": ""
+                            }
+                          },
+                          [
+                            _c("v-flex", { attrs: { xs10: "" } }, [
+                              _c("span", { staticClass: "bold underline" }, [
+                                _vm._v(
+                                  "\n\t\t\t\t\t\t\t\t\t" +
+                                    _vm._s(_vm.msg.title) +
+                                    "\n\t\t\t\t\t\t\t\t"
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("v-spacer"),
+                            _vm._v(" "),
+                            _c(
+                              "v-flex",
+                              {
+                                staticClass: "dispContent",
+                                attrs: { xs2: "" }
+                              },
+                              [
+                                _vm.traceAble
+                                  ? _c(
+                                      "v-btn",
+                                      {
+                                        staticClass: "accent noMarginLeft",
+                                        attrs: { icon: "" },
+                                        nativeOn: {
+                                          click: function($event) {
+                                            _vm.$emit(
+                                              "traceDialogShow",
+                                              _vm.msg.id
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [_c("v-icon", [_vm._v("description")])],
+                                      1
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    staticClass: "accent noMarginLeft",
+                                    attrs: { icon: "" },
+                                    nativeOn: {
+                                      click: function($event) {
+                                        _vm.snackbar = false
+                                      }
+                                    }
+                                  },
+                                  [_c("v-icon", [_vm._v("close")])],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
                       1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      {
+                        staticClass: "noPadding",
+                        attrs: { xs12: "", "align-content-start": "" }
+                      },
+                      [_c("span", [_c("span", [_vm._v(_vm._s(_vm.msg.text))])])]
                     )
-                  : _vm._e()
+                  ],
+                  1
+                )
               ],
               1
             )
@@ -1562,7 +1638,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	components: {
 		CHead: __WEBPACK_IMPORTED_MODULE_0__components_c_head___default.a, CFooter: __WEBPACK_IMPORTED_MODULE_1__components_c_footer___default.a, CMsgList: __WEBPACK_IMPORTED_MODULE_2__components_c_msg_list___default.a,
 		MInputFields: function MInputFields(resolve) {
-			return __webpack_require__.e/* require */(0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(35)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+			return __webpack_require__.e/* require */(0).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(34)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 		}
 	},
 	methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["mapActions"])({
@@ -1629,4 +1705,4 @@ module.exports = Component.exports
 
 /***/ })
 
-},[137]);
+},[144]);

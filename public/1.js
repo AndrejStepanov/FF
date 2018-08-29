@@ -1,14 +1,14 @@
 webpackJsonp([1],{
 
-/***/ 148:
+/***/ 155:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(149)
+var __vue_script__ = __webpack_require__(156)
 /* template */
-var __vue_template__ = __webpack_require__(155)
+var __vue_template__ = __webpack_require__(162)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48,13 +48,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 149:
+/***/ 156:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -168,19 +168,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 150:
+/***/ 157:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(151)
+  __webpack_require__(158)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(153)
+var __vue_script__ = __webpack_require__(160)
 /* template */
-var __vue_template__ = __webpack_require__(154)
+var __vue_template__ = __webpack_require__(161)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -220,17 +220,17 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 151:
+/***/ 158:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(152);
+var content = __webpack_require__(159);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(47)("ff5f8dea", content, false);
+var update = __webpack_require__(37)("ff5f8dea", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -247,10 +247,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 152:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(46)(undefined);
+exports = module.exports = __webpack_require__(36)(undefined);
 // imports
 
 
@@ -262,7 +262,7 @@ exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: 
 
 /***/ }),
 
-/***/ 153:
+/***/ 160:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -800,7 +800,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 154:
+/***/ 161:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -870,7 +870,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 155:
+/***/ 162:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -880,7 +880,11 @@ var render = function() {
   return _c(
     "v-dialog",
     {
-      attrs: { value: "true", persistent: _vm.dialogPersistent(_vm.dialogId) }
+      attrs: {
+        value: "true",
+        persistent: _vm.dialogPersistent(_vm.dialogId),
+        "no-click-animation": ""
+      }
     },
     [
       _c(
@@ -1049,17 +1053,17 @@ if (false) {
 
 /***/ }),
 
-/***/ 164:
+/***/ 171:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(165);
+var content = __webpack_require__(172);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(47)("3a358888", content, false);
+var update = __webpack_require__(37)("3a358888", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1076,10 +1080,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 165:
+/***/ 172:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(46)(undefined);
+exports = module.exports = __webpack_require__(36)(undefined);
 // imports
 
 
@@ -1091,12 +1095,12 @@ exports.push([module.i, "\n.overXAutoLi>li {overflow-x: auto;\n}\n.traceLine{cle
 
 /***/ }),
 
-/***/ 166:
+/***/ 173:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog__ = __webpack_require__(155);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_c_dialog__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(1);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1127,6 +1131,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	data: function data() {
 		return {
 			inputsValid: true,
+			panel: [true],
 			dialogWidthCalc: 10,
 			dialogHeightCalc: 10
 		};
@@ -1178,7 +1183,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 167:
+/***/ 174:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1198,7 +1203,17 @@ var render = function() {
     [
       _c(
         "v-expansion-panel",
-        { staticClass: "overXAutoLi" },
+        {
+          staticClass: "overXAutoLi",
+          attrs: { expand: "" },
+          model: {
+            value: _vm.panel,
+            callback: function($$v) {
+              _vm.panel = $$v
+            },
+            expression: "panel"
+          }
+        },
         [
           _c(
             "v-expansion-panel-content",
@@ -1261,59 +1276,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 40:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(164)
-}
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(166)
-/* template */
-var __vue_template__ = __webpack_require__(167)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\modules\\m-error-desc.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6d105e4a", Component.options)
-  } else {
-    hotAPI.reload("data-v-6d105e4a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 46:
+/***/ 36:
 /***/ (function(module, exports) {
 
 /*
@@ -1396,7 +1359,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 47:
+/***/ 37:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1415,7 +1378,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(66)
+var listToStyles = __webpack_require__(43)
 
 /*
 type StyleObject = {
@@ -1618,7 +1581,59 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 66:
+/***/ 38:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(171)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(173)
+/* template */
+var __vue_template__ = __webpack_require__(174)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\modules\\m-error-desc.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6d105e4a", Component.options)
+  } else {
+    hotAPI.reload("data-v-6d105e4a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 43:
 /***/ (function(module, exports) {
 
 /**
