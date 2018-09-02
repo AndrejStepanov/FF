@@ -1,10 +1,10 @@
 <template>
-	<v-dialog value = "true" :persistent="dialogPersistent(dialogId)" no-click-animation >
+	<v-dialog value = "true" :persistent="dialogConfigGet.persistent" no-click-animation >
 		<c-drag-resize :isActive="dragActive" :isDraggable="dragDraggable" :isResizable="dragResizable" :preventActiveBehavior="dragActiveBehavior" :parentLimitation="dragLimitation" :sticks="dragSticks" :noLineStyle="dragNoLineStyle"
 				:w="width" :h="height" @resizing="changeSize($event)"  :x="x" :y="y" :reInitEvent="dragReInitEvent">
 			<v-toolbar slot='header'  color="primary" >
 				<v-toolbar-side-icon/>
-				<v-toolbar-title >{{dialogTitle(dialogId)}}</v-toolbar-title>
+				<v-toolbar-title >{{dialogConfigGet.title}}</v-toolbar-title>
 				<v-spacer/>
 				<v-btn icon>
 					<v-icon>more_vert</v-icon>
@@ -42,8 +42,8 @@
 		}),
 		props:{
 			dialogId: {type: Number, required: true}, 
-			width: {type: Number, default: 1}, 
-			height: {type: Number, default: 1}, 
+			widthOrig: {type: Number, default: 500}, 
+			heightOrig: {type: Number, default: 1000}, 
 			buttons: {type: Array, default: () =>{return  [{id:1, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose', }] }},
 			dragActive: {type: Boolean, default: true}, 
 			dragDraggable: {type: Boolean, default: true}, 
@@ -55,14 +55,23 @@
 		},
 		computed: {
 			...mapGetters({
-				dialogTitle: 'dialogTitle',
-				dialogPersistent: 'dialogPersistent'
+				dialogConfig:'dialog/getConfig',
 			}),
+			dialogConfigGet(){
+				let vm=this
+				return vm.dialogConfig(vm.dialogId)
+			},
 			buttonsLeft(){
 				return this.buttons.filter(row =>  row.allig == 'left' )
 			},
 			buttonsRight(){
 				return this.buttons.filter(row =>  row.allig != 'left' )
+			},
+			width(){
+				return this.widthOrig>document.documentElement.clientWidth-100? document.documentElement.clientWidth-100:this.widthOrig;
+			},
+			height(){
+				return this.heightOrig>document.documentElement.clientHeight-100? document.documentElement.clientHeight-100:this.heightOrig;
 			},
 			x(){
 				return (document.documentElement.clientWidth-this.width)/2
@@ -93,7 +102,7 @@
 					this.$emit(event);
 			},
 			dialogClose(){
-				this.$store.dispatch('dialogShowChange',{daiologId_:this.dialogId, isShow:false})
+				this.$store.dispatch('dialog/doShowChange',{id:this.dialogId, isShow:false})
 			},
 		},
 		mounted: function (){

@@ -21,7 +21,7 @@
 		},
 		mounted: function(){
 			let vm=this
-			setTimeout(()=>vm.$root.$emit('authNeedDialog'),500) 
+			setTimeout(()=>vm.$store.dispatch('dialog/doShowChange',{name:"auth-login", isShow:true}))
 		}
     }
 </script>

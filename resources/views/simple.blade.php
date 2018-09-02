@@ -12,8 +12,8 @@
     <body>
         <div id="app"></div>
         <script>
-            window.Laravel = { 'csrfToken': "{{ csrf_token() }}", 'ticket': "{{ getTicket() }}", }
-            window.User_info ={ 
+            window.laravel = { 'csrfToken': "{{ csrf_token() }}", 'ticket': "{{ getTicket() }}", }
+            window.userInfo ={ 
                 @if (Auth::check())
                     name : '{{Auth::user()->name}}', sysId : '{{Auth::user()->id}}', userId : '{{Auth::user()->userId}}', isRoot : '{{Auth::user()->isRoot}}', 
                 @endif

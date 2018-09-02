@@ -1,10 +1,8 @@
 <template>
 	<v-container grid-list-md>
 		<v-layout row wrap>
-			<v-flex v-for="(arr, index) in colsData" v-bind:key="index"  :class="classes">
-				<c-input  v-for="row in arr"  v-bind:key="row.id" v-bind:id="row.id" v-bind:columnCode="row.column_code" v-bind:columnName="row.column_name" v-bind:columnDesc="row.column_desc" :dialogId="dialogId"
-					v-bind:procType="row.proc_type" v-bind:isNull="row.isNull" v-bind:columnType="row.column_type" v-bind:columnSize="row.column_size" v-bind:cssClass="row.css_class" v-bind:sortSeq="row.sort_seq"
-					:changeEvent="inputChangeEvent" v-bind:items="row.items" />
+			<v-flex v-for="(arr, index) in colsData" :key="index"  :class="classes" >
+				<c-input  v-for="row in arr"  :key="row.id"  :data="row" :needCheckBox="needCheckBox" :dialogId="dialogId" :paramsId="paramsId"/>
 			</v-flex>
 		</v-layout>
 	</v-container>	
@@ -21,10 +19,10 @@
 		props:{
 			inputs: {type: Array, required: true},
 			dialogId: {type: Number},
-			inputsColId: {type: Number},
+			paramsId: {type: Number},
+			needCheckBox: {type: String, default:'N'},
 		},
 		computed: {
-			inputChangeEvent(){ return 'dialog'+this.dialogId+'InputsParams'+this.inputsColId},
 			classes () {
 				return [
 					{'xs12': this.colsCnt==1},
@@ -60,7 +58,7 @@
 						col++;
 					colsData[col].push(row);
 				});
-				vm.$root.$emit('dialog'+vm.dialogId+'InputsCalc'+vm.inputsColId, {rowInColA,colsCnt:vm.colsCnt}); 
+				vm.$root.$emit('dialog'+vm.dialogId+'InputsCols'+vm.paramsId, {rowInColA,colsCnt:vm.colsCnt}); 
 				return colsData
 			},
 		},

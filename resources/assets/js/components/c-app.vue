@@ -6,7 +6,8 @@
 		<c-head :curentSystem='curentSystem' :showLeft="showLeft" :showRight="showRight" />
 		<c-footer />
 		<c-msg-list />
-		<m-input-fields v-if="showLoginDialog(loginDialogId)" :dialogId="loginDialogId" :hrefBack="authHrefBack" socetHref="/login" socetEvent="auth.login" />
+		
+		<m-input-fields v-if="isShowenDialog(loginDialogId)" :dialogId="loginDialogId" />
     </v-app>
 </template>
 
@@ -26,27 +27,21 @@
 			showLeft: {type:  Boolean,  default: false},
 			showRight: {type:  Boolean,  default: false},
 		},
-		computed: {
-			showLoginDialog(loginDialogId){return this.dialogIsShow(loginDialogId)},			
+		computed: {	
+			 ...mapGetters({
+				dialogIsShow:'dialog/getShow',
+			}),	
 		},
         components: {
 			CHead, CFooter,CMsgList,
 			MInputFields: (resolve) => require(['../modules/m-input-fields.vue'], resolve),
 		},
         methods: {
-			...mapActions({
-				dialogShow:'dialogShowChange',dialogInit:'dialogInit',
-			}),
-			 ...mapGetters({
-				dialogIsShow:'dialogIsShow',
-			}),
+			isShowenDialog(dialogId){return this.dialogIsShow(dialogId)},	
 		},
 		created: function (){
 			let vm=this
-			vm.dialogInit({daiologId:vm.loginDialogId, daiologTitle:"Авторизация", dialogName:"auth-login"})
-			vm.$root.$on('authNeedDialog', (obj)=>{
-				vm.dialogShow({daiologId_:vm.loginDialogId,isShow:true})
-			}); 
+			vm.$store.dispatch('dialog/doInit',{config:{id:vm.loginDialogId, name:"auth-login", title:"Авторизация"}, params:{hrefBack:vm.authHrefBack, socetHref:"/login", socetEvent:"auth.login"} })
 		},
     }
 </script>

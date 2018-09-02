@@ -60,27 +60,28 @@ function nvlo(val,replace={}){
 	if(!val || val==undefined || val=='' ) return replace; else return val;
 }
 
-function sendRequest  (params){
-	if( this.nvl(params.type)==0 || this.nvl(params.href)==0  ){
-		window._Vue.$store.dispatch('msgAdding', {title:'Ошибка отправки данных',text:'Неуказанн адрес для отправки!'})
-		return false
-	}
+function showMsg({title, text, type, params={}}){
+	type=type||'error'
+	window._vue.$store.dispatch('msg/doAdd', {title,text,type,...params,})
+	if(type=='error')
+		throw new Error(title+' - '+text)
+}
 
-	window._Bus.axios.post(params.href, {type:params.type, _token: window.Laravel.csrfToken,...params.data,}
+function sendRequest  (params){
+	if( this.nvl(params.type)==0 || this.nvl(params.href)==0  )
+		showMsg({title:'Ошибка отправки данных',text:'Неуказанн адрес для отправки!'});
+	window._bus.axios.post(params.href, {type:params.type, _token: window.laravel.csrfToken,...params.data,}
 		).then((response) => {
-			if(nvl(params.needSucess,'N')=='Y' && response.data!='sucsess'){
-				window._Vue.$store.dispatch('msgAdding', { title:'Ошибка отправки данных', text:'Отправленные данные были отвергнуты!',...params.default, });
-				return;
-			}
+			if(nvl(params.needSucess,'N')=='Y' && response.data!='sucsess')
+				showMsg({ title:'Ошибка отправки данных', text:'Отправленные данные были отвергнуты!','params': params.default, });
 			if(nvl(params.hrefBack)!='')
 				window.location.href = decodeURIComponent( params.hrefBack);
 			if(params.handler )
 				params.handler(response)
 		}).catch(
 			(error) =>
-				window._Vue.$store.dispatch('msgAdding', 
-					{title: nvlo(error.response.data).title||nvlo(params.default).title||'Ошибка отправки данных', text:nvlo(error.response.data).message||nvlo(params.default).text||'Отправить данные не удалось!', 
-					status:error.response.status, trace:nvlo(error.response.data).trace, file:nvlo(error.response.data).file, line:nvlo(error.response.data).line})
+				showMsg({ title: nvlo(error.response.data).title||nvlo(params.default).title||'Ошибка отправки данных', text:nvlo(error.response.data).message||nvlo(params.default).text||'Отправить данные не удалось!',
+					'params': {status:error.response.status, trace:nvlo(error.response.data).trace, file:nvlo(error.response.data).file, line:nvlo(error.response.data).line}, })
 		);
 	return true
 }

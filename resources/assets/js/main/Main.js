@@ -1,31 +1,32 @@
-import Vue from 'vue';
+import vue from 'vue';
 
-import VueRouter from 'vue-router';
-Vue.use(VueRouter);
+import vueRouter from 'vue-router';
+vue.use(vueRouter);
 
-import Vuex from 'vuex';
+import vuex from 'vuex';
 import msg from '../stores/s-Msg';
 import profile from '../stores/s-profile';
 import dialog from '../stores/s-dialog';
-Vue.use(Vuex);
-let  store = new Vuex.Store({modules: {	msg, dialog, profile}  })
+import param from '../stores/s-param';
+vue.use(vuex);
+let  store = new vuex.Store({modules: {	msg, dialog, profile,param}  })
 
-import VueAxios from 'vue-axios';
+import vueAxios from 'vue-axios';
 import axios from 'axios';
-Vue.use(VueAxios, axios);
-window._Bus={axios:axios, bus: new Vue()};
+vue.use(vueAxios, axios);
+window._bus={axios, bus: new vue()};
 
-import Vuetify from 'vuetify';
-Vue.use(Vuetify, {theme: appTheme });
+import vuetify from 'vuetify';
+vue.use(vuetify, {theme: appTheme });
 
 window.io = require('socket.io-client');
-import Echo from "laravel-echo";
-window.Echo = new Echo({
+import echo from "laravel-echo";
+window.echo = new echo({
 	broadcaster: 'socket.io',
 	host: window.location.hostname + ':6001'
 });
 
-import App from '../apps/Main.vue';
+import app from '../apps/Main.vue';
 
-window._Vue=new Vue({el:'#app', store, render: h=> h(App)});
+window._vue=new vue({el:'#app', store, render: h=> h(app)});
 appThemeInit();

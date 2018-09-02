@@ -14,7 +14,7 @@ let  store = new vuex.Store({modules: {	msg, dialog, profile,param}  })
 import vueAxios from 'vue-axios';
 import axios from 'axios';
 vue.use(vueAxios, axios);
-window._bus={axios, bus: new vue()};
+window._bus={axios:axios, bus: new vue()};
 
 import vuetify from 'vuetify';
 vue.use(vuetify, {theme: appTheme });
@@ -26,7 +26,7 @@ window.echo = new echo({
 	host: window.location.hostname + ':6001'
 });
 
-import app from '../apps/Obj-Tree.vue';
+import App from '../apps/Obj-View.vue';
 
-window._vue=new vue({el:'#app', store, render: h=> h(app)});
+window._vue=new vue({el:'#app', store, render: h=> h(App)});
 appThemeInit();

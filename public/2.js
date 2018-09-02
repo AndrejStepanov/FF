@@ -1,14 +1,14 @@
 webpackJsonp([2],{
 
-/***/ 155:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(156)
+var __vue_script__ = __webpack_require__(160)
 /* template */
-var __vue_template__ = __webpack_require__(162)
+var __vue_template__ = __webpack_require__(166)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48,13 +48,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 156:
+/***/ 160:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -104,8 +104,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	},
 	props: {
 		dialogId: { type: Number, required: true },
-		width: { type: Number, default: 1 },
-		height: { type: Number, default: 1 },
+		widthOrig: { type: Number, default: 500 },
+		heightOrig: { type: Number, default: 1000 },
 		buttons: { type: Array, default: function _default() {
 				return [{ id: 1, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
 			} },
@@ -120,9 +120,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		dragNoLineStyle: { type: Boolean, default: true }
 	},
 	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])({
-		dialogTitle: 'dialogTitle',
-		dialogPersistent: 'dialogPersistent'
+		dialogConfig: 'dialog/getConfig'
 	}), {
+		dialogConfigGet: function dialogConfigGet() {
+			var vm = this;
+			return vm.dialogConfig(vm.dialogId);
+		},
 		buttonsLeft: function buttonsLeft() {
 			return this.buttons.filter(function (row) {
 				return row.allig == 'left';
@@ -132,6 +135,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			return this.buttons.filter(function (row) {
 				return row.allig != 'left';
 			});
+		},
+		width: function width() {
+			return this.widthOrig > document.documentElement.clientWidth - 100 ? document.documentElement.clientWidth - 100 : this.widthOrig;
+		},
+		height: function height() {
+			return this.heightOrig > document.documentElement.clientHeight - 100 ? document.documentElement.clientHeight - 100 : this.heightOrig;
 		},
 		x: function x() {
 			return (document.documentElement.clientWidth - this.width) / 2;
@@ -158,7 +167,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			if (event == 'dialogClose') this.dialogClose();else this.$emit(event);
 		},
 		dialogClose: function dialogClose() {
-			this.$store.dispatch('dialogShowChange', { daiologId_: this.dialogId, isShow: false });
+			this.$store.dispatch('dialog/doShowChange', { id: this.dialogId, isShow: false });
 		}
 	},
 	mounted: function mounted() {
@@ -168,19 +177,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 157:
+/***/ 161:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(158)
+  __webpack_require__(162)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(160)
+var __vue_script__ = __webpack_require__(164)
 /* template */
-var __vue_template__ = __webpack_require__(161)
+var __vue_template__ = __webpack_require__(165)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -220,17 +229,17 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 158:
+/***/ 162:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(159);
+var content = __webpack_require__(163);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(37)("ff5f8dea", content, false);
+var update = __webpack_require__(41)("ff5f8dea", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -247,10 +256,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 159:
+/***/ 163:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(36)(undefined);
+exports = module.exports = __webpack_require__(40)(undefined);
 // imports
 
 
@@ -262,7 +271,7 @@ exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: 
 
 /***/ }),
 
-/***/ 160:
+/***/ 164:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -800,7 +809,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 161:
+/***/ 165:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -870,7 +879,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 162:
+/***/ 166:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -882,7 +891,7 @@ var render = function() {
     {
       attrs: {
         value: "true",
-        persistent: _vm.dialogPersistent(_vm.dialogId),
+        persistent: _vm.dialogConfigGet.persistent,
         "no-click-animation": ""
       }
     },
@@ -918,7 +927,7 @@ var render = function() {
               _c("v-toolbar-side-icon"),
               _vm._v(" "),
               _c("v-toolbar-title", [
-                _vm._v(_vm._s(_vm.dialogTitle(_vm.dialogId)))
+                _vm._v(_vm._s(_vm.dialogConfigGet.title))
               ]),
               _vm._v(" "),
               _c("v-spacer"),
@@ -1053,14 +1062,14 @@ if (false) {
 
 /***/ }),
 
-/***/ 163:
+/***/ 167:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog__ = __webpack_require__(159);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_c_dialog__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__ = __webpack_require__(168);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_input_cols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_input_cols__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(1);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1074,6 +1083,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 
+//needCheckBox="Y"
 
 
 
@@ -1082,40 +1092,33 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	name: 'm-input-fields',
 	data: function data() {
 		return {
-			todo: {},
 			inputsValid: false,
-			dialogWidthCalc: 10,
-			dialogHeightCalc: 10,
-			inputsColId: Math.floor(Math.random() * MAX_ID)
+			paramsId: Math.floor(Math.random() * MAX_ID),
+			dialogWidth: 10,
+			dialogHeight: 10,
+			paramsOrig: {},
+			dialogButtons: [{ id: 1, title: 'Сохранить', icon: 'done', allig: 'left', click: 'dialogSave', needCheck: true }, { id: 2, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }]
 		};
 	},
 	props: {
-		params: { type: Object },
-		hrefBack: { type: String, default: '' },
-		socetHref: { type: String, default: '/data_command' },
-		socetEvent: { type: String, default: '' },
-		dialogId: { type: Number, required: true },
-		dialogWidth: { type: Number, default: 0 },
-		dialogHeight: { type: Number, default: 0 },
-		checkFunc: { type: Function, default: function _default() {
-				return true;
-			} },
-		saveFunc: { type: Function },
-		dialogButtons: { type: Array, default: function _default() {
-				return [{ id: 1, title: 'Сохранить', icon: 'done', allig: 'left', click: 'dialogSave', needCheck: true }, { id: 2, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
-			} }
+		dialogId: { type: Number, required: true }
 	},
 	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["mapGetters"])({
-		dialogName: 'dialogName'
+		dialogConfig: 'dialog/getConfig', dialogParams: 'dialog/getParams', paramsTodo: 'param/getTodo'
 	}), {
-		formName: function formName() {
-			return this.dialogName(this.dialogId);
+		dialogConfigGet: function dialogConfigGet() {
+			var vm = this;
+			return vm.dialogConfig(vm.dialogId);
+		},
+		dialogParamsGet: function dialogParamsGet() {
+			var vm = this;
+			return vm.dialogParams(vm.dialogId);
 		},
 		inputs: function inputs() {
 			var vm = this;
-			var data = [{ id: 1, form: 'object-tree-add', column_code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', proc_type: 'AUTO::LIST', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, items: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', column_code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', proc_type: 'AUTO::LIST', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, items: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', column_code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', proc_type: 'MAN', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }, { id: 4, form: 'auth-login', column_code: 'login', column_name: 'Пользователь', column_desc: 'Логин пользователя', proc_type: 'MAN', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 1 }, { id: 5, form: 'auth-login', column_code: 'password', column_name: 'Пароль', column_desc: 'Пароль пользователя', proc_type: 'PASSWORD', isNull: 'N', column_type: 'String', column_size: 30, css_class: '', sort_seq: 2 }, { id: 6, form: 'auth-login', column_code: 'remember', column_name: 'Запомнить мои данные', column_desc: 'Запомнить данные пользователя', proc_type: 'BOOL', isNull: 'Y', column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
+			var data = [{ id: 1, form: 'object-tree-add', code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', proc_type: 'AUTO::LIST', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, items: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', proc_type: 'AUTO::LIST', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, items: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', proc_type: 'MAN', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }, { id: 4, form: 'auth-login', code: 'login', column_name: 'Пользователь', column_desc: 'Логин пользователя', proc_type: 'MAN', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1 }, { id: 5, form: 'auth-login', code: 'password', column_name: 'Пароль', column_desc: 'Пароль пользователя', proc_type: 'PASSWORD', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2 }, { id: 6, form: 'auth-login', code: 'remember', column_name: 'Запомнить мои данные', column_desc: 'Запомнить данные пользователя', proc_type: 'BOOL', nullable: 1, column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
 			return data.filter(function (row) {
-				return row.form == vm.formName;
+				return row.form == vm.dialogConfigGet.name;
 			}).sort(function (a, b) {
 				return sort(a, b, 'sort_seq', 'sort_seq');
 			});
@@ -1124,7 +1127,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			var vm = this;
 			var tmp = [],
 			    buttons = [];
-			if (vm.formName == 'auth-login') buttons = authButtons;else buttons = vm.dialogButtons;
+			if (vm.dialogConfigGet.name == 'auth-login') buttons = authButtons;else buttons = vm.dialogButtons;
 			buttons.forEach(function (row) {
 				tmp.push(_extends({}, row, { disabled: row.needCheck == true && !vm.inputsValid ? true : false }));
 			});
@@ -1137,34 +1140,25 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	methods: {
 		dialogSave: function dialogSave() {
 			var vm = this;
-			if (!vm.$refs[vm.formName].validate()) return;
-			var params = _extends({}, vm.todo, vm.params);
-			if (!vm.checkFunc(params)) return false;
-			if (vm.saveFunc && !vm.saveFunc(params)) return false;else if (!sendRequest({ href: vm.socetHref, type: vm.socetEvent, data: params, hrefBack: vm.hrefBack, handler: function handler() {
-					return vm.$store.dispatch('dialogShowChange', { daiologId_: vm.dialogId, isShow: false });
-				} })) return false;
-		},
-		paramSave: function paramSave(obj) {
-			var vm = this;
-			vm.todo[obj.param] = obj.value;
+			if (!vm.$refs[vm.dialogConfigGet.name].validate()) return;
+			var todo = _extends({}, vm.paramsTodo(vm.paramsId), vm.dialogParamsGet.params);
+			if (vm.dialogParamsGet.checkFunc) vm.dialogParamsGet.checkFunc(todo);
+			if (vm.dialogParamsGet.saveFunc) vm.dialogParamsGet.saveFunc(todo);else sendRequest({ href: nvl(vm.dialogParamsGet.socetHref, '/data_command'), type: vm.dialogParamsGet.socetEvent, data: todo, hrefBack: vm.dialogParamsGet.hrefBack, handler: function handler() {
+					return vm.$refs.dialog.dialogClose();
+				} });
 		}
 	},
 	created: function created() {
 		var _this = this;
 
 		var vm = this;
-		vm.$root.$on('dialog' + vm.dialogId + 'InputsCalc' + vm.inputsColId, function (obj) {
-			vm.dialogHeightCalc = vm.dialogHeight > 0 ? vm.dialogHeight : obj.rowInColA * 74 + 149 > document.documentElement.clientHeight - 100 ? document.documentElement.clientHeight - 100 : obj.rowInColA * 74 + 149;
-			vm.dialogWidthCalc = vm.dialogWidth > 0 ? vm.dialogWidth : obj.colsCnt * 370;
-			vm.dialogWidthCalc = vm.dialogWidthCalc < 670 ? 670 : vm.dialogWidthCalc;
+		vm.$store.dispatch('param/doInit', { num: vm.paramsId });
+		vm.$root.$on('dialog' + vm.dialogId + 'InputsCols' + vm.paramsId, function (obj) {
+			vm.dialogHeight = vm.dialogConfigGet.height > 0 ? vm.dialogConfigGet.height : obj.rowInColA * 74 + 149;
+			vm.dialogWidth = vm.dialogConfigGet.width > 0 ? vm.dialogConfigGet.width : obj.colsCnt * 370;
 		});
-		vm.$root.$on('dialog' + vm.dialogId + 'InputsParams' + vm.inputsColId, function (obj) {
+		vm.$root.$on('dialog' + vm.dialogId + 'Send', function () {
 			var vm = _this;
-			vm.paramSave(obj);
-		});
-		vm.$root.$on('dialog' + vm.dialogId + 'Send', function (obj) {
-			var vm = _this;
-			vm.paramSave(obj);
 			vm.dialogSave();
 		});
 	}
@@ -1172,15 +1166,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 164:
+/***/ 168:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(165)
+var __vue_script__ = __webpack_require__(169)
 /* template */
-var __vue_template__ = __webpack_require__(169)
+var __vue_template__ = __webpack_require__(173)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1220,15 +1214,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 165:
+/***/ 169:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(170);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__c_input__);
-//
-//
 //
 //
 //
@@ -1252,12 +1244,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	props: {
 		inputs: { type: Array, required: true },
 		dialogId: { type: Number },
-		inputsColId: { type: Number }
+		paramsId: { type: Number },
+		needCheckBox: { type: String, default: 'N' }
 	},
 	computed: {
-		inputChangeEvent: function inputChangeEvent() {
-			return 'dialog' + this.dialogId + 'InputsParams' + this.inputsColId;
-		},
 		classes: function classes() {
 			return [{ 'xs12': this.colsCnt == 1 }, { 'xs6': this.colsCnt == 2 }, { 'xs4': this.colsCnt == 3 }, { 'xs3': this.colsCnt == 4 }];
 		},
@@ -1285,7 +1275,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				})) col++;
 				colsData[col].push(row);
 			});
-			vm.$root.$emit('dialog' + vm.dialogId + 'InputsCalc' + vm.inputsColId, { rowInColA: rowInColA, colsCnt: vm.colsCnt });
+			vm.$root.$emit('dialog' + vm.dialogId + 'InputsCols' + vm.paramsId, { rowInColA: rowInColA, colsCnt: vm.colsCnt });
 			return colsData;
 		}
 	},
@@ -1298,15 +1288,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 166:
+/***/ 170:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(167)
+var __vue_script__ = __webpack_require__(171)
 /* template */
-var __vue_template__ = __webpack_require__(168)
+var __vue_template__ = __webpack_require__(172)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1346,11 +1336,33 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 167:
+/***/ 171:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1370,87 +1382,207 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			rules: [],
 			isNeed: false,
 			isNeedIcon: '',
-			disabled: false,
+			checked: false,
 			readonly: false,
-			show: false
+			show: false,
+			currentInput: 'v-text-field',
+			id: 0,
+			code: 'code',
+			columnName: 'columnName',
+			columnDesc: 'columnDesc',
+			procType: 'procType',
+			nullable: 0,
+			columnType: '',
+			columnSize: 0,
+			cssClass: '',
+			sortSeq: 0,
+			mask: null,
+			maskFin: '',
+			error: 'Некорректное значение',
+			items: []
 		};
 	},
+	/*
+ :id="row.id" :code="row.code" :columnName="row.column_name" :columnDesc="row.column_desc" :dialogId="dialogId"
+ :procType="row.proc_type" :nullable="row.nullable" :columnType="row.column_type" :columnSize="row.column_size" :cssClass="row.css_class" :sortSeq="row.sort_seq"
+ :changeEvent="inputChangeEvent" :items="row.items" :maskFin="row.mask_fin" :mask="row.mask" :error="row.error"
+ */
 	props: {
-		id: { type: Number, required: true },
-		columnCode: { type: String, required: true },
-		columnName: { type: String, required: true },
-		columnDesc: { type: String, required: true },
-		procType: { type: String, required: true },
-		isNull: { type: String, required: true },
-		columnType: { type: String, required: true },
-		columnSize: { type: Number, required: true },
-		cssClass: { type: String, required: true },
-		sortSeq: { type: Number, required: true },
+		data: { type: Object, required: true, default: function _default() {
+				return {};
+			} },
 		dialogId: { type: Number },
-		changeEvent: { type: String },
-		items: { type: Array }
+		paramsId: { type: Number },
+		needCheckBox: { type: String, default: 'N' }
 	},
 	computed: {
 		curItems: function curItems() {
 			var vm = this;
-			if (vm.procType == 'AUTO::LIST') return vm.items;else return [];
+			return vm.procType == 'AUTO::LIST' ? vm.items : [];
 		},
 		typeGet: function typeGet() {
 			var vm = this;
-			if (vm.procType != 'PASSWORD') return vm.procType;else if (vm.show) return 'text';else return 'password';
+			return vm.procType != 'PASSWORD' ? vm.procType : vm.show ? 'text' : 'password';
+		},
+		appendIconGet: function appendIconGet() {
+			var vm = this;
+			return vm.procType != 'PASSWORD' ? vm.procType == 'AUTO::LIST' ? '$vuetify.icons.dropdown' : '' : vm.show ? 'visibility_off' : 'visibility';
+		},
+		clearableGet: function clearableGet() {
+			var vm = this;
+			return vm.procType != 'PASSWORD';
+		},
+		appendOuterIconGet: function appendOuterIconGet() {
+			var vm = this;
+			return vm.needCheckBox == 'N' ? '' : vm.checked ? 'check_box' : 'check_box_outline_blank';
+		},
+		disableGet: function disableGet() {
+			var vm = this;
+			return vm.needCheckBox == 'N' ? false : !vm.checked;
 		}
 	},
 	watch: {},
 	methods: {
 		setNewVal: function setNewVal(value) {
 			var vm = this;
-			this.$root.$emit(this.changeEvent, { param: this.columnCode, value: value });
+			vm.checkRefresh();
 		},
 		changeShow: function changeShow() {
 			this.show = !this.show;
 		},
 		submit: function submit() {
 			var vm = this;
-			vm.$root.$emit('dialog' + vm.dialogId + 'Send', { param: this.columnCode, value: vm.value });
-		}
+			vm.checkRefresh();
+			vm.$root.$emit('dialog' + vm.dialogId + 'Send', { param: vm.code, value: vm.value });
+		},
+		appendOuterIconClick: function appendOuterIconClick() {
+			var vm = this;
+			vm.checked = !vm.checked;
+		},
+		onClick: function onClick() {
+			var vm = this;
+			vm.checked = true;
+			setTimeout(function () {
+				vm.$refs.input.onClick();
+			}, 100);
+		},
+		onBlur: function onBlur() {
+			var vm = this;
+			vm.checkRefresh();
+		},
+		checkRefresh: function () {
+			var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(value) {
+				var vm;
+				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+					while (1) {
+						switch (_context.prev = _context.next) {
+							case 0:
+								vm = this;
+
+								vm.checked = nvl(vm.value, '') == '' ? false : true;
+
+								if (!vm.checked) {
+									_context.next = 7;
+									break;
+								}
+
+								_context.next = 5;
+								return vm.$store.dispatch('param/doSet', { num: vm.paramsId, code: vm.code, value: vm.value, view: vm.value });
+
+							case 5:
+								_context.next = 9;
+								break;
+
+							case 7:
+								_context.next = 9;
+								return vm.$store.dispatch('param/doSet', { num: vm.paramsId, code: vm.code, value: undefined, view: undefined });
+
+							case 9:
+							case 'end':
+								return _context.stop();
+						}
+					}
+				}, _callee, this);
+			}));
+
+			function checkRefresh(_x) {
+				return _ref.apply(this, arguments);
+			}
+
+			return checkRefresh;
+		}()
 	},
 	created: function created() {
 		var vm = this;
-		vm.disabled = vm.type == 'DISABLED';
+		vm.id = vm.data.id || vm.id;
+		vm.value = vm.data.value || vm.value;
+		vm.code = vm.data.code || vm.code;
+		vm.columnName = vm.data.column_name || vm.columnName;
+		vm.columnDesc = vm.data.column_desc || vm.columnDesc;
+		vm.procType = vm.data.proc_type || vm.procType;
+		vm.nullable = vm.data.nullable || vm.nullable;
+		vm.columnType = vm.data.column_type || vm.columnType;
+		vm.columnSize = vm.data.column_size || vm.columnSize;
+		vm.cssClass = vm.data.css_class || vm.cssClass;
+		vm.sortSeq = vm.data.sort_seq || vm.sortSeq;
+		vm.mask = vm.data.mask || vm.mask;
+		vm.maskFin = vm.data.mask_fin || vm.maskFin;
+		vm.error = vm.data.error || vm.error;
+		vm.checked = !!vm.data.checked || vm.checked;
+		if (nvl(vm.data.items != undefined) > 0) {
+			vm.data.items.forEach(function (element) {
+				vm.items.push(element);
+			});
+		}
+		vm.currentInput = vm.procType == 'AUTO::LIST' ? 'v-select' : vm.procType == 'BOOL' ? 'v-checkbox' : 'v-text-field';
 		vm.readonly = vm.type == 'READONLY';
-		if (vm.isNull == 'N') {
+		if (vm.nullable == 0) {
 			vm.isNeed = true;
 			vm.rules.push(function (v) {
 				return !!v || 'Поле обязательное';
 			});
 		}
+		var tmp = new RegExp(vm.maskFin);
+		if (tmp != '') //надо помнить про экранирование
+			vm.rules.push(function (v) {
+				return tmp.test(v) || vm.error;
+			});
+		vm.$store.dispatch('param/doSet', { num: vm.paramsId, code: vm.code, value: vm.value, view: vm.value });
 	}
 });
 
 /***/ }),
 
-/***/ 168:
+/***/ 172:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.procType == "AUTO::LIST"
-    ? _c("v-select", {
+  return _c(
+    "div",
+    { on: { click: _vm.onClick } },
+    [
+      _c(_vm.currentInput, {
+        ref: "input",
+        tag: "component",
         attrs: {
           label: _vm.columnName,
           hint: _vm.columnDesc,
-          clearable: "",
           rules: _vm.rules,
-          disabled: _vm.disabled,
+          disabled: _vm.disableGet,
           readonly: _vm.readonly,
-          required: _vm.isNeed,
+          required: !!!_vm.nullable,
           "multi-line": _vm.columnSize > 50,
           "prepend-icon": _vm.isNeedIcon,
           tabindex: _vm.sortSeq,
-          type: _vm.columnType,
-          items: _vm.curItems
+          type: _vm.typeGet,
+          items: _vm.curItems,
+          "append-icon": _vm.appendIconGet,
+          clearable: _vm.clearableGet,
+          mask: _vm.mask,
+          "append-outer-icon": _vm.appendOuterIconGet
         },
         on: {
           change: _vm.setNewVal,
@@ -1462,7 +1594,10 @@ var render = function() {
               return null
             }
             return _vm.submit($event)
-          }
+          },
+          "click:append-outer": _vm.appendOuterIconClick,
+          "click:append": _vm.changeShow,
+          blur: _vm.onBlur
         },
         model: {
           value: _vm.value,
@@ -1472,80 +1607,9 @@ var render = function() {
           expression: "value"
         }
       })
-    : _vm.procType == "BOOL"
-      ? _c("v-checkbox", {
-          attrs: {
-            label: _vm.columnName,
-            hint: _vm.columnDesc,
-            clearable: "",
-            rules: _vm.rules,
-            disabled: _vm.disabled,
-            readonly: _vm.readonly,
-            required: _vm.isNeed,
-            "multi-line": _vm.columnSize > 50,
-            "prepend-icon": _vm.isNeedIcon,
-            tabindex: _vm.sortSeq,
-            type: _vm.columnType
-          },
-          on: {
-            change: _vm.setNewVal,
-            keyup: function($event) {
-              if (
-                !("button" in $event) &&
-                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-              ) {
-                return null
-              }
-              return _vm.submit($event)
-            }
-          },
-          model: {
-            value: _vm.value,
-            callback: function($$v) {
-              _vm.value = $$v
-            },
-            expression: "value"
-          }
-        })
-      : _c("v-text-field", {
-          attrs: {
-            label: _vm.columnName,
-            hint: _vm.columnDesc,
-            rules: _vm.rules,
-            disabled: _vm.disabled,
-            readonly: _vm.readonly,
-            required: _vm.isNeed,
-            "multi-line": _vm.columnSize > 50,
-            "prepend-icon": _vm.isNeedIcon,
-            tabindex: _vm.sortSeq,
-            type: _vm.typeGet,
-            "append-icon":
-              _vm.procType != "PASSWORD"
-                ? ""
-                : _vm.show ? "visibility_off" : "visibility",
-            clearable: _vm.procType != "PASSWORD",
-            appendIconCb: _vm.changeShow
-          },
-          on: {
-            change: _vm.setNewVal,
-            keyup: function($event) {
-              if (
-                !("button" in $event) &&
-                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-              ) {
-                return null
-              }
-              return _vm.submit($event)
-            }
-          },
-          model: {
-            value: _vm.value,
-            callback: function($$v) {
-              _vm.value = $$v
-            },
-            expression: "value"
-          }
-        })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -1559,7 +1623,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 169:
+/***/ 173:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1581,19 +1645,10 @@ var render = function() {
               return _c("c-input", {
                 key: row.id,
                 attrs: {
-                  id: row.id,
-                  columnCode: row.column_code,
-                  columnName: row.column_name,
-                  columnDesc: row.column_desc,
+                  data: row,
+                  needCheckBox: _vm.needCheckBox,
                   dialogId: _vm.dialogId,
-                  procType: row.proc_type,
-                  isNull: row.isNull,
-                  columnType: row.column_type,
-                  columnSize: row.column_size,
-                  cssClass: row.css_class,
-                  sortSeq: row.sort_seq,
-                  changeEvent: _vm.inputChangeEvent,
-                  items: row.items
+                  paramsId: _vm.paramsId
                 }
               })
             })
@@ -1616,7 +1671,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 170:
+/***/ 174:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1626,10 +1681,11 @@ var render = function() {
   return _c(
     "c-dialog",
     {
+      ref: "dialog",
       attrs: {
         dialogId: _vm.dialogId,
-        width: _vm.dialogWidthCalc,
-        height: _vm.dialogHeightCalc,
+        widthOrig: _vm.dialogWidth,
+        heightOrig: _vm.dialogHeight,
         buttons: _vm.buttons
       },
       on: { dialogSave: _vm.dialogSave }
@@ -1638,7 +1694,7 @@ var render = function() {
       _c(
         "v-form",
         {
-          ref: _vm.formName,
+          ref: _vm.dialogConfigGet.name,
           model: {
             value: _vm.inputsValid,
             callback: function($$v) {
@@ -1652,7 +1708,7 @@ var render = function() {
             attrs: {
               inputs: _vm.inputs,
               dialogId: _vm.dialogId,
-              inputsColId: _vm.inputsColId
+              paramsId: _vm.paramsId
             }
           })
         ],
@@ -1674,15 +1730,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 34:
+/***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(163)
+var __vue_script__ = __webpack_require__(167)
 /* template */
-var __vue_template__ = __webpack_require__(170)
+var __vue_template__ = __webpack_require__(174)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */

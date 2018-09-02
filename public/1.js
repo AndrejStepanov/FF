@@ -1,14 +1,14 @@
 webpackJsonp([1],{
 
-/***/ 155:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(156)
+var __vue_script__ = __webpack_require__(160)
 /* template */
-var __vue_template__ = __webpack_require__(162)
+var __vue_template__ = __webpack_require__(166)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48,13 +48,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 156:
+/***/ 160:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -104,8 +104,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	},
 	props: {
 		dialogId: { type: Number, required: true },
-		width: { type: Number, default: 1 },
-		height: { type: Number, default: 1 },
+		widthOrig: { type: Number, default: 500 },
+		heightOrig: { type: Number, default: 1000 },
 		buttons: { type: Array, default: function _default() {
 				return [{ id: 1, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
 			} },
@@ -120,9 +120,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		dragNoLineStyle: { type: Boolean, default: true }
 	},
 	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])({
-		dialogTitle: 'dialogTitle',
-		dialogPersistent: 'dialogPersistent'
+		dialogConfig: 'dialog/getConfig'
 	}), {
+		dialogConfigGet: function dialogConfigGet() {
+			var vm = this;
+			return vm.dialogConfig(vm.dialogId);
+		},
 		buttonsLeft: function buttonsLeft() {
 			return this.buttons.filter(function (row) {
 				return row.allig == 'left';
@@ -132,6 +135,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			return this.buttons.filter(function (row) {
 				return row.allig != 'left';
 			});
+		},
+		width: function width() {
+			return this.widthOrig > document.documentElement.clientWidth - 100 ? document.documentElement.clientWidth - 100 : this.widthOrig;
+		},
+		height: function height() {
+			return this.heightOrig > document.documentElement.clientHeight - 100 ? document.documentElement.clientHeight - 100 : this.heightOrig;
 		},
 		x: function x() {
 			return (document.documentElement.clientWidth - this.width) / 2;
@@ -158,7 +167,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			if (event == 'dialogClose') this.dialogClose();else this.$emit(event);
 		},
 		dialogClose: function dialogClose() {
-			this.$store.dispatch('dialogShowChange', { daiologId_: this.dialogId, isShow: false });
+			this.$store.dispatch('dialog/doShowChange', { id: this.dialogId, isShow: false });
 		}
 	},
 	mounted: function mounted() {
@@ -168,19 +177,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 157:
+/***/ 161:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(158)
+  __webpack_require__(162)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(160)
+var __vue_script__ = __webpack_require__(164)
 /* template */
-var __vue_template__ = __webpack_require__(161)
+var __vue_template__ = __webpack_require__(165)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -220,17 +229,17 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 158:
+/***/ 162:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(159);
+var content = __webpack_require__(163);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(37)("ff5f8dea", content, false);
+var update = __webpack_require__(41)("ff5f8dea", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -247,10 +256,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 159:
+/***/ 163:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(36)(undefined);
+exports = module.exports = __webpack_require__(40)(undefined);
 // imports
 
 
@@ -262,7 +271,7 @@ exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: 
 
 /***/ }),
 
-/***/ 160:
+/***/ 164:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -800,7 +809,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 161:
+/***/ 165:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -870,7 +879,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 162:
+/***/ 166:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -882,7 +891,7 @@ var render = function() {
     {
       attrs: {
         value: "true",
-        persistent: _vm.dialogPersistent(_vm.dialogId),
+        persistent: _vm.dialogConfigGet.persistent,
         "no-click-animation": ""
       }
     },
@@ -918,7 +927,7 @@ var render = function() {
               _c("v-toolbar-side-icon"),
               _vm._v(" "),
               _c("v-toolbar-title", [
-                _vm._v(_vm._s(_vm.dialogTitle(_vm.dialogId)))
+                _vm._v(_vm._s(_vm.dialogConfigGet.title))
               ]),
               _vm._v(" "),
               _c("v-spacer"),
@@ -1053,17 +1062,17 @@ if (false) {
 
 /***/ }),
 
-/***/ 171:
+/***/ 175:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(172);
+var content = __webpack_require__(176);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(37)("3a358888", content, false);
+var update = __webpack_require__(41)("3a358888", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1080,10 +1089,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 172:
+/***/ 176:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(36)(undefined);
+exports = module.exports = __webpack_require__(40)(undefined);
 // imports
 
 
@@ -1095,12 +1104,12 @@ exports.push([module.i, "\n.overXAutoLi>li {overflow-x: auto;\n}\n.traceLine{cle
 
 /***/ }),
 
-/***/ 173:
+/***/ 177:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog__ = __webpack_require__(159);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_c_dialog__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(1);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1131,43 +1140,35 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	data: function data() {
 		return {
 			inputsValid: true,
-			panel: [true],
-			dialogWidthCalc: 10,
-			dialogHeightCalc: 10
+			panel: [true]
 		};
 	},
 	props: {
 		dialogId: { type: Number, required: true },
-		dialogWidth: { type: Number, default: 0 },
-		dialogHeight: { type: Number, default: 0 },
 		dialogButtons: { type: Array, default: function _default() {
 				return [{ id: 1, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
-			} },
-		msg: {
-			type: Object, default: function _default() {
-				return { 'id': 0, 'title': '', 'text': '', 'trace': '', 'status': 0, 'file': '', 'line': 0 };
-			}
-		}
+			} }
 	},
 	computed: _extends({
 		buttons: function buttons() {
 			var vm = this;
 			var tmp = [],
-			    buttons = [];
-			if (vm.formName == 'auth-login') buttons = authButtons;else buttons = vm.dialogButtons;
+			    buttons = vm.dialogButtons;
 			buttons.forEach(function (row) {
 				tmp.push(_extends({}, row, { disabled: row.needCheck == true && !vm.inputsValid ? true : false }));
 			});
 			return tmp;
 		}
 	}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["mapGetters"])({
-		dialogName: 'dialogName'
+		dialogConfig: 'dialog/getConfig', dialogParams: 'dialog/getParams'
 	}), {
-		formName: function formName() {
-			return this.dialogName(this.dialogId);
+		dialogConfigGet: function dialogConfigGet() {
+			var vm = this;
+			return vm.dialogConfig(vm.dialogId);
 		},
-		traceObj: function traceObj() {
-			return JSON.parse(this.msg.trace);
+		dialogParamsGet: function dialogParamsGet() {
+			var vm = this;
+			return vm.dialogParams(vm.dialogId);
 		}
 	}),
 	components: {
@@ -1176,14 +1177,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	methods: {},
 	created: function created() {
 		var vm = this;
-		vm.dialogWidthCalc = vm.dialogWidth > document.documentElement.clientWidth - 100 ? document.documentElement.clientWidth - 100 : vm.dialogWidth;
-		vm.dialogHeightCalc = vm.dialogHeight > document.documentElement.clientHeight - 100 ? document.documentElement.clientHeight - 100 : vm.dialogHeight;
 	}
 });
 
 /***/ }),
 
-/***/ 174:
+/***/ 178:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1195,8 +1194,8 @@ var render = function() {
     {
       attrs: {
         dialogId: _vm.dialogId,
-        width: _vm.dialogWidthCalc,
-        height: _vm.dialogHeightCalc,
+        widthOrig: _vm.dialogConfigGet.width,
+        heightOrig: _vm.dialogConfigGet.height,
         buttons: _vm.buttons
       }
     },
@@ -1220,11 +1219,18 @@ var render = function() {
             [
               _c("template", { slot: "header" }, [
                 _vm._v(
-                  _vm._s(_vm.msg.title) + " : " + _vm._s(_vm.msg.text) + " "
+                  _vm._s(_vm.dialogParamsGet.msg.title) +
+                    " : " +
+                    _vm._s(_vm.dialogParamsGet.msg.text) +
+                    " "
                 ),
                 _c("br"),
                 _vm._v(
-                  " " + _vm._s(_vm.msg.file) + " (" + _vm._s(_vm.msg.line) + ")"
+                  " " +
+                    _vm._s(_vm.dialogParamsGet.msg.file) +
+                    " (" +
+                    _vm._s(_vm.dialogParamsGet.msg.line) +
+                    ")"
                 )
               ]),
               _vm._v(" "),
@@ -1233,7 +1239,9 @@ var render = function() {
                 [
                   _c(
                     "v-card-text",
-                    _vm._l(_vm.traceObj, function(obj) {
+                    _vm._l(JSON.parse(_vm.dialogParamsGet.msg.trace), function(
+                      obj
+                    ) {
                       return _c("span", { staticClass: "traceLine" }, [
                         _vm._v(
                           "\n\t\t\t\t\t\t" +
@@ -1276,7 +1284,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 36:
+/***/ 40:
 /***/ (function(module, exports) {
 
 /*
@@ -1359,7 +1367,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 37:
+/***/ 41:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1378,7 +1386,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(43)
+var listToStyles = __webpack_require__(47)
 
 /*
 type StyleObject = {
@@ -1581,19 +1589,19 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 38:
+/***/ 42:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(171)
+  __webpack_require__(175)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(173)
+var __vue_script__ = __webpack_require__(177)
 /* template */
-var __vue_template__ = __webpack_require__(174)
+var __vue_template__ = __webpack_require__(178)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1633,7 +1641,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 43:
+/***/ 47:
 /***/ (function(module, exports) {
 
 /**

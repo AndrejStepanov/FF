@@ -296,7 +296,7 @@
 			if(vm.socetChanel=='' || vm.socetHref=='' || vm.socetEvent=='')
 				vm.initializeData(vm.data)
 			else {
-				window.Echo.channel(vm.socetChanel).listen('.'+vm.socetEvent, (e) => {
+				window.echo.channel(vm.socetChanel).listen('.'+vm.socetEvent, (e) => {
 					//vm.tree_loading=true;
 					let recive=JSON.parse(e.data);
 					let parent_id = recive[0].parent_id, parent_node=null, parent_childrens =null;

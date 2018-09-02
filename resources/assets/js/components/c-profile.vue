@@ -1,10 +1,10 @@
 <template>
 	<v-speed-dial v-model="fab"  direction="bottom" :open-on-hover="hover" transition="scale-transition"      >
-		<v-btn slot="activator" class="accent"  hover v-model="fab">						<v-icon>account_circle</v-icon> &nbsp;{{userName()}}			</v-btn>
-		<v-btn v-if="userName()=='Гость' "  small class="secondary"  @click='login' >			<v-icon>edit</v-icon>			&nbsp;Авторизоваться		</v-btn>
-		<v-btn v-if="userName()=='Гость' "  small class="secondary"  @click='registration' >	<v-icon>person_add</v-icon>		&nbsp;Зарегистрироваться	</v-btn>		
-		<v-btn  v-if="userName()!='Гость' " small class="secondary" href='\register'> 		<v-icon>add</v-icon>			&nbsp;Изменить пароль		</v-btn>
-		<v-btn v-if="userName()!='Гость' " small class="secondary" @click='logout'>			<v-icon>delete</v-icon>			&nbsp; Выйти				</v-btn>
+		<v-btn slot="activator" class="accent"  hover v-model="fab">									<v-icon>account_circle</v-icon> &nbsp;{{profileUserName()}}		</v-btn>
+		<v-btn v-if="profileUserName()=='Гость' "  small class="secondary"  @click='login' >			<v-icon>edit</v-icon>			&nbsp;Авторизоваться			</v-btn>
+		<v-btn v-if="profileUserName()=='Гость' "  small class="secondary"  @click='registration' >		<v-icon>person_add</v-icon>		&nbsp;Зарегистрироваться		</v-btn>		
+		<v-btn  v-if="profileUserName()!='Гость' " small class="secondary" href='\register'> 			<v-icon>add</v-icon>			&nbsp;Изменить пароль			</v-btn>
+		<v-btn v-if="profileUserName()!='Гость' " small class="secondary" @click='logout'>				<v-icon>delete</v-icon>			&nbsp; Выйти					</v-btn>
 	</v-speed-dial>
 </template>
 
@@ -19,15 +19,13 @@
 		}),		
 		computed: {
 			...mapGetters({
-				userName: 'getUserName',
-				userId: 'getUserId',
-				sysId: 'getSysId',
+				profileUserName: 'profile/getUserName', profileUserId: 'profile/getUserId', profileSysId: 'profile/getSysId',
 			}),
 		},
 		methods: {
 			login(){
-				this.$root.$emit('authNeedDialog'); 
-				//window.location.href = "\\Авторизация?href_back="+window.location.href;
+				let vm=this
+				vm.$store.dispatch('dialog/doShowChange',{name:"auth-login", isShow:true})
 			},
 			registration(){
 				window.location.href = "\\Регистрация?href_back="+window.location.href;
@@ -38,28 +36,28 @@
 			subscribeTicket(newTicket){
 				let vm=this
 				if(vm.userTicket!='' )
-					window.Echo.connector.channels['channel.AuthChange.'+vm.userTicket].unsubscribe()
+					window.echo.connector.channels['channel.AuthChange.'+vm.userTicket].unsubscribe()
 				vm.userTicket=newTicket
-				window.Echo.channel('channel.AuthChange.'+vm.userTicket )
+				window.echo.channel('channel.AuthChange.'+vm.userTicket )
 				.listen('.session.open', (e) => {
-					this.$store.dispatch('userLogin',{userName:e.data.name,userId:e.data.userId, sysId:e.data.sysId, isRoot:e.data.isRoot});
+					vm.$store.dispatch('profile/doLog',{userName:e.data.name,userId:e.data.userId, sysId:e.data.sysId, isRoot:e.data.isRoot});
 					vm.subscribeTicket(e.data.newTicket)
-					vm.$store.dispatch('msgAdding', {title:'Авторизация',text:'Выполнен вход под пользователем '+e.data.name+'!', type:'success'});
+					showMsg({title:'Авторизация',text:'Выполнен вход под пользователем '+e.data.name+'!',  type:'success'});
 				})
 				.listen('.session.close', (e) => {
-					if(this.userId()!='' && this.userId()==e.data.userId || this.sysId()!='' && this.sysId()==e.data.sysId)
-						this.$store.dispatch('userLogout');
+					if(vm.profileUserId()!='' && vm.profileUserId()==e.data.userId || vm.profileSysId()!='' && vm.profileSysId()==e.data.sysId)
+						vm.$store.dispatch('profile/doLogout');
 					vm.subscribeTicket(e.data.newTicket)
-					vm.$store.dispatch('msgAdding', {title:'Авторизация',text:'Пользователь завершил свой сеанс!', type:'success'});
+					showMsg({title:'Авторизация',text:'Пользователь завершил свой сеанс!',  type:'success'  });
 				});
 			},
 		},
 	 	mounted: function (){	
 			let vm=this
-			let User_info = window.User_info||{}
-			if(nvl(User_info.name)!='')
-				vm.$store.dispatch('userLogin',{userName:User_info.name,userId:User_info.userId, sysId:User_info.sysId, isRoot:User_info.isRoot})
-			vm.subscribeTicket(window.Laravel.ticket)
+			let userInfo = window.userInfo||{}
+			if(nvl(userInfo.name)!='')
+				vm.$store.dispatch('profile/doLog',{userName:userInfo.name, userId:userInfo.userId, sysId:userInfo.sysId, isRoot:userInfo.isRoot})
+			vm.subscribeTicket(window.laravel.ticket)
 		},
 	}
 </script>

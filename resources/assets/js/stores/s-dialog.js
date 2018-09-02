@@ -1,60 +1,76 @@
 export default {
+	namespaced: true,
 	state: {	//= data
 		dialogs:[],
 	},
 	getters: { // computed properties
-		dialogFindById: state => daiologId => {
-			return state.dialogs.find(dialog =>dialog.id===daiologId )
+		getById: state => id => {
+			return nvl(state.dialogs.find(dialog =>dialog.config.id===id ),0)
 		},
-		dialogFindByName: state => daiologName => {
-			return state.dialogs.find(dialog =>dialog.name===daiologName )
+		getByName: state => name => {
+			return nvl(state.dialogs.find(dialog =>dialog.config.name===name ),0)
 		},
-		dialogIsShow: (state, getters) => daiologId =>{
-			let dialog=getters.dialogFindById(daiologId)
-			return !dialog ? false : dialog.isShow
+		getDilog: (state,getters) => ({id,name}) => {
+			return id>0? getters.getById(id) :nvl(name)!=''? getters.getByName(name) : null
 		},
-		dialogPersistent: (state, getters) => daiologId =>{
-			let dialog=getters.dialogFindById(daiologId)
-			return !dialog ? false : dialog.persistent
+		getConfig: (state, getters) => id =>{
+			return nvl(getters.getById(id).config)
 		},
-		dialogTitle: (state, getters) => daiologId =>{
-			let dialog=getters.dialogFindById(daiologId)
-			return !dialog ? 'Заголовок диалога!' : dialog.title
+		getShow: (state, getters) => id =>{
+			return nvl(getters.getById(id).isShow)
 		},
-		dialogName: (state, getters) => daiologId =>{
-			let dialog=getters.dialogFindById(daiologId)
-			return !dialog ? 'Название диалога!' : dialog.name
+		getParams: (state, getters) => id =>{
+			return nvl(getters.getById(id).params)
 		},
 	},
 	actions:{	
-		dialogInit({commit,getters,state},{daiologId, daiologTitle, daiologPersistent, dialogName, }){
-			if ( getters.dialogFindById(daiologId))
+		async doInit({commit,getters,state},{config, params, }){
+			if(config==undefined || config.id==undefined)
+				showError({ title:'Ошибка инициализации окна', text:'Не указан идентификатор окна', });
+			if (getters.getById(config.id)!=0)
 				return
-			daiologPersistent=daiologPersistent||true
-			commit('dialogAdd',{daiologId,daiologTitle,daiologPersistent,dialogName})
+			config.persistent=config.persistent||true
+			commit('adding',{config, params})
 		},
-		dialogShowChange({commit,getters,state},{daiologId_,daiologName, isShow}){
-			let dialog=false
-			if(daiologId_>0)
-				dialog=getters.dialogFindById(daiologId_)
-			else if(nvl(daiologName)!='')
-				dialog=getters.dialogFindByName(daiologName)
-			if ( !dialog)
+		async doShowChange({commit,getters,state},{id,name, isShow}){
+			let dialog=getters.getDilog({id,name})
+			if ( dialog==0)
 				return;
-			if(!isShow)
-				window._Vue.$root.$emit('dialogClose'+daiologId_)
-			else
-				window._Vue.$root.$emit('dialogOpen'+daiologId_)
-			commit('dialogShowSet',{dialog, isShow})
+			commit('showSetting',{dialog, isShow})
+		},
+		async doSetAllParams({commit,getters,state},{id,name, params}){
+			let dialog=getters.getDilog({id,name})
+			if ( dialog==0)
+				return;
+			commit('allParamSetting',{dialog, params})
+		},
+		async doSetAllParamsAndShow({dispatch,commit,getters,state},{id,name, params}){
+			await dispatch('doSetAllParams',{id,name, params}) 
+			await dispatch('doShowChange',{id,name, isShow:true}) 
+		},
+		async doSetParamByName({commit,getters,state},{id,name, paramsName, paramsVal}){
+			let dialog=getters.getDilog({id,name})
+			if ( dialog==0)
+				return;
+			commit('paramSetting',{dialog, paramsName, paramsVal})
+		},
+		async doSetParamByNameAndShow({dispatch,commit,getters,state},{id,name, paramsName, paramsVal}){
+			await dispatch('doSetParamByName',{id,name, paramsName, paramsVal}) 
+			await dispatch('doShowChange',{id,name, isShow:true}) 
 		},
 	},
 	mutations:{
-		dialogAdd(state, {daiologId,daiologTitle,daiologPersistent,dialogName}){
-			state.dialogs.push({id:daiologId, isShow:false, title:daiologTitle, persistent:daiologPersistent, name:dialogName})
+		adding(state, {config, params,}){
+			state.dialogs.push({config, params, isShow:false,})
 		},
-		dialogShowSet(state, {dialog, isShow}){
+		showSetting(state, {dialog, isShow}){
 			dialog.isShow =isShow
 		},
+		allParamSetting(state, {dialog, params}){
+			dialog.params =params
+		},
+		paramSetting(state, {dialog, paramsName, paramsVal}){
+			dialog.params[paramsName] =paramsVal
+		},
 	},
-
 }
