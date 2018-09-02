@@ -11,7 +11,6 @@ export default {
 			return getters.getGroup(num)[code]
 		},
 		getTodo: (state,getters) =>(num)=> {
-			console.log(getters);
 			let tmp={}, data=getters.getGroup(num)
 			Object.keys(data).forEach(code=>{
 				tmp[code]=data[code].value

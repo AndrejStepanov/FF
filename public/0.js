@@ -1155,7 +1155,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		vm.$store.dispatch('param/doInit', { num: vm.paramsId });
 		vm.$root.$on('dialog' + vm.dialogId + 'InputsCols' + vm.paramsId, function (obj) {
 			vm.dialogHeight = vm.dialogConfigGet.height > 0 ? vm.dialogConfigGet.height : obj.rowInColA * 74 + 149;
-			vm.dialogWidth = vm.dialogConfigGet.width > 0 ? vm.dialogConfigGet.width : obj.colsCnt * 370;
+			vm.dialogWidth = vm.dialogConfigGet.width > 0 ? vm.dialogConfigGet.width : obj.colsCnt * 410;
 		});
 		vm.$root.$on('dialog' + vm.dialogId + 'Send', function () {
 			var vm = _this;

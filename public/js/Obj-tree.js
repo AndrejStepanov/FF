@@ -1396,7 +1396,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		getTodo: function getTodo(state, getters) {
 			return function (num) {
-				console.log(getters);
 				var tmp = {},
 				    data = getters.getGroup(num);
 				Object.keys(data).forEach(function (code) {

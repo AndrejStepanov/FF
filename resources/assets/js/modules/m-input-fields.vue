@@ -86,7 +86,7 @@
 			vm.$store.dispatch('param/doInit', {num: vm.paramsId })
 			vm.$root.$on('dialog'+vm.dialogId+'InputsCols'+vm.paramsId, (obj)=>{
 				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : obj.rowInColA *74 + 149
-				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width :obj.colsCnt*370;
+				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width :obj.colsCnt*410;
 			}); 
 			vm.$root.$on('dialog'+vm.dialogId+'Send', ()=>{
 				let vm=this
