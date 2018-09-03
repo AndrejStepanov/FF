@@ -50,6 +50,7 @@ time-with-seconds	##:##:##
 			maskFin: '',
 			error: 'Некорректное значение',
 			items: [],
+			lastTimeSend: 0,
 		}),
 /*
 :id="row.id" :code="row.code" :columnName="row.column_name" :columnDesc="row.column_desc" :dialogId="dialogId"
@@ -59,7 +60,7 @@ time-with-seconds	##:##:##
 		props:{
 			data:{type: Object, required: true, default:()=>{return {}}},
 			dialogId: {type:  Number},
-			paramsId: {type: Number},
+			paramsId: {type: String},
 			needCheckBox:{type:  String, default:'N'},
 		},
 		computed: {
@@ -118,7 +119,11 @@ time-with-seconds	##:##:##
 			},
 			async checkRefresh(value){
 				let vm=this
-				vm.checked=nvl(vm.value,'')==''?false:true	
+				let curTime = new Date().getTime()
+				vm.checked=nvl(vm.value,'')==''?false:true
+				if ( curTime<vm.lastTimeSend+500 )
+					return
+				vm.lastTimeSend=curTime
 				if(vm.checked)
 					await  vm.$store.dispatch('param/doSet', {num: vm.paramsId, code: vm.code, value:vm.value , view:vm.value })
 				else

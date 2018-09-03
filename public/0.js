@@ -1093,7 +1093,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	data: function data() {
 		return {
 			inputsValid: false,
-			paramsId: Math.floor(Math.random() * MAX_ID),
 			dialogWidth: 10,
 			dialogHeight: 10,
 			paramsOrig: {},
@@ -1141,7 +1140,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		dialogSave: function dialogSave() {
 			var vm = this;
 			if (!vm.$refs[vm.dialogConfigGet.name].validate()) return;
-			var todo = _extends({}, vm.paramsTodo(vm.paramsId), vm.dialogParamsGet.params);
+			var todo = _extends({}, vm.paramsTodo(vm.dialogConfigGet.name), vm.dialogParamsGet.params);
 			if (vm.dialogParamsGet.checkFunc) vm.dialogParamsGet.checkFunc(todo);
 			if (vm.dialogParamsGet.saveFunc) vm.dialogParamsGet.saveFunc(todo);else sendRequest({ href: nvl(vm.dialogParamsGet.socetHref, '/data_command'), type: vm.dialogParamsGet.socetEvent, data: todo, hrefBack: vm.dialogParamsGet.hrefBack, handler: function handler() {
 					return vm.$refs.dialog.dialogClose();
@@ -1152,8 +1151,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		var _this = this;
 
 		var vm = this;
-		vm.$store.dispatch('param/doInit', { num: vm.paramsId });
-		vm.$root.$on('dialog' + vm.dialogId + 'InputsCols' + vm.paramsId, function (obj) {
+		vm.$store.dispatch('param/doInit', { num: vm.dialogConfigGet.name });
+		vm.$root.$on('dialog' + vm.dialogId + 'InputsCols' + vm.dialogConfigGet.name, function (obj) {
 			vm.dialogHeight = vm.dialogConfigGet.height > 0 ? vm.dialogConfigGet.height : obj.rowInColA * 74 + 149;
 			vm.dialogWidth = vm.dialogConfigGet.width > 0 ? vm.dialogConfigGet.width : obj.colsCnt * 410;
 		});
@@ -1244,7 +1243,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	props: {
 		inputs: { type: Array, required: true },
 		dialogId: { type: Number },
-		paramsId: { type: Number },
+		paramsId: { type: String },
 		needCheckBox: { type: String, default: 'N' }
 	},
 	computed: {
@@ -1399,7 +1398,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			mask: null,
 			maskFin: '',
 			error: 'Некорректное значение',
-			items: []
+			items: [],
+			lastTimeSend: 0
 		};
 	},
 	/*
@@ -1412,7 +1412,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				return {};
 			} },
 		dialogId: { type: Number },
-		paramsId: { type: Number },
+		paramsId: { type: String },
 		needCheckBox: { type: String, default: 'N' }
 	},
 	computed: {
@@ -1472,32 +1472,43 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		checkRefresh: function () {
 			var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(value) {
-				var vm;
+				var vm, curTime;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
 								vm = this;
+								curTime = new Date().getTime();
 
 								vm.checked = nvl(vm.value, '') == '' ? false : true;
 
-								if (!vm.checked) {
-									_context.next = 7;
+								if (!(curTime < vm.lastTimeSend + 500)) {
+									_context.next = 5;
 									break;
 								}
 
-								_context.next = 5;
-								return vm.$store.dispatch('param/doSet', { num: vm.paramsId, code: vm.code, value: vm.value, view: vm.value });
+								return _context.abrupt('return');
 
 							case 5:
-								_context.next = 9;
-								break;
+								vm.lastTimeSend = curTime;
 
-							case 7:
+								if (!vm.checked) {
+									_context.next = 11;
+									break;
+								}
+
 								_context.next = 9;
-								return vm.$store.dispatch('param/doSet', { num: vm.paramsId, code: vm.code, value: undefined, view: undefined });
+								return vm.$store.dispatch('param/doSet', { num: vm.paramsId, code: vm.code, value: vm.value, view: vm.value });
 
 							case 9:
+								_context.next = 13;
+								break;
+
+							case 11:
+								_context.next = 13;
+								return vm.$store.dispatch('param/doSet', { num: vm.paramsId, code: vm.code, value: undefined, view: undefined });
+
+							case 13:
 							case 'end':
 								return _context.stop();
 						}
@@ -1708,7 +1719,7 @@ var render = function() {
             attrs: {
               inputs: _vm.inputs,
               dialogId: _vm.dialogId,
-              paramsId: _vm.paramsId
+              paramsId: _vm.dialogConfigGet.name
             }
           })
         ],

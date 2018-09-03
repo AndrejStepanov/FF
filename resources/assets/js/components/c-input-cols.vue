@@ -19,7 +19,7 @@
 		props:{
 			inputs: {type: Array, required: true},
 			dialogId: {type: Number},
-			paramsId: {type: Number},
+			paramsId: {type: String},
 			needCheckBox: {type: String, default:'N'},
 		},
 		computed: {

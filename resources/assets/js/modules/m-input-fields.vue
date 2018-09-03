@@ -1,7 +1,7 @@
 <template>
 	<c-dialog ref='dialog' :dialogId="dialogId" :widthOrig="dialogWidth" :heightOrig="dialogHeight" :buttons='buttons' @dialogSave='dialogSave' >
 		<v-form v-model="inputsValid" :ref="dialogConfigGet.name" > 
-			<c-input-cols  :inputs="inputs" :dialogId="dialogId" :paramsId="paramsId" />
+			<c-input-cols  :inputs="inputs" :dialogId="dialogId" :paramsId="dialogConfigGet.name" />
 		</v-form>
 	</c-dialog>
 </template>
@@ -16,7 +16,6 @@
 		name:'m-input-fields',
 		data: () => ({
 			inputsValid: false,
-			paramsId:Math.floor(Math.random() * MAX_ID),
 			dialogWidth:10,
 			dialogHeight:10,
 			paramsOrig:{},
@@ -72,7 +71,7 @@
 				let vm=this
 				if (!vm.$refs[vm.dialogConfigGet.name].validate()) 
 					return;
-				let todo={...vm.paramsTodo(vm.paramsId), ...vm.dialogParamsGet.params}
+				let todo={...vm.paramsTodo(vm.dialogConfigGet.name), ...vm.dialogParamsGet.params}
 				if (vm.dialogParamsGet.checkFunc)
 					vm.dialogParamsGet.checkFunc(todo)
 				if(vm.dialogParamsGet.saveFunc)
@@ -83,8 +82,8 @@
 		},
 		created: function (){
 			let vm=this
-			vm.$store.dispatch('param/doInit', {num: vm.paramsId })
-			vm.$root.$on('dialog'+vm.dialogId+'InputsCols'+vm.paramsId, (obj)=>{
+			vm.$store.dispatch('param/doInit', {num: vm.dialogConfigGet.name })
+			vm.$root.$on('dialog'+vm.dialogId+'InputsCols'+vm.dialogConfigGet.name, (obj)=>{
 				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : obj.rowInColA *74 + 149
 				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width :obj.colsCnt*410;
 			}); 
