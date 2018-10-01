@@ -1148,16 +1148,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		}
 	},
 	created: function created() {
-		var _this = this;
-
 		var vm = this;
 		vm.$store.dispatch('param/doInit', { num: vm.dialogConfigGet.name });
 		vm.$root.$on('dialog' + vm.dialogId + 'InputsCols' + vm.dialogConfigGet.name, function (obj) {
-			vm.dialogHeight = vm.dialogConfigGet.height > 0 ? vm.dialogConfigGet.height : obj.rowInColA * 74 + 149;
-			vm.dialogWidth = vm.dialogConfigGet.width > 0 ? vm.dialogConfigGet.width : obj.colsCnt * 410;
+			vm.dialogHeight = vm.dialogConfigGet.height > 0 ? vm.dialogConfigGet.height : obj.rowInColA * 74 + 140;
+			vm.dialogWidth = vm.dialogConfigGet.width > 0 ? vm.dialogConfigGet.width : vm.dialogConfigGet.title.length * 20 + 110 > obj.colsCnt * 300 ? vm.dialogConfigGet.title.length * 20 + 110 : obj.colsCnt * 300;
 		});
 		vm.$root.$on('dialog' + vm.dialogId + 'Send', function () {
-			var vm = _this;
 			vm.dialogSave();
 		});
 	}

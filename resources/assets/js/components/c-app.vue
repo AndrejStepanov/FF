@@ -1,9 +1,9 @@
 <template>
     <v-app dark>
+		<c-head :curentSystem='curentSystem' :showLeft="showLeft" :showRight="showRight" />
 		<v-content>
 			<slot />
-		</v-content>
-		<c-head :curentSystem='curentSystem' :showLeft="showLeft" :showRight="showRight" />
+		</v-content>		
 		<c-footer />
 		<c-msg-list />
 		

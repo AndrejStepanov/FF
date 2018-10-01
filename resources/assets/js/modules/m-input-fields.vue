@@ -69,7 +69,7 @@
 		methods: {
 			dialogSave(){
 				let vm=this
-				if (!vm.$refs[vm.dialogConfigGet.name].validate()) 
+				if (!vm.$refs[vm.dialogConfigGet.name].validate())
 					return;
 				let todo={...vm.paramsTodo(vm.dialogConfigGet.name), ...vm.dialogParamsGet.params}
 				if (vm.dialogParamsGet.checkFunc)
@@ -84,11 +84,10 @@
 			let vm=this
 			vm.$store.dispatch('param/doInit', {num: vm.dialogConfigGet.name })
 			vm.$root.$on('dialog'+vm.dialogId+'InputsCols'+vm.dialogConfigGet.name, (obj)=>{
-				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : obj.rowInColA *74 + 149
-				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width :obj.colsCnt*410;
+				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : obj.rowInColA *74 + 140 
+				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width :(vm.dialogConfigGet.title.length*20+110>obj.colsCnt*300?vm.dialogConfigGet.title.length*20+110:obj.colsCnt*300  )
 			}); 
 			vm.$root.$on('dialog'+vm.dialogId+'Send', ()=>{
-				let vm=this
 				vm.dialogSave();
 			});
 		},

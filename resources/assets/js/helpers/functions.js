@@ -20,6 +20,13 @@ function appThemeInit(){
 		'.primary--text 							{color: white !important;} '+
 		'.margin-5px	 							{color: white !important;} '+
 		'.top-center 								{top:50%;} '+
+		'.overflow-y-auto 							{overflow-y: auto;} '+
+		'.display--grid 							{display: grid;} '+
+		'.display--flex 							{display: flex;} '+
+		'.flex-direction--column					{flex-direction: column;} '+
+		'.flex--inherit								{flex: inherit;} '+
+		'.flex--99 									{flex:99} '+
+		'.padding-right--0 							{padding-right: 0px !important;} '+
 		'.max-height 								{height: 100%;} '+
 		'.dispContent 								{display: contents;} '+
 		'.underline 								{text-decoration: underline;} '+

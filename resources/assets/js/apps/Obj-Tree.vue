@@ -1,10 +1,12 @@
 <template>
 	<c-app curentSystem="Работа с объектами"  >
-		<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
-			<v-text-field name="treeSearch" class="check-size" append-icon="search" v-model="treeSearch"  single-line label="Поиск" id="treeSearch" @keyup.enter="treeSearchSubmit"/>
-			<v-btn block  small class="check-size accent" @click="openDialog(treeAddDialogId)" > <v-icon>add</v-icon> Добавить</v-btn>
-			<c-tree class='margin-top tree-border-top'  allow-batch whole-row @item-click = "itemClick" textFieldName="tree_name" typeFieldName="tree_group"  
-				socetHref="/socet_command" socetEvent="object.tree.by.root" socetChanel="channel.ObjTreeData" :iconDic="iconDic" />
+		<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app class="display--flex flex-direction--column">
+			<v-text-field name="treeSearch" class="check-size flex--inherit" append-icon="search" v-model="treeSearch"  single-line label="Поиск" id="treeSearch" @keyup.enter="treeSearchSubmit"/>
+			<v-btn block  small class="check-size accent flex--inherit min-height--20" @click="openDialog(treeAddDialogId)" > <v-icon>add</v-icon> Добавить</v-btn>
+			<hr>
+			<v-responsive class="overflow-y-auto flex--99" width = '100%'>
+				<c-tree @item-click = "itemClick" textFieldName="tree_name" typeFieldName="tree_group"  socetHref="/socet_command" socetEvent="object.tree.by.root" socetChanel="channel.ObjTreeData" :iconDic="iconDic" app />
+			</v-responsive>
 		</v-navigation-drawer>
 		
 		<component v-bind:is="dialogType" v-if="isShowenDialog(treeAddDialogId)" :dialogId="treeAddDialogId"/>
@@ -77,5 +79,6 @@
 	div.check-size,
 	button.check-size           {max-width: 90%;   margin-left: 5%;}
 	div.margin-top            	{margin-top: 15px;}
+	.min-height--20				{min-height: 20px;}
 	div.tree-border-top        	{border-top-width: 1px;     border-top-style: inset;    border-top-color: #c7c7c7;}
 </style>

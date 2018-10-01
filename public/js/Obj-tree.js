@@ -2136,7 +2136,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-footer",
-    { staticClass: "primary bold", attrs: { height: 24, fixed: "" } },
+    {
+      staticClass: "primary bold padding-right--0 ",
+      attrs: { fixed: "", app: "" }
+    },
     [
       _c("span", [_vm._v("   FF - Конструктор форм")]),
       _vm._v(" "),
@@ -2635,8 +2638,6 @@ var render = function() {
     "v-app",
     { attrs: { dark: "" } },
     [
-      _c("v-content", [_vm._t("default")], 2),
-      _vm._v(" "),
       _c("c-head", {
         attrs: {
           curentSystem: _vm.curentSystem,
@@ -2644,6 +2645,8 @@ var render = function() {
           showRight: _vm.showRight
         }
       }),
+      _vm._v(" "),
+      _c("v-content", [_vm._t("default")], 2),
       _vm._v(" "),
       _c("c-footer"),
       _vm._v(" "),
@@ -2779,7 +2782,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(47)
+var listToStyles = __webpack_require__(48)
 
 /*
 type StyleObject = {
@@ -2987,69 +2990,14 @@ function applyToTag (styleElement, obj) {
 /* 45 */,
 /* 46 */,
 /* 47 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(130)
+var __vue_script__ = __webpack_require__(54)
 /* template */
-var __vue_template__ = __webpack_require__(131)
+var __vue_template__ = __webpack_require__(55)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -3088,6 +3036,132 @@ module.exports = Component.exports
 
 
 /***/ }),
+/* 48 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'c-loading',
+    data: function data() {
+        return {};
+    }
+});
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { staticClass: "text-xs-center max-height", attrs: { fluid: "" } },
+    [
+      _c(
+        "v-layout",
+        { staticClass: "max-height", attrs: { row: "", wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            { attrs: { column: "" } },
+            [
+              _c("v-progress-circular", {
+                staticClass: "top-center",
+                attrs: {
+                  size: 70,
+                  width: 7,
+                  indeterminate: "",
+                  color: "primary"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-084ff8ea", module.exports)
+  }
+}
+
+/***/ }),
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
 /* 71 */,
 /* 72 */,
 /* 73 */,
@@ -3141,14 +3215,16 @@ module.exports = Component.exports
 /* 121 */,
 /* 122 */,
 /* 123 */,
-/* 124 */
+/* 124 */,
+/* 125 */,
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(125);
+module.exports = __webpack_require__(127);
 
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3169,7 +3245,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_vuetify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_laravel_echo__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_laravel_echo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_laravel_echo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__apps_Obj_Tree_vue__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__apps_Obj_Tree_vue__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__apps_Obj_Tree_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__apps_Obj_Tree_vue__);
 
 
@@ -3207,17 +3283,17 @@ window._vue = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({ el: '#app', stor
 appThemeInit();
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(127)
+  __webpack_require__(129)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(129)
+var __vue_script__ = __webpack_require__(131)
 /* template */
 var __vue_template__ = __webpack_require__(140)
 /* template functional */
@@ -3258,13 +3334,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(128);
+var content = __webpack_require__(130);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -3284,7 +3360,7 @@ if(false) {
 }
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(40)(undefined);
@@ -3292,20 +3368,20 @@ exports = module.exports = __webpack_require__(40)(undefined);
 
 
 // module
-exports.push([module.i, "\ndiv.tree div.tree-selected,\ndiv.tree div.tree-hovered {\n  color: black;\n}\ndiv.check-size,\nbutton.check-size {\n  max-width: 90%;\n  margin-left: 5%;\n}\ndiv.margin-top {\n  margin-top: 15px;\n}\ndiv.tree-border-top {\n  border-top-width: 1px;\n  border-top-style: inset;\n  border-top-color: #c7c7c7;\n}\n", ""]);
+exports.push([module.i, "\ndiv.tree div.tree-selected,\ndiv.tree div.tree-hovered {\n  color: black;\n}\ndiv.check-size,\nbutton.check-size {\n  max-width: 90%;\n  margin-left: 5%;\n}\ndiv.margin-top {\n  margin-top: 15px;\n}\n.min-height--20 {\n  min-height: 20px;\n}\ndiv.tree-border-top {\n  border-top-width: 1px;\n  border-top-style: inset;\n  border-top-color: #c7c7c7;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_app__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_c_app___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_c_app__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_loading__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_loading__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_loading___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_loading__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_tree_c_tree__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_tree_c_tree___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_tree_c_tree__);
@@ -3314,6 +3390,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
 //
 //
 //
@@ -3391,79 +3469,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 		vm.$store.dispatch('dialog/doInit', { config: { id: vm.treeAddDialogId, name: "object-tree-add", title: "Параметры объекта" }, params: { socetHref: "/data_command", socetEvent: "object.tree.add", checkFunc: vm.objectTreeAddCheck } });
 	}
 });
-
-/***/ }),
-/* 130 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'c-loading',
-    data: function data() {
-        return {};
-    }
-});
-
-/***/ }),
-/* 131 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
-    { staticClass: "text-xs-center max-height", attrs: { fluid: "" } },
-    [
-      _c(
-        "v-layout",
-        { staticClass: "max-height", attrs: { row: "", wrap: "" } },
-        [
-          _c(
-            "v-flex",
-            { attrs: { column: "" } },
-            [
-              _c("v-progress-circular", {
-                staticClass: "top-center",
-                attrs: {
-                  size: 70,
-                  width: 7,
-                  indeterminate: "",
-                  color: "primary"
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-084ff8ea", module.exports)
-  }
-}
 
 /***/ }),
 /* 132 */
@@ -3564,7 +3569,7 @@ exports.push([module.i, "/* tree default theme */\n.tree-node,\n.tree-children,\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_tree_item_vue__ = __webpack_require__(136);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_tree_item_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__c_tree_item_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_loading__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_loading__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_loading___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_loading__);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -4477,6 +4482,7 @@ var render = function() {
       _c(
         "v-navigation-drawer",
         {
+          staticClass: "display--flex flex-direction--column",
           attrs: {
             fixed: "",
             left: "",
@@ -4493,7 +4499,7 @@ var render = function() {
         },
         [
           _c("v-text-field", {
-            staticClass: "check-size",
+            staticClass: "check-size flex--inherit",
             attrs: {
               name: "treeSearch",
               "append-icon": "search",
@@ -4524,7 +4530,7 @@ var render = function() {
           _c(
             "v-btn",
             {
-              staticClass: "check-size accent",
+              staticClass: "check-size accent flex--inherit min-height--20",
               attrs: { block: "", small: "" },
               on: {
                 click: function($event) {
@@ -4536,20 +4542,30 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("c-tree", {
-            staticClass: "margin-top tree-border-top",
-            attrs: {
-              "allow-batch": "",
-              "whole-row": "",
-              textFieldName: "tree_name",
-              typeFieldName: "tree_group",
-              socetHref: "/socet_command",
-              socetEvent: "object.tree.by.root",
-              socetChanel: "channel.ObjTreeData",
-              iconDic: _vm.iconDic
+          _c("hr"),
+          _vm._v(" "),
+          _c(
+            "v-responsive",
+            {
+              staticClass: "overflow-y-auto flex--99",
+              attrs: { width: "100%" }
             },
-            on: { "item-click": _vm.itemClick }
-          })
+            [
+              _c("c-tree", {
+                attrs: {
+                  textFieldName: "tree_name",
+                  typeFieldName: "tree_group",
+                  socetHref: "/socet_command",
+                  socetEvent: "object.tree.by.root",
+                  socetChanel: "channel.ObjTreeData",
+                  iconDic: _vm.iconDic,
+                  app: ""
+                },
+                on: { "item-click": _vm.itemClick }
+              })
+            ],
+            1
+          )
         ],
         1
       ),
@@ -4575,4 +4591,4 @@ if (false) {
 }
 
 /***/ })
-],[124]);
+],[126]);

@@ -1,6 +1,6 @@
 <template>
 	<c-app :curentSystem="curentSystem" :showLeft=true :showRight=true   >
-		<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app>
+		<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app >
 			<v-list dense>
 				<v-list-tile v-for="item in systems" :key="item.name" @click="choose_sys( item.name );">
 					<v-list-tile-action>
@@ -12,7 +12,7 @@
 				</v-list-tile>
 			</v-list>
 		</v-navigation-drawer>
-		<v-navigation-drawer fixed v-model="drawerRight" right  :clipped="$vuetify.breakpoint.width  > 1264"  app >
+		<v-navigation-drawer fixed v-model="drawerRight" right  :clipped="$vuetify.breakpoint.width  > 1264" app >
 			<v-list dense>
 				<v-list-tile v-for="item in Links" :key="item.id" v-bind:href="item.is_new_type==1?'':item.href" >                        
 					<v-list-tile-action v-if="item.is_new_type!=1 " >
@@ -30,7 +30,6 @@
 
 <script>
 	import CApp from '../components/c-app';
-
 	export default {
 		data: () => ({
 			drawerLeft: true,

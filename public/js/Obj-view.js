@@ -1226,7 +1226,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-footer",
-    { staticClass: "primary bold", attrs: { height: 24, fixed: "" } },
+    {
+      staticClass: "primary bold padding-right--0 ",
+      attrs: { fixed: "", app: "" }
+    },
     [
       _c("span", [_vm._v("   FF - Конструктор форм")]),
       _vm._v(" "),
@@ -1732,8 +1735,6 @@ var render = function() {
     "v-app",
     { attrs: { dark: "" } },
     [
-      _c("v-content", [_vm._t("default")], 2),
-      _vm._v(" "),
       _c("c-head", {
         attrs: {
           curentSystem: _vm.curentSystem,
@@ -1741,6 +1742,8 @@ var render = function() {
           showRight: _vm.showRight
         }
       }),
+      _vm._v(" "),
+      _c("v-content", [_vm._t("default")], 2),
       _vm._v(" "),
       _c("c-footer"),
       _vm._v(" "),
@@ -1875,7 +1878,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(47)
+var listToStyles = __webpack_require__(48)
 
 /*
 type StyleObject = {
@@ -2078,7 +2081,7 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 47:
+/***/ 48:
 /***/ (function(module, exports) {
 
 /**
