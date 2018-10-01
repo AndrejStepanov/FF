@@ -71,7 +71,7 @@
 				let vm=this
 				if (!vm.$refs[vm.dialogConfigGet.name].validate())
 					return;
-				let todo={...vm.paramsTodo(vm.dialogConfigGet.name), ...vm.dialogParamsGet.params}
+				let todo={...vm.paramsTodo(vm.dialogConfigGet.name), ...vm.dialogParamsGet.todo}
 				if (vm.dialogParamsGet.checkFunc)
 					vm.dialogParamsGet.checkFunc(todo)
 				if(vm.dialogParamsGet.saveFunc)

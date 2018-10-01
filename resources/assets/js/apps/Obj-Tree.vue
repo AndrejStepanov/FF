@@ -1,5 +1,5 @@
 <template>
-	<c-app curentSystem="Работа с объектами"  >
+	<c-app curentSystem="Работа с объектами" :showLeft=true  >
 		<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app class="display--flex flex-direction--column">
 			<v-text-field name="treeSearch" class="check-size flex--inherit" append-icon="search" v-model="treeSearch"  single-line label="Поиск" id="treeSearch" @keyup.enter="treeSearchSubmit"/>
 			<v-btn block  small class="check-size accent flex--inherit min-height--20" @click="openDialog(treeAddDialogId)" > <v-icon>add</v-icon> Добавить</v-btn>
@@ -60,7 +60,7 @@
 				switch(dialogId){
 					case vm.treeAddDialogId: 
 						vm.dialogType='m-input-fields'
-						vm.dialogSetParamByNameAndShow({id:dialogId,paramsName: 'treeId',paramsVal: vm.treeAddDialogParams.treeId} )
+						vm.dialogSetParamByNameAndShow({id:dialogId,paramsName: 'todo',paramsVal: {treeId:vm.treeAddDialogParams.treeId} } )
 						break
 					default: showMsg( {title:'Ошибка при открытии окна',text:'Запрашиваемое окно не найдено!'});
 				}
@@ -68,6 +68,9 @@
 		},
 		created: function (){
 			let vm=this
+			vm.$root.$on('headDrawerLeftClick', (obj)=>{
+				vm.drawerLeft=!vm.drawerLeft;
+			});
 			vm.$store.dispatch('dialog/doInit', {config:{id:vm.treeAddDialogId, name:"object-tree-add", title:"Параметры объекта"}, params:{socetHref:"/data_command", socetEvent:"object.tree.add", checkFunc:vm.objectTreeAddCheck} })
 		},
 	}

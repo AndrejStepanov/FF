@@ -3457,7 +3457,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 			switch (dialogId) {
 				case vm.treeAddDialogId:
 					vm.dialogType = 'm-input-fields';
-					vm.dialogSetParamByNameAndShow({ id: dialogId, paramsName: 'treeId', paramsVal: vm.treeAddDialogParams.treeId });
+					vm.dialogSetParamByNameAndShow({ id: dialogId, paramsName: 'todo', paramsVal: { treeId: vm.treeAddDialogParams.treeId } });
 					break;
 				default:
 					showMsg({ title: 'Ошибка при открытии окна', text: 'Запрашиваемое окно не найдено!' });
@@ -3466,6 +3466,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 	}),
 	created: function created() {
 		var vm = this;
+		vm.$root.$on('headDrawerLeftClick', function (obj) {
+			vm.drawerLeft = !vm.drawerLeft;
+		});
 		vm.$store.dispatch('dialog/doInit', { config: { id: vm.treeAddDialogId, name: "object-tree-add", title: "Параметры объекта" }, params: { socetHref: "/data_command", socetEvent: "object.tree.add", checkFunc: vm.objectTreeAddCheck } });
 	}
 });
@@ -4477,7 +4480,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "c-app",
-    { attrs: { curentSystem: "Работа с объектами" } },
+    { attrs: { curentSystem: "Работа с объектами", showLeft: true } },
     [
       _c(
         "v-navigation-drawer",

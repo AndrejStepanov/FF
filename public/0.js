@@ -1140,7 +1140,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		dialogSave: function dialogSave() {
 			var vm = this;
 			if (!vm.$refs[vm.dialogConfigGet.name].validate()) return;
-			var todo = _extends({}, vm.paramsTodo(vm.dialogConfigGet.name), vm.dialogParamsGet.params);
+			var todo = _extends({}, vm.paramsTodo(vm.dialogConfigGet.name), vm.dialogParamsGet.todo);
 			if (vm.dialogParamsGet.checkFunc) vm.dialogParamsGet.checkFunc(todo);
 			if (vm.dialogParamsGet.saveFunc) vm.dialogParamsGet.saveFunc(todo);else sendRequest({ href: nvl(vm.dialogParamsGet.socetHref, '/data_command'), type: vm.dialogParamsGet.socetEvent, data: todo, hrefBack: vm.dialogParamsGet.hrefBack, handler: function handler() {
 					return vm.$refs.dialog.dialogClose();
