@@ -20,7 +20,7 @@
 
 			<v-layout row justify-center color="primary" >
 				<v-flex xs12>
-					<v-toolbar slot='header' dense  color="primary" >		
+					<v-toolbar dense  color="primary" >		
 						<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{row.title}}</v-btn>
 						<v-spacer/>
 						<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{row.title}}</v-btn>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-	import {mapGetters,mapActions} from 'vuex'
+	import XStore from '../mixins/x-store'
 	import cDragResize from './c-drag-resize/c-drag-resize';
     export default {
 		name:'c-dialog',
@@ -54,9 +54,6 @@
 			dragNoLineStyle:{type: Boolean, default: true},
 		},
 		computed: {
-			...mapGetters({
-				dialogConfig:'dialog/getConfig',
-			}),
 			dialogConfigGet(){
 				let vm=this
 				return vm.dialogConfig(vm.dialogId)
@@ -83,6 +80,9 @@
         components: {
             cDragResize
 		},
+		mixins: [
+			XStore,
+		],
 		methods: {
             changeSize(newRect) {
 				let vm=this
@@ -102,7 +102,7 @@
 					this.$emit(event);
 			},
 			dialogClose(){
-				this.$store.dispatch('dialog/doShowChange',{id:this.dialogId, isShow:false})
+				this.dialogShowChange({id:this.dialogId, isShow:false})
 			},
 		},
 		mounted: function (){

@@ -1,77 +1,63 @@
 <template>
-	<c-app curentSystem="Работа с объектами" :showLeft=true  >
-		<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app class="display--flex flex-direction--column">
-			<v-text-field name="treeSearch" class="check-size flex--inherit" append-icon="search" v-model="treeSearch"  single-line label="Поиск" id="treeSearch" @keyup.enter="treeSearchSubmit"/>
-			<v-btn block  small class="check-size accent flex--inherit min-height--20" @click="openDialog(treeAddDialogId)" > <v-icon>add</v-icon> Добавить</v-btn>
+	<c-app curentSystem="Работа с объектами" :panelLeftShow="true" :panelLeftDrawer="true" panelLeftClass="display--flex flex-direction--column">
+		<template slot="panelLeft">
+			<v-text-field id="treeSearch" name="treeSearch" class="check-size flex--inherit" append-icon="search" v-model="treeSearch"  single-line label="Поиск" @keyup.enter="treeSearchSubmit"/>
+			<v-btn block  small class="check-size accent flex--inherit" @click="openDialog(dialogsConfig.treeAdd.id)" > <v-icon>add</v-icon> Добавить</v-btn>
 			<hr>
 			<v-responsive class="overflow-y-auto flex--99" width = '100%'>
 				<c-tree @item-click = "itemClick" textFieldName="tree_name" typeFieldName="tree_group"  socetHref="/socet_command" socetEvent="object.tree.by.root" socetChanel="channel.ObjTreeData" :iconDic="iconDic" app />
 			</v-responsive>
-		</v-navigation-drawer>
-		
-		<component v-bind:is="dialogType" v-if="isShowenDialog(treeAddDialogId)" :dialogId="treeAddDialogId"/>
+		</template>
+		<component v-bind:is="dialogModule" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened"/>
 	</c-app>
 </template>
 
 <script>
-	import CApp from '../components/c-app';
-	import CLoading from '../components/c-loading';
-	import CTree from '../components/tree/c-tree';
-	import {mapActions, mapGetters} from 'vuex'
-
+	import XApp from '../mixins/x-app'
+	import XStore from '../mixins/x-store'
+	import XDialog from '../mixins/x-dialog'
+	import CTree from '../components/tree/c-tree'
 	export default {
 		data: () => ({
-			drawerLeft: true,
-			dataLoading:true,		
 			treeSearch: '',
-			iconDic:{'misc':'photo_library', 'object':'description', 'filter':'filter_list', 'filter':'filter_list', 'input':'input', 'default':'folder_open',  },
-			treeAddDialogId: Math.floor(Math.random() * MAX_ID),			
-			treeAddDialogParams: {},
-			dialogType:'',														
+			iconDic:{'misc':'photo_library', 'object':'description', 'filter':'filter_list', 'filter':'filter_list', 'input':'input', 'default':'folder_open',  },		
+			dialogsConfig: {
+				treeAdd:{id: getNewId(),  module:'m-input-fields',  name:"object-tree-add", title:"Параметры объекта", 	params:{socetHref:"/data_command", socetEvent:"object.tree.add"},kyes:{treeId:0}, }
+			},														
 		}),
-		computed: {
-			 ...mapGetters({
-				dialogIsShow:'dialog/getShow',
-			}),	
-		},
 		components: {
-			CApp,CLoading,CTree,
+			CTree,
 			MInputFields: (resolve) =>{ require(['../modules/m-input-fields.vue'], resolve) },
 		},
+		mixins: [
+			XApp,XStore,XDialog,
+		],
 		methods: {
-			isShowenDialog(dialogId){return this.dialogIsShow(dialogId)},	
 			itemClick(node) {
-				this.treeAddDialogParams.treeId = node.model.id;
+				this.dialogsConfig.treeAdd.kyes.treeId = node.model.id;
+			},
+			treeSearchSubmit () {
+				console.log(this.treeSearch);
+				return;
+			},
+			openDialog(dialogId){
+				let vm=this
+				switch(dialogId){
+					case vm.dialogsConfig.treeAdd.id: 					
+						vm.dialogSetParamByName({id:dialogId, params:{kyes: vm.dialogsConfig.treeAdd.kyes, checkFunc:vm.objectTreeAddCheck}}  )
+						break
+					default: showMsg( {title:'Ошибка при открытии окна',text:'Запрашиваемое окно не найдено!'});
+				}
+				vm.dialogShow(dialogId)
 			},
 			objectTreeAddCheck(params){
 				let vm=this
 				if(params.obj_level=='inside' && nvl(params.treeId)==0  )
 					showMsg({title:'Ошибка при добавлении элемента',text:'Для добавления вложенного элемента, необходимо выбрать родительский элемент!'});
 			},
-			treeSearchSubmit () {
-				console.log(this.treeSearch);
-				return;
-			},
-			...mapActions({
-				dialogSetParamByNameAndShow:'dialog/doSetParamByNameAndShow'
-			}),
-			openDialog(dialogId){
-				let vm=this
-				switch(dialogId){
-					case vm.treeAddDialogId: 
-						vm.dialogType='m-input-fields'
-						vm.dialogSetParamByNameAndShow({id:dialogId,paramsName: 'todo',paramsVal: {treeId:vm.treeAddDialogParams.treeId} } )
-						break
-					default: showMsg( {title:'Ошибка при открытии окна',text:'Запрашиваемое окно не найдено!'});
-				}
-			},			
 		},
 		created: function (){
 			let vm=this
-			vm.$root.$on('headDrawerLeftClick', (obj)=>{
-				vm.drawerLeft=!vm.drawerLeft;
-			});
-			vm.$store.dispatch('dialog/doInit', {config:{id:vm.treeAddDialogId, name:"object-tree-add", title:"Параметры объекта"}, params:{socetHref:"/data_command", socetEvent:"object.tree.add", checkFunc:vm.objectTreeAddCheck} })
 		},
 	}
 </script>
@@ -82,6 +68,5 @@
 	div.check-size,
 	button.check-size           {max-width: 90%;   margin-left: 5%;}
 	div.margin-top            	{margin-top: 15px;}
-	.min-height--20				{min-height: 20px;}
 	div.tree-border-top        	{border-top-width: 1px;     border-top-style: inset;    border-top-color: #c7c7c7;}
 </style>

@@ -7,7 +7,7 @@ export default {
 		isRoot:'',
 	},
 	getters: { // computed properties
-		getUserName: state => () => {	return state.userName;	},
+		getUserName: state => () => { return state.userName;	},
 		getUserId: state => () => {	return state.userId;	},
 		getSysId: state => () => {	return state.sysId;	},
 		getIsRoot: state => () => {	return state.isRoot;	},

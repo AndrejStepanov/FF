@@ -1,47 +1,66 @@
 <template>
     <v-app dark>
-		<c-head :curentSystem='curentSystem' :showLeft="showLeft" :showRight="showRight" />
+		<c-head ref="head" :curentSystem='curentSystem' :showLeft="panelLeftDrawer" :showRight="panelRightDrawer"/>
 		<v-content>
+			<v-navigation-drawer v-if="panelLeftDrawer" fixed v-model="panelLeftShowen" left :clipped="$vuetify.breakpoint.width > 1264"  app :class="panelLeftClass">
+				<slot name="panelLeft"/>
+			</v-navigation-drawer>
+			<v-navigation-drawer v-if="panelRightDrawer" fixed v-model="panelRightShowen" right :clipped="$vuetify.breakpoint.width > 1264"  app :class="panelRightClass">
+				<slot name="panelRight"/>
+			</v-navigation-drawer>
 			<slot />
 		</v-content>		
 		<c-footer />
 		<c-msg-list />
 		
-		<m-input-fields v-if="isShowenDialog(loginDialogId)" :dialogId="loginDialogId" />
+		<component v-bind:is="dialogModule" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened"/>
     </v-app>
 </template>
 
 <script>
+	import XStore from '../mixins/x-store'
+	import XDialog from '../mixins/x-dialog'
     import CHead from '../components/c-head';
-    import CFooter from '../components/c-footer';
+	import CFooter from '../components/c-footer';
     import CMsgList from '../components/c-msg-list';
-	import {mapActions, mapGetters} from 'vuex'
 
     export default {
 		data:() => ({
-			loginDialogId: Math.floor(Math.random() * MAX_ID),
+			dialogsConfig: {
+				login:{id: getNewId(),  module:'m-input-fields',  name:"auth-login", title:"Авторизация", 	params:{ socetHref:"/login", socetEvent:"auth.login"}, }
+			},
+			panelLeftShowen: false,
+			panelRightShowen: false,
 		}),
 		props:{
 			curentSystem: {type:  String, required: true},
-			authHrefBack: {type:  String},
-			showLeft: {type:  Boolean,  default: false},
-			showRight: {type:  Boolean,  default: false},
-		},
-		computed: {	
-			 ...mapGetters({
-				dialogIsShow:'dialog/getShow',
-			}),	
+			authHrefBack: {type:  String},			
+			panelLeftDrawer: {type:  Boolean,  default: false},
+			panelLeftShow: {type:  Boolean,  default: false},
+			panelLeftClass: {type:  String,  default: ''},
+			panelRightDrawer: {type:  Boolean,  default: false},
+			panelRightShow: {type:  Boolean,  default: false},
+			panelRightClass: {type:  String,  default: ''},
 		},
         components: {
 			CHead, CFooter,CMsgList,
 			MInputFields: (resolve) => require(['../modules/m-input-fields.vue'], resolve),
 		},
-        methods: {
-			isShowenDialog(dialogId){return this.dialogIsShow(dialogId)},	
-		},
+		mixins: [
+			XStore,XDialog,
+		],
 		created: function (){
 			let vm=this
-			vm.$store.dispatch('dialog/doInit',{config:{id:vm.loginDialogId, name:"auth-login", title:"Авторизация"}, params:{hrefBack:vm.authHrefBack, socetHref:"/login", socetEvent:"auth.login"} })
+			vm.panelLeftShowen=vm.panelLeftShow
+			vm.panelRightShowen=vm.panelRightShow
+			vm.$root.$on('headDrawerLeftClick', (obj)=>{
+				vm.panelLeftShowen=!vm.panelLeftShowen
+			}); 
+			vm.$root.$on('headDrawerRightClick', (obj)=>{
+				vm.panelRightShowen=!vm.panelRightShowen
+			});
+			vm.dialogSetParamByName({id:vm.dialogsConfig.login.id, params:{hrefBack:vm.authHrefBack}}  ) 			
+			vm.dialogSelect(vm.dialogsConfig.login.id)
 		},
     }
 </script>

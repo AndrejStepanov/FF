@@ -25,6 +25,7 @@ time-with-seconds	##:##:##
 */
 
 <script>
+	import XStore from '../mixins/x-store'
 	export default {
 		name:'c-input',
 		data: () => ({
@@ -91,6 +92,9 @@ time-with-seconds	##:##:##
 		},
 		watch: {
 		},
+		mixins: [
+			XStore,
+		],		
 		methods: {
 			setNewVal(value){
 				let vm=this
@@ -125,9 +129,9 @@ time-with-seconds	##:##:##
 					return
 				vm.lastTimeSend=curTime
 				if(vm.checked)
-					await  vm.$store.dispatch('param/doSet', {num: vm.paramsId, code: vm.code, value:vm.value , view:vm.value })
+					await  vm.paramSet( {num: vm.paramsId, code: vm.code, value:vm.value , view:vm.value })
 				else
-					await  vm.$store.dispatch('param/doSet', {num: vm.paramsId, code: vm.code, value:undefined, view:undefined })
+					await  vm.paramSet( {num: vm.paramsId, code: vm.code, value:undefined, view:undefined })
 			}
 				
 		},
@@ -162,7 +166,7 @@ time-with-seconds	##:##:##
 			let tmp = new RegExp(vm.maskFin)
 			if(tmp!='')//надо помнить про экранирование
 				vm.rules.push(v => tmp.test(v) || vm.error)
-			vm.$store.dispatch('param/doSet', {num: vm.paramsId, code: vm.code, value:vm.value , view:vm.value })
+			vm.paramSet( {num: vm.paramsId, code: vm.code, value:vm.value , view:vm.value })
 		},
 	}
 </script>

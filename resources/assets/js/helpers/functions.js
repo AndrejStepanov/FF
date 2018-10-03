@@ -45,6 +45,32 @@ function appThemeInit(){
 	
 }
 
+function getNewId(){
+	return Math.floor(Math.random() * MAX_ID)
+}
+
+function loadDialogs(dialogsConfig){
+	let tmp={}
+	for (name in dialogsConfig)
+		if(tmp[dialogsConfig[name].module]==undefined )
+			tmp[dialogsConfig[name].module]= dialogsConfig[name].load
+	return tmp
+}
+
+function genMap( stores ){
+	return { 
+		getters:storesParser(stores, 'getters', 'get'), actions:storesParser(stores, 'actions', 'do'),
+	} 
+}
+
+function storesParser(stores, field, prefix){
+	let tmp={}
+	for (m_title in stores)
+		for (title in stores[m_title][field])
+			tmp[m_title+title.replace(prefix,'')]= m_title+'/'+title
+	return tmp
+}
+
 function sort(a, b, aFild, bFild){
 	let aVal = aFild!=''?a[aFild]:a,
 		bVal = bFild!=''?b[bFild]:b

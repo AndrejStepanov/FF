@@ -4,17 +4,17 @@ import vueRouter from 'vue-router';
 vue.use(vueRouter);
 
 import vuex from 'vuex';
-import msg from '../stores/s-Msg';
+import msg from '../stores/s-msg';
 import profile from '../stores/s-profile';
 import dialog from '../stores/s-dialog';
 import param from '../stores/s-param';
 vue.use(vuex);
-let  store = new vuex.Store({modules: {	msg, dialog, profile,param}  })
+let store = new vuex.Store({modules: {	msg, dialog, profile,param} });
 
 import vueAxios from 'vue-axios';
 import axios from 'axios';
 vue.use(vueAxios, axios);
-window._bus={axios:axios, bus: new vue()};
+window._bus={axios, bus: new vue()};
 
 import vuetify from 'vuetify';
 vue.use(vuetify, {theme: appTheme });

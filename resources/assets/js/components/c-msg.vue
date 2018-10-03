@@ -36,6 +36,7 @@
 </template>
  
 <script>
+	import XStore from '../mixins/x-store'
 	export default {
 		name:'c-msg',
 		data: () => ({
@@ -58,11 +59,14 @@
 					return;
 				let vm=this
 				vm.visibility=false;
-				setTimeout(()=>{vm.$store.dispatch('msg/doDelete',vm.msg.id);},1000);                
+				setTimeout(()=>{vm.msgDelete(vm.msg.id);},1000);                
 			},
 		},
 		components: {
 		},
+		mixins: [
+			XStore,
+		],
 		methods: {
 			snackClcik(){
 				let vm=this

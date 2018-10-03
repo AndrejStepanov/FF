@@ -5,15 +5,15 @@
 </template>
 
 <script>
-    import CApp from '../components/c-app';
-
+	import XApp from '../mixins/x-app'
+	import XStore from '../mixins/x-store'
     export default {
         data: () => ({
 			hrefBack:'/',
         }),
-        components: {
-			CApp,
-		},
+		mixins: [
+			XApp,XStore,
+		],
 		created: function (){
 			let vm=this
 			let _hrefBack=window.location.search.match(new RegExp('href_back=([^&=]+)'));
@@ -21,7 +21,7 @@
 		},
 		mounted: function(){
 			let vm=this
-			setTimeout(()=>vm.$store.dispatch('dialog/doShowChange',{name:"auth-login", isShow:true}))
+			setTimeout(()=>vm.dialogShowChange({name:"auth-login", isShow:true}))
 		}
     }
 </script>

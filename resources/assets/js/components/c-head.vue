@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar class='primary' dense app clipped-left clipped-right fixed >
+    <v-toolbar class='primary z-index--4' dense app clipped-left clipped-right fixed  >
         <v-toolbar-side-icon @click="toolbarClicked('Left')"   v-if="showLeft" />
         <v-btn flat icon href='\'>
             <v-icon large  >stars</v-icon>
@@ -35,3 +35,6 @@
         }
     }
 </script>
+<style>
+	.z-index--4		{ z-index: 4; }
+</style>

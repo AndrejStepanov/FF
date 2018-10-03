@@ -7,10 +7,9 @@
 </template>
 
 <script>
-//needCheckBox="Y"
+	import XStore from '../mixins/x-store'
 	import CDialog from '../components/c-dialog';
 	import CInputCols from '../components/c-input-cols';
-	import {mapActions, mapGetters} from 'vuex'
 
 	export default {
 		name:'m-input-fields',
@@ -28,9 +27,6 @@
 			dialogId: {type: Number, required: true}, 			
 		},
 		computed: {
-			...mapGetters({
-				dialogConfig:'dialog/getConfig',dialogParams:'dialog/getParams', paramsTodo:'param/getTodo'
-			}),
 			dialogConfigGet(){
 				let vm=this
 				return vm.dialogConfig(vm.dialogId)
@@ -66,12 +62,16 @@
 		components: {
 			CDialog,CInputCols,
 		},
+		mixins: [
+			XStore,
+		],
 		methods: {
 			dialogSave(){
 				let vm=this
 				if (!vm.$refs[vm.dialogConfigGet.name].validate())
 					return;
-				let todo={...vm.paramsTodo(vm.dialogConfigGet.name), ...vm.dialogParamsGet.todo}
+				let todo={...vm.paramTodo(vm.dialogConfigGet.name), ...vm.dialogParamsGet.kyes}
+				
 				if (vm.dialogParamsGet.checkFunc)
 					vm.dialogParamsGet.checkFunc(todo)
 				if(vm.dialogParamsGet.saveFunc)
@@ -82,7 +82,7 @@
 		},
 		created: function (){
 			let vm=this
-			vm.$store.dispatch('param/doInit', {num: vm.dialogConfigGet.name })
+			vm.paramInit( {num: vm.dialogConfigGet.name })
 			vm.$root.$on('dialog'+vm.dialogId+'InputsCols'+vm.dialogConfigGet.name, (obj)=>{
 				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : obj.rowInColA *74 + 140 
 				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width :(vm.dialogConfigGet.title.length*20+110>obj.colsCnt*300?vm.dialogConfigGet.title.length*20+110:obj.colsCnt*300  )

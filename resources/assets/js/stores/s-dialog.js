@@ -16,7 +16,7 @@ export default {
 		getConfig: (state, getters) => id =>{
 			return nvl(getters.getById(id).config)
 		},
-		getShow: (state, getters) => id =>{
+		getIsShow: (state, getters) => id =>{
 			return nvl(getters.getById(id).isShow)
 		},
 		getParams: (state, getters) => id =>{
@@ -48,14 +48,15 @@ export default {
 			await dispatch('doSetAllParams',{id,name, params}) 
 			await dispatch('doShowChange',{id,name, isShow:true}) 
 		},
-		async doSetParamByName({commit,getters,state},{id,name, paramsName, paramsVal}){
+		async doSetParamByName({commit,getters,state},{id,name, params }){
 			let dialog=getters.getDilog({id,name})
 			if ( dialog==0)
 				return;
-			commit('paramSetting',{dialog, paramsName, paramsVal})
+			for( let paramsName in params )
+				commit('paramSetting',{dialog, paramsName, paramsVal:params[paramsName] })
 		},
-		async doSetParamByNameAndShow({dispatch,commit,getters,state},{id,name, paramsName, paramsVal}){
-			await dispatch('doSetParamByName',{id,name, paramsName, paramsVal}) 
+		async doSetParamByNameAndShow({dispatch,commit,getters,state},{id,name, params}){
+			await dispatch('doSetParamByName',{id,name,params}) 
 			await dispatch('doShowChange',{id,name, isShow:true}) 
 		},
 	},

@@ -16,10 +16,8 @@
 </template>
 
 <script>
+	import XStore from '../mixins/x-store'
 	import CDialog from '../components/c-dialog';
-	import {mapActions, mapGetters} from 'vuex'
-
-
 	export default {
 		name:'m-error-desc',
 		data: () => ({
@@ -39,9 +37,6 @@
 				buttons.forEach((row)=> { tmp.push({...row, disabled: ( row.needCheck==true && !vm.inputsValid ? true :false ) }) })
 				return tmp
 			},
-			...mapGetters({
-				dialogConfig:'dialog/getConfig',dialogParams:'dialog/getParams'
-			}),
 			dialogConfigGet(){
 				let vm=this
 				return vm.dialogConfig(vm.dialogId)
@@ -54,6 +49,9 @@
 		components: {
 			CDialog,
 		},
+		mixins: [
+			XStore,
+		],
 		methods: {
 		},
 		created: function (){

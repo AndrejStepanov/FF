@@ -1,10 +1,10 @@
 {
     "/js/vendor.js": "/js/vendor.js",
     "/js/Obj-tree.js": "/js/Obj-tree.js",
-    "/js/Obj-view.js": "/js/Obj-view.js",
     "/js/Main.js": "/js/Main.js",
     "/css/app.css": "/css/app.css",
-    "/js/Register.js": "/js/Register.js",
+    "/js/Obj-view.js": "/js/Obj-view.js",
     "/js/Auth.js": "/js/Auth.js",
+    "/js/Register.js": "/js/Register.js",
     "/js/manifest.js": "/js/manifest.js"
 }

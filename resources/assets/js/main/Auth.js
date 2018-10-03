@@ -4,12 +4,12 @@ import VueRouter from 'vue-router';
 vue.use(VueRouter);
 
 import vuex from 'vuex';
-import msg from '../stores/s-Msg';
+import msg from '../stores/s-msg';
 import profile from '../stores/s-profile';
 import dialog from '../stores/s-dialog';
 import param from '../stores/s-param';
 vue.use(vuex);
-let  store = new vuex.Store({modules: {	msg, dialog, profile,param}  })
+let store = new vuex.Store({modules: {	msg, dialog, profile,param} });
 
 import vueAxios from 'vue-axios';
 import axios from 'axios';

@@ -1,6 +1,6 @@
 <template>
-	<c-app :curentSystem="curentSystem" :showLeft=true :showRight=true   >
-		<v-navigation-drawer fixed v-model="drawerLeft" left :clipped="$vuetify.breakpoint.width > 1264"  app >
+	<c-app :curentSystem="curentSystem" :panelLeftShow="true" :panelLeftDrawer="true" :panelRightShow="true" :panelRightDrawer="true"  >
+		<template slot="panelLeft">
 			<v-list dense>
 				<v-list-tile v-for="item in systems" :key="item.name" @click="choose_sys( item.name );">
 					<v-list-tile-action>
@@ -11,8 +11,8 @@
 					</v-list-tile-content>
 				</v-list-tile>
 			</v-list>
-		</v-navigation-drawer>
-		<v-navigation-drawer fixed v-model="drawerRight" right  :clipped="$vuetify.breakpoint.width  > 1264" app >
+		</template>
+		<template slot="panelRight">
 			<v-list dense>
 				<v-list-tile v-for="item in Links" :key="item.id" v-bind:href="item.is_new_type==1?'':item.href" >                        
 					<v-list-tile-action v-if="item.is_new_type!=1 " >
@@ -24,30 +24,27 @@
 					</v-list-tile-content>
 				</v-list-tile>
 			</v-list>
-		</v-navigation-drawer>
+		</template>
 	</c-app>
 </template>
 
 <script>
-	import CApp from '../components/c-app';
+	import XApp from '../mixins/x-app'
 	export default {
 		data: () => ({
-			drawerLeft: true,
-			drawerRight: true,
-			curentSystem: 'Объекты',
 			systems: [
 				{name:'Объекты',title:'АРМы работы с объектами системы', icon: 'dashboard'},
 			],
 			ALL_Links:[
 				{id:1, system:'Объекты',color:'',type:'АРМ',name:'Работа с объектами',icon: 'local_activity',	href:'/Работа_с_объектами',title:'Работы с деревом объектов!', },
-				{id:2, system:'Объекты',color:'',type:'АРМ',name:'Просмотр объектов', icon: 'dvr', 			href:'/Просмотр_объектов',title:'Просмотр созданных в системе объектов!', },
+				{id:2, system:'Объекты',color:'',type:'АРМ',name:'Просмотр объектов', icon: 'dvr', 				href:'/Просмотр_объектов',title:'Просмотр созданных в системе объектов!', },
 			],
 			Links:[
 			],
 		}),
-		components: {
-			CApp,
-		},
+		mixins: [
+			XApp,
+		],
 		methods: {
 			choose_sys: function (name){
 				let vm=this
@@ -67,13 +64,7 @@
 		},
 		created: function (){
 			let vm=this
-			vm.choose_sys(vm.curentSystem);
-			vm.$root.$on('headDrawerLeftClick', (obj)=>{
-				vm.drawerLeft=!vm.drawerLeft;
-			}); 
-			vm.$root.$on('headDrawerRightClick', (obj)=>{
-				vm.drawerRight=!vm.drawerRight;
-			});
+			vm.choose_sys(vm.systems[0].name);
 		},
 	}
 </script>
