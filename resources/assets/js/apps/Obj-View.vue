@@ -6,7 +6,7 @@
 			<hr>
 			<v-responsive class="overflow-y-auto flex--99" width = '100%'>
 				<v-form v-model="filterValid" ref="filter">
-					<c-input-cols  :inputs="inputs" :paramsForm="filterName" :maxCols="maxCols" needCheckBox="Y"/>
+					<c-input-cols  :inputs="inputs" :paramsForm="filterName" :maxCols="maxCols" :needCheckBox="needCheckBox" />
 				</v-form>
 			</v-responsive>
 		</template>
@@ -27,6 +27,7 @@
 			iconIndex: 0,
 			maxCols:1,
 			filterValid: false,
+			needCheckBox: true,
 			filterName:'object-tree-add',
 			icons: ['=','>','>=','<','<=','!='],
 		}),
@@ -37,9 +38,9 @@
 			inputs() {
 				let vm=this
 				return [
-					{id:1, form:'object-tree-add',	code:'obj_level', 	column_name:'Вложенность', 				column_desc:'Уровень вложенности объекта', 		proc_type:'AUTO::LIST', nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:1, items:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
-					{id:2, form:'object-tree-add',	code:'tree_group', 	column_name:'Тип', 						column_desc:'Тип объекта', 						proc_type:'AUTO::LIST', nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:2, items:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
-					{id:3, form:'object-tree-add',	code:'tree_desc', 	column_name:'Название',					column_desc:'Описание объекта', 				proc_type:'MAN',		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
+					{id:1, form:'object-tree-add',	code:'obj_level', 	column_name:'Вложенность', 				column_desc:'Уровень вложенности объекта', 		type:'LIST',	nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:1, items:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
+					{id:2, form:'object-tree-add',	code:'tree_group', 	column_name:'Тип', 						column_desc:'Тип объекта', 						type:'LIST', 	nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:2, items:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
+					{id:3, form:'object-tree-add',	code:'tree_desc', 	column_name:'Название',					column_desc:'Описание объекта', 				type:'BOOL',	nullable:true, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
 				]
 			},
 		},

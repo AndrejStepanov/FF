@@ -1,7 +1,6 @@
-
 const MAX_ID= 9999999,
 	MAX_INPUT_IN_COL= 6,
-	appTheme={  primary: '#2c353f', secondary: '#452F41', accent: '#555C3E', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50'},
+	appTheme={  primary: '#2c353f', secondary: '#452F41', accent: '#555C3E', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50', checkBox:"#FFFFFF"},
 	authButtons= [ {id:1, title:'Войти', icon:'input', allig:'right', click:'dialogSave' , needCheck:true} ]
 
 function appThemeInit(){

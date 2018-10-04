@@ -21,7 +21,7 @@
 			dialogId: {type: Number, defuault:0},
 			paramsForm: {type: String, defuault:''},
 			maxCols: {type: Number, defuault:4},
-			needCheckBox: {type: String, default:'N'},
+			needCheckBox:{type:  Boolean, default:false},
 		},
 		computed: {
 			classes () {

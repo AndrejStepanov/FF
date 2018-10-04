@@ -1,12 +1,15 @@
 <template> 
-	<div @click="onClick" >
-		<component :is="currentInput" v-model="value" :label="columnName" :hint="columnDesc" :rules="rules" :disabled="disableGet" :readonly="readonly"  :required="!!nullable" ref="input"
-			:multi-line="columnSize>50" :prepend-icon="isNeedIcon"  :tabindex="sortSeq" :type="typeGet" :items="curItems"  
-			:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :append-outer-icon="appendOuterIconGet" 
-			@change="setNewVal" @keyup.enter="submit" @click:append-outer="appendOuterIconClick" @click:append="changeShow" @blur="onBlur"/>
-	</div>
+	<v-layout align-center  >
+		<div class='input-contaner' @click="onClick">
+			<component  :is="currentInput" v-model="value" :label="columnName" :hint="columnDesc" :rules="rules" :disabled="disableGet" :readonly="readonly"  :required="!!nullable" ref="input"
+				:multi-line="columnSize>50" :prepend-icon="isNeedIcon"  :tabindex="sortSeq" :type="typeGet" :items="curItems"  
+				:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :color="checkBoxColor"
+				@change="setNewVal" @keyup.enter="submit"  @blur="onBlur"/>
+		</div>
+		<v-checkbox v-if="!!needCheckBox" v-model="checked" hide-details class="shrink ml-2 mb-2" @change="changeChecked" :color="checkBoxColor"></v-checkbox>
+	</v-layout>
 </template>
-
+//:append-outer-icon="appendOuterIconGet" 
 /*
 Masks
 #	Any digit
@@ -41,7 +44,7 @@ time-with-seconds	##:##:##
 			code: 'code',
 			columnName: 'columnName',
 			columnDesc: 'columnDesc',
-			procType: 'procType',
+			type: 'type',
 			nullable: false,
 			columnType: '',
 			columnSize: 0,
@@ -52,36 +55,37 @@ time-with-seconds	##:##:##
 			error: 'Некорректное значение',
 			items: [],
 			lastTimeSend: 0,
+			checkBoxColor:'white',//переопределяется в created
 		}),
 /*
 :id="row.id" :code="row.code" :columnName="row.column_name" :columnDesc="row.column_desc" :dialogId="dialogId"
-:procType="row.proc_type" :nullable="row.nullable" :columnType="row.column_type" :columnSize="row.column_size" :cssClass="row.css_class" :sortSeq="row.sort_seq"
+:type="row.proc_type" :nullable="row.nullable" :columnType="row.column_type" :columnSize="row.column_size" :cssClass="row.css_class" :sortSeq="row.sort_seq"
 :changeEvent="inputChangeEvent" :items="row.items" :maskFin="row.mask_fin" :mask="row.mask" :error="row.error"
 */
 		props:{
 			data:{type: Object, required: true, default:()=>{return {}}},
 			dialogId: {type:  Number,default:0},
 			paramsForm: {type: String, defuault:''},
-			needCheckBox:{type:  String, default:'N'},
+			needCheckBox:{type:  Boolean, default:false},
 		},
 		computed: {
 			curItems(){
-				return this.procType=='AUTO::LIST'?this.items: []			
+				return this.type=='LIST'?this.items: []			
 			},
 			typeGet(){
-				return this.procType!='PASSWORD'?this.procType:this.show?'text':'password'
+				return this.type!='PASSWORD'?this.type:this.show?'text':'password'
 			},
 			appendIconGet(){
-				return this.procType!='PASSWORD'?(this.procType=='AUTO::LIST'?'$vuetify.icons.dropdown':''): this.show ? 'visibility_off' : 'visibility'
+				return this.type!='PASSWORD'?(this.type=='LIST'?'$vuetify.icons.dropdown':''): this.show ? 'visibility_off' : 'visibility'
 			},
 			clearableGet(){
-				return this.procType!='PASSWORD'
+				return this.type!='PASSWORD'
 			},
-			appendOuterIconGet(){
+			/*appendOuterIconGet(){
 				return this.needCheckBox=='N'?'': this.checked ? 'check_box' : 'check_box_outline_blank'
-			},
+			},*/
 			disableGet(){
-				return this.needCheckBox=='N'?false:!this.checked
+				return !this.needCheckBox?false:!this.checked
 			},	
 		},
 		watch: {
@@ -102,15 +106,13 @@ time-with-seconds	##:##:##
 				if(vm.dialogId>0)
 					vm.$root.$emit('dialog'+vm.paramsForm+'Send',{param:vm.code,value:vm.value} )
 			},
-			appendOuterIconClick(){
+			changeChecked(){
 				let vm=this
-				vm.checked=!vm.checked
 				vm.setVal()
 			},	
 			onClick(){
 				let vm=this
 				vm.checked=true
-				vm.$refs.input.validate()
 				vm.setVal()
 				setTimeout(()=>{vm.$refs.input.onClick()},100)
 			},
@@ -128,19 +130,23 @@ time-with-seconds	##:##:##
 			},
 			async setVal(){
 				let vm=this
-				if(vm.needCheckBox=='Y' && vm.isNeed && !vm.checked)
-					vm.$root.$emit('dialog'+vm.paramsForm+'NeedCheck')
+				if(vm.needCheckBox && vm.isNeed ){
+					vm.$refs.input.validate()
+					//if (!vm.checked)
+						vm.$root.$emit('dialog'+vm.paramsForm+'NeedCheck')
+				}
 				await  vm.paramSet( {num: vm.paramsForm, code: vm.code, value:vm.value , view:vm.value, checked:vm.checked, })
 			},				
 		},
 		created: function (){
 			let vm=this
+			vm.checkBoxColor=appTheme.checkBox||vm.checkBoxColor
 			vm.id=vm.data.id||vm.id
 			vm.value=vm.data.value||vm.value
 			vm.code=vm.data.code||vm.code
 			vm.columnName=vm.data.column_name||vm.columnName
 			vm.columnDesc=vm.data.column_desc||vm.columnDesc
-			vm.procType=vm.data.proc_type||vm.procType
+			vm.type=vm.data.type||vm.type
 			vm.nullable=vm.data.nullable||vm.nullable
 			vm.columnType=vm.data.column_type||vm.columnType
 			vm.columnSize=vm.data.column_size||vm.columnSize
@@ -155,19 +161,22 @@ time-with-seconds	##:##:##
 					vm.items.push(element);
 				});
 			}
-			vm.currentInput= vm.procType=='AUTO::LIST'?'v-select':vm.procType=='BOOL'?'v-checkbox':'v-text-field'
+			vm.currentInput= vm.type=='LIST'?'v-select':vm.type=='BOOL'?'v-checkbox':'v-text-field'
 			vm.readonly=vm.type=='READONLY'
 			if(!vm.nullable){
 				vm.isNeed =true
 				vm.rules.push(v => !!v || 'Поле обязательное')
-				vm.columnName+=' ❗'//⭐
+				vm.columnName='❗ '+vm.columnName//⭐
 			}
-			if(vm.needCheckBox=='Y')
+			if(vm.needCheckBox && !vm.nullable)
 				vm.rules.push(v => !!vm.checked || 'Поле обязательное1')
 			let tmp = new RegExp(vm.maskFin)
 			if(tmp!='')//надо помнить про экранирование
 				vm.rules.push(v => tmp.test(v) || vm.error)
-			vm.paramSet( {num: vm.paramsForm, code: vm.code, value:vm.value , view:vm.value, checked:(vm.needCheckBox=='Y'?vm.checked:1), })
+			vm.paramSet( {num: vm.paramsForm, code: vm.code, value:vm.value , view:vm.value, checked:(vm.needCheckBox?vm.checked:1), })
 		},
 	}
 </script>
+<style>
+	div.input-contaner {-webkit-box-align: start;	-ms-flex-align: start;	align-items: flex-start;	display: -webkit-box;	display: -ms-flexbox;	display: flex;	-webkit-box-flex: 1;	-ms-flex: 1 1 auto;	flex: 1 1 auto;}
+</style>

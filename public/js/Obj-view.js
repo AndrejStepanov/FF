@@ -3699,6 +3699,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			iconIndex: 0,
 			maxCols: 1,
 			filterValid: false,
+			needCheckBox: true,
 			filterName: 'object-tree-add',
 			icons: ['=', '>', '>=', '<', '<=', '!=']
 		};
@@ -3709,7 +3710,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		inputs: function inputs() {
 			var vm = this;
-			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', proc_type: 'AUTO::LIST', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, items: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', proc_type: 'AUTO::LIST', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, items: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', proc_type: 'MAN', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
+			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', type: 'LIST', nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, items: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', type: 'LIST', nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, items: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', type: 'BOOL', nullable: true, column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
 		}
 	},
 	components: {
@@ -3827,7 +3828,7 @@ var render = function() {
                       inputs: _vm.inputs,
                       paramsForm: _vm.filterName,
                       maxCols: _vm.maxCols,
-                      needCheckBox: "Y"
+                      needCheckBox: _vm.needCheckBox
                     }
                   })
                 ],
@@ -3957,7 +3958,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		dialogId: { type: Number, defuault: 0 },
 		paramsForm: { type: String, defuault: '' },
 		maxCols: { type: Number, defuault: 4 },
-		needCheckBox: { type: String, default: 'N' }
+		needCheckBox: { type: Boolean, default: false }
 	},
 	computed: {
 		classes: function classes() {
@@ -4003,6 +4004,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(196)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(183)
@@ -4011,7 +4016,7 @@ var __vue_template__ = __webpack_require__(184)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -4085,6 +4090,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4103,7 +4111,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			code: 'code',
 			columnName: 'columnName',
 			columnDesc: 'columnDesc',
-			procType: 'procType',
+			type: 'type',
 			nullable: false,
 			columnType: '',
 			columnSize: 0,
@@ -4113,12 +4121,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			maskFin: '',
 			error: 'Некорректное значение',
 			items: [],
-			lastTimeSend: 0
+			lastTimeSend: 0,
+			checkBoxColor: 'white' //переопределяется в created
 		};
 	},
 	/*
  :id="row.id" :code="row.code" :columnName="row.column_name" :columnDesc="row.column_desc" :dialogId="dialogId"
- :procType="row.proc_type" :nullable="row.nullable" :columnType="row.column_type" :columnSize="row.column_size" :cssClass="row.css_class" :sortSeq="row.sort_seq"
+ :type="row.proc_type" :nullable="row.nullable" :columnType="row.column_type" :columnSize="row.column_size" :cssClass="row.css_class" :sortSeq="row.sort_seq"
  :changeEvent="inputChangeEvent" :items="row.items" :maskFin="row.mask_fin" :mask="row.mask" :error="row.error"
  */
 	props: {
@@ -4127,26 +4136,27 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			} },
 		dialogId: { type: Number, default: 0 },
 		paramsForm: { type: String, defuault: '' },
-		needCheckBox: { type: String, default: 'N' }
+		needCheckBox: { type: Boolean, default: false }
 	},
 	computed: {
 		curItems: function curItems() {
-			return this.procType == 'AUTO::LIST' ? this.items : [];
+			return this.type == 'LIST' ? this.items : [];
 		},
 		typeGet: function typeGet() {
-			return this.procType != 'PASSWORD' ? this.procType : this.show ? 'text' : 'password';
+			return this.type != 'PASSWORD' ? this.type : this.show ? 'text' : 'password';
 		},
 		appendIconGet: function appendIconGet() {
-			return this.procType != 'PASSWORD' ? this.procType == 'AUTO::LIST' ? '$vuetify.icons.dropdown' : '' : this.show ? 'visibility_off' : 'visibility';
+			return this.type != 'PASSWORD' ? this.type == 'LIST' ? '$vuetify.icons.dropdown' : '' : this.show ? 'visibility_off' : 'visibility';
 		},
 		clearableGet: function clearableGet() {
-			return this.procType != 'PASSWORD';
+			return this.type != 'PASSWORD';
 		},
-		appendOuterIconGet: function appendOuterIconGet() {
-			return this.needCheckBox == 'N' ? '' : this.checked ? 'check_box' : 'check_box_outline_blank';
-		},
+
+		/*appendOuterIconGet(){
+  	return this.needCheckBox=='N'?'': this.checked ? 'check_box' : 'check_box_outline_blank'
+  },*/
 		disableGet: function disableGet() {
-			return this.needCheckBox == 'N' ? false : !this.checked;
+			return !this.needCheckBox ? false : !this.checked;
 		}
 	},
 	watch: {},
@@ -4163,15 +4173,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.checkRefresh();
 			if (vm.dialogId > 0) vm.$root.$emit('dialog' + vm.paramsForm + 'Send', { param: vm.code, value: vm.value });
 		},
-		appendOuterIconClick: function appendOuterIconClick() {
+		changeChecked: function changeChecked() {
 			var vm = this;
-			vm.checked = !vm.checked;
 			vm.setVal();
 		},
 		onClick: function onClick() {
 			var vm = this;
 			vm.checked = true;
-			vm.$refs.input.validate();
 			vm.setVal();
 			setTimeout(function () {
 				vm.$refs.input.onClick();
@@ -4226,7 +4234,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 							case 0:
 								vm = this;
 
-								if (vm.needCheckBox == 'Y' && vm.isNeed && !vm.checked) vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
+								if (vm.needCheckBox && vm.isNeed) {
+									vm.$refs.input.validate();
+									//if (!vm.checked)
+									vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
+								}
 								_context2.next = 4;
 								return vm.paramSet({ num: vm.paramsForm, code: vm.code, value: vm.value, view: vm.value, checked: vm.checked });
 
@@ -4247,12 +4259,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 	},
 	created: function created() {
 		var vm = this;
+		vm.checkBoxColor = appTheme.checkBox || vm.checkBoxColor;
 		vm.id = vm.data.id || vm.id;
 		vm.value = vm.data.value || vm.value;
 		vm.code = vm.data.code || vm.code;
 		vm.columnName = vm.data.column_name || vm.columnName;
 		vm.columnDesc = vm.data.column_desc || vm.columnDesc;
-		vm.procType = vm.data.proc_type || vm.procType;
+		vm.type = vm.data.type || vm.type;
 		vm.nullable = vm.data.nullable || vm.nullable;
 		vm.columnType = vm.data.column_type || vm.columnType;
 		vm.columnSize = vm.data.column_size || vm.columnSize;
@@ -4267,16 +4280,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				vm.items.push(element);
 			});
 		}
-		vm.currentInput = vm.procType == 'AUTO::LIST' ? 'v-select' : vm.procType == 'BOOL' ? 'v-checkbox' : 'v-text-field';
+		vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : 'v-text-field';
 		vm.readonly = vm.type == 'READONLY';
 		if (!vm.nullable) {
 			vm.isNeed = true;
 			vm.rules.push(function (v) {
 				return !!v || 'Поле обязательное';
 			});
-			vm.columnName += ' ❗'; //⭐
+			vm.columnName = '❗ ' + vm.columnName; //⭐
 		}
-		if (vm.needCheckBox == 'Y') vm.rules.push(function (v) {
+		if (vm.needCheckBox && !vm.nullable) vm.rules.push(function (v) {
 			return !!vm.checked || 'Поле обязательное1';
 		});
 		var tmp = new RegExp(vm.maskFin);
@@ -4284,7 +4297,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.rules.push(function (v) {
 				return tmp.test(v) || vm.error;
 			});
-		vm.paramSet({ num: vm.paramsForm, code: vm.code, value: vm.value, view: vm.value, checked: vm.needCheckBox == 'Y' ? vm.checked : 1 });
+		vm.paramSet({ num: vm.paramsForm, code: vm.code, value: vm.value, view: vm.value, checked: vm.needCheckBox ? vm.checked : 1 });
 	}
 });
 
@@ -4297,52 +4310,72 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { on: { click: _vm.onClick } },
+    "v-layout",
+    { attrs: { "align-center": "" } },
     [
-      _c(_vm.currentInput, {
-        ref: "input",
-        tag: "component",
-        attrs: {
-          label: _vm.columnName,
-          hint: _vm.columnDesc,
-          rules: _vm.rules,
-          disabled: _vm.disableGet,
-          readonly: _vm.readonly,
-          required: !!_vm.nullable,
-          "multi-line": _vm.columnSize > 50,
-          "prepend-icon": _vm.isNeedIcon,
-          tabindex: _vm.sortSeq,
-          type: _vm.typeGet,
-          items: _vm.curItems,
-          "append-icon": _vm.appendIconGet,
-          clearable: _vm.clearableGet,
-          mask: _vm.mask,
-          "append-outer-icon": _vm.appendOuterIconGet
-        },
-        on: {
-          change: _vm.setNewVal,
-          keyup: function($event) {
-            if (
-              !("button" in $event) &&
-              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-            ) {
-              return null
+      _c(
+        "div",
+        { staticClass: "input-contaner", on: { click: _vm.onClick } },
+        [
+          _c(_vm.currentInput, {
+            ref: "input",
+            tag: "component",
+            attrs: {
+              label: _vm.columnName,
+              hint: _vm.columnDesc,
+              rules: _vm.rules,
+              disabled: _vm.disableGet,
+              readonly: _vm.readonly,
+              required: !!_vm.nullable,
+              "multi-line": _vm.columnSize > 50,
+              "prepend-icon": _vm.isNeedIcon,
+              tabindex: _vm.sortSeq,
+              type: _vm.typeGet,
+              items: _vm.curItems,
+              "append-icon": _vm.appendIconGet,
+              clearable: _vm.clearableGet,
+              mask: _vm.mask,
+              color: _vm.checkBoxColor
+            },
+            on: {
+              change: _vm.setNewVal,
+              keyup: function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                return _vm.submit($event)
+              },
+              blur: _vm.onBlur
+            },
+            model: {
+              value: _vm.value,
+              callback: function($$v) {
+                _vm.value = $$v
+              },
+              expression: "value"
             }
-            return _vm.submit($event)
-          },
-          "click:append-outer": _vm.appendOuterIconClick,
-          "click:append": _vm.changeShow,
-          blur: _vm.onBlur
-        },
-        model: {
-          value: _vm.value,
-          callback: function($$v) {
-            _vm.value = $$v
-          },
-          expression: "value"
-        }
-      })
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      !!_vm.needCheckBox
+        ? _c("v-checkbox", {
+            staticClass: "shrink ml-2 mb-2",
+            attrs: { "hide-details": "", color: _vm.checkBoxColor },
+            on: { change: _vm.changeChecked },
+            model: {
+              value: _vm.checked,
+              callback: function($$v) {
+                _vm.checked = $$v
+              },
+              expression: "checked"
+            }
+          })
+        : _vm._e()
     ],
     1
   )
@@ -4403,6 +4436,56 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-9e96bcd2", module.exports)
   }
 }
+
+/***/ }),
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(197);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("38a6419d", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-bff2f64e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./c-input.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-bff2f64e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./c-input.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\ndiv.input-contaner {-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 ],[149]);

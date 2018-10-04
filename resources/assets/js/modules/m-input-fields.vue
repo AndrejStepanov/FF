@@ -38,13 +38,13 @@
 			inputs() {
 				let vm=this
 				let data= [
-					{id:1, form:'object-tree-add',	code:'obj_level', 	column_name:'Вложенность', 				column_desc:'Уровень вложенности объекта', 		proc_type:'AUTO::LIST', nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:1, items:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
-					{id:2, form:'object-tree-add',	code:'tree_group', 	column_name:'Тип', 						column_desc:'Тип объекта', 						proc_type:'AUTO::LIST', nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:2, items:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
-					{id:3, form:'object-tree-add',	code:'tree_desc', 	column_name:'Название',					column_desc:'Описание объекта', 				proc_type:'MAN',		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
+					{id:1, form:'object-tree-add',	code:'obj_level', 	column_name:'Вложенность', 				column_desc:'Уровень вложенности объекта', 		type:'LIST', 		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:1, items:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
+					{id:2, form:'object-tree-add',	code:'tree_group', 	column_name:'Тип', 						column_desc:'Тип объекта', 						type:'LIST', 		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:2, items:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
+					{id:3, form:'object-tree-add',	code:'tree_desc', 	column_name:'Название',					column_desc:'Описание объекта', 				type:'INPUT',		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
 					
-					{id:4, form:'auth-login', 		code:'login', 		column_name:'Пользователь', 			column_desc:'Логин пользователя', 				proc_type:'MAN', 		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:1,  },
-					{id:5, form:'auth-login', 		code:'password',	column_name:'Пароль', 					column_desc:'Пароль пользователя', 				proc_type:'PASSWORD', 	nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:2,  },
-					{id:6, form:'auth-login', 		code:'remember',	column_name:'Запомнить мои данные', 	column_desc:'Запомнить данные пользователя', 	proc_type:'BOOL',		nullable:1, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
+					{id:4, form:'auth-login', 		code:'login', 		column_name:'Пользователь', 			column_desc:'Логин пользователя', 				type:'INPUT', 		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:1,  },
+					{id:5, form:'auth-login', 		code:'password',	column_name:'Пароль', 					column_desc:'Пароль пользователя', 				type:'PASSWORD', 	nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:2,  },
+					{id:6, form:'auth-login', 		code:'remember',	column_name:'Запомнить мои данные', 	column_desc:'Запомнить данные пользователя', 	type:'BOOL',		nullable:1, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
 				]
 				return data.filter(row =>  row.form == vm.paramsForm ).sort( (a, b) =>{return sort(a, b, 'sort_seq', 'sort_seq')})
 			},
