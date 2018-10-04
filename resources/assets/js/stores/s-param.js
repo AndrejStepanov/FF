@@ -13,7 +13,8 @@ export default {
 		getTodo: (state,getters) =>(num)=> {
 			let tmp={}, data=getters.getGroup(num)
 			Object.keys(data).forEach(code=>{
-				tmp[code]=data[code].value
+				if( data[code].checked)
+					tmp[code]=data[code].value
 			})
 			return tmp
 		},
@@ -22,8 +23,8 @@ export default {
 		async doInit({commit,getters,state},{num,}){
 			commit("allParamsClearing",{ num, })			
 		},
-		async doSet({commit,getters,state},{num,code, value, view}){
-			commit("paramSetting",{ num,code, value, view})			
+		async doSet({commit,getters,state},{num,code, value, view, checked=1}){
+			commit("paramSetting",{ num,code, value, view, checked})			
 		},
 		async doSetSeveral({dispatch,commit,getters,state},{num,params={} }){// params:{code:{value:'значение параметра, если undefined - не указан', view:'отображаемое пользователю значение'}}
 			Object.keys(params).forEach(code=>{
@@ -41,8 +42,8 @@ export default {
 		allParamsClearing(state, {num, code, value}){
 			state.params[num] ={}
 		},
-		paramSetting(state, {num, code, value,view}){
-			state.params[num][code] ={value, view}
+		paramSetting(state, {num, code, value,view,checked}){
+			state.params[num][code] ={value, view, checked}
 		},
 
 	},

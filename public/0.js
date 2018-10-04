@@ -1,14 +1,14 @@
 webpackJsonp([0],{
 
-/***/ 168:
+/***/ 167:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(169)
+var __vue_script__ = __webpack_require__(168)
 /* template */
-var __vue_template__ = __webpack_require__(175)
+var __vue_template__ = __webpack_require__(174)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48,14 +48,14 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 169:
+/***/ 168:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(169);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__);
 //
 //
@@ -175,19 +175,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 170:
+/***/ 169:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(171)
+  __webpack_require__(170)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(173)
+var __vue_script__ = __webpack_require__(172)
 /* template */
-var __vue_template__ = __webpack_require__(174)
+var __vue_template__ = __webpack_require__(173)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -227,17 +227,17 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 171:
+/***/ 170:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(172);
+var content = __webpack_require__(171);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("ff5f8dea", content, false);
+var update = __webpack_require__(6)("ff5f8dea", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -254,10 +254,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 172:
+/***/ 171:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(4)(undefined);
+exports = module.exports = __webpack_require__(5)(undefined);
 // imports
 
 
@@ -269,7 +269,7 @@ exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: 
 
 /***/ }),
 
-/***/ 173:
+/***/ 172:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -807,7 +807,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 174:
+/***/ 173:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -877,7 +877,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 175:
+/***/ 174:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1057,16 +1057,16 @@ if (false) {
 
 /***/ }),
 
-/***/ 180:
+/***/ 179:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(167);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_dialog__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__ = __webpack_require__(180);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -1090,7 +1090,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			inputsValid: false,
 			dialogWidth: 10,
 			dialogHeight: 10,
-			paramsOrig: {},
+			paramsForm: '',
 			dialogButtons: [{ id: 1, title: 'Сохранить', icon: 'done', allig: 'left', click: 'dialogSave', needCheck: true }, { id: 2, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }]
 		};
 	},
@@ -1110,7 +1110,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			var vm = this;
 			var data = [{ id: 1, form: 'object-tree-add', code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', proc_type: 'AUTO::LIST', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, items: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', proc_type: 'AUTO::LIST', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, items: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', proc_type: 'MAN', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }, { id: 4, form: 'auth-login', code: 'login', column_name: 'Пользователь', column_desc: 'Логин пользователя', proc_type: 'MAN', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1 }, { id: 5, form: 'auth-login', code: 'password', column_name: 'Пароль', column_desc: 'Пароль пользователя', proc_type: 'PASSWORD', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2 }, { id: 6, form: 'auth-login', code: 'remember', column_name: 'Запомнить мои данные', column_desc: 'Запомнить данные пользователя', proc_type: 'BOOL', nullable: 1, column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
 			return data.filter(function (row) {
-				return row.form == vm.dialogConfigGet.name;
+				return row.form == vm.paramsForm;
 			}).sort(function (a, b) {
 				return sort(a, b, 'sort_seq', 'sort_seq');
 			});
@@ -1119,9 +1119,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			var vm = this;
 			var tmp = [],
 			    buttons = [];
-			if (vm.dialogConfigGet.name == 'auth-login') buttons = authButtons;else buttons = vm.dialogButtons;
+			if (vm.paramsForm == 'auth-login') buttons = authButtons;else buttons = vm.dialogButtons;
 			buttons.forEach(function (row) {
-				tmp.push(_extends({}, row, { disabled: row.needCheck == true && !vm.inputsValid ? true : false }));
+				tmp.push(_extends({}, row, { disabled: row.needCheck == true && !vm.inputsValid }));
 			});
 			return tmp;
 		}
@@ -1133,8 +1133,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	methods: {
 		dialogSave: function dialogSave() {
 			var vm = this;
-			if (!vm.$refs[vm.dialogConfigGet.name].validate()) return;
-			var todo = _extends({}, vm.paramTodo(vm.dialogConfigGet.name), vm.dialogParamsGet.kyes);
+			if (!vm.$refs[vm.paramsForm].validate()) return;
+			var todo = _extends({}, vm.paramTodo(vm.paramsForm), vm.dialogParamsGet.kyes);
 
 			if (vm.dialogParamsGet.checkFunc) vm.dialogParamsGet.checkFunc(todo);
 			if (vm.dialogParamsGet.saveFunc) vm.dialogParamsGet.saveFunc(todo);else sendRequest({ href: nvl(vm.dialogParamsGet.socetHref, '/data_command'), type: vm.dialogParamsGet.socetEvent, data: todo, hrefBack: vm.dialogParamsGet.hrefBack, handler: function handler() {
@@ -1144,12 +1144,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	},
 	created: function created() {
 		var vm = this;
-		vm.paramInit({ num: vm.dialogConfigGet.name });
-		vm.$root.$on('dialog' + vm.dialogId + 'InputsCols' + vm.dialogConfigGet.name, function (obj) {
+		vm.paramsForm = vm.dialogConfigGet.name;
+		vm.paramInit({ num: vm.paramsForm });
+		vm.$root.$on('dialog' + vm.dialogId + 'InputsCols', function (obj) {
 			vm.dialogHeight = vm.dialogConfigGet.height > 0 ? vm.dialogConfigGet.height : obj.rowInColA * 74 + 140;
 			vm.dialogWidth = vm.dialogConfigGet.width > 0 ? vm.dialogConfigGet.width : vm.dialogConfigGet.title.length * 20 + 110 > obj.colsCnt * 300 ? vm.dialogConfigGet.title.length * 20 + 110 : obj.colsCnt * 300;
 		});
-		vm.$root.$on('dialog' + vm.dialogId + 'Send', function () {
+		vm.$root.$on('dialog' + vm.paramsForm + 'Send', function () {
 			vm.dialogSave();
 		});
 	}
@@ -1157,15 +1158,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 181:
+/***/ 180:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(182)
+var __vue_script__ = __webpack_require__(181)
 /* template */
-var __vue_template__ = __webpack_require__(186)
+var __vue_template__ = __webpack_require__(185)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1205,12 +1206,12 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 182:
+/***/ 181:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__c_input__);
 //
 //
@@ -1234,8 +1235,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	props: {
 		inputs: { type: Array, required: true },
-		dialogId: { type: Number },
-		paramsId: { type: String },
+		dialogId: { type: Number, defuault: 0 },
+		paramsForm: { type: String, defuault: '' },
+		maxCols: { type: Number, defuault: 4 },
 		needCheckBox: { type: String, default: 'N' }
 	},
 	computed: {
@@ -1252,7 +1254,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			    checkRow = [],
 			    colsData = [];
 			vm.colsCnt = Math.ceil(len / MAX_INPUT_IN_COL);
-			vm.colsCnt = vm.colsCnt > 4 ? 4 : vm.colsCnt;
+			vm.colsCnt = vm.colsCnt > vm.maxCols ? vm.maxCols : vm.colsCnt;
 			rowInColA = Math.ceil(len / vm.colsCnt);
 			for (var i = 1; i <= vm.colsCnt; i++) {
 				colsData.push([]);
@@ -1266,7 +1268,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				})) col++;
 				colsData[col].push(row);
 			});
-			vm.$root.$emit('dialog' + vm.dialogId + 'InputsCols' + vm.paramsId, { rowInColA: rowInColA, colsCnt: vm.colsCnt });
+			vm.$root.$emit('dialog' + vm.dialogId + 'InputsCols', { rowInColA: rowInColA, colsCnt: vm.colsCnt });
 			return colsData;
 		}
 	},
@@ -1279,15 +1281,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 183:
+/***/ 182:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(184)
+var __vue_script__ = __webpack_require__(183)
 /* template */
-var __vue_template__ = __webpack_require__(185)
+var __vue_template__ = __webpack_require__(184)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1327,12 +1329,12 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 184:
+/***/ 183:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__mixins_x_store__);
@@ -1385,7 +1387,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			columnName: 'columnName',
 			columnDesc: 'columnDesc',
 			procType: 'procType',
-			nullable: 0,
+			nullable: false,
 			columnType: '',
 			columnSize: 0,
 			cssClass: '',
@@ -1406,42 +1408,35 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		data: { type: Object, required: true, default: function _default() {
 				return {};
 			} },
-		dialogId: { type: Number },
-		paramsId: { type: String },
+		dialogId: { type: Number, default: 0 },
+		paramsForm: { type: String, defuault: '' },
 		needCheckBox: { type: String, default: 'N' }
 	},
 	computed: {
 		curItems: function curItems() {
-			var vm = this;
-			return vm.procType == 'AUTO::LIST' ? vm.items : [];
+			return this.procType == 'AUTO::LIST' ? this.items : [];
 		},
 		typeGet: function typeGet() {
-			var vm = this;
-			return vm.procType != 'PASSWORD' ? vm.procType : vm.show ? 'text' : 'password';
+			return this.procType != 'PASSWORD' ? this.procType : this.show ? 'text' : 'password';
 		},
 		appendIconGet: function appendIconGet() {
-			var vm = this;
-			return vm.procType != 'PASSWORD' ? vm.procType == 'AUTO::LIST' ? '$vuetify.icons.dropdown' : '' : vm.show ? 'visibility_off' : 'visibility';
+			return this.procType != 'PASSWORD' ? this.procType == 'AUTO::LIST' ? '$vuetify.icons.dropdown' : '' : this.show ? 'visibility_off' : 'visibility';
 		},
 		clearableGet: function clearableGet() {
-			var vm = this;
-			return vm.procType != 'PASSWORD';
+			return this.procType != 'PASSWORD';
 		},
 		appendOuterIconGet: function appendOuterIconGet() {
-			var vm = this;
-			return vm.needCheckBox == 'N' ? '' : vm.checked ? 'check_box' : 'check_box_outline_blank';
+			return this.needCheckBox == 'N' ? '' : this.checked ? 'check_box' : 'check_box_outline_blank';
 		},
 		disableGet: function disableGet() {
-			var vm = this;
-			return vm.needCheckBox == 'N' ? false : !vm.checked;
+			return this.needCheckBox == 'N' ? false : !this.checked;
 		}
 	},
 	watch: {},
 	mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default.a],
 	methods: {
 		setNewVal: function setNewVal(value) {
-			var vm = this;
-			vm.checkRefresh();
+			this.checkRefresh();
 		},
 		changeShow: function changeShow() {
 			this.show = !this.show;
@@ -1449,22 +1444,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		submit: function submit() {
 			var vm = this;
 			vm.checkRefresh();
-			vm.$root.$emit('dialog' + vm.dialogId + 'Send', { param: vm.code, value: vm.value });
+			if (vm.dialogId > 0) vm.$root.$emit('dialog' + vm.paramsForm + 'Send', { param: vm.code, value: vm.value });
 		},
 		appendOuterIconClick: function appendOuterIconClick() {
 			var vm = this;
 			vm.checked = !vm.checked;
+			vm.setVal();
 		},
 		onClick: function onClick() {
 			var vm = this;
 			vm.checked = true;
+			vm.$refs.input.validate();
+			vm.setVal();
 			setTimeout(function () {
 				vm.$refs.input.onClick();
 			}, 100);
 		},
 		onBlur: function onBlur() {
-			var vm = this;
-			vm.checkRefresh();
+			this.checkRefresh();
 		},
 		checkRefresh: function () {
 			var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(value) {
@@ -1487,24 +1484,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 							case 5:
 								vm.lastTimeSend = curTime;
+								vm.setVal();
 
-								if (!vm.checked) {
-									_context.next = 11;
-									break;
-								}
-
-								_context.next = 9;
-								return vm.paramSet({ num: vm.paramsId, code: vm.code, value: vm.value, view: vm.value });
-
-							case 9:
-								_context.next = 13;
-								break;
-
-							case 11:
-								_context.next = 13;
-								return vm.paramSet({ num: vm.paramsId, code: vm.code, value: undefined, view: undefined });
-
-							case 13:
+							case 7:
 							case 'end':
 								return _context.stop();
 						}
@@ -1517,6 +1499,33 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			}
 
 			return checkRefresh;
+		}(),
+		setVal: function () {
+			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+				var vm;
+				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+					while (1) {
+						switch (_context2.prev = _context2.next) {
+							case 0:
+								vm = this;
+
+								if (vm.needCheckBox == 'Y' && vm.isNeed && !vm.checked) vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
+								_context2.next = 4;
+								return vm.paramSet({ num: vm.paramsForm, code: vm.code, value: vm.value, view: vm.value, checked: vm.checked });
+
+							case 4:
+							case 'end':
+								return _context2.stop();
+						}
+					}
+				}, _callee2, this);
+			}));
+
+			function setVal() {
+				return _ref2.apply(this, arguments);
+			}
+
+			return setVal;
 		}()
 	},
 	created: function created() {
@@ -1543,24 +1552,28 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		}
 		vm.currentInput = vm.procType == 'AUTO::LIST' ? 'v-select' : vm.procType == 'BOOL' ? 'v-checkbox' : 'v-text-field';
 		vm.readonly = vm.type == 'READONLY';
-		if (vm.nullable == 0) {
+		if (!vm.nullable) {
 			vm.isNeed = true;
 			vm.rules.push(function (v) {
 				return !!v || 'Поле обязательное';
 			});
+			vm.columnName += ' ❗'; //⭐
 		}
+		if (vm.needCheckBox == 'Y') vm.rules.push(function (v) {
+			return !!vm.checked || 'Поле обязательное1';
+		});
 		var tmp = new RegExp(vm.maskFin);
 		if (tmp != '') //надо помнить про экранирование
 			vm.rules.push(function (v) {
 				return tmp.test(v) || vm.error;
 			});
-		vm.paramSet({ num: vm.paramsId, code: vm.code, value: vm.value, view: vm.value });
+		vm.paramSet({ num: vm.paramsForm, code: vm.code, value: vm.value, view: vm.value, checked: vm.needCheckBox == 'Y' ? vm.checked : 1 });
 	}
 });
 
 /***/ }),
 
-/***/ 185:
+/***/ 184:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1580,7 +1593,7 @@ var render = function() {
           rules: _vm.rules,
           disabled: _vm.disableGet,
           readonly: _vm.readonly,
-          required: !!!_vm.nullable,
+          required: !!_vm.nullable,
           "multi-line": _vm.columnSize > 50,
           "prepend-icon": _vm.isNeedIcon,
           tabindex: _vm.sortSeq,
@@ -1630,7 +1643,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 186:
+/***/ 185:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1655,7 +1668,7 @@ var render = function() {
                   data: row,
                   needCheckBox: _vm.needCheckBox,
                   dialogId: _vm.dialogId,
-                  paramsId: _vm.paramsId
+                  paramsForm: _vm.paramsForm
                 }
               })
             })
@@ -1678,7 +1691,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 187:
+/***/ 186:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1701,7 +1714,7 @@ var render = function() {
       _c(
         "v-form",
         {
-          ref: _vm.dialogConfigGet.name,
+          ref: _vm.paramsForm,
           model: {
             value: _vm.inputsValid,
             callback: function($$v) {
@@ -1715,7 +1728,7 @@ var render = function() {
             attrs: {
               inputs: _vm.inputs,
               dialogId: _vm.dialogId,
-              paramsId: _vm.dialogConfigGet.name
+              paramsForm: _vm.paramsForm
             }
           })
         ],
@@ -1737,15 +1750,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 48:
+/***/ 47:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(180)
+var __vue_script__ = __webpack_require__(179)
 /* template */
-var __vue_template__ = __webpack_require__(187)
+var __vue_template__ = __webpack_require__(186)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */

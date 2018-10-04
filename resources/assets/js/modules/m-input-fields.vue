@@ -1,7 +1,7 @@
 <template>
 	<c-dialog ref='dialog' :dialogId="dialogId" :widthOrig="dialogWidth" :heightOrig="dialogHeight" :buttons='buttons' @dialogSave='dialogSave' >
-		<v-form v-model="inputsValid" :ref="dialogConfigGet.name" > 
-			<c-input-cols  :inputs="inputs" :dialogId="dialogId" :paramsId="dialogConfigGet.name" />
+		<v-form v-model="inputsValid" :ref="paramsForm" > 
+			<c-input-cols  :inputs="inputs" :dialogId="dialogId" :paramsForm="paramsForm" />
 		</v-form>
 	</c-dialog>
 </template>
@@ -17,7 +17,7 @@
 			inputsValid: false,
 			dialogWidth:10,
 			dialogHeight:10,
-			paramsOrig:{},
+			paramsForm:'',
 			dialogButtons:  [
 				{id:1, title:'Сохранить', icon:'done', allig:'left', click:'dialogSave' , needCheck:true}, 
 				{id:2, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose'}
@@ -46,16 +46,16 @@
 					{id:5, form:'auth-login', 		code:'password',	column_name:'Пароль', 					column_desc:'Пароль пользователя', 				proc_type:'PASSWORD', 	nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:2,  },
 					{id:6, form:'auth-login', 		code:'remember',	column_name:'Запомнить мои данные', 	column_desc:'Запомнить данные пользователя', 	proc_type:'BOOL',		nullable:1, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
 				]
-				return data.filter(row =>  row.form == vm.dialogConfigGet.name ).sort( (a, b) =>{return sort(a, b, 'sort_seq', 'sort_seq')})
+				return data.filter(row =>  row.form == vm.paramsForm ).sort( (a, b) =>{return sort(a, b, 'sort_seq', 'sort_seq')})
 			},
 			buttons() {
 				let vm=this
 				let tmp = [], buttons=[]
-				if(vm.dialogConfigGet.name=='auth-login')
+				if(vm.paramsForm=='auth-login')
 					buttons=authButtons
 				else 
 					buttons=vm.dialogButtons
-				buttons.forEach((row)=> { tmp.push({...row, disabled: ( row.needCheck==true && !vm.inputsValid ? true :false ) }) })
+				buttons.forEach((row)=> { tmp.push({...row, disabled: ( row.needCheck==true && !vm.inputsValid ) }) })
 				return tmp
 			},
 		},
@@ -68,9 +68,9 @@
 		methods: {
 			dialogSave(){
 				let vm=this
-				if (!vm.$refs[vm.dialogConfigGet.name].validate())
+				if (!vm.$refs[vm.paramsForm].validate())
 					return;
-				let todo={...vm.paramTodo(vm.dialogConfigGet.name), ...vm.dialogParamsGet.kyes}
+				let todo={...vm.paramTodo(vm.paramsForm), ...vm.dialogParamsGet.kyes}
 				
 				if (vm.dialogParamsGet.checkFunc)
 					vm.dialogParamsGet.checkFunc(todo)
@@ -82,12 +82,13 @@
 		},
 		created: function (){
 			let vm=this
-			vm.paramInit( {num: vm.dialogConfigGet.name })
-			vm.$root.$on('dialog'+vm.dialogId+'InputsCols'+vm.dialogConfigGet.name, (obj)=>{
+			vm.paramsForm=vm.dialogConfigGet.name
+			vm.paramInit( {num: vm.paramsForm })
+			vm.$root.$on('dialog'+vm.dialogId+'InputsCols', (obj)=>{
 				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : obj.rowInColA *74 + 140 
 				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width :(vm.dialogConfigGet.title.length*20+110>obj.colsCnt*300?vm.dialogConfigGet.title.length*20+110:obj.colsCnt*300  )
 			}); 
-			vm.$root.$on('dialog'+vm.dialogId+'Send', ()=>{
+			vm.$root.$on('dialog'+vm.paramsForm+'Send', ()=>{
 				vm.dialogSave();
 			});
 		},

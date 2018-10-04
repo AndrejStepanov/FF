@@ -1,6 +1,6 @@
 <template> 
 	<div @click="onClick" >
-		<component :is="currentInput" v-model="value" :label="columnName" :hint="columnDesc" :rules="rules" :disabled="disableGet" :readonly="readonly"  :required="!!!nullable" ref="input"
+		<component :is="currentInput" v-model="value" :label="columnName" :hint="columnDesc" :rules="rules" :disabled="disableGet" :readonly="readonly"  :required="!!nullable" ref="input"
 			:multi-line="columnSize>50" :prepend-icon="isNeedIcon"  :tabindex="sortSeq" :type="typeGet" :items="curItems"  
 			:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :append-outer-icon="appendOuterIconGet" 
 			@change="setNewVal" @keyup.enter="submit" @click:append-outer="appendOuterIconClick" @click:append="changeShow" @blur="onBlur"/>
@@ -42,7 +42,7 @@ time-with-seconds	##:##:##
 			columnName: 'columnName',
 			columnDesc: 'columnDesc',
 			procType: 'procType',
-			nullable: 0,
+			nullable: false,
 			columnType: '',
 			columnSize: 0,
 			cssClass: '',
@@ -60,34 +60,28 @@ time-with-seconds	##:##:##
 */
 		props:{
 			data:{type: Object, required: true, default:()=>{return {}}},
-			dialogId: {type:  Number},
-			paramsId: {type: String},
+			dialogId: {type:  Number,default:0},
+			paramsForm: {type: String, defuault:''},
 			needCheckBox:{type:  String, default:'N'},
 		},
 		computed: {
 			curItems(){
-				let vm=this
-				return vm.procType=='AUTO::LIST'?vm.items: []			
+				return this.procType=='AUTO::LIST'?this.items: []			
 			},
 			typeGet(){
-				let vm=this
-				return vm.procType!='PASSWORD'?vm.procType:vm.show?'text':'password'
+				return this.procType!='PASSWORD'?this.procType:this.show?'text':'password'
 			},
 			appendIconGet(){
-				let vm=this
-				return vm.procType!='PASSWORD'?(vm.procType=='AUTO::LIST'?'$vuetify.icons.dropdown':''): vm.show ? 'visibility_off' : 'visibility'
+				return this.procType!='PASSWORD'?(this.procType=='AUTO::LIST'?'$vuetify.icons.dropdown':''): this.show ? 'visibility_off' : 'visibility'
 			},
 			clearableGet(){
-				let vm=this
-				return vm.procType!='PASSWORD'
+				return this.procType!='PASSWORD'
 			},
 			appendOuterIconGet(){
-				let vm=this
-				return vm.needCheckBox=='N'?'': vm.checked ? 'check_box' : 'check_box_outline_blank'
+				return this.needCheckBox=='N'?'': this.checked ? 'check_box' : 'check_box_outline_blank'
 			},
 			disableGet(){
-				let vm=this
-				return vm.needCheckBox=='N'?false:!vm.checked
+				return this.needCheckBox=='N'?false:!this.checked
 			},	
 		},
 		watch: {
@@ -97,8 +91,7 @@ time-with-seconds	##:##:##
 		],		
 		methods: {
 			setNewVal(value){
-				let vm=this
-				vm.checkRefresh()
+				this.checkRefresh()
 			},
 			changeShow(){
 				this.show = !this.show;
@@ -106,20 +99,23 @@ time-with-seconds	##:##:##
 			submit(){
 				let vm=this
 				vm.checkRefresh()
-				vm.$root.$emit('dialog'+vm.dialogId+'Send',{param:vm.code,value:vm.value} )
+				if(vm.dialogId>0)
+					vm.$root.$emit('dialog'+vm.paramsForm+'Send',{param:vm.code,value:vm.value} )
 			},
 			appendOuterIconClick(){
 				let vm=this
 				vm.checked=!vm.checked
+				vm.setVal()
 			},	
 			onClick(){
 				let vm=this
 				vm.checked=true
+				vm.$refs.input.validate()
+				vm.setVal()
 				setTimeout(()=>{vm.$refs.input.onClick()},100)
 			},
 			onBlur(){
-				let vm=this
-				vm.checkRefresh()
+				this.checkRefresh()
 			},
 			async checkRefresh(value){
 				let vm=this
@@ -128,12 +124,14 @@ time-with-seconds	##:##:##
 				if ( curTime<vm.lastTimeSend+500 )
 					return
 				vm.lastTimeSend=curTime
-				if(vm.checked)
-					await  vm.paramSet( {num: vm.paramsId, code: vm.code, value:vm.value , view:vm.value })
-				else
-					await  vm.paramSet( {num: vm.paramsId, code: vm.code, value:undefined, view:undefined })
-			}
-				
+				vm.setVal()
+			},
+			async setVal(){
+				let vm=this
+				if(vm.needCheckBox=='Y' && vm.isNeed && !vm.checked)
+					vm.$root.$emit('dialog'+vm.paramsForm+'NeedCheck')
+				await  vm.paramSet( {num: vm.paramsForm, code: vm.code, value:vm.value , view:vm.value, checked:vm.checked, })
+			},				
 		},
 		created: function (){
 			let vm=this
@@ -159,14 +157,17 @@ time-with-seconds	##:##:##
 			}
 			vm.currentInput= vm.procType=='AUTO::LIST'?'v-select':vm.procType=='BOOL'?'v-checkbox':'v-text-field'
 			vm.readonly=vm.type=='READONLY'
-			if(vm.nullable==0){
+			if(!vm.nullable){
 				vm.isNeed =true
 				vm.rules.push(v => !!v || 'Поле обязательное')
+				vm.columnName+=' ❗'//⭐
 			}
+			if(vm.needCheckBox=='Y')
+				vm.rules.push(v => !!vm.checked || 'Поле обязательное1')
 			let tmp = new RegExp(vm.maskFin)
 			if(tmp!='')//надо помнить про экранирование
 				vm.rules.push(v => tmp.test(v) || vm.error)
-			vm.paramSet( {num: vm.paramsId, code: vm.code, value:vm.value , view:vm.value })
+			vm.paramSet( {num: vm.paramsForm, code: vm.code, value:vm.value , view:vm.value, checked:(vm.needCheckBox=='Y'?vm.checked:1), })
 		},
 	}
 </script>

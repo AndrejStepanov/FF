@@ -14,7 +14,7 @@
 		name:'c-profile',
 		data: () => ({
 			fab: false,
-			hover: true,
+			hover: false,//открывать при наведении
 			userTicket:'',
 		}),		
 		mixins: [

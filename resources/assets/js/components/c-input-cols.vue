@@ -2,7 +2,7 @@
 	<v-container grid-list-md>
 		<v-layout row wrap>
 			<v-flex v-for="(arr, index) in colsData" :key="index"  :class="classes" >
-				<c-input  v-for="row in arr"  :key="row.id"  :data="row" :needCheckBox="needCheckBox" :dialogId="dialogId" :paramsId="paramsId"/>
+				<c-input  v-for="row in arr"  :key="row.id"  :data="row" :needCheckBox="needCheckBox" :dialogId="dialogId" :paramsForm="paramsForm"/>
 			</v-flex>
 		</v-layout>
 	</v-container>	
@@ -18,8 +18,9 @@
 		}),
 		props:{
 			inputs: {type: Array, required: true},
-			dialogId: {type: Number},
-			paramsId: {type: String},
+			dialogId: {type: Number, defuault:0},
+			paramsForm: {type: String, defuault:''},
+			maxCols: {type: Number, defuault:4},
 			needCheckBox: {type: String, default:'N'},
 		},
 		computed: {
@@ -41,7 +42,7 @@
 					checkRow=[],
 					colsData=[]
 				vm.colsCnt=Math.ceil(len/MAX_INPUT_IN_COL)
-				vm.colsCnt=vm.colsCnt>4?4:vm.colsCnt;
+				vm.colsCnt=vm.colsCnt>vm.maxCols?vm.maxCols:vm.colsCnt;
 				rowInColA=Math.ceil(len/vm.colsCnt)
 				for(let i=1; i<=vm.colsCnt;i++){
 					colsData.push([]);
@@ -58,7 +59,7 @@
 						col++;
 					colsData[col].push(row);
 				});
-				vm.$root.$emit('dialog'+vm.dialogId+'InputsCols'+vm.paramsId, {rowInColA,colsCnt:vm.colsCnt}); 
+				vm.$root.$emit('dialog'+vm.dialogId+'InputsCols', {rowInColA,colsCnt:vm.colsCnt}); 
 				return colsData
 			},
 		},
