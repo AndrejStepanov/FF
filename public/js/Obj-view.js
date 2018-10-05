@@ -3636,7 +3636,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\ndiv.input-contaner {-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n", ""]);
+exports.push([module.i, "\ndiv.input-contaner {-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t{min-width: 35px;\n}\n", ""]);
 
 // exports
 
@@ -3684,6 +3684,43 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3691,6 +3728,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 	data: function data() {
 		return {
 			value: '',
+			value2: '',
+			valueArr: [],
 			rules: [],
 			isNeed: false,
 			isNeedIcon: '',
@@ -3710,10 +3749,22 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			sortSeq: 0,
 			mask: null,
 			maskFin: '',
-			error: 'Некорректное значение',
-			items: [],
+			error: 'Некорректное значение!',
+			tableValues: [],
+			tickLabels: [],
 			lastTimeSend: 0,
-			checkBoxColor: 'white' //переопределяется в created
+			checkBoxColor: 'white', //переопределяется в created
+			editable: true,
+			multi: false,
+			isSliderLike: false,
+			min: 0,
+			max: 40,
+			step: "1",
+			ticksNeed: false,
+			tickSize: 0,
+			thumbLabelNeed: false,
+			thumbSize: 10,
+			isNumeric: true
 		};
 	},
 	/*
@@ -3730,14 +3781,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		needCheckBox: { type: Boolean, default: false }
 	},
 	computed: {
-		curItems: function curItems() {
-			return this.type == 'LIST' ? this.items : [];
-		},
 		typeGet: function typeGet() {
-			return this.type != 'PASSWORD' ? this.type : this.show ? 'text' : 'password';
+			return this.type != 'PASSWORD' ? this.type : this.type == 'PASSWORD' ? this.show ? 'text' : 'password' : 'text';
 		},
 		appendIconGet: function appendIconGet() {
-			return this.type != 'PASSWORD' ? this.type == 'LIST' ? '$vuetify.icons.dropdown' : '' : this.show ? 'visibility_off' : 'visibility';
+			return this.type != 'PASSWORD' ? this.type == 'LIST' ? '$vuetify.icons.dropdown' : '' : this.type != 'PASSWORD' ? this.show ? 'visibility_off' : 'visibility' : '';
 		},
 		clearableGet: function clearableGet() {
 			return this.type != 'PASSWORD';
@@ -3750,7 +3798,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 	mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default.a],
 	methods: {
 		setNewVal: function setNewVal(value) {
-			this.checkRefresh();
+			var vm = this;
+			vm.checkRefresh();
 		},
 		changeShow: function changeShow() {
 			this.show = !this.show;
@@ -3762,12 +3811,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		changeChecked: function changeChecked() {
 			var vm = this;
-			vm.setVal();
+			vm.checkRefresh(true);
 		},
 		onClick: function onClick() {
-			var vm = this;
+			var vm = this,
+			    tmp = vm.checked,
+			    curTime = new Date().getTime();
+			if (curTime < vm.lastTimeSend + 500) //для автоматической активации полей над ними висит следилка. что бы она не работала лишний раз - глушим ее
+				return;
+			vm.lastTimeSend = curTime;
 			vm.checked = true;
-			vm.setVal();
+			if (!tmp) vm.checkRefresh(true);
 			setTimeout(function () {
 				vm.$refs.input.onClick();
 			}, 100);
@@ -3776,29 +3830,29 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			this.checkRefresh();
 		},
 		checkRefresh: function () {
-			var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(value) {
-				var vm, curTime;
+			var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+				var checkedFx = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+				var vm, value, tmp1, tmp2;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								vm = this;
-								curTime = new Date().getTime();
+								vm = this, value = vm.value;
 
-								vm.checked = nvl(vm.value, '') == '' ? false : true;
+								if ((value != '' || vm.type == 'RANGE' && (vm.valueArr[0] != '' || vm.valueArr[1] != '')) && vm.isSliderLike) {
+									tmp1 = vm.type == 'RANGE' ? vm.valueArr[0] : value, tmp2 = vm.type == 'RANGE' ? vm.valueArr[1] : 0;
 
-								if (!(curTime < vm.lastTimeSend + 500)) {
-									_context.next = 5;
-									break;
+									if (!vm.isNumeric) {
+										tmp1 = vm.tableValues[tmp1].value;
+										if (vm.type == 'RANGE') tmp2 = vm.tableValues[tmp2].value;
+									}
+									value = tmp1;
+									if (vm.type == 'RANGE') value += '--' + tmp2;
 								}
+								if (!checkedFx) vm.checked = value === '' ? false : true;
+								vm.setVal(value);
 
-								return _context.abrupt('return');
-
-							case 5:
-								vm.lastTimeSend = curTime;
-								vm.setVal();
-
-							case 7:
+							case 4:
 							case 'end':
 								return _context.stop();
 						}
@@ -3806,14 +3860,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}, _callee, this);
 			}));
 
-			function checkRefresh(_x) {
+			function checkRefresh() {
 				return _ref.apply(this, arguments);
 			}
 
 			return checkRefresh;
 		}(),
 		setVal: function () {
-			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value) {
 				var vm;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
 					while (1) {
@@ -3821,13 +3875,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 							case 0:
 								vm = this;
 
-								if (vm.needCheckBox && vm.isNeed) {
+								if (vm.needCheckBox) {
 									vm.$refs.input.validate();
-									//if (!vm.checked)
 									vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
 								}
 								_context2.next = 4;
-								return vm.paramSet({ num: vm.paramsForm, code: vm.code, value: vm.value, view: vm.value, checked: vm.checked });
+								return vm.paramSet({ num: vm.paramsForm, code: vm.code, value: value, view: value, checked: vm.checked });
 
 							case 4:
 							case 'end':
@@ -3837,18 +3890,22 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}, _callee2, this);
 			}));
 
-			function setVal() {
+			function setVal(_x2) {
 				return _ref2.apply(this, arguments);
 			}
 
 			return setVal;
-		}()
+		}(),
+		getTitleByNum: function getTitleByNum(value) {
+			return this.tickLabels[value];
+		}
 	},
 	created: function created() {
 		var vm = this;
 		vm.checkBoxColor = appTheme.checkBox || vm.checkBoxColor;
 		vm.id = vm.data.id || vm.id;
 		vm.value = vm.data.value || vm.value;
+		vm.value2 = vm.data.value2 || vm.data.value || vm.value2;
 		vm.code = vm.data.code || vm.code;
 		vm.columnName = vm.data.column_name || vm.columnName;
 		vm.columnDesc = vm.data.column_desc || vm.columnDesc;
@@ -3862,28 +3919,70 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		vm.maskFin = vm.data.mask_fin || vm.maskFin;
 		vm.error = vm.data.error || vm.error;
 		vm.checked = !!vm.data.checked || vm.checked;
-		if (nvl(vm.data.items != undefined) > 0) {
-			vm.data.items.forEach(function (element) {
-				vm.items.push(element);
+		vm.editable = !!vm.data.editable || vm.editable;
+		vm.multi = !!vm.data.multi || vm.multi;
+		vm.min = !!vm.data.min || vm.min;
+		vm.max = !!vm.data.max || vm.max;
+		vm.ticksNeed = !!vm.data.ticks_need || vm.ticksNeed;
+		vm.tickSize = vm.data.tick_size || vm.tickSize;
+		vm.thumbLabelNeed = vm.data.thumb_label_need || vm.thumbLabelNeed;
+
+		vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : vm.type == 'SLIDER' ? 'v-slider' : vm.type == 'RANGE' ? 'v-range-slider' : 'v-text-field';
+
+		if (nvl(vm.data.table_values != undefined) > 0) vm.data.table_values.forEach(function (element) {
+			vm.tableValues.push(element);
+			if (isNaN(element.value)) vm.isNumeric = false;
+		});
+
+		vm.isSliderLike = this.type == 'SLIDER' || this.type == 'RANGE';
+		vm.thumbLabelNeed = vm.isSliderLike && vm.thumbLabelNeed ? 'always' : '';
+		if (vm.isSliderLike && vm.tableValues.length > 0) {
+			vm.tableValues.forEach(function (item) {
+				vm.tickLabels.push(item.text);
 			});
+			if (!vm.isNumeric) {
+				vm.step = 1;
+				vm.ticksNeed = true;
+				vm.min = 0;
+				vm.max = vm.tickLabels.length - 1;
+				vm.tickSize = vm.data.tick_size || 2;
+			}
 		}
-		vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : 'v-text-field';
-		vm.readonly = vm.type == 'READONLY';
+		if (vm.type != 'SLIDER' && vm.type != 'RANGE' && vm.type != 'LIST' && vm.type != 'NUMBER') vm.isNumeric = false;
+
 		if (!vm.nullable) {
 			vm.isNeed = true;
 			vm.rules.push(function (v) {
-				return !!v || 'Поле обязательное';
+				return v != undefined || 'Поле обязательное!';
 			});
 			vm.columnName = '❗ ' + vm.columnName; //⭐
 		}
+
+		if (vm.type == 'RANGE') vm.valueArr = [vm.value, vm.value2];
+
 		if (vm.needCheckBox && !vm.nullable) vm.rules.push(function (v) {
-			return !!vm.checked || 'Поле обязательное1';
+			return !!vm.checked || 'Поле должно быть использовано!';
 		});
+
+		if (vm.needCheckBox && !vm.nullable) vm.rules.push(function (v) {
+			return !!vm.checked || 'Поле должно быть использовано!';
+		});
+
+		if (vm.isNumeric && !isNaN(vm.min) && this.type != 'RANGE') //Границы должны быть цифрой!
+			vm.rules.push(function (v) {
+				return v >= vm.min || !vm.checked || 'Значения должно быть больше либо равно ' + vm.min + '!';
+			});
+
+		if (vm.isNumeric && !isNaN(vm.max) && this.type != 'RANGE') vm.rules.push(function (v) {
+			return v <= vm.max || !vm.checked || 'Значения должно быть меньше либо равно ' + vm.max + '!';
+		});
+
 		var tmp = new RegExp(vm.maskFin);
 		if (tmp != '') //надо помнить про экранирование
 			vm.rules.push(function (v) {
 				return tmp.test(v) || vm.error;
 			});
+
 		vm.paramSet({ num: vm.paramsForm, code: vm.code, value: vm.value, view: vm.value, checked: vm.needCheckBox ? vm.checked : 1 });
 	}
 });
@@ -3898,56 +3997,275 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-layout",
-    { attrs: { "align-center": "" } },
+    { attrs: { "align-center": "", row: "" } },
     [
       _c(
         "div",
         { staticClass: "input-contaner", on: { click: _vm.onClick } },
         [
-          _c(_vm.currentInput, {
-            ref: "input",
-            tag: "component",
-            attrs: {
-              label: _vm.columnName,
-              hint: _vm.columnDesc,
-              rules: _vm.rules,
-              disabled: _vm.disableGet,
-              readonly: _vm.readonly,
-              required: !!_vm.nullable,
-              "multi-line": _vm.columnSize > 50,
-              "prepend-icon": _vm.isNeedIcon,
-              tabindex: _vm.sortSeq,
-              type: _vm.typeGet,
-              items: _vm.curItems,
-              "append-icon": _vm.appendIconGet,
-              clearable: _vm.clearableGet,
-              mask: _vm.mask,
-              color: _vm.checkBoxColor
-            },
-            on: {
-              change: _vm.setNewVal,
-              keyup: function($event) {
-                if (
-                  !("button" in $event) &&
-                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                ) {
-                  return null
+          _vm.isSliderLike
+            ? [
+                _vm.type == "RANGE" && _vm.isNumeric
+                  ? _c(
+                      "v-flex",
+                      { staticStyle: { width: "60px" }, attrs: { shrink: "" } },
+                      [
+                        _c("v-text-field", {
+                          staticClass: "mt-0 min-width-35px",
+                          attrs: {
+                            "hide-details": "",
+                            "single-line": "",
+                            type: "number"
+                          },
+                          model: {
+                            value: _vm.valueArr[0],
+                            callback: function($$v) {
+                              _vm.$set(_vm.valueArr, 0, $$v)
+                            },
+                            expression: "valueArr[0]"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  [
+                    _vm.type == "RANGE"
+                      ? _c(_vm.currentInput, {
+                          ref: "input",
+                          tag: "component",
+                          attrs: {
+                            hint:
+                              _vm.columnName +
+                              (_vm.columnDesc != ""
+                                ? " (" + _vm.columnDesc + ")"
+                                : ""),
+                            rules: _vm.rules,
+                            disabled: _vm.disableGet,
+                            readonly: !_vm.editable,
+                            required: !!_vm.nullable,
+                            "multi-line": _vm.columnSize > 50,
+                            "prepend-icon": _vm.isNeedIcon,
+                            tabindex: _vm.sortSeq,
+                            type: _vm.typeGet,
+                            "always-dirty": _vm.isSliderLike,
+                            "persistent-hint": _vm.isSliderLike,
+                            "thumb-label": _vm.thumbLabelNeed,
+                            ticks: _vm.ticksNeed ? "always" : "",
+                            tickSize: _vm.tickSize,
+                            "thumb-size": _vm.thumbSize,
+                            "tick-labels": _vm.tickLabels,
+                            "append-icon": _vm.appendIconGet,
+                            clearable: _vm.clearableGet,
+                            mask: _vm.mask,
+                            color: _vm.checkBoxColor,
+                            min: _vm.min,
+                            max: _vm.max,
+                            step: _vm.step
+                          },
+                          on: {
+                            change: _vm.setNewVal,
+                            keyup: function($event) {
+                              if (
+                                !("button" in $event) &&
+                                _vm._k(
+                                  $event.keyCode,
+                                  "enter",
+                                  13,
+                                  $event.key,
+                                  "Enter"
+                                )
+                              ) {
+                                return null
+                              }
+                              return _vm.submit($event)
+                            },
+                            blur: _vm.onBlur,
+                            "click:append": _vm.changeShow
+                          },
+                          scopedSlots: _vm._u([
+                            {
+                              key: "thumb-label",
+                              fn: function(props) {
+                                return _vm.isNumeric
+                                  ? [_vm._t("thumb-label")]
+                                  : undefined
+                              }
+                            }
+                          ]),
+                          model: {
+                            value: _vm.valueArr,
+                            callback: function($$v) {
+                              _vm.valueArr = $$v
+                            },
+                            expression: "valueArr"
+                          }
+                        })
+                      : _c(_vm.currentInput, {
+                          ref: "input",
+                          tag: "component",
+                          attrs: {
+                            hint:
+                              _vm.columnName +
+                              (_vm.columnDesc != ""
+                                ? " (" + _vm.columnDesc + ")"
+                                : ""),
+                            rules: _vm.rules,
+                            disabled: _vm.disableGet,
+                            readonly: !_vm.editable,
+                            required: !!_vm.nullable,
+                            "multi-line": _vm.columnSize > 50,
+                            "prepend-icon": _vm.isNeedIcon,
+                            tabindex: _vm.sortSeq,
+                            type: _vm.typeGet,
+                            "always-dirty": _vm.isSliderLike,
+                            "persistent-hint": _vm.isSliderLike,
+                            "thumb-label": _vm.thumbLabelNeed,
+                            ticks: _vm.ticksNeed ? "always" : "",
+                            tickSize: _vm.tickSize,
+                            "thumb-size": _vm.thumbSize,
+                            "tick-labels": _vm.tickLabels,
+                            "append-icon": _vm.appendIconGet,
+                            clearable: _vm.clearableGet,
+                            mask: _vm.mask,
+                            color: _vm.checkBoxColor,
+                            min: _vm.min,
+                            max: _vm.max,
+                            step: _vm.step
+                          },
+                          on: {
+                            change: _vm.setNewVal,
+                            keyup: function($event) {
+                              if (
+                                !("button" in $event) &&
+                                _vm._k(
+                                  $event.keyCode,
+                                  "enter",
+                                  13,
+                                  $event.key,
+                                  "Enter"
+                                )
+                              ) {
+                                return null
+                              }
+                              return _vm.submit($event)
+                            },
+                            blur: _vm.onBlur,
+                            "click:append": _vm.changeShow
+                          },
+                          scopedSlots: _vm._u([
+                            {
+                              key: "thumb-label",
+                              fn: function(props) {
+                                return _vm.isNumeric
+                                  ? [_vm._t("thumb-label")]
+                                  : undefined
+                              }
+                            }
+                          ]),
+                          model: {
+                            value: _vm.value,
+                            callback: function($$v) {
+                              _vm.value = $$v
+                            },
+                            expression: "value"
+                          }
+                        })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm.isNumeric
+                  ? _c(
+                      "v-flex",
+                      { staticStyle: { width: "60px" }, attrs: { shrink: "" } },
+                      [
+                        _vm.type == "RANGE"
+                          ? _c("v-text-field", {
+                              staticClass: "mt-0 min-width-35px",
+                              attrs: {
+                                "hide-details": "",
+                                "single-line": "",
+                                type: "number"
+                              },
+                              model: {
+                                value: _vm.valueArr[1],
+                                callback: function($$v) {
+                                  _vm.$set(_vm.valueArr, 1, $$v)
+                                },
+                                expression: "valueArr[1]"
+                              }
+                            })
+                          : _c("v-text-field", {
+                              staticClass: "mt-0 min-width-35px",
+                              attrs: {
+                                "hide-details": "",
+                                "single-line": "",
+                                type: "number"
+                              },
+                              model: {
+                                value: _vm.value,
+                                callback: function($$v) {
+                                  _vm.value = $$v
+                                },
+                                expression: "value"
+                              }
+                            })
+                      ],
+                      1
+                    )
+                  : _vm._e()
+              ]
+            : _c(_vm.currentInput, {
+                ref: "input",
+                tag: "component",
+                attrs: {
+                  label: _vm.columnName,
+                  hint: _vm.columnDesc,
+                  rules: _vm.rules,
+                  disabled: _vm.disableGet,
+                  readonly: !_vm.editable,
+                  required: !!_vm.nullable,
+                  "multi-line": _vm.columnSize > 50,
+                  "prepend-icon": _vm.isNeedIcon,
+                  tabindex: _vm.sortSeq,
+                  type: _vm.typeGet,
+                  items: _vm.tableValues,
+                  "append-icon": _vm.appendIconGet,
+                  clearable: _vm.clearableGet,
+                  mask: _vm.mask,
+                  color: _vm.checkBoxColor,
+                  min: _vm.min,
+                  max: _vm.max,
+                  step: _vm.step
+                },
+                on: {
+                  change: _vm.setNewVal,
+                  keyup: function($event) {
+                    if (
+                      !("button" in $event) &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
+                    }
+                    return _vm.submit($event)
+                  },
+                  blur: _vm.onBlur,
+                  "click:append": _vm.changeShow
+                },
+                model: {
+                  value: _vm.value,
+                  callback: function($$v) {
+                    _vm.value = $$v
+                  },
+                  expression: "value"
                 }
-                return _vm.submit($event)
-              },
-              blur: _vm.onBlur,
-              "click:append": _vm.changeShow
-            },
-            model: {
-              value: _vm.value,
-              callback: function($$v) {
-                _vm.value = $$v
-              },
-              expression: "value"
-            }
-          })
+              })
         ],
-        1
+        2
       ),
       _vm._v(" "),
       !!_vm.needCheckBox
@@ -4306,7 +4624,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		inputs: function inputs() {
 			var vm = this;
-			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', type: 'LIST', nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, items: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', type: 'LIST', nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, items: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', type: 'BOOL', nullable: true, column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
+			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', column_name: 'Вложенность', column_desc: 'Уровень вложенности объекта', type: 'LIST', nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', column_name: 'Тип', column_desc: 'Тип объекта', type: 'LIST', nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', column_name: 'Название', column_desc: 'Описание объекта', type: 'NUMBER', nullable: true, column_type: 'Number', column_size: 30, css_class: '', sort_seq: 3 }];
 		}
 	},
 	components: {
@@ -4317,7 +4635,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		formCheck: function formCheck(formName) {
 			var vm = this;
 			if (!vm.$refs[formName].validate()) {
-				vm.$refs[formName].resetValidation();
+				//vm.$refs[formName].resetValidation()
 				return false;
 			}
 			return true;

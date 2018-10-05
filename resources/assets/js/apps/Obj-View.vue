@@ -38,9 +38,9 @@
 			inputs() {
 				let vm=this
 				return [
-					{id:1, form:'object-tree-add',	code:'obj_level', 	column_name:'Вложенность', 				column_desc:'Уровень вложенности объекта', 		type:'LIST',	nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:1, items:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
-					{id:2, form:'object-tree-add',	code:'tree_group', 	column_name:'Тип', 						column_desc:'Тип объекта', 						type:'LIST', 	nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:2, items:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
-					{id:3, form:'object-tree-add',	code:'tree_desc', 	column_name:'Название',					column_desc:'Описание объекта', 				type:'BOOL',	nullable:true, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
+					{id:1, form:'object-tree-add',	code:'obj_level', 	column_name:'Вложенность', 	column_desc:'Уровень вложенности объекта', 		type:'LIST',	nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
+					{id:2, form:'object-tree-add',	code:'tree_group',	column_name:'Тип', 			column_desc:'Тип объекта', 						type:'LIST', 	nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:2, table_values:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
+					{id:3, form:'object-tree-add',	code:'tree_desc', 	column_name:'Название',		column_desc:'Описание объекта', 				type:'NUMBER',	nullable:true, column_type:'Number', column_size:30, css_class:'', sort_seq:3,  },
 				]
 			},
 		},
@@ -54,7 +54,7 @@
 			formCheck(formName){
 				let vm = this
 				if (!vm.$refs[formName].validate()){
-					vm.$refs[formName].resetValidation()
+					//vm.$refs[formName].resetValidation()
 					return false
 				}
 				return true
