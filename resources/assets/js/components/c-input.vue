@@ -4,7 +4,7 @@
 			<component  :is="currentInput" v-model="value" :label="columnName" :hint="columnDesc" :rules="rules" :disabled="disableGet" :readonly="readonly"  :required="!!nullable" ref="input"
 				:multi-line="columnSize>50" :prepend-icon="isNeedIcon"  :tabindex="sortSeq" :type="typeGet" :items="curItems"  
 				:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :color="checkBoxColor"
-				@change="setNewVal" @keyup.enter="submit"  @blur="onBlur"/>
+				@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow"/>
 		</div>
 		<v-checkbox v-if="!!needCheckBox" v-model="checked" hide-details class="shrink ml-2 mb-2" @change="changeChecked" :color="checkBoxColor"></v-checkbox>
 	</v-layout>
@@ -81,9 +81,6 @@ time-with-seconds	##:##:##
 			clearableGet(){
 				return this.type!='PASSWORD'
 			},
-			/*appendOuterIconGet(){
-				return this.needCheckBox=='N'?'': this.checked ? 'check_box' : 'check_box_outline_blank'
-			},*/
 			disableGet(){
 				return !this.needCheckBox?false:!this.checked
 			},	
