@@ -1595,7 +1595,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			dialogsConfig: {
-				login: { id: getNewId(), module: 'm-input-fields', name: "auth-login", title: "Авторизация", params: { socetHref: "/login", socetEvent: "auth.login" } }
+				auth: { id: getNewId(), module: 'm-input-fields', name: "auth-login", title: "Авторизация", params: { socetHref: "/login", socetEvent: "auth.login" } }
 			},
 			panelLeftShowen: false,
 			panelRightShowen: false
@@ -1628,8 +1628,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		vm.$root.$on('headDrawerRightClick', function (obj) {
 			vm.panelRightShowen = !vm.panelRightShowen;
 		});
-		vm.dialogSetParamByName({ id: vm.dialogsConfig.login.id, params: { hrefBack: vm.authHrefBack } });
-		vm.dialogSelect(vm.dialogsConfig.login.id);
+		vm.$root.$on('openAuthDialog', function (obj) {
+			vm.dialogSelect(vm.dialogsConfig.auth.id);
+			vm.dialogShowChange({ name: "auth-login", isShow: true });
+		});
 	}
 });
 
@@ -2193,6 +2195,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			vm.dialogShowChange({ id: dialogId, isShow: true });
 		},
 		dialogSelect: function dialogSelect(dialogId) {
+			//что бы инициализировать компоненту шблонного окна
 			var vm = this,
 			    res = 0;
 			vm.dialogIdOpened = dialogId;
@@ -2480,22 +2483,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	methods: {
 		login: function login() {
 			var vm = this;
-			vm.dialogShowChange({ name: "auth-login", isShow: true });
+			vm.$root.$emit('openAuthDialog');
 		},
 		registration: function registration() {
-			window.location.href = "\\Регистрация?href_back=" + window.location.href;
+			window.location.href = "\\Регистрация?auth_href_back=" + window.location.href;
 		},
 		logout: function logout() {
 			sendRequest({ href: '/logout', type: 'logout', needSucess: 'Y', hrefBack: '/', def: { title: 'Ошибка при завершении сеанса', text: 'Завершить сеанс не удалось!' } });
 		},
 		subscribeTicket: function subscribeTicket(newTicket) {
-			var vm = this;
+			var vm = this,
+			    _hrefBack = window.location.search.match(new RegExp('auth_href_back=([^&=]+)'));
 			if (vm.userTicket != '') window.echo.connector.channels['channel.AuthChange.' + vm.userTicket].unsubscribe();
 			vm.userTicket = newTicket;
 			window.echo.channel('channel.AuthChange.' + vm.userTicket).listen('.session.open', function (e) {
 				vm.profileLog({ userName: e.data.name, userId: e.data.userId, sysId: e.data.sysId, isRoot: e.data.isRoot });
 				vm.subscribeTicket(e.data.newTicket);
 				showMsg({ title: 'Авторизация', text: 'Выполнен вход под пользователем ' + e.data.name + '!', type: 'success' });
+				if (_hrefBack != null) window.location.href = decodeURIComponent(_hrefBack[1]);
 			}).listen('.session.close', function (e) {
 				if (vm.profileUserId() != '' && vm.profileUserId() == e.data.userId || vm.profileSysId() != '' && vm.profileSysId() == e.data.sysId) vm.profileLogout();
 				vm.subscribeTicket(e.data.newTicket);

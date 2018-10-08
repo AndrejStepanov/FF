@@ -16,7 +16,7 @@
 				vm.dialogSelect(dialogId)
 				vm.dialogShowChange({id:dialogId, isShow:true}  )
 			},
-			dialogSelect(dialogId){
+			dialogSelect(dialogId){//что бы инициализировать компоненту шблонного окна
 				let vm=this, res=0
 				vm.dialogIdOpened=dialogId
 				for (name in vm.dialogsConfig)

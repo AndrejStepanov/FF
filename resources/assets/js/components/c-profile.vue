@@ -23,16 +23,17 @@
 		methods: {
 			login(){
 				let vm=this
-				vm.dialogShowChange({name:"auth-login", isShow:true})
+				vm.$root.$emit('openAuthDialog')
 			},
 			registration(){
-				window.location.href = "\\Регистрация?href_back="+window.location.href;
+				window.location.href = "\\Регистрация?auth_href_back="+window.location.href;
 			},			
 			logout () {
 				sendRequest({href:'/logout', type:'logout', needSucess:'Y', hrefBack:'/', def:{title:'Ошибка при завершении сеанса',text:'Завершить сеанс не удалось!'}} )
 			},
 			subscribeTicket(newTicket){
-				let vm=this
+				let vm=this,
+				 	_hrefBack=window.location.search.match(new RegExp('auth_href_back=([^&=]+)'));
 				if(vm.userTicket!='' )
 					window.echo.connector.channels['channel.AuthChange.'+vm.userTicket].unsubscribe()
 				vm.userTicket=newTicket
@@ -41,6 +42,8 @@
 					vm.profileLog({userName:e.data.name,userId:e.data.userId, sysId:e.data.sysId, isRoot:e.data.isRoot});
 					vm.subscribeTicket(e.data.newTicket)
 					showMsg({title:'Авторизация',text:'Выполнен вход под пользователем '+e.data.name+'!',  type:'success'});
+					if(_hrefBack!=null)
+						window.location.href = decodeURIComponent(_hrefBack[1]);
 				})
 				.listen('.session.close', (e) => {
 					if(vm.profileUserId()!='' && vm.profileUserId()==e.data.userId || vm.profileSysId()!='' && vm.profileSysId()==e.data.sysId)

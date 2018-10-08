@@ -265,7 +265,7 @@ time-with-seconds	##:##:##
 
 			if(!vm.nullable){
 				vm.isNeed =true
-				vm.rules.push(v => v!=undefined || 'Поле обязательное!')
+				vm.rules.push(v => v!=undefined && v!='' || 'Поле обязательное!')
 				vm.columnName='❗ '+vm.columnName//⭐
 			}
 			

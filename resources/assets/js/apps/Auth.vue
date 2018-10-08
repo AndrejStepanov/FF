@@ -1,5 +1,5 @@
 <template>
-	<c-app curentSystem="Авторизация" :authHrefBack="hrefBack" >
+	<c-app curentSystem="Авторизация" >
 
 	</c-app>
 </template>
@@ -9,19 +9,15 @@
 	import XStore from '../mixins/x-store'
     export default {
         data: () => ({
-			hrefBack:'/',
         }),
 		mixins: [
 			XApp,XStore,
 		],
 		created: function (){
-			let vm=this
-			let _hrefBack=window.location.search.match(new RegExp('href_back=([^&=]+)'));
-			vm.hrefBack=_hrefBack!=null?_hrefBack[1]:'/'
 		},
 		mounted: function(){
-			let vm=this
-			setTimeout(()=>vm.dialogShowChange({name:"auth-login", isShow:true}))
+			let vm=this 
+			setTimeout(()=>vm.$root.$emit('openAuthDialog') )
 		}
     }
 </script>

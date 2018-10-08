@@ -1793,7 +1793,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		if (!vm.nullable) {
 			vm.isNeed = true;
 			vm.rules.push(function (v) {
-				return v != undefined || 'Поле обязательное!';
+				return v != undefined && v != '' || 'Поле обязательное!';
 			});
 			vm.columnName = '❗ ' + vm.columnName; //⭐
 		}

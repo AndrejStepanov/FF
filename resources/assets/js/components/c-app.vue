@@ -27,7 +27,7 @@
     export default {
 		data:() => ({
 			dialogsConfig: {
-				login:{id: getNewId(),  module:'m-input-fields',  name:"auth-login", title:"Авторизация", 	params:{ socetHref:"/login", socetEvent:"auth.login"}, }
+				auth:{id: getNewId(),  module:'m-input-fields',  name:"auth-login", title:"Авторизация", 	params:{ socetHref:"/login", socetEvent:"auth.login"}, }
 			},
 			panelLeftShowen: false,
 			panelRightShowen: false,
@@ -59,8 +59,11 @@
 			vm.$root.$on('headDrawerRightClick', (obj)=>{
 				vm.panelRightShowen=!vm.panelRightShowen
 			});
-			vm.dialogSetParamByName({id:vm.dialogsConfig.login.id, params:{hrefBack:vm.authHrefBack}}  ) 			
-			vm.dialogSelect(vm.dialogsConfig.login.id)
+			vm.$root.$on('openAuthDialog', (obj)=>{
+				vm.dialogSelect(vm.dialogsConfig.auth.id)
+				vm.dialogShowChange({name:"auth-login", isShow:true})
+			});	
+			
 		},
     }
 </script>
