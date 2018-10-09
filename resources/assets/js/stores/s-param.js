@@ -10,11 +10,14 @@ export default {
 		getByCode: (state,getters) =>(num,code)=> {
 			return getters.getGroup(num)[code]
 		},
-		getTodo: (state,getters) =>(num)=> {
+		getTodo: (state,getters) =>(num,withSign=false)=> {
 			let tmp={}, data=getters.getGroup(num)
 			Object.keys(data).forEach(code=>{
-				if( data[code].checked)
+				if( data[code].checked){
 					tmp[code]=data[code].value
+					if(withSign)
+						tmp[code+'_sign']=data[code].sign
+				}
 			})
 			return tmp
 		},
@@ -23,18 +26,18 @@ export default {
 		async doInit({commit,getters,state},{num,}){
 			commit("allParamsClearing",{ num, })			
 		},
-		async doSet({commit,getters,state},{num,code, value, view, checked=1}){
-			commit("paramSetting",{ num,code, value, view, checked})			
+		async doSet({commit,getters,state},{num,code, value, view, checked=1, sign='='}){
+			commit("paramSetting",{ num,code, value, view, checked,sign})			
 		},
 		async doSetSeveral({dispatch,commit,getters,state},{num,params={} }){// params:{code:{value:'значение параметра, если undefined - не указан', view:'отображаемое пользователю значение'}}
 			Object.keys(params).forEach(code=>{
-				dispatch("doSet",{num, code, value:params[code].value, view:params[code].view}) 
+				dispatch("doSet",{num, code, value:params[code].value, view:params[code].view, checked:params[code].checked, sign:params[code].sign}) 
 			})	
 		},
 		async doSetAll({commit,getters,state},{num,params={} }){// params:{code:{value:'значение параметра, если undefined - не указан', view:'отображаемое пользователю значение'}}
 			await dispatch("doInit",{num,})
 			Object.keys(params).forEach(code=>{
-				dispatch("doSet",{num, code, value:params[code].value, view:params[code].view}) 
+				dispatch("doSet",{num, code, value:params[code].value, view:params[code].view, checked:params[code].checked, sign:params[code].sign}) 
 			})	
 		},
 	},
@@ -42,8 +45,8 @@ export default {
 		allParamsClearing(state, {num, code, value}){
 			state.params[num] ={}
 		},
-		paramSetting(state, {num, code, value,view,checked}){
-			state.params[num][code] ={value, view, checked}
+		paramSetting(state, {num, code, value,view,checked,sign}){
+			state.params[num][code] ={value, view, checked,sign}
 		},
 
 	},

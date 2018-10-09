@@ -1792,10 +1792,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		getTodo: function getTodo(state, getters) {
 			return function (num) {
+				var withSign = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
 				var tmp = {},
 				    data = getters.getGroup(num);
 				Object.keys(data).forEach(function (code) {
-					if (data[code].checked) tmp[code] = data[code].value;
+					if (data[code].checked) {
+						tmp[code] = data[code].value;
+						if (withSign) tmp[code + '_sign'] = data[code].sign;
+					}
 				});
 				return tmp;
 			};
@@ -1815,14 +1820,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 								commit("allParamsClearing", { num: num });
 
 							case 1:
-							case "end":
+							case 'end':
 								return _context.stop();
 						}
 					}
 				}, _callee, this);
 			}));
 
-			function doInit(_x, _x2) {
+			function doInit(_x2, _x3) {
 				return _ref3.apply(this, arguments);
 			}
 
@@ -1838,22 +1843,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				    value = _ref5.value,
 				    view = _ref5.view,
 				    _ref5$checked = _ref5.checked,
-				    checked = _ref5$checked === undefined ? 1 : _ref5$checked;
+				    checked = _ref5$checked === undefined ? 1 : _ref5$checked,
+				    _ref5$sign = _ref5.sign,
+				    sign = _ref5$sign === undefined ? '=' : _ref5$sign;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
 					while (1) {
 						switch (_context2.prev = _context2.next) {
 							case 0:
-								commit("paramSetting", { num: num, code: code, value: value, view: view, checked: checked });
+								commit("paramSetting", { num: num, code: code, value: value, view: view, checked: checked, sign: sign });
 
 							case 1:
-							case "end":
+							case 'end':
 								return _context2.stop();
 						}
 					}
 				}, _callee2, this);
 			}));
 
-			function doSet(_x3, _x4) {
+			function doSet(_x4, _x5) {
 				return _ref6.apply(this, arguments);
 			}
 
@@ -1874,18 +1881,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 							case 0:
 								// params:{code:{value:'значение параметра, если undefined - не указан', view:'отображаемое пользователю значение'}}
 								Object.keys(params).forEach(function (code) {
-									dispatch("doSet", { num: num, code: code, value: params[code].value, view: params[code].view });
+									dispatch("doSet", { num: num, code: code, value: params[code].value, view: params[code].view, checked: params[code].checked, sign: params[code].sign });
 								});
 
 							case 1:
-							case "end":
+							case 'end':
 								return _context3.stop();
 						}
 					}
 				}, _callee3, this);
 			}));
 
-			function doSetSeveral(_x5, _x6) {
+			function doSetSeveral(_x6, _x7) {
 				return _ref9.apply(this, arguments);
 			}
 
@@ -1908,18 +1915,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 							case 2:
 								Object.keys(params).forEach(function (code) {
-									dispatch("doSet", { num: num, code: code, value: params[code].value, view: params[code].view });
+									dispatch("doSet", { num: num, code: code, value: params[code].value, view: params[code].view, checked: params[code].checked, sign: params[code].sign });
 								});
 
 							case 3:
-							case "end":
+							case 'end':
 								return _context4.stop();
 						}
 					}
 				}, _callee4, this);
 			}));
 
-			function doSetAll(_x7, _x8) {
+			function doSetAll(_x8, _x9) {
 				return _ref12.apply(this, arguments);
 			}
 
@@ -1939,9 +1946,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			    code = _ref14.code,
 			    value = _ref14.value,
 			    view = _ref14.view,
-			    checked = _ref14.checked;
+			    checked = _ref14.checked,
+			    sign = _ref14.sign;
 
-			state.params[num][code] = { value: value, view: view, checked: checked };
+			state.params[num][code] = { value: value, view: view, checked: checked, sign: sign };
 		}
 	}
 });

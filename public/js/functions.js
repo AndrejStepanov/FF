@@ -18,6 +18,7 @@ function appThemeInit(){
 		'.accent-color								{color: '+appTheme.accent+';} '+
 		'.primary--text 							{color: white !important;} '+
 		'.margin-5px	 							{color: white !important;} '+
+		'.cursor-pointer							{cursor: pointer} '+
 		'.top-center 								{top:50%;} '+
 		'.overflow-y-auto 							{overflow-y: auto;} '+
 		'.display--grid 							{display: grid;} '+
