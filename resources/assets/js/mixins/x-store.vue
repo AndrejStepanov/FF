@@ -32,6 +32,7 @@
 				msgAdd: "msg/doAdd",
 				msgDelete: "msg/doDelete",
 				paramInit: "param/doInit",
+				paramSetData: "param/doSetData",
 				paramSet: "param/doSet",
 				paramSetAll: "param/doSetAll",
 				paramSetSeveral: "param/doSetSeveral",

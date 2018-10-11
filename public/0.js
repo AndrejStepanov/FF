@@ -1137,9 +1137,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			var todo = _extends({}, vm.paramTodo(vm.paramsForm), vm.dialogParamsGet.kyes);
 
 			if (vm.dialogParamsGet.checkFunc) vm.dialogParamsGet.checkFunc(todo);
-			if (vm.dialogParamsGet.saveFunc) vm.dialogParamsGet.saveFunc(todo);else sendRequest({ href: nvl(vm.dialogParamsGet.socetHref, '/data_command'), type: vm.dialogParamsGet.socetEvent, data: todo, hrefBack: vm.dialogParamsGet.hrefBack, handler: function handler() {
-					return vm.$refs.dialog.dialogClose();
-				} });
+			if (vm.dialogParamsGet.saveFunc) vm.dialogParamsGet.saveFunc(todo);else {
+				if (vm.paramsForm == 'auth-login') {
+					var tmp = {};
+					for (name in todo) {
+						tmp[name] = todo[name].value;
+					}todo = tmp;
+				}
+				sendRequest({ href: nvl(vm.dialogParamsGet.socetHref, '/data_command'), type: vm.dialogParamsGet.socetEvent, data: todo, hrefBack: vm.dialogParamsGet.hrefBack, handler: function handler() {
+						return vm.$refs.dialog.dialogClose();
+					} });
+			}
 		}
 	},
 	created: function created() {
@@ -1476,7 +1484,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\ndiv.input-contaner,\nspan.input-contaner>span,\nspan.input-contaner\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t{min-width: 35px;\n}\ni.rotate-90\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t{    font-size: 15px;\n}\n.main-contaner \t\t\t{display: block !important;\n}\n.slider-label \t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t{color: hsla(0,0%,100%,.5);\n}\n", ""]);
+exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{    font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
 
 // exports
 
@@ -1496,7 +1504,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-//
 //
 //
 //
@@ -1684,7 +1691,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.checkRefresh();
 		},
 		changeShow: function changeShow() {
-			this.show = !this.show;
+			var vm = this;
+			if (vm.type == 'PASSWORD') vm.show = !vm.show;else if (vm.type == 'LIST') vm.$refs.input.activateMenu();
 		},
 		hasErrorSet: function hasErrorSet() {
 			this.hasError = true;
@@ -1717,25 +1725,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		checkRefresh: function () {
 			var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
 				var checkedFx = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-				var vm, value, tmp1, tmp2;
+				var vm, tmp1, tmp2, value, value2;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								vm = this, value = vm.value;
+								vm = this, tmp1 = void 0, tmp2 = void 0, value = vm.type == 'RANGE' ? vm.valueArr[0] : vm.value, value2 = vm.type == 'RANGE' ? vm.valueArr[1] : null;
 
-								if ((value != '' || vm.type == 'RANGE' && (vm.valueArr[0] != '' || vm.valueArr[1] != '')) && vm.isSliderLike) {
-									tmp1 = vm.type == 'RANGE' ? vm.valueArr[0] : value, tmp2 = vm.type == 'RANGE' ? vm.valueArr[1] : 0;
-
-									if (!vm.isNumeric) {
-										tmp1 = vm.tableValues[tmp1].value;
-										if (vm.type == 'RANGE') tmp2 = vm.tableValues[tmp2].value;
-									}
-									value = tmp1;
-									if (vm.type == 'RANGE') value += '--' + tmp2;
+								if (vm.isSliderLike && !vm.isNumeric) {
+									value = nvlo(vm.tableValues[value]).value;
+									value2 = nvlo(vm.tableValues[value2]).value;
 								}
-								if (!checkedFx) vm.checked = value === '' ? false : true;
-								vm.setVal(value);
+								if (!checkedFx) vm.checked = vm.type != 'RANGE' && (value === '' || value == null) || vm.type == 'RANGE' && (value === '' || value == null || value2 === '' || value2 == null) ? false : true;
+								vm.setVal(value, value2);
 
 							case 4:
 							case 'end':
@@ -1752,7 +1754,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			return checkRefresh;
 		}(),
 		setVal: function () {
-			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value) {
+			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value, value2) {
 				var vm;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
 					while (1) {
@@ -1765,7 +1767,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 									vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
 								}
 								_context2.next = 4;
-								return vm.paramSet({ num: vm.paramsForm, code: vm.code, value: value, view: value, checked: vm.checked, sign: vm.sign_list[vm.sign].code });
+								return vm.paramSet({ num: vm.paramsForm, code: vm.code, value: value, value2: value2, checked: vm.checked, sign: vm.sign_list[vm.sign].code });
 
 							case 4:
 							case 'end':
@@ -1775,7 +1777,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}, _callee2, this);
 			}));
 
-			function setVal(_x2) {
+			function setVal(_x2, _x3) {
 				return _ref2.apply(this, arguments);
 			}
 
@@ -1844,7 +1846,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		if (!vm.nullable) {
 			vm.isNeed = true;
 			vm.rules.push(function (v) {
-				return v != undefined && v != '' || 'Поле обязательное!';
+				return v != undefined && (v != '' || v === 0) || 'Поле обязательное!';
 			});
 			vm.name = '❗ ' + vm.name; //⭐
 		}
@@ -1874,7 +1876,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				return tmp.test(v) || vm.error;
 			});
 
-		vm.paramSet({ num: vm.paramsForm, code: vm.code, value: vm.value, view: vm.value, checked: vm.needCheckBox ? vm.checked : 1, sign: vm.sign_list[vm.sign] });
+		vm.paramSetData({ num: vm.paramsForm, data: vm.data });
 	}
 });
 
@@ -2216,9 +2218,7 @@ var render = function() {
                                   return _vm.submit($event)
                                 },
                                 blur: _vm.onBlur,
-                                "click:append": function($event) {
-                                  _vm.type == "PASSWORD" ? _vm.changeShow : null
-                                }
+                                "click:append": _vm.changeShow
                               },
                               model: {
                                 value: _vm.value,

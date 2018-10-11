@@ -76,8 +76,15 @@
 					vm.dialogParamsGet.checkFunc(todo)
 				if(vm.dialogParamsGet.saveFunc)
 					 vm.dialogParamsGet.saveFunc(todo)
-				else
-					sendRequest({href:nvl(vm.dialogParamsGet.socetHref,'/data_command'), type:vm.dialogParamsGet.socetEvent, data:todo, hrefBack:vm.dialogParamsGet.hrefBack, handler:()=>vm.$refs.dialog.dialogClose() })				
+				else{
+					if(vm.paramsForm=='auth-login'){
+						let tmp={}
+						for (name in todo)
+							tmp[name]= todo[name].value
+						todo=tmp
+					}
+					sendRequest({href:nvl(vm.dialogParamsGet.socetHref,'/data_command'), type:vm.dialogParamsGet.socetEvent, data:todo, hrefBack:vm.dialogParamsGet.hrefBack, handler:()=>vm.$refs.dialog.dialogClose() })
+				}
 			},
 		},
 		created: function (){

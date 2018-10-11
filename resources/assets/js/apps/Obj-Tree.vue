@@ -22,7 +22,7 @@
 			treeSearch: '',
 			iconDic:{'misc':'photo_library', 'object':'description', 'filter':'filter_list', 'filter':'filter_list', 'input':'input', 'default':'folder_open',  },		
 			dialogsConfig: {
-				treeAdd:{id: getNewId(),  module:'m-input-fields',  name:"object-tree-add", title:"Параметры объекта", 	params:{socetHref:"/data_command", socetEvent:"object.tree.add"},kyes:{treeId:0}, }
+				treeAdd:{id: getNewId(),  module:'m-input-fields',  name:"object-tree-add", title:"Параметры объекта", 	params:{socetHref:"/data_command", socetEvent:"object.tree.add"},kyes:{ treeId:{value:0}, }, }
 			},														
 		}),
 		components: {
@@ -34,7 +34,7 @@
 		],
 		methods: {
 			itemClick(node) {
-				this.dialogsConfig.treeAdd.kyes.treeId = node.model.id;
+				this.dialogsConfig.treeAdd.kyes.treeId.value = node.model.id;
 			},
 			treeSearchSubmit () {
 				console.log(this.treeSearch);
@@ -52,7 +52,7 @@
 			},
 			objectTreeAddCheck(params){
 				let vm=this
-				if(params.obj_level=='inside' && nvl(params.treeId)==0  )
+				if(params.obj_level.value=='inside' && params.treeId.value==0  )
 					showMsg({title:'Ошибка при добавлении элемента',text:'Для добавления вложенного элемента, необходимо выбрать родительский элемент!'});
 			},
 		},

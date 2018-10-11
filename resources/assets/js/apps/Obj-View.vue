@@ -41,9 +41,11 @@
 				return [
 					{id:1, form:'object-tree-add',	code:'obj_level', 	name:'Вложенность', tip:"Подсказка!!!!!!", 	placeholder:'Уровень вложенности объекта', 	type:'LIST',	value:"cur",			nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
 					{id:2, form:'object-tree-add',	code:'tree_group',	name:'Тип', 		tip:"Подсказка!!!!!!", 	placeholder:'Тип объекта', 					type:'LIST', 	value:"node",			nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:2, table_values:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
-					{id:3, form:'object-tree-add',	code:'tree_desc', 	name:'Название',	tip:"Подсказка!!!!!!", 	placeholder:'Описание объекта', 			type:'NUMBER',	value:"10",				nullable:true, column_type:'Number', column_size:30, css_class:'', sort_seq:3,  },
+					{id:3, form:'object-tree-add',	code:'tree_desc', 	name:'Название',	tip:"Подсказка!!!!!!", 	placeholder:'Описание объекта', 			type:'NUMBER',	value:"10",				nullable:true, 	column_type:'Number', column_size:30, css_class:'', sort_seq:3,  },
 					{id:4, form:'object-tree-add',	code:'tree_range', 	name:'Значение',	tip:"Подсказка!!!!!!", 	placeholder:'Описание диапазона',			type:'RANGE',	value:"20",value2:"30",	nullable:false, column_type:'Number', column_size:30, css_class:'', sort_seq:3, min:10, max:100 },
 					{id:5, form:'object-tree-add',	code:'tree_val', 	name:'Значение',	tip:"Подсказка!!!!!!", 	placeholder:'Описание значения',			type:'SLIDER',	value:"20",value2:"30",	nullable:false, column_type:'Number', column_size:30, css_class:'', sort_seq:3, min:10, max:100 },
+					{id:6, form:'object-tree-add',	code:'obj_level1', 	name:'Вложенность1', tip:"Подсказка!!!!!!", placeholder:'Уровень вложенности объекта', 	type:'RANGE',	value:"1",value2:"2",	nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
+					{id:7, form:'object-tree-add',	code:'tree_group1',	name:'Тип1', 		tip:"Подсказка!!!!!!", 	placeholder:'Тип объекта', 					type:'SLIDER', 	value:"0",				nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:2, table_values:[{value:'node',text:'Узел'},{value:'ARM',text:'Область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле'},]  },
 				]
 			},
 		},
@@ -67,7 +69,7 @@
 				let vm = this
 				if (!vm.formCheck('filter'))
 					return;
-				console.log( this.paramTodo(this.filterName,true ) )
+				console.log( this.paramTodo(this.filterName ) )
 			},
 			toggleMarker () {
 				this.marker = !this.marker

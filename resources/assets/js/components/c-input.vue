@@ -1,6 +1,5 @@
 <template> 
 	<v-layout align-center  row>
-
 		<v-tooltip class='input-contaner' :disabled="tip==''" bottom>
 			<template slot='activator'>
 				<div class='input-contaner'>
@@ -52,7 +51,7 @@
 							<component v-else :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
 								:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="tableValues"  
 								:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :color="checkBoxColor" :min="min" :max="max" :step="step"
-								@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="type=='PASSWORD'?changeShow:null" 
+								@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" 
 								:class="componentClassGet" />
 						</div>
 					</div>
@@ -207,7 +206,11 @@ time-with-seconds	##:##:##
 				vm.checkRefresh()
 			},
 			changeShow(){
-				this.show = !this.show;
+				let vm=this
+				if(vm.type=='PASSWORD')
+					vm.show = !vm.show
+				else if (vm.type=='LIST')
+					vm.$refs.input.activateMenu()
 			},
 			hasErrorSet(){
 				this.hasError = true;
@@ -238,31 +241,24 @@ time-with-seconds	##:##:##
 				this.checkRefresh()
 			},
 			async checkRefresh(checkedFx=false){
-				let vm=this,
-					value = vm.value
-				if((value!='' || (  vm.type=='RANGE' && (vm.valueArr[0]!=''||vm.valueArr[1]!='') )) && vm.isSliderLike){
-					let tmp1 = vm.type=='RANGE'?vm.valueArr[0]:value,
-						tmp2 = vm.type=='RANGE'?vm.valueArr[1]:0
-					if( !vm.isNumeric){
-						tmp1 = vm.tableValues[tmp1].value
-						if(vm.type=='RANGE')
-							tmp2 = vm.tableValues[tmp2].value
-					}
-					value=tmp1
-					if(vm.type=='RANGE')
-						value+='--'+tmp2
+				let vm=this, tmp1, tmp2,
+					value = vm.type=='RANGE'?vm.valueArr[0]:vm.value,
+					value2 = vm.type=='RANGE'?vm.valueArr[1]:null
+				if( vm.isSliderLike &&  !vm.isNumeric ){
+						value = nvlo(vm.tableValues[value]).value
+						value2 = nvlo(vm.tableValues[value2]).value
 				}
 				if(!checkedFx)
-					vm.checked=value===''?false:true
-				vm.setVal(value)
+					vm.checked=(vm.type!='RANGE' && (value==='' || value==null) || vm.type=='RANGE' && (value==='' || value==null || value2==='' || value2==null) ) ?false:true
+				vm.setVal(value, value2)
 			},
-			async setVal(value){
+			async setVal(value,value2){
 				let vm=this
 				if(vm.needCheckBox ){
 					vm.hasError= !vm.$refs.input.validate()
 					vm.$root.$emit('dialog'+vm.paramsForm+'NeedCheck')
 				}
-				await  vm.paramSet( {num: vm.paramsForm, code: vm.code, value:value , view:value, checked:vm.checked, sign:vm.sign_list[vm.sign].code, })
+				await  vm.paramSet( {num: vm.paramsForm, code: vm.code, value , value2, checked:vm.checked, sign:vm.sign_list[vm.sign].code, })
 			},
 			getTitleByNum(value){
 				return this.tickLabels[value]
@@ -333,7 +329,7 @@ time-with-seconds	##:##:##
 
 			if(!vm.nullable){
 				vm.isNeed =true
-				vm.rules.push(v => v!=undefined && v!='' || 'Поле обязательное!')
+				vm.rules.push(v => v!=undefined && (v!='' || v===0) || 'Поле обязательное!')
 				vm.name='❗ '+vm.name//⭐
 			}
 			
@@ -356,20 +352,24 @@ time-with-seconds	##:##:##
 			if(tmp!='')//надо помнить про экранирование
 				vm.rules.push(v => tmp.test(v) || vm.error)
 
-			vm.paramSet( {num: vm.paramsForm, code: vm.code, value:vm.value , view:vm.value, checked:(vm.needCheckBox?vm.checked:1),sign:vm.sign_list[vm.sign], })
+			vm.paramSetData( {num: vm.paramsForm, data:vm.data })
 		},
 	}
 </script>
 <style>
 	div.input-contaner,
 	span.input-contaner>span,
-	span.input-contaner		{-webkit-box-align: start;	-ms-flex-align: start;	align-items: flex-start;	display: -webkit-box;	display: -ms-flexbox;	display: flex;	-webkit-box-flex: 1;	-ms-flex: 1 1 auto;	flex: 1 1 auto;}
-	.min-width-35px 		{min-width: 35px;}
-	i.rotate-90				{-webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -o-transform: rotate(90deg);-ms-transform: rotate(90deg);transform: rotate(90deg); }
-	.sign-box				{top: 15px;    margin-left: 0px;    margin-right: 0px; }
-	.v-input__append-inner .v-input__icon--clear i	{    font-size: 15px; }
-	.main-contaner 			{display: block !important;}
-	.slider-label 			{font-size: 11px;}
-	.slider-upper 			{margin-top: -12px;}
-	.disabled-label 		{color: hsla(0,0%,100%,.5);}
+	span.input-contaner										{-webkit-box-align: start;	-ms-flex-align: start;	align-items: flex-start;	display: -webkit-box;	display: -ms-flexbox;	display: flex;	-webkit-box-flex: 1;	-ms-flex: 1 1 auto;	flex: 1 1 auto;}
+	.min-width-35px 										{min-width: 35px;}
+	i.rotate-90												{-webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -o-transform: rotate(90deg);-ms-transform: rotate(90deg);transform: rotate(90deg); }
+	.sign-box												{top: 15px;    margin-left: 0px;    margin-right: 0px; }
+	.v-input__append-inner .v-input__icon--clear i			{    font-size: 15px; }
+	.main-contaner 											{display: block !important;}
+	.slider-label 											{font-size: 11px;}
+	.slider-upper 											{margin-top: -12px;}
+	.disabled-label 										{color: hsla(0,0%,100%,.5);}
+	.v-slider__ticks-container>.v-slider__ticks>span		{font-size: 12px;}
+	/*i    border-bottom-color: #2c353f;
+    border-bottom-style: groove;
+    border-bottom-width: 0.5px;*/
 </style>

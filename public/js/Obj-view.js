@@ -1772,6 +1772,8 @@ if (hadRuntime) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -1792,17 +1794,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		getTodo: function getTodo(state, getters) {
 			return function (num) {
-				var withSign = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-				var tmp = {},
-				    data = getters.getGroup(num);
-				Object.keys(data).forEach(function (code) {
-					if (data[code].checked) {
-						tmp[code] = data[code].value;
-						if (withSign) tmp[code + '_sign'] = data[code].sign;
-					}
-				});
-				return tmp;
+				return getters.getGroup(num);
 			};
 		}
 	},
@@ -1820,87 +1812,83 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 								commit("allParamsClearing", { num: num });
 
 							case 1:
-							case 'end':
+							case "end":
 								return _context.stop();
 						}
 					}
 				}, _callee, this);
 			}));
 
-			function doInit(_x2, _x3) {
+			function doInit(_x, _x2) {
 				return _ref3.apply(this, arguments);
 			}
 
 			return doInit;
 		}(),
-		doSet: function () {
+		doSetData: function () {
 			var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(_ref4, _ref5) {
 				var commit = _ref4.commit,
 				    getters = _ref4.getters,
 				    state = _ref4.state;
 				var num = _ref5.num,
-				    code = _ref5.code,
-				    value = _ref5.value,
-				    view = _ref5.view,
-				    _ref5$checked = _ref5.checked,
-				    checked = _ref5$checked === undefined ? 1 : _ref5$checked,
-				    _ref5$sign = _ref5.sign,
-				    sign = _ref5$sign === undefined ? '=' : _ref5$sign;
+				    data = _ref5.data;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
 					while (1) {
 						switch (_context2.prev = _context2.next) {
 							case 0:
-								commit("paramSetting", { num: num, code: code, value: value, view: view, checked: checked, sign: sign });
+								commit("paramSettingData", { num: num, code: data.code, data: data });
 
 							case 1:
-							case 'end':
+							case "end":
 								return _context2.stop();
 						}
 					}
 				}, _callee2, this);
 			}));
 
-			function doSet(_x4, _x5) {
+			function doSetData(_x3, _x4) {
 				return _ref6.apply(this, arguments);
 			}
 
-			return doSet;
+			return doSetData;
 		}(),
-		doSetSeveral: function () {
+		doSet: function () {
 			var _ref9 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(_ref7, _ref8) {
-				var dispatch = _ref7.dispatch,
-				    commit = _ref7.commit,
+				var commit = _ref7.commit,
 				    getters = _ref7.getters,
 				    state = _ref7.state;
 				var num = _ref8.num,
-				    _ref8$params = _ref8.params,
-				    params = _ref8$params === undefined ? {} : _ref8$params;
+				    code = _ref8.code,
+				    value = _ref8.value,
+				    value2 = _ref8.value2,
+				    _ref8$checked = _ref8.checked,
+				    checked = _ref8$checked === undefined ? 1 : _ref8$checked,
+				    _ref8$sign = _ref8.sign,
+				    sign = _ref8$sign === undefined ? '=' : _ref8$sign;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
 					while (1) {
 						switch (_context3.prev = _context3.next) {
 							case 0:
-								// params:{code:{value:'значение параметра, если undefined - не указан', view:'отображаемое пользователю значение'}}
-								Object.keys(params).forEach(function (code) {
-									dispatch("doSet", { num: num, code: code, value: params[code].value, view: params[code].view, checked: params[code].checked, sign: params[code].sign });
-								});
+								commit("paramSetting", { num: num, code: code, value: value, value2: value2, checked: checked, sign: sign });
 
 							case 1:
-							case 'end':
+							case "end":
 								return _context3.stop();
 						}
 					}
 				}, _callee3, this);
 			}));
 
-			function doSetSeveral(_x6, _x7) {
+			function doSet(_x5, _x6) {
 				return _ref9.apply(this, arguments);
 			}
 
-			return doSetSeveral;
+			return doSet;
 		}(),
-		doSetAll: function () {
+		doSetSeveral: function () {
 			var _ref12 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(_ref10, _ref11) {
-				var commit = _ref10.commit,
+				var dispatch = _ref10.dispatch,
+				    commit = _ref10.commit,
 				    getters = _ref10.getters,
 				    state = _ref10.state;
 				var num = _ref11.num,
@@ -1910,7 +1898,38 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 					while (1) {
 						switch (_context4.prev = _context4.next) {
 							case 0:
-								_context4.next = 2;
+								// params:{code:{value:'значение параметра, если undefined - не указан', view:'отображаемое пользователю значение'}}
+								Object.keys(params).forEach(function (code) {
+									dispatch("doSet", { num: num, code: code, value: params[code].value, value2: params[code].value2, checked: params[code].checked, sign: params[code].sign });
+								});
+
+							case 1:
+							case "end":
+								return _context4.stop();
+						}
+					}
+				}, _callee4, this);
+			}));
+
+			function doSetSeveral(_x7, _x8) {
+				return _ref12.apply(this, arguments);
+			}
+
+			return doSetSeveral;
+		}(),
+		doSetAll: function () {
+			var _ref15 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(_ref13, _ref14) {
+				var commit = _ref13.commit,
+				    getters = _ref13.getters,
+				    state = _ref13.state;
+				var num = _ref14.num,
+				    _ref14$params = _ref14.params,
+				    params = _ref14$params === undefined ? {} : _ref14$params;
+				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
+					while (1) {
+						switch (_context5.prev = _context5.next) {
+							case 0:
+								_context5.next = 2;
 								return dispatch("doInit", { num: num });
 
 							case 2:
@@ -1919,37 +1938,44 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 								});
 
 							case 3:
-							case 'end':
-								return _context4.stop();
+							case "end":
+								return _context5.stop();
 						}
 					}
-				}, _callee4, this);
+				}, _callee5, this);
 			}));
 
-			function doSetAll(_x8, _x9) {
-				return _ref12.apply(this, arguments);
+			function doSetAll(_x9, _x10) {
+				return _ref15.apply(this, arguments);
 			}
 
 			return doSetAll;
 		}()
 	},
 	mutations: {
-		allParamsClearing: function allParamsClearing(state, _ref13) {
-			var num = _ref13.num,
-			    code = _ref13.code,
-			    value = _ref13.value;
+		allParamsClearing: function allParamsClearing(state, _ref16) {
+			var num = _ref16.num,
+			    code = _ref16.code,
+			    value = _ref16.value;
 
 			state.params[num] = {};
 		},
-		paramSetting: function paramSetting(state, _ref14) {
-			var num = _ref14.num,
-			    code = _ref14.code,
-			    value = _ref14.value,
-			    view = _ref14.view,
-			    checked = _ref14.checked,
-			    sign = _ref14.sign;
+		paramSettingData: function paramSettingData(state, _ref17) {
+			var num = _ref17.num,
+			    code = _ref17.code,
+			    data = _ref17.data;
 
-			state.params[num][code] = { value: value, view: view, checked: checked, sign: sign };
+			state.params[num][code] = data;
+		},
+		paramSetting: function paramSetting(state, _ref18) {
+			var num = _ref18.num,
+			    code = _ref18.code,
+			    value = _ref18.value,
+			    value2 = _ref18.value2,
+			    checked = _ref18.checked,
+			    sign = _ref18.sign;
+
+			state.params[num][code] = _extends({}, state.params[num][code], { value: value, value2: value2, checked: checked, sign: sign });
 		}
 	}
 });
@@ -2126,6 +2152,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		msgAdd: "msg/doAdd",
 		msgDelete: "msg/doDelete",
 		paramInit: "param/doInit",
+		paramSetData: "param/doSetData",
 		paramSet: "param/doSet",
 		paramSetAll: "param/doSetAll",
 		paramSetSeveral: "param/doSetSeveral",
@@ -3650,7 +3677,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\ndiv.input-contaner,\nspan.input-contaner>span,\nspan.input-contaner\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t{min-width: 35px;\n}\ni.rotate-90\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t{    font-size: 15px;\n}\n.main-contaner \t\t\t{display: block !important;\n}\n.slider-label \t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t{color: hsla(0,0%,100%,.5);\n}\n", ""]);
+exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{    font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
 
 // exports
 
@@ -3669,7 +3696,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-//
 //
 //
 //
@@ -3857,7 +3883,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.checkRefresh();
 		},
 		changeShow: function changeShow() {
-			this.show = !this.show;
+			var vm = this;
+			if (vm.type == 'PASSWORD') vm.show = !vm.show;else if (vm.type == 'LIST') vm.$refs.input.activateMenu();
 		},
 		hasErrorSet: function hasErrorSet() {
 			this.hasError = true;
@@ -3890,25 +3917,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		checkRefresh: function () {
 			var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
 				var checkedFx = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-				var vm, value, tmp1, tmp2;
+				var vm, tmp1, tmp2, value, value2;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								vm = this, value = vm.value;
+								vm = this, tmp1 = void 0, tmp2 = void 0, value = vm.type == 'RANGE' ? vm.valueArr[0] : vm.value, value2 = vm.type == 'RANGE' ? vm.valueArr[1] : null;
 
-								if ((value != '' || vm.type == 'RANGE' && (vm.valueArr[0] != '' || vm.valueArr[1] != '')) && vm.isSliderLike) {
-									tmp1 = vm.type == 'RANGE' ? vm.valueArr[0] : value, tmp2 = vm.type == 'RANGE' ? vm.valueArr[1] : 0;
-
-									if (!vm.isNumeric) {
-										tmp1 = vm.tableValues[tmp1].value;
-										if (vm.type == 'RANGE') tmp2 = vm.tableValues[tmp2].value;
-									}
-									value = tmp1;
-									if (vm.type == 'RANGE') value += '--' + tmp2;
+								if (vm.isSliderLike && !vm.isNumeric) {
+									value = nvlo(vm.tableValues[value]).value;
+									value2 = nvlo(vm.tableValues[value2]).value;
 								}
-								if (!checkedFx) vm.checked = value === '' ? false : true;
-								vm.setVal(value);
+								if (!checkedFx) vm.checked = vm.type != 'RANGE' && (value === '' || value == null) || vm.type == 'RANGE' && (value === '' || value == null || value2 === '' || value2 == null) ? false : true;
+								vm.setVal(value, value2);
 
 							case 4:
 							case 'end':
@@ -3925,7 +3946,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			return checkRefresh;
 		}(),
 		setVal: function () {
-			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value) {
+			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value, value2) {
 				var vm;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
 					while (1) {
@@ -3938,7 +3959,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 									vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
 								}
 								_context2.next = 4;
-								return vm.paramSet({ num: vm.paramsForm, code: vm.code, value: value, view: value, checked: vm.checked, sign: vm.sign_list[vm.sign].code });
+								return vm.paramSet({ num: vm.paramsForm, code: vm.code, value: value, value2: value2, checked: vm.checked, sign: vm.sign_list[vm.sign].code });
 
 							case 4:
 							case 'end':
@@ -3948,7 +3969,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}, _callee2, this);
 			}));
 
-			function setVal(_x2) {
+			function setVal(_x2, _x3) {
 				return _ref2.apply(this, arguments);
 			}
 
@@ -4017,7 +4038,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		if (!vm.nullable) {
 			vm.isNeed = true;
 			vm.rules.push(function (v) {
-				return v != undefined && v != '' || 'Поле обязательное!';
+				return v != undefined && (v != '' || v === 0) || 'Поле обязательное!';
 			});
 			vm.name = '❗ ' + vm.name; //⭐
 		}
@@ -4047,7 +4068,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				return tmp.test(v) || vm.error;
 			});
 
-		vm.paramSet({ num: vm.paramsForm, code: vm.code, value: vm.value, view: vm.value, checked: vm.needCheckBox ? vm.checked : 1, sign: vm.sign_list[vm.sign] });
+		vm.paramSetData({ num: vm.paramsForm, data: vm.data });
 	}
 });
 
@@ -4388,9 +4409,7 @@ var render = function() {
                                   return _vm.submit($event)
                                 },
                                 blur: _vm.onBlur,
-                                "click:append": function($event) {
-                                  _vm.type == "PASSWORD" ? _vm.changeShow : null
-                                }
+                                "click:append": _vm.changeShow
                               },
                               model: {
                                 value: _vm.value,
@@ -4773,7 +4792,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		inputs: function inputs() {
 			var vm = this;
-			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', name: 'Вложенность', tip: "Подсказка!!!!!!", placeholder: 'Уровень вложенности объекта', type: 'LIST', value: "cur", nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', name: 'Тип', tip: "Подсказка!!!!!!", placeholder: 'Тип объекта', type: 'LIST', value: "node", nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', name: 'Название', tip: "Подсказка!!!!!!", placeholder: 'Описание объекта', type: 'NUMBER', value: "10", nullable: true, column_type: 'Number', column_size: 30, css_class: '', sort_seq: 3 }, { id: 4, form: 'object-tree-add', code: 'tree_range', name: 'Значение', tip: "Подсказка!!!!!!", placeholder: 'Описание диапазона', type: 'RANGE', value: "20", value2: "30", nullable: false, column_type: 'Number', column_size: 30, css_class: '', sort_seq: 3, min: 10, max: 100 }, { id: 5, form: 'object-tree-add', code: 'tree_val', name: 'Значение', tip: "Подсказка!!!!!!", placeholder: 'Описание значения', type: 'SLIDER', value: "20", value2: "30", nullable: false, column_type: 'Number', column_size: 30, css_class: '', sort_seq: 3, min: 10, max: 100 }];
+			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', name: 'Вложенность', tip: "Подсказка!!!!!!", placeholder: 'Уровень вложенности объекта', type: 'LIST', value: "cur", nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', name: 'Тип', tip: "Подсказка!!!!!!", placeholder: 'Тип объекта', type: 'LIST', value: "node", nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', name: 'Название', tip: "Подсказка!!!!!!", placeholder: 'Описание объекта', type: 'NUMBER', value: "10", nullable: true, column_type: 'Number', column_size: 30, css_class: '', sort_seq: 3 }, { id: 4, form: 'object-tree-add', code: 'tree_range', name: 'Значение', tip: "Подсказка!!!!!!", placeholder: 'Описание диапазона', type: 'RANGE', value: "20", value2: "30", nullable: false, column_type: 'Number', column_size: 30, css_class: '', sort_seq: 3, min: 10, max: 100 }, { id: 5, form: 'object-tree-add', code: 'tree_val', name: 'Значение', tip: "Подсказка!!!!!!", placeholder: 'Описание значения', type: 'SLIDER', value: "20", value2: "30", nullable: false, column_type: 'Number', column_size: 30, css_class: '', sort_seq: 3, min: 10, max: 100 }, { id: 6, form: 'object-tree-add', code: 'obj_level1', name: 'Вложенность1', tip: "Подсказка!!!!!!", placeholder: 'Уровень вложенности объекта', type: 'RANGE', value: "1", value2: "2", nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 7, form: 'object-tree-add', code: 'tree_group1', name: 'Тип1', tip: "Подсказка!!!!!!", placeholder: 'Тип объекта', type: 'SLIDER', value: "0", nullable: false, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, table_values: [{ value: 'node', text: 'Узел' }, { value: 'ARM', text: 'Область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле' }] }];
 		}
 	},
 	components: {
@@ -4793,7 +4812,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		filterSet: function filterSet() {
 			var vm = this;
 			if (!vm.formCheck('filter')) return;
-			console.log(this.paramTodo(this.filterName, true));
+			console.log(this.paramTodo(this.filterName));
 		},
 		toggleMarker: function toggleMarker() {
 			this.marker = !this.marker;
