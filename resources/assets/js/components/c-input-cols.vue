@@ -2,7 +2,7 @@
 	<v-container grid-list-md>
 		<v-layout row wrap>
 			<v-flex v-for="(arr, index) in colsData" :key="index"  :class="classes" >
-				<c-input  v-for="row in arr"  :key="row.id"  :data="row" :needCheckBox="needCheckBox" :needSign="needSign" :dialogId="dialogId" :paramsForm="paramsForm"/>
+				<c-input  v-for="row in arr" :ref="row.code" :key="row.id"  :data="row" :needCheckBox="needCheckBox" :needSign="needSign" :dialogId="dialogId" :paramsForm="paramsForm"/>
 			</v-flex>
 		</v-layout>
 	</v-container>	
@@ -60,7 +60,7 @@
 						col++;
 					colsData[col].push(row);
 				});
-				vm.$root.$emit('dialog'+vm.dialogId+'InputsCols', {rowInColA,colsCnt:vm.colsCnt}); 
+				vm.$root.$emit('dialog'+vm.dialogId+'InputsCols', {rowInColA,colsCnt:vm.colsCnt});
 				return colsData
 			},
 		},

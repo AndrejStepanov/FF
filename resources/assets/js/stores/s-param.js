@@ -21,8 +21,8 @@ export default {
 		async doSetData({commit,getters,state},{num,data}){
 			commit("paramSettingData",{ num, code:data.code,data})			
 		},
-		async doSet({commit,getters,state},{num,code, value, value2, checked=1, sign='='}){
-			commit("paramSetting",{ num,code, value, value2, checked,sign})			
+		async doSet({commit,getters,state},{num,code, data}){
+			commit("paramSetting",{ num,code, data})			
 		},
 		async doSetSeveral({dispatch,commit,getters,state},{num,params={} }){// params:{code:{value:'значение параметра, если undefined - не указан', view:'отображаемое пользователю значение'}}
 			Object.keys(params).forEach(code=>{
@@ -43,8 +43,8 @@ export default {
 		paramSettingData(state, {num,code, data}){
 			state.params[num][code] =data
 		},
-		paramSetting(state, {num, code, value,value2,checked,sign}){
-			state.params[num][code]={...state.params[num][code], ...{value,value2,checked,sign}}
+		paramSetting(state, {num, code, data}){
+			state.params[num][code]={...state.params[num][code], ...data}
 		},
 
 	},

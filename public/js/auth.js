@@ -1413,17 +1413,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				    state = _ref7.state;
 				var num = _ref8.num,
 				    code = _ref8.code,
-				    value = _ref8.value,
-				    value2 = _ref8.value2,
-				    _ref8$checked = _ref8.checked,
-				    checked = _ref8$checked === undefined ? 1 : _ref8$checked,
-				    _ref8$sign = _ref8.sign,
-				    sign = _ref8$sign === undefined ? '=' : _ref8$sign;
+				    data = _ref8.data;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
 					while (1) {
 						switch (_context3.prev = _context3.next) {
 							case 0:
-								commit("paramSetting", { num: num, code: code, value: value, value2: value2, checked: checked, sign: sign });
+								commit("paramSetting", { num: num, code: code, data: data });
 
 							case 1:
 							case "end":
@@ -1524,12 +1519,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		paramSetting: function paramSetting(state, _ref18) {
 			var num = _ref18.num,
 			    code = _ref18.code,
-			    value = _ref18.value,
-			    value2 = _ref18.value2,
-			    checked = _ref18.checked,
-			    sign = _ref18.sign;
+			    data = _ref18.data;
 
-			state.params[num][code] = _extends({}, state.params[num][code], { value: value, value2: value2, checked: checked, sign: sign });
+			state.params[num][code] = _extends({}, state.params[num][code], data);
 		}
 	}
 });
@@ -1641,9 +1633,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		panelLeftDrawer: { type: Boolean, default: false },
 		panelLeftShow: { type: Boolean, default: false },
 		panelLeftClass: { type: String, default: '' },
+		panelLeftWidth: { type: Number | String, default: 300 },
 		panelRightDrawer: { type: Boolean, default: false },
 		panelRightShow: { type: Boolean, default: false },
-		panelRightClass: { type: String, default: '' }
+		panelRightClass: { type: String, default: '' },
+		panelRightWidth: { type: Number | String, default: 300 }
 	},
 	components: {
 		CHead: __WEBPACK_IMPORTED_MODULE_2__components_c_head___default.a, CFooter: __WEBPACK_IMPORTED_MODULE_3__components_c_footer___default.a, CMsgList: __WEBPACK_IMPORTED_MODULE_4__components_c_msg_list___default.a,
@@ -3048,7 +3042,8 @@ var render = function() {
                     fixed: "",
                     left: "",
                     clipped: _vm.$vuetify.breakpoint.width > 1264,
-                    app: ""
+                    app: "",
+                    width: _vm.panelLeftWidth
                   },
                   model: {
                     value: _vm.panelLeftShowen,
@@ -3072,7 +3067,8 @@ var render = function() {
                     fixed: "",
                     right: "",
                     clipped: _vm.$vuetify.breakpoint.width > 1264,
-                    app: ""
+                    app: "",
+                    width: _vm.panelRightWidth
                   },
                   model: {
                     value: _vm.panelRightShowen,

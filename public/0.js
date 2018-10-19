@@ -1108,7 +1108,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		},
 		inputs: function inputs() {
 			var vm = this;
-			var data = [{ id: 1, form: 'object-tree-add', code: 'obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', name: 'Название', placeholder: 'Описание объекта', type: 'INPUT', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }, { id: 4, form: 'auth-login', code: 'login', name: 'Пользователь', placeholder: 'Логин пользователя', type: 'INPUT', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 1 }, { id: 5, form: 'auth-login', code: 'password', name: 'Пароль', placeholder: 'Пароль пользователя', type: 'PASSWORD', nullable: 0, column_type: 'String', column_size: 30, css_class: '', sort_seq: 2 }, { id: 6, form: 'auth-login', code: 'remember', name: 'Запомнить мои данные', placeholder: 'Запомнить данные пользователя', type: 'BOOL', nullable: 1, column_type: 'String', column_size: 30, css_class: '', sort_seq: 3 }];
+			var data = [{ id: 1, form: 'object-tree-add', code: 'obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', nullable: 0, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', nullable: 0, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', name: 'Название', placeholder: 'Описание объекта', type: 'INPUT', nullable: 0, column_size: 30, sort_seq: 3, max_len: 25 }, { id: 4, form: 'auth-login', code: 'login', name: 'Пользователь', placeholder: 'Логин пользователя', type: 'INPUT', nullable: 0, column_size: 30, sort_seq: 1 }, { id: 5, form: 'auth-login', code: 'password', name: 'Пароль', placeholder: 'Пароль пользователя', type: 'PASSWORD', nullable: 0, column_size: 30, sort_seq: 2 }, { id: 6, form: 'auth-login', code: 'remember', name: 'Запомнить мои данные', placeholder: 'Запомнить данные пользователя', type: 'BOOL', nullable: 1, column_size: 30, sort_seq: 3 }];
 			return data.filter(function (row) {
 				return row.form == vm.paramsForm;
 			}).sort(function (a, b) {
@@ -1139,6 +1139,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			if (vm.dialogParamsGet.checkFunc) vm.dialogParamsGet.checkFunc(todo);
 			if (vm.dialogParamsGet.saveFunc) vm.dialogParamsGet.saveFunc(todo);else {
 				if (vm.paramsForm == 'auth-login') {
+					console.log(todo);
 					var tmp = {};
 					for (name in todo) {
 						tmp[name] = todo[name].value;
@@ -1484,7 +1485,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{    font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
+exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
 
 // exports
 
@@ -1586,6 +1587,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1597,11 +1604,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			code: 'code',
 			columnSize: 0,
 			columnType: '',
-			cssClass: '',
+			classCss: [], //[ "class1","class2",]
 			currentInput: 'v-text-field',
 			editable: true,
 			error: 'Некорректное значение!',
 			hasError: false,
+			hasInput: false,
 			id: 0,
 			isNeed: false,
 			isNumeric: true,
@@ -1610,8 +1618,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			mask: null,
 			maskFin: '',
 			max: 40,
+			maxLen: 0,
+			maxLenTypes: ['INPUT', 'NUMBER', 'PASSWORD'],
 			min: 0,
-			multi: false,
+			multy: false,
 			name: '',
 			nullable: false,
 			placeholder: '',
@@ -1619,10 +1629,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			rules: [],
 			show: false,
 			sign: 0,
-			sign_list: [{ code: '=', icon: 'pause' }, { code: '!=', icon: 'block' }, { code: '>', icon: 'chevron_right' }, { code: '>=', icon: 'last_page' }, { code: '<', icon: 'chevron_left' }, { code: '<=', icon: 'first_page' }],
+			signList: [{ code: '=', icon: 'pause' }, { code: '!=', icon: 'code' }, { code: '>', icon: 'chevron_right' }, { code: '>=', icon: 'last_page' }, { code: '<', icon: 'chevron_left' }, { code: '<=', icon: 'first_page' }],
 			sortSeq: 0,
 			step: "1",
-			tableValues: [],
+			tableValues: [], //для листов [{value:'cur',text:'На текущем уровне'}], для TAB [{param1:1, param2:2, }]
+			tableHeader: [], //для TAB [{value:'param1',text:'Параметра1'},{value:'param2',text:'Параметра2'}]
 			thumbLabelNeed: false,
 			thumbSize: 10,
 			tickLabels: [],
@@ -1630,16 +1641,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			ticksNeed: false,
 			tip: '',
 			type: 'type',
-			value: '',
-			value2: '',
-			valueArr: []
+			value: '', // предпологаю число
+			valueView: '',
+			valueRange: [], //[ [1,0], [1, 2] ]
+			valueRangeView: [],
+			valueArr: [], //['Петя','Вася','Катя',]
+			valueArrView: []
 		};
 	},
-	/*
- :id="row.id" :code="row.code" :name="row.column_name" :placeholder="row.column_desc" :dialogId="dialogId"
- :type="row.proc_type" :nullable="row.nullable" :columnType="row.column_type" :columnSize="row.column_size" :cssClass="row.css_class" :sortSeq="row.sort_seq"
- :changeEvent="inputChangeEvent" :items="row.items" :maskFin="row.mask_fin" :mask="row.mask" :error="row.error"
- */
 	props: {
 		data: { type: Object, required: true, default: function _default() {
 				return {};
@@ -1654,7 +1663,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			return this.type != 'PASSWORD' ? this.type : this.type == 'PASSWORD' ? this.show ? 'text' : 'password' : 'text';
 		},
 		signCur: function signCur() {
-			return !this.needSign ? '' : this.sign_list[this.sign].icon;
+			return !this.needSign ? '' : this.signList[this.sign].icon;
 		},
 		appendIconGet: function appendIconGet() {
 			return this.type != 'PASSWORD' ? this.type == 'LIST' ? '$vuetify.icons.dropdown' : '' : this.type != 'PASSWORD' ? this.show ? 'visibility_off' : 'visibility' : '';
@@ -1669,25 +1678,37 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			return [{ "disabled-label": !this.checked }, { "error--text": this.hasError && this.$refs.input.validations != '' }];
 		},
 		signClassGet: function signClassGet() {
-			return [{ "rotate-90": this.needSign && this.sign_list[this.sign].icon == 'pause' }];
+			return [{ "rotate-90": this.needSign && this.signList[this.sign].icon == 'pause' && this.signList[this.sign].code == '=' }];
 		},
 		componentClassGet: function componentClassGet() {
 			return [{ "body-1": this.needSign }];
 		},
 		disableGet: function disableGet() {
 			return !this.needCheckBox ? false : !this.checked;
+		},
+		getCounter: function getCounter() {
+			return this.maxLenTypes.indexOf(this.type) != -1 && this.maxLen > 0 ? this.maxLen : false;
 		}
 	},
 	watch: {},
 	mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default.a],
 	methods: {
-		setNewVal: function setNewVal(value) {
+		setNewVal: function setNewVal(_ref) {
+			var value = _ref.value,
+			    value2 = _ref.value2;
+
+			var vm = this;
+			vm.value = value;
+			vm.value2 = value2;
+			vm.checkRefresh();
+		},
+		valChange: function valChange(value) {
 			var vm = this;
 			vm.checkRefresh();
 		},
 		changeSign: function changeSign() {
 			var vm = this;
-			if (vm.checked) vm.sign = (vm.sign + 1) % vm.sign_list.length;
+			if (vm.checked) vm.sign = (vm.sign + 1) % vm.signList.length;
 			vm.checkRefresh();
 		},
 		changeShow: function changeShow() {
@@ -1723,23 +1744,47 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			this.checkRefresh();
 		},
 		checkRefresh: function () {
-			var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
 				var checkedFx = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-				var vm, tmp1, tmp2, value, value2;
+				var vm, tmp1, tmp2, value, valueView, valueArr, valueArrView;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								vm = this, tmp1 = void 0, tmp2 = void 0, value = vm.type == 'RANGE' ? vm.valueArr[0] : vm.value, value2 = vm.type == 'RANGE' ? vm.valueArr[1] : null;
+								vm = this, tmp1 = void 0, tmp2 = void 0, value = vm.value, valueView = vm.value, valueArr = vm.type == 'RANGE' || vm.multy ? [] : null, valueArrView = vm.type == 'RANGE' || vm.multy ? [] : null;
 
-								if (vm.isSliderLike && !vm.isNumeric) {
-									value = nvlo(vm.tableValues[value]).value;
-									value2 = nvlo(vm.tableValues[value2]).value;
+								if (vm.type == 'RANGE') {
+									if (vm.isNumeric) {
+										vm.valueRange.forEach(function (row) {
+											valueArr.push(row.slice(0));
+										});
+										valueArrView = valueArr.slice(0);
+									} else vm.valueRange.forEach(function (row) {
+										valueArrView.push([nvlo(vm.tableValues[row[0]]).text, nvlo(vm.tableValues[row[1]]).text]);
+										valueArr.push([nvlo(vm.tableValues[row[0]]).value, nvlo(vm.tableValues[row[1]]).value]);
+									});
+									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
+								} else if (vm.hasInput && vm.multy) {
+									valueArr = vm.valueArr.slice(0);
+									if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
+										valueArr.forEach(function (rowVal) {
+											if (row.value == rowVal) valueArrView.push(row.text);
+										});
+									});else valueArrView = valueArr.slice(0);
+									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
+								} else if (vm.hasInput) {
+									// работа просто с value
+									if (vm.isSliderLike && !vm.isNumeric) {
+										valueView = nvlo(vm.tableValues[value]).text;
+										value = nvlo(vm.tableValues[value]).value;
+									} else if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
+										if (row.value == value) valueView = row.text;
+									});
+									if (!checkedFx) vm.checked = value === '' || value == null ? false : true;
 								}
-								if (!checkedFx) vm.checked = vm.type != 'RANGE' && (value === '' || value == null) || vm.type == 'RANGE' && (value === '' || value == null || value2 === '' || value2 == null) ? false : true;
-								vm.setVal(value, value2);
+								vm.setVal(value, valueView, valueArr, valueArrView);
 
-							case 4:
+							case 3:
 							case 'end':
 								return _context.stop();
 						}
@@ -1748,13 +1793,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			}));
 
 			function checkRefresh() {
-				return _ref.apply(this, arguments);
+				return _ref2.apply(this, arguments);
 			}
 
 			return checkRefresh;
 		}(),
 		setVal: function () {
-			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value, value2) {
+			var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value, value_view, value_arr, value_arr_view) {
 				var vm;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
 					while (1) {
@@ -1762,14 +1807,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 							case 0:
 								vm = this;
 
-								if (vm.needCheckBox) {
+								console.log(vm);
+								if (vm.hasInput && vm.needCheckBox) {
 									vm.hasError = !vm.$refs.input.validate();
 									vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
 								}
-								_context2.next = 4;
-								return vm.paramSet({ num: vm.paramsForm, code: vm.code, value: value, value2: value2, checked: vm.checked, sign: vm.sign_list[vm.sign].code });
+								_context2.next = 5;
+								return vm.paramSet({ num: vm.paramsForm, code: vm.code, data: { value: value, value_view: value_view, value_arr: value_arr, value_arr_view: value_arr_view, checked: vm.checked, sign: vm.signList[vm.sign].code } });
 
-							case 4:
+							case 5:
 							case 'end':
 								return _context2.stop();
 						}
@@ -1777,8 +1823,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}, _callee2, this);
 			}));
 
-			function setVal(_x2, _x3) {
-				return _ref2.apply(this, arguments);
+			function setVal(_x2, _x3, _x4, _x5) {
+				return _ref3.apply(this, arguments);
 			}
 
 			return setVal;
@@ -1792,7 +1838,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		vm.checkBoxColor = appTheme.checkBox || vm.checkBoxColor;
 		vm.id = vm.data.id || vm.id;
 		vm.value = vm.data.value || vm.value;
-		vm.value2 = vm.data.value2 || vm.data.value || vm.value2;
 		vm.code = vm.data.code || vm.code;
 		vm.name = vm.data.name || vm.name;
 		vm.tip = vm.data.tip || vm.tip;
@@ -1801,16 +1846,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		vm.nullable = vm.data.nullable || vm.nullable;
 		vm.columnType = vm.data.column_type || vm.columnType;
 		vm.columnSize = vm.data.column_size || vm.columnSize;
-		vm.cssClass = vm.data.css_class || vm.cssClass;
 		vm.sortSeq = vm.data.sort_seq || vm.sortSeq;
 		vm.mask = vm.data.mask || vm.mask;
 		vm.maskFin = vm.data.mask_fin || vm.maskFin;
 		vm.error = vm.data.error || vm.error;
 		vm.checked = !!vm.data.checked || vm.checked;
 		vm.editable = !!vm.data.editable || vm.editable;
-		vm.multi = !!vm.data.multi || vm.multi;
+		vm.multy = !!vm.data.multy || vm.multy;
 		vm.min = vm.data.min || vm.min;
 		vm.max = vm.data.max || vm.max;
+		vm.maxLen = vm.data.max_len || vm.maxLen;
 		vm.step = vm.data.step || vm.step;
 		vm.ticksNeed = !!vm.data.ticks_need || vm.ticksNeed;
 		vm.tickSize = vm.data.tick_size || vm.tickSize;
@@ -1818,9 +1863,28 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 		vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : vm.type == 'SLIDER' ? 'v-slider' : vm.type == 'RANGE' ? 'v-range-slider' : 'v-text-field';
 
-		if (nvl(vm.data.table_values != undefined) > 0) vm.data.table_values.forEach(function (element) {
+		if (vm.data.table_values != undefined && vm.data.table_values.length > 0) vm.data.table_values.forEach(function (element) {
 			vm.tableValues.push(element);
 			if (isNaN(element.value)) vm.isNumeric = false;
+		});
+
+		if (vm.data.sign_list != undefined && vm.data.sign_list.length > 0) {
+			vm.signList.splice(0, vm.signList.length);
+			vm.data.sign_list.forEach(function (element) {
+				vm.signList.push(element);
+			});
+		}
+
+		if (vm.data.table_header != undefined && vm.data.table_header.length > 0) vm.data.table_header.forEach(function (element) {
+			vm.tableHeader.push(element);
+		});
+
+		if (vm.data.class != undefined && vm.data.class.length > 0) vm.data.class.forEach(function (element) {
+			vm.classCss.push({ element: true });
+		});
+
+		if (vm.data.value_arr != undefined && vm.data.value_arr.length > 0) vm.data.value_arr.forEach(function (element) {
+			vm.valueArr.push(element);
 		});
 
 		vm.isSliderLike = this.type == 'SLIDER' || this.type == 'RANGE';
@@ -1839,11 +1903,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}
 			}
 			vm.value = vm.value || vm.min;
-			vm.value2 = vm.value2 || vm.min;
+			if (vm.valueArr != undefined && vm.valueArr.length > 0) vm.valueArr.forEach(function (element, i) {
+				vm.valueRange.push([vm.valueArr[i][0] || vm.min, vm.valueArr[i][1] || vm.min]);
+			});else vm.valueRange.push([vm.min, vm.min]);
 		}
-		if (vm.type != 'SLIDER' && vm.type != 'RANGE' && vm.type != 'LIST' && vm.type != 'NUMBER') vm.isNumeric = false;
+		if (['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(this.type) == -1) vm.isNumeric = false;
 
-		if (!vm.nullable) {
+		if (['HIDDEN', 'INFO', 'NBSP', 'LINE'].indexOf(this.type) == -1) vm.hasInput = true;
+
+		if (vm.hasInput && !vm.nullable) {
 			vm.isNeed = true;
 			vm.rules.push(function (v) {
 				return v != undefined && (v != '' || v === 0) || 'Поле обязательное!';
@@ -1851,32 +1919,33 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.name = '❗ ' + vm.name; //⭐
 		}
 
-		if (vm.type == 'RANGE') vm.valueArr = [vm.value, vm.value2];
-
-		if (vm.needCheckBox && !vm.nullable) vm.rules.push(function (v) {
+		if (vm.hasInput && vm.needCheckBox && !vm.nullable) vm.rules.push(function (v) {
 			return !!vm.checked || 'Поле должно быть использовано!';
 		});
 
-		if (vm.needCheckBox && !vm.nullable) vm.rules.push(function (v) {
-			return !!vm.checked || 'Поле должно быть использовано!';
-		});
-
-		if (vm.isNumeric && !isNaN(vm.min) && this.type != 'RANGE') //Границы должны быть цифрой!
+		if (vm.hasInput && vm.isNumeric && !isNaN(vm.min) && this.type != 'RANGE') //Границы должны быть цифрой!
 			vm.rules.push(function (v) {
 				return v >= vm.min || !vm.checked || 'Значение должно быть не меньше ' + vm.min + '!';
 			});
 
-		if (vm.isNumeric && !isNaN(vm.max) && this.type != 'RANGE') vm.rules.push(function (v) {
+		if (vm.hasInput && vm.isNumeric && !isNaN(vm.max) && this.type != 'RANGE') vm.rules.push(function (v) {
 			return v <= vm.max || !vm.checked || 'Значение не должно превышать ' + vm.max + '!';
 		});
 
+		if (vm.hasInput && vm.maxLenTypes.indexOf(vm.type) != -1 && vm.maxLen > 0) vm.rules.push(function (v) {
+			return v.length <= vm.maxLen || !vm.checked || 'Количество символов не должно превышать ' + vm.maxLen + '!';
+		});
+
 		var tmp = new RegExp(vm.maskFin);
-		if (tmp != '') //надо помнить про экранирование
+		if (vm.hasInput && tmp != '') //надо помнить про экранирование
 			vm.rules.push(function (v) {
 				return tmp.test(v) || vm.error;
 			});
 
 		vm.paramSetData({ num: vm.paramsForm, data: vm.data });
+		setTimeout(function () {
+			vm.checkRefresh(true);
+		}, 500);
 	}
 });
 
@@ -1889,281 +1958,243 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-layout",
-    { attrs: { "align-center": "", row: "" } },
-    [
-      _c(
-        "v-tooltip",
-        {
-          staticClass: "input-contaner",
-          attrs: { disabled: _vm.tip == "", bottom: "" }
-        },
+  return _vm.type != "HIDDEN"
+    ? _c(
+        "v-layout",
+        { class: _vm.classCss, attrs: { "align-center": "", row: "" } },
         [
-          _c("template", { slot: "activator" }, [
-            _c(
-              "div",
-              { staticClass: "input-contaner" },
-              [
-                _vm.needSign
-                  ? _c(
-                      "v-btn",
-                      {
-                        staticClass: "sign-box cursor-pointer",
-                        attrs: { icon: "", small: "" },
-                        on: { click: _vm.changeSign }
-                      },
-                      [
-                        _c(
-                          "v-icon",
-                          {
-                            class: _vm.signClassGet,
-                            attrs: { small: "", disabled: _vm.disableGet }
-                          },
-                          [_vm._v(_vm._s(_vm.signCur))]
-                        )
-                      ],
-                      1
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
+          _c(
+            "v-tooltip",
+            {
+              staticClass: "input-contaner",
+              attrs: { disabled: _vm.tip == "", bottom: "" }
+            },
+            [
+              _c("template", { slot: "activator" }, [
                 _c(
                   "div",
-                  {
-                    staticClass: "input-contaner main-contaner",
-                    on: { click: _vm.onClick }
-                  },
+                  { staticClass: "input-contaner" },
                   [
-                    _vm.isSliderLike
+                    _vm.needSign
                       ? _c(
-                          "div",
-                          { staticClass: "input-contaner slider-label" },
+                          "v-btn",
+                          {
+                            staticClass: "sign-box cursor-pointer",
+                            attrs: { icon: "", small: "" },
+                            on: { click: _vm.changeSign }
+                          },
                           [
-                            _c("span", { class: _vm.labelColorGet }, [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.name +
-                                    (_vm.placeholder != ""
-                                      ? " (" + _vm.placeholder + ")"
-                                      : "")
-                                )
-                              )
-                            ])
-                          ]
+                            _c(
+                              "v-icon",
+                              {
+                                class: _vm.signClassGet,
+                                attrs: { small: "", disabled: _vm.disableGet }
+                              },
+                              [_vm._v(_vm._s(_vm.signCur))]
+                            )
+                          ],
+                          1
                         )
                       : _vm._e(),
                     _vm._v(" "),
                     _c(
                       "div",
-                      { class: _vm.templateClassGet },
+                      {
+                        staticClass: "input-contaner main-contaner",
+                        on: { click: _vm.onClick }
+                      },
                       [
                         _vm.isSliderLike
-                          ? [
-                              _vm.type == "RANGE" && _vm.isNumeric
-                                ? _c(
-                                    "v-flex",
-                                    {
-                                      staticStyle: { width: "60px" },
-                                      attrs: { shrink: "" }
-                                    },
-                                    [
-                                      _c("v-text-field", {
-                                        staticClass:
-                                          "mt-0 min-width-35px body-1",
-                                        attrs: {
-                                          "hide-details": "",
-                                          "single-line": "",
-                                          disabled: _vm.disableGet,
-                                          type: "number",
-                                          min: _vm.min
-                                        },
-                                        on: { change: _vm.setNewVal },
-                                        model: {
-                                          value: _vm.valueArr[0],
-                                          callback: function($$v) {
-                                            _vm.$set(_vm.valueArr, 0, $$v)
-                                          },
-                                          expression: "valueArr[0]"
-                                        }
-                                      })
-                                    ],
-                                    1
+                          ? _c(
+                              "div",
+                              { staticClass: "input-contaner slider-label" },
+                              [
+                                _c("span", { class: _vm.labelColorGet }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.name +
+                                        (_vm.placeholder != ""
+                                          ? " (" + _vm.placeholder + ")"
+                                          : "")
+                                    )
                                   )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _c(
-                                "v-flex",
-                                [
-                                  _vm.type == "RANGE"
-                                    ? _c(_vm.currentInput, {
-                                        ref: "input",
-                                        tag: "component",
-                                        attrs: {
-                                          rules: _vm.rules,
-                                          disabled: _vm.disableGet,
-                                          readonly: !_vm.editable,
-                                          required: !!_vm.nullable,
-                                          "multi-line": _vm.columnSize > 50,
-                                          tabindex: _vm.sortSeq,
-                                          type: _vm.typeGet,
-                                          "always-dirty": _vm.isSliderLike,
-                                          "persistent-hint": _vm.isSliderLike,
-                                          "thumb-label": _vm.thumbLabelNeed,
-                                          ticks: _vm.ticksNeed ? "always" : "",
-                                          tickSize: _vm.tickSize,
-                                          "thumb-size": _vm.thumbSize,
-                                          "tick-labels": _vm.tickLabels,
-                                          "append-icon": _vm.appendIconGet,
-                                          clearable: _vm.clearableGet,
-                                          mask: _vm.mask,
-                                          color: _vm.checkBoxColor,
-                                          min: _vm.min,
-                                          max: _vm.max,
-                                          step: _vm.step
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { class: _vm.templateClassGet },
+                          [
+                            _vm.isSliderLike
+                              ? [
+                                  _vm.type == "RANGE" && _vm.isNumeric
+                                    ? _c(
+                                        "v-flex",
+                                        {
+                                          staticStyle: { width: "60px" },
+                                          attrs: { shrink: "" }
                                         },
-                                        on: {
-                                          change: _vm.setNewVal,
-                                          keyup: function($event) {
-                                            if (
-                                              !("button" in $event) &&
-                                              _vm._k(
-                                                $event.keyCode,
-                                                "enter",
-                                                13,
-                                                $event.key,
-                                                "Enter"
-                                              )
-                                            ) {
-                                              return null
-                                            }
-                                            return _vm.submit($event)
-                                          },
-                                          blur: _vm.onBlur
-                                        },
-                                        scopedSlots: _vm._u([
-                                          {
-                                            key: "thumb-label",
-                                            fn: function(props) {
-                                              return _vm.isNumeric
-                                                ? [_vm._t("thumb-label")]
-                                                : undefined
-                                            }
-                                          }
-                                        ]),
-                                        model: {
-                                          value: _vm.valueArr,
-                                          callback: function($$v) {
-                                            _vm.valueArr = $$v
-                                          },
-                                          expression: "valueArr"
-                                        }
-                                      })
-                                    : _c(_vm.currentInput, {
-                                        ref: "input",
-                                        tag: "component",
-                                        attrs: {
-                                          rules: _vm.rules,
-                                          disabled: _vm.disableGet,
-                                          readonly: !_vm.editable,
-                                          required: !!_vm.nullable,
-                                          "multi-line": _vm.columnSize > 50,
-                                          tabindex: _vm.sortSeq,
-                                          type: _vm.typeGet,
-                                          "always-dirty": _vm.isSliderLike,
-                                          "persistent-hint": _vm.isSliderLike,
-                                          "thumb-label": _vm.thumbLabelNeed,
-                                          ticks: _vm.ticksNeed ? "always" : "",
-                                          tickSize: _vm.tickSize,
-                                          "thumb-size": _vm.thumbSize,
-                                          "tick-labels": _vm.tickLabels,
-                                          "append-icon": _vm.appendIconGet,
-                                          clearable: _vm.clearableGet,
-                                          mask: _vm.mask,
-                                          color: _vm.checkBoxColor,
-                                          min: _vm.min,
-                                          max: _vm.max,
-                                          step: _vm.step
-                                        },
-                                        on: {
-                                          change: _vm.setNewVal,
-                                          keyup: function($event) {
-                                            if (
-                                              !("button" in $event) &&
-                                              _vm._k(
-                                                $event.keyCode,
-                                                "enter",
-                                                13,
-                                                $event.key,
-                                                "Enter"
-                                              )
-                                            ) {
-                                              return null
-                                            }
-                                            return _vm.submit($event)
-                                          },
-                                          blur: _vm.onBlur
-                                        },
-                                        scopedSlots: _vm._u([
-                                          {
-                                            key: "thumb-label",
-                                            fn: function(props) {
-                                              return _vm.isNumeric
-                                                ? [_vm._t("thumb-label")]
-                                                : undefined
-                                            }
-                                          }
-                                        ]),
-                                        model: {
-                                          value: _vm.value,
-                                          callback: function($$v) {
-                                            _vm.value = $$v
-                                          },
-                                          expression: "value"
-                                        }
-                                      })
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _vm.isNumeric
-                                ? _c(
-                                    "v-flex",
-                                    {
-                                      staticStyle: { width: "60px" },
-                                      attrs: { shrink: "" }
-                                    },
-                                    [
-                                      _vm.type == "RANGE"
-                                        ? _c("v-text-field", {
+                                        [
+                                          _c("v-text-field", {
                                             staticClass:
                                               "mt-0 min-width-35px body-1",
                                             attrs: {
                                               "hide-details": "",
                                               "single-line": "",
-                                              type: "number",
                                               disabled: _vm.disableGet,
-                                              max: _vm.max
+                                              type: "number",
+                                              min: _vm.min,
+                                              max: _vm.max,
+                                              step: _vm.step
                                             },
-                                            on: { change: _vm.setNewVal },
+                                            on: { change: _vm.valChange },
                                             model: {
-                                              value: _vm.valueArr[1],
+                                              value: _vm.valueRange[0][0],
                                               callback: function($$v) {
-                                                _vm.$set(_vm.valueArr, 1, $$v)
+                                                _vm.$set(
+                                                  _vm.valueRange[0],
+                                                  0,
+                                                  $$v
+                                                )
                                               },
-                                              expression: "valueArr[1]"
+                                              expression: "valueRange[0][0]"
                                             }
                                           })
-                                        : _c("v-text-field", {
-                                            staticClass:
-                                              "mt-0 min-width-35px body-1",
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-flex",
+                                    [
+                                      _vm.type == "RANGE"
+                                        ? _c(_vm.currentInput, {
+                                            ref: "input",
+                                            tag: "component",
                                             attrs: {
-                                              "hide-details": "",
-                                              "single-line": "",
-                                              type: "number",
+                                              rules: _vm.rules,
                                               disabled: _vm.disableGet,
-                                              max: _vm.max
+                                              readonly: !_vm.editable,
+                                              required: !!_vm.nullable,
+                                              "multi-line": _vm.columnSize > 50,
+                                              tabindex: _vm.sortSeq,
+                                              type: _vm.typeGet,
+                                              color: _vm.checkBoxColor,
+                                              "always-dirty": _vm.isSliderLike,
+                                              "persistent-hint":
+                                                _vm.isSliderLike,
+                                              "thumb-label": _vm.thumbLabelNeed,
+                                              ticks: _vm.ticksNeed
+                                                ? "always"
+                                                : "",
+                                              tickSize: _vm.tickSize,
+                                              "thumb-size": _vm.thumbSize,
+                                              "tick-labels": _vm.tickLabels,
+                                              "append-icon": _vm.appendIconGet,
+                                              clearable: _vm.clearableGet,
+                                              mask: _vm.mask,
+                                              min: _vm.min,
+                                              max: _vm.max,
+                                              step: _vm.step
                                             },
-                                            on: { change: _vm.setNewVal },
+                                            on: {
+                                              change: _vm.valChange,
+                                              keyup: function($event) {
+                                                if (
+                                                  !("button" in $event) &&
+                                                  _vm._k(
+                                                    $event.keyCode,
+                                                    "enter",
+                                                    13,
+                                                    $event.key,
+                                                    "Enter"
+                                                  )
+                                                ) {
+                                                  return null
+                                                }
+                                                return _vm.submit($event)
+                                              },
+                                              blur: _vm.onBlur
+                                            },
+                                            scopedSlots: _vm._u([
+                                              {
+                                                key: "thumb-label",
+                                                fn: function(props) {
+                                                  return _vm.isNumeric
+                                                    ? [_vm._t("thumb-label")]
+                                                    : undefined
+                                                }
+                                              }
+                                            ]),
+                                            model: {
+                                              value: _vm.valueRange[0],
+                                              callback: function($$v) {
+                                                _vm.$set(_vm.valueRange, 0, $$v)
+                                              },
+                                              expression: "valueRange[0]"
+                                            }
+                                          })
+                                        : _c(_vm.currentInput, {
+                                            ref: "input",
+                                            tag: "component",
+                                            attrs: {
+                                              rules: _vm.rules,
+                                              disabled: _vm.disableGet,
+                                              readonly: !_vm.editable,
+                                              required: !!_vm.nullable,
+                                              "multi-line": _vm.columnSize > 50,
+                                              tabindex: _vm.sortSeq,
+                                              type: _vm.typeGet,
+                                              color: _vm.checkBoxColor,
+                                              "always-dirty": _vm.isSliderLike,
+                                              "persistent-hint":
+                                                _vm.isSliderLike,
+                                              "thumb-label": _vm.thumbLabelNeed,
+                                              ticks: _vm.ticksNeed
+                                                ? "always"
+                                                : "",
+                                              tickSize: _vm.tickSize,
+                                              "thumb-size": _vm.thumbSize,
+                                              "tick-labels": _vm.tickLabels,
+                                              "append-icon": _vm.appendIconGet,
+                                              clearable: _vm.clearableGet,
+                                              mask: _vm.mask,
+                                              min: _vm.min,
+                                              max: _vm.max,
+                                              step: _vm.step
+                                            },
+                                            on: {
+                                              change: _vm.valChange,
+                                              keyup: function($event) {
+                                                if (
+                                                  !("button" in $event) &&
+                                                  _vm._k(
+                                                    $event.keyCode,
+                                                    "enter",
+                                                    13,
+                                                    $event.key,
+                                                    "Enter"
+                                                  )
+                                                ) {
+                                                  return null
+                                                }
+                                                return _vm.submit($event)
+                                              },
+                                              blur: _vm.onBlur
+                                            },
+                                            scopedSlots: _vm._u([
+                                              {
+                                                key: "thumb-label",
+                                                fn: function(props) {
+                                                  return _vm.isNumeric
+                                                    ? [_vm._t("thumb-label")]
+                                                    : undefined
+                                                }
+                                              }
+                                            ]),
                                             model: {
                                               value: _vm.value,
                                               callback: function($$v) {
@@ -2174,92 +2205,210 @@ var render = function() {
                                           })
                                     ],
                                     1
-                                  )
-                                : _vm._e()
-                            ]
-                          : _c(_vm.currentInput, {
-                              ref: "input",
-                              tag: "component",
-                              class: _vm.componentClassGet,
-                              attrs: {
-                                label: _vm.name,
-                                hint: _vm.placeholder,
-                                rules: _vm.rules,
-                                disabled: _vm.disableGet,
-                                readonly: !_vm.editable,
-                                required: !!_vm.nullable,
-                                "multi-line": _vm.columnSize > 50,
-                                tabindex: _vm.sortSeq,
-                                type: _vm.typeGet,
-                                items: _vm.tableValues,
-                                "append-icon": _vm.appendIconGet,
-                                clearable: _vm.clearableGet,
-                                mask: _vm.mask,
-                                color: _vm.checkBoxColor,
-                                min: _vm.min,
-                                max: _vm.max,
-                                step: _vm.step
-                              },
-                              on: {
-                                change: _vm.setNewVal,
-                                keyup: function($event) {
-                                  if (
-                                    !("button" in $event) &&
-                                    _vm._k(
-                                      $event.keyCode,
-                                      "enter",
-                                      13,
-                                      $event.key,
-                                      "Enter"
-                                    )
-                                  ) {
-                                    return null
-                                  }
-                                  return _vm.submit($event)
-                                },
-                                blur: _vm.onBlur,
-                                "click:append": _vm.changeShow
-                              },
-                              model: {
-                                value: _vm.value,
-                                callback: function($$v) {
-                                  _vm.value = $$v
-                                },
-                                expression: "value"
-                              }
-                            })
-                      ],
-                      2
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.isNumeric
+                                    ? _c(
+                                        "v-flex",
+                                        {
+                                          staticStyle: { width: "60px" },
+                                          attrs: { shrink: "" }
+                                        },
+                                        [
+                                          _vm.type == "RANGE"
+                                            ? _c("v-text-field", {
+                                                staticClass:
+                                                  "mt-0 min-width-35px body-1",
+                                                attrs: {
+                                                  "hide-details": "",
+                                                  "single-line": "",
+                                                  type: "number",
+                                                  disabled: _vm.disableGet,
+                                                  min: _vm.min,
+                                                  max: _vm.max,
+                                                  step: _vm.step
+                                                },
+                                                on: { change: _vm.valChange },
+                                                model: {
+                                                  value: _vm.valueRange[0][1],
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.valueRange[0],
+                                                      1,
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression: "valueRange[0][1]"
+                                                }
+                                              })
+                                            : _c("v-text-field", {
+                                                staticClass:
+                                                  "mt-0 min-width-35px body-1",
+                                                attrs: {
+                                                  "hide-details": "",
+                                                  "single-line": "",
+                                                  type: "number",
+                                                  disabled: _vm.disableGet,
+                                                  min: _vm.min,
+                                                  max: _vm.max,
+                                                  step: _vm.step
+                                                },
+                                                on: { change: _vm.valChange },
+                                                model: {
+                                                  value: _vm.value,
+                                                  callback: function($$v) {
+                                                    _vm.value = $$v
+                                                  },
+                                                  expression: "value"
+                                                }
+                                              })
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e()
+                                ]
+                              : [
+                                  !_vm.multy
+                                    ? _c(_vm.currentInput, {
+                                        ref: "input",
+                                        tag: "component",
+                                        class: _vm.componentClassGet,
+                                        attrs: {
+                                          label: _vm.name,
+                                          hint: _vm.placeholder,
+                                          rules: _vm.rules,
+                                          disabled: _vm.disableGet,
+                                          readonly: !_vm.editable,
+                                          required: !!_vm.nullable,
+                                          "multi-line": _vm.columnSize > 50,
+                                          tabindex: _vm.sortSeq,
+                                          type: _vm.typeGet,
+                                          items: _vm.tableValues,
+                                          dense: "",
+                                          counter: _vm.getCounter,
+                                          "append-icon": _vm.appendIconGet,
+                                          clearable: _vm.clearableGet,
+                                          mask: _vm.mask,
+                                          min: _vm.min,
+                                          max: _vm.max,
+                                          step: _vm.step
+                                        },
+                                        on: {
+                                          change: _vm.valChange,
+                                          keyup: function($event) {
+                                            if (
+                                              !("button" in $event) &&
+                                              _vm._k(
+                                                $event.keyCode,
+                                                "enter",
+                                                13,
+                                                $event.key,
+                                                "Enter"
+                                              )
+                                            ) {
+                                              return null
+                                            }
+                                            return _vm.submit($event)
+                                          },
+                                          blur: _vm.onBlur,
+                                          "click:append": _vm.changeShow
+                                        },
+                                        model: {
+                                          value: _vm.value,
+                                          callback: function($$v) {
+                                            _vm.value = $$v
+                                          },
+                                          expression: "value"
+                                        }
+                                      })
+                                    : _c(_vm.currentInput, {
+                                        ref: "input",
+                                        tag: "component",
+                                        class: _vm.componentClassGet,
+                                        attrs: {
+                                          label: _vm.name,
+                                          hint: _vm.placeholder,
+                                          rules: _vm.rules,
+                                          disabled: _vm.disableGet,
+                                          readonly: !_vm.editable,
+                                          required: !!_vm.nullable,
+                                          "multi-line": _vm.columnSize > 50,
+                                          tabindex: _vm.sortSeq,
+                                          type: _vm.typeGet,
+                                          items: _vm.tableValues,
+                                          dense: "",
+                                          "append-icon": _vm.appendIconGet,
+                                          clearable: _vm.clearableGet,
+                                          mask: _vm.mask,
+                                          min: _vm.min,
+                                          max: _vm.max,
+                                          step: _vm.step,
+                                          multiple: "",
+                                          chips: "",
+                                          "deletable-chips": ""
+                                        },
+                                        on: {
+                                          change: _vm.valChange,
+                                          keyup: function($event) {
+                                            if (
+                                              !("button" in $event) &&
+                                              _vm._k(
+                                                $event.keyCode,
+                                                "enter",
+                                                13,
+                                                $event.key,
+                                                "Enter"
+                                              )
+                                            ) {
+                                              return null
+                                            }
+                                            return _vm.submit($event)
+                                          },
+                                          blur: _vm.onBlur,
+                                          "click:append": _vm.changeShow
+                                        },
+                                        model: {
+                                          value: _vm.valueArr,
+                                          callback: function($$v) {
+                                            _vm.valueArr = $$v
+                                          },
+                                          expression: "valueArr"
+                                        }
+                                      })
+                                ]
+                          ],
+                          2
+                        )
+                      ]
                     )
-                  ]
+                  ],
+                  1
                 )
-              ],
-              1
-            )
-          ]),
+              ]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.tip))])
+            ],
+            2
+          ),
           _vm._v(" "),
-          _c("span", [_vm._v(_vm._s(_vm.tip))])
+          !!_vm.needCheckBox
+            ? _c("v-checkbox", {
+                staticClass: "shrink ml-2 mb-2",
+                attrs: { "hide-details": "", color: _vm.checkBoxColor },
+                on: { change: _vm.changeChecked },
+                model: {
+                  value: _vm.checked,
+                  callback: function($$v) {
+                    _vm.checked = $$v
+                  },
+                  expression: "checked"
+                }
+              })
+            : _vm._e()
         ],
-        2
-      ),
-      _vm._v(" "),
-      !!_vm.needCheckBox
-        ? _c("v-checkbox", {
-            staticClass: "shrink ml-2 mb-2",
-            attrs: { "hide-details": "", color: _vm.checkBoxColor },
-            on: { change: _vm.changeChecked },
-            model: {
-              value: _vm.checked,
-              callback: function($$v) {
-                _vm.checked = $$v
-              },
-              expression: "checked"
-            }
-          })
-        : _vm._e()
-    ],
-    1
-  )
+        1
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -2294,6 +2443,8 @@ var render = function() {
             _vm._l(arr, function(row) {
               return _c("c-input", {
                 key: row.id,
+                ref: row.code,
+                refInFor: true,
                 attrs: {
                   data: row,
                   needCheckBox: _vm.needCheckBox,

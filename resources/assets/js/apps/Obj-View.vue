@@ -1,5 +1,5 @@
 <template>
-	<c-app curentSystem="Просмотр объектов" :panelRightShow="true" :panelRightDrawer="true" panelRightClass="display--flex flex-direction--column">
+	<c-app curentSystem="Просмотр объектов" :panelRightShow="true" :panelRightDrawer="true" panelRightClass="display--flex flex-direction--column" panelRightWidth='350'>
 		<template slot="panelRight">
 			<v-toolbar-title class="text-xs-center check-size flex--inherit">Фильтр</v-toolbar-title> 
 			<v-btn block  small class="check-size accent flex--inherit" @click="filterSet()"  > <v-icon>search</v-icon> Поиск</v-btn>
@@ -39,13 +39,16 @@
 			inputs() {
 				let vm=this
 				return [
-					{id:1, form:'object-tree-add',	code:'obj_level', 	name:'Вложенность', tip:"Подсказка!!!!!!", 	placeholder:'Уровень вложенности объекта', 	type:'LIST',	value:"cur",			nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
-					{id:2, form:'object-tree-add',	code:'tree_group',	name:'Тип', 		tip:"Подсказка!!!!!!", 	placeholder:'Тип объекта', 					type:'LIST', 	value:"node",			nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:2, table_values:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
-					{id:3, form:'object-tree-add',	code:'tree_desc', 	name:'Название',	tip:"Подсказка!!!!!!", 	placeholder:'Описание объекта', 			type:'NUMBER',	value:"10",				nullable:true, 	column_type:'Number', column_size:30, css_class:'', sort_seq:3,  },
-					{id:4, form:'object-tree-add',	code:'tree_range', 	name:'Значение',	tip:"Подсказка!!!!!!", 	placeholder:'Описание диапазона',			type:'RANGE',	value:"20",value2:"30",	nullable:false, column_type:'Number', column_size:30, css_class:'', sort_seq:3, min:10, max:100 },
-					{id:5, form:'object-tree-add',	code:'tree_val', 	name:'Значение',	tip:"Подсказка!!!!!!", 	placeholder:'Описание значения',			type:'SLIDER',	value:"20",value2:"30",	nullable:false, column_type:'Number', column_size:30, css_class:'', sort_seq:3, min:10, max:100 },
-					{id:6, form:'object-tree-add',	code:'obj_level1', 	name:'Вложенность1', tip:"Подсказка!!!!!!", placeholder:'Уровень вложенности объекта', 	type:'RANGE',	value:"1",value2:"2",	nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
-					{id:7, form:'object-tree-add',	code:'tree_group1',	name:'Тип1', 		tip:"Подсказка!!!!!!", 	placeholder:'Тип объекта', 					type:'SLIDER', 	value:"0",				nullable:false, column_type:'String', column_size:30, css_class:'', sort_seq:2, table_values:[{value:'node',text:'Узел'},{value:'ARM',text:'Область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле'},]  },
+					{id:1, form:'object-tree-add',	code:'obj_level', 	name:'Вложенность', tip:"Подсказка!!!!!!", 	placeholder:'Уровень вложенности объекта', 	type:'LIST',	value:"cur",			nullable:false, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
+					{id:2, form:'object-tree-add',	code:'tree_group',	name:'Тип', 		tip:"Подсказка!!!!!!", 	placeholder:'Тип объекта', 					type:'LIST', 	value:"node",			nullable:false, column_size:30, sort_seq:2, table_values:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
+					{id:3, form:'object-tree-add',	code:'tree_desc', 	name:'Название',	tip:"Подсказка!!!!!!", 	placeholder:'Описание объекта', 			type:'NUMBER',	value:"10",				nullable:true, 	column_size:30, sort_seq:3,  },
+					{id:4, form:'object-tree-add',	code:'tree_range', 	name:'Значение',	tip:"Подсказка!!!!!!", 	placeholder:'Описание диапазона',			type:'RANGE',	value_arr:[[22,30]],	nullable:false, column_size:30, sort_seq:3, min:10, max:100 },
+					{id:5, form:'object-tree-add',	code:'tree_val', 	name:'Значение',	tip:"Подсказка!!!!!!", 	placeholder:'Описание значения',			type:'SLIDER',	value:"20",				nullable:false, column_size:30, sort_seq:3, min:10, max:100 },
+					{id:6, form:'object-tree-add',	code:'obj_level1', 	name:'Вложенность1', tip:"Подсказка!!!!!!", placeholder:'Уровень вложенности объекта', 	type:'RANGE',	value_arr:[[1,2]],		nullable:false, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
+					{id:7, form:'object-tree-add',	code:'tree_desc2', 	name:'Название3',	tip:"Подсказка!!!!!!", 	placeholder:'Описание объекта', 			type:'HIDDEN',	value:"10",				nullable:true, 	column_size:30, sort_seq:3,  },
+					{id:8, form:'object-tree-add',	code:'tree_group1',	name:'Тип1', 		tip:"Подсказка!!!!!!", 	placeholder:'Тип объекта', 					type:'SLIDER', 	value:"0",				nullable:false, column_size:30, sort_seq:2, table_values:[{value:'node',text:'Узел'},{value:'ARM',text:'Область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле'},]  },
+					{id:9, form:'object-tree-add',	code:'obj_level2', 	name:'Вложенность', tip:"Подсказка!!!!!!", 	placeholder:'Уровень вложенности объекта', 	type:'LIST',	value_arr:["cur"],		nullable:false, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},], multy:true,  },
+					
 				]
 			},
 		},

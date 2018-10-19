@@ -38,13 +38,13 @@
 			inputs() {
 				let vm=this
 				let data= [
-					{id:1, form:'object-tree-add',	code:'obj_level', 	name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 		type:'LIST', 		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
-					{id:2, form:'object-tree-add',	code:'tree_group', 	name:'Тип', 					placeholder:'Тип объекта', 						type:'LIST', 		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:2, table_values:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
-					{id:3, form:'object-tree-add',	code:'tree_desc', 	name:'Название',				placeholder:'Описание объекта', 				type:'INPUT',		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
+					{id:1, form:'object-tree-add',	code:'obj_level', 	name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 		type:'LIST', 		nullable:0, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
+					{id:2, form:'object-tree-add',	code:'tree_group', 	name:'Тип', 					placeholder:'Тип объекта', 						type:'LIST', 		nullable:0, column_size:30, sort_seq:2, table_values:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
+					{id:3, form:'object-tree-add',	code:'tree_desc', 	name:'Название',				placeholder:'Описание объекта', 				type:'INPUT',		nullable:0, column_size:30, sort_seq:3, max_len:25 },
 					
-					{id:4, form:'auth-login', 		code:'login', 		name:'Пользователь', 			placeholder:'Логин пользователя', 				type:'INPUT', 		nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:1,  },
-					{id:5, form:'auth-login', 		code:'password',	name:'Пароль', 					placeholder:'Пароль пользователя', 				type:'PASSWORD', 	nullable:0, column_type:'String', column_size:30, css_class:'', sort_seq:2,  },
-					{id:6, form:'auth-login', 		code:'remember',	name:'Запомнить мои данные', 	placeholder:'Запомнить данные пользователя', 	type:'BOOL',		nullable:1, column_type:'String', column_size:30, css_class:'', sort_seq:3,  },
+					{id:4, form:'auth-login', 		code:'login', 		name:'Пользователь', 			placeholder:'Логин пользователя', 				type:'INPUT', 		nullable:0, column_size:30, sort_seq:1,  },
+					{id:5, form:'auth-login', 		code:'password',	name:'Пароль', 					placeholder:'Пароль пользователя', 				type:'PASSWORD', 	nullable:0, column_size:30, sort_seq:2,  },
+					{id:6, form:'auth-login', 		code:'remember',	name:'Запомнить мои данные', 	placeholder:'Запомнить данные пользователя', 	type:'BOOL',		nullable:1, column_size:30, sort_seq:3,  },
 				]
 				return data.filter(row =>  row.form == vm.paramsForm ).sort( (a, b) =>{return sort(a, b, 'sort_seq', 'sort_seq')})
 			},
@@ -78,6 +78,7 @@
 					 vm.dialogParamsGet.saveFunc(todo)
 				else{
 					if(vm.paramsForm=='auth-login'){
+						console.log(todo)
 						let tmp={}
 						for (name in todo)
 							tmp[name]= todo[name].value
