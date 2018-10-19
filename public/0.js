@@ -1355,7 +1355,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		paramsForm: { type: String, defuault: '' },
 		maxCols: { type: Number, defuault: 4 },
 		needCheckBox: { type: Boolean, default: false },
-		needSign: { type: Boolean, default: false }
+		needSign: { type: Boolean, default: false },
+		listItemMin: { type: Boolean, default: false }
 	},
 	computed: {
 		classes: function classes() {
@@ -1614,6 +1615,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			isNeed: false,
 			isNumeric: true,
 			isSliderLike: false,
+			listItemLenght: 18,
 			lastTimeSend: 0,
 			mask: null,
 			maskFin: '',
@@ -1656,7 +1658,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		dialogId: { type: Number, default: 0 },
 		paramsForm: { type: String, defuault: '' },
 		needCheckBox: { type: Boolean, default: false },
-		needSign: { type: Boolean, default: false }
+		needSign: { type: Boolean, default: false },
+		listItemMin: { type: Boolean, default: false }
 	},
 	computed: {
 		typeGet: function typeGet() {
@@ -1688,6 +1691,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		getCounter: function getCounter() {
 			return this.maxLenTypes.indexOf(this.type) != -1 && this.maxLen > 0 ? this.maxLen : false;
+		},
+		getListItems: function getListItems() {
+			var vm = this;
+			return vm.tableValues.map(function (element) {
+				return { value: element.value, text: ['LIST'].indexOf(vm.type) != -1 && vm.listItemMin ? element.text : element.textFull };
+			});
 		}
 	},
 	watch: {},
@@ -1713,7 +1722,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		changeShow: function changeShow() {
 			var vm = this;
-			if (vm.type == 'PASSWORD') vm.show = !vm.show;else if (vm.type == 'LIST') vm.$refs.input.activateMenu();
+			if (vm.type == 'PASSWORD') vm.show = !vm.show;else if (vm.type == 'LIST') vm.$refs.input.onClick();
 		},
 		hasErrorSet: function hasErrorSet() {
 			this.hasError = true;
@@ -1760,7 +1769,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 										});
 										valueArrView = valueArr.slice(0);
 									} else vm.valueRange.forEach(function (row) {
-										valueArrView.push([nvlo(vm.tableValues[row[0]]).text, nvlo(vm.tableValues[row[1]]).text]);
+										valueArrView.push([nvlo(vm.tableValues[row[0]]).textFull, nvlo(vm.tableValues[row[1]]).textFull]);
 										valueArr.push([nvlo(vm.tableValues[row[0]]).value, nvlo(vm.tableValues[row[1]]).value]);
 									});
 									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
@@ -1768,17 +1777,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 									valueArr = vm.valueArr.slice(0);
 									if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
 										valueArr.forEach(function (rowVal) {
-											if (row.value == rowVal) valueArrView.push(row.text);
+											if (row.value == rowVal) valueArrView.push(row.textFull);
 										});
 									});else valueArrView = valueArr.slice(0);
 									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
 								} else if (vm.hasInput) {
 									// работа просто с value
 									if (vm.isSliderLike && !vm.isNumeric) {
-										valueView = nvlo(vm.tableValues[value]).text;
+										valueView = nvlo(vm.tableValues[value]).textFull;
 										value = nvlo(vm.tableValues[value]).value;
 									} else if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
-										if (row.value == value) valueView = row.text;
+										if (row.value == value) valueView = row.textFull;
 									});
 									if (!checkedFx) vm.checked = value === '' || value == null ? false : true;
 								}
@@ -1807,15 +1816,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 							case 0:
 								vm = this;
 
-								console.log(vm);
 								if (vm.hasInput && vm.needCheckBox) {
 									vm.hasError = !vm.$refs.input.validate();
 									vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
 								}
-								_context2.next = 5;
+								_context2.next = 4;
 								return vm.paramSet({ num: vm.paramsForm, code: vm.code, data: { value: value, value_view: value_view, value_arr: value_arr, value_arr_view: value_arr_view, checked: vm.checked, sign: vm.signList[vm.sign].code } });
 
-							case 5:
+							case 4:
 							case 'end':
 								return _context2.stop();
 						}
@@ -1864,7 +1872,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : vm.type == 'SLIDER' ? 'v-slider' : vm.type == 'RANGE' ? 'v-range-slider' : 'v-text-field';
 
 		if (vm.data.table_values != undefined && vm.data.table_values.length > 0) vm.data.table_values.forEach(function (element) {
-			vm.tableValues.push(element);
+			vm.tableValues.push({ value: element.value, textFull: element.text, text: ['LIST'].indexOf(vm.type) == -1 ? element.text : element.text.length > vm.listItemLenght ? element.text.substring(0, vm.listItemLenght) + '...' : element.text });
 			if (isNaN(element.value)) vm.isNumeric = false;
 		});
 
@@ -1887,7 +1895,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.valueArr.push(element);
 		});
 
-		vm.isSliderLike = this.type == 'SLIDER' || this.type == 'RANGE';
+		vm.isSliderLike = vm.type == 'SLIDER' || vm.type == 'RANGE';
 		vm.thumbLabelNeed = vm.isSliderLike && vm.thumbLabelNeed ? 'always' : '';
 		if (vm.isSliderLike) {
 			if (vm.tableValues.length > 0) {
@@ -1907,9 +1915,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				vm.valueRange.push([vm.valueArr[i][0] || vm.min, vm.valueArr[i][1] || vm.min]);
 			});else vm.valueRange.push([vm.min, vm.min]);
 		}
-		if (['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(this.type) == -1) vm.isNumeric = false;
+		if (['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(vm.type) == -1) vm.isNumeric = false;
 
-		if (['HIDDEN', 'INFO', 'NBSP', 'LINE'].indexOf(this.type) == -1) vm.hasInput = true;
+		if (['HIDDEN', 'INFO', 'NBSP', 'LINE'].indexOf(vm.type) == -1) vm.hasInput = true;
 
 		if (vm.hasInput && !vm.nullable) {
 			vm.isNeed = true;
@@ -1923,12 +1931,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			return !!vm.checked || 'Поле должно быть использовано!';
 		});
 
-		if (vm.hasInput && vm.isNumeric && !isNaN(vm.min) && this.type != 'RANGE') //Границы должны быть цифрой!
+		if (vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type != 'RANGE') //Границы должны быть цифрой!
 			vm.rules.push(function (v) {
 				return v >= vm.min || !vm.checked || 'Значение должно быть не меньше ' + vm.min + '!';
 			});
 
-		if (vm.hasInput && vm.isNumeric && !isNaN(vm.max) && this.type != 'RANGE') vm.rules.push(function (v) {
+		if (vm.hasInput && vm.isNumeric && !isNaN(vm.max) && vm.type != 'RANGE') vm.rules.push(function (v) {
 			return v <= vm.max || !vm.checked || 'Значение не должно превышать ' + vm.max + '!';
 		});
 
@@ -2283,7 +2291,7 @@ var render = function() {
                                           "multi-line": _vm.columnSize > 50,
                                           tabindex: _vm.sortSeq,
                                           type: _vm.typeGet,
-                                          items: _vm.tableValues,
+                                          items: _vm.getListItems,
                                           dense: "",
                                           counter: _vm.getCounter,
                                           "append-icon": _vm.appendIconGet,
@@ -2335,7 +2343,7 @@ var render = function() {
                                           "multi-line": _vm.columnSize > 50,
                                           tabindex: _vm.sortSeq,
                                           type: _vm.typeGet,
-                                          items: _vm.tableValues,
+                                          items: _vm.getListItems,
                                           dense: "",
                                           "append-icon": _vm.appendIconGet,
                                           clearable: _vm.clearableGet,
@@ -2450,7 +2458,8 @@ var render = function() {
                   needCheckBox: _vm.needCheckBox,
                   needSign: _vm.needSign,
                   dialogId: _vm.dialogId,
-                  paramsForm: _vm.paramsForm
+                  paramsForm: _vm.paramsForm,
+                  listItemMin: _vm.listItemMin
                 }
               })
             })

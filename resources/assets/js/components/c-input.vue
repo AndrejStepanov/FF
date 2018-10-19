@@ -49,12 +49,12 @@
 							</template>
 							<template v-else>
 								<component v-if="!multy" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
-									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="tableValues" dense :counter="getCounter"
+									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="getListItems" dense :counter="getCounter"
 									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
 									@change="valChange" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" 
 									:class="componentClassGet" />
 								<component v-else :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
-									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="tableValues" dense
+									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="getListItems" dense
 									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
 									@change="valChange" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" multiple chips deletable-chips
 									:class="componentClassGet" />
@@ -106,6 +106,7 @@ time-with-seconds	##:##:##
 			isNeed:false,
 			isNumeric:true,
 			isSliderLike:false,
+			listItemLenght: 18,
 			lastTimeSend: 0,
 			mask: null,
 			maskFin: '',
@@ -153,6 +154,7 @@ time-with-seconds	##:##:##
 			paramsForm: {type: String, defuault:''},
 			needCheckBox:{type:  Boolean, default:false},
 			needSign:{type:  Boolean, default:false},
+			listItemMin:{type:  Boolean, default:false},
 		},
 		computed: {
 			typeGet(){
@@ -198,7 +200,13 @@ time-with-seconds	##:##:##
 			},	
 			getCounter(){
 				return this.maxLenTypes.indexOf(this.type)!=-1 && this.maxLen>0?this.maxLen:false
-			}
+			},
+			getListItems(){
+				let vm=this
+				return 	vm.tableValues.map(element => {
+					return {value:element.value, text: (['LIST'].indexOf(vm.type)!=-1 && vm.listItemMin ? element.text : element.textFull)}
+				});
+			},
 		},
 		watch: {
 		},
@@ -227,7 +235,7 @@ time-with-seconds	##:##:##
 				if(vm.type=='PASSWORD')
 					vm.show = !vm.show
 				else if (vm.type=='LIST')
-					vm.$refs.input.activateMenu()
+					vm.$refs.input.onClick()
 			},
 			hasErrorSet(){
 				this.hasError = true;
@@ -272,7 +280,7 @@ time-with-seconds	##:##:##
 					}
 					else
 						vm.valueRange.forEach(function(row) {
-							valueArrView.push([nvlo(vm.tableValues[row[0]]).text,  nvlo(vm.tableValues[row[1]]).text ])
+							valueArrView.push([nvlo(vm.tableValues[row[0]]).textFull,  nvlo(vm.tableValues[row[1]]).textFull ])
 							valueArr.push([nvlo(vm.tableValues[row[0]]).value,  nvlo(vm.tableValues[row[1]]).value ])
 						})
 					if(!checkedFx)
@@ -284,7 +292,7 @@ time-with-seconds	##:##:##
 						vm.tableValues.forEach(function(row) {
 							valueArr.forEach(function(rowVal) {
 								if(row.value==rowVal)
-									valueArrView.push(row.text)
+									valueArrView.push(row.textFull)
 							})
 						})
 					else 
@@ -294,13 +302,13 @@ time-with-seconds	##:##:##
 				}
 				else if(vm.hasInput) {// работа просто с value
 					if(vm.isSliderLike &&  !vm.isNumeric ){
-						valueView = nvlo(vm.tableValues[value]).text				
+						valueView = nvlo(vm.tableValues[value]).textFull				
 						value = nvlo(vm.tableValues[value]).value
 					}
 					else if (vm.type=='LIST')
 						vm.tableValues.forEach(function(row) {
 							if(row.value==value)
-								valueView = row.text
+								valueView = row.textFull
 						})
 					if(!checkedFx)
 						vm.checked=	 (value==='' || value==null) ?false:true
@@ -309,7 +317,6 @@ time-with-seconds	##:##:##
 			},
 			async setVal(value, value_view, value_arr, value_arr_view){
 				let vm=this
-				console.log(vm)
 				if(vm.hasInput && vm.needCheckBox){
 					vm.hasError= !vm.$refs.input.validate()
 					vm.$root.$emit('dialog'+vm.paramsForm+'NeedCheck')
@@ -356,7 +363,9 @@ time-with-seconds	##:##:##
 
 			if(vm.data.table_values!=undefined && vm.data.table_values.length>0)
 				vm.data.table_values.forEach(element => {
-					vm.tableValues.push(element);
+					vm.tableValues.push(
+						{value:element.value, textFull:element.text, text:(['LIST'].indexOf(vm.type)==-1?element.text : element.text.length>vm.listItemLenght? element.text.substring(0,vm.listItemLenght)+'...':element.text ),}
+					);
 					if(isNaN(element.value))
 						vm.isNumeric=false
 				});
@@ -383,7 +392,7 @@ time-with-seconds	##:##:##
 					vm.valueArr.push(element);
 				});
 
-			vm.isSliderLike= this.type=='SLIDER' || this.type=='RANGE'
+			vm.isSliderLike= vm.type=='SLIDER' || vm.type=='RANGE'
 			vm.thumbLabelNeed =  vm.isSliderLike && vm.thumbLabelNeed?'always':''
 			if(vm.isSliderLike ){
 				if( vm.tableValues.length>0){
@@ -406,10 +415,10 @@ time-with-seconds	##:##:##
 				else
 					vm.valueRange.push([vm.min , vm.min])
 			}
-			if(['SLIDER','RANGE','LIST','NUMBER'].indexOf(this.type)==-1)
+			if(['SLIDER','RANGE','LIST','NUMBER'].indexOf(vm.type)==-1)
 				vm.isNumeric=false
 			
-			if(['HIDDEN','INFO','NBSP','LINE'].indexOf(this.type)==-1)
+			if(['HIDDEN','INFO','NBSP','LINE'].indexOf(vm.type)==-1)
 				vm.hasInput=true
 
 			if(vm.hasInput && !vm.nullable){
@@ -421,10 +430,10 @@ time-with-seconds	##:##:##
 			if(vm.hasInput && vm.needCheckBox && !vm.nullable)
 				vm.rules.push(v => !!vm.checked || 'Поле должно быть использовано!')
 
-			if(vm.hasInput && vm.isNumeric && !isNaN(vm.min) && this.type!='RANGE' )//Границы должны быть цифрой!
+			if(vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type!='RANGE' )//Границы должны быть цифрой!
 				vm.rules.push(v => v>=vm.min|| !vm.checked || 'Значение должно быть не меньше '+vm.min+'!')
 
-			if(vm.hasInput && vm.isNumeric && !isNaN(vm.max) && this.type!='RANGE' )
+			if(vm.hasInput && vm.isNumeric && !isNaN(vm.max) && vm.type!='RANGE' )
 				vm.rules.push(v => v<=vm.max || !vm.checked || 'Значение не должно превышать '+vm.max+'!')
 
 			if(vm.hasInput && vm.maxLenTypes.indexOf(vm.type)!=-1 && vm.maxLen>0)

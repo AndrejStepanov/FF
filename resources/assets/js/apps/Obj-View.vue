@@ -6,7 +6,7 @@
 			<hr>
 			<v-responsive class="overflow-y-auto flex--99" width = '100%'>
 				<v-form v-model="filterValid" ref="filter">
-					<c-input-cols  :inputs="inputs" :paramsForm="filterName" :maxCols="maxCols" :needCheckBox="needCheckBox" :needSign="needSign" />
+					<c-input-cols  :inputs="inputs" :paramsForm="filterName" :maxCols="maxCols" :needCheckBox="needCheckBox" :needSign="needSign" :listItemMin="listItemMin" />
 				</v-form>
 			</v-responsive>
 		</template>
@@ -29,6 +29,7 @@
 			filterValid: false,
 			needCheckBox: true,
 			needSign: true,
+			listItemMin: true,
 			filterName:'object-tree-add',
 			icons: ['=','>','>=','<','<=','!='],
 		}),
@@ -47,8 +48,7 @@
 					{id:6, form:'object-tree-add',	code:'obj_level1', 	name:'Вложенность1', tip:"Подсказка!!!!!!", placeholder:'Уровень вложенности объекта', 	type:'RANGE',	value_arr:[[1,2]],		nullable:false, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
 					{id:7, form:'object-tree-add',	code:'tree_desc2', 	name:'Название3',	tip:"Подсказка!!!!!!", 	placeholder:'Описание объекта', 			type:'HIDDEN',	value:"10",				nullable:true, 	column_size:30, sort_seq:3,  },
 					{id:8, form:'object-tree-add',	code:'tree_group1',	name:'Тип1', 		tip:"Подсказка!!!!!!", 	placeholder:'Тип объекта', 					type:'SLIDER', 	value:"0",				nullable:false, column_size:30, sort_seq:2, table_values:[{value:'node',text:'Узел'},{value:'ARM',text:'Область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле'},]  },
-					{id:9, form:'object-tree-add',	code:'obj_level2', 	name:'Вложенность', tip:"Подсказка!!!!!!", 	placeholder:'Уровень вложенности объекта', 	type:'LIST',	value_arr:["cur"],		nullable:false, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},], multy:true,  },
-					
+					{id:9, form:'object-tree-add',	code:'obj_level2', 	name:'Вложенность', tip:"Подсказка!!!!!!", 	placeholder:'Уровень вложенности объекта', 	type:'LIST',	value_arr:["cur"],		nullable:false, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем этом прям прям этом уровне'},{value:'inside',text:'Вложенный'},], multy:true,  },	
 				]
 			},
 		},

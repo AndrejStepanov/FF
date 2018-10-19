@@ -2,7 +2,7 @@
 	<v-container grid-list-md>
 		<v-layout row wrap>
 			<v-flex v-for="(arr, index) in colsData" :key="index"  :class="classes" >
-				<c-input  v-for="row in arr" :ref="row.code" :key="row.id"  :data="row" :needCheckBox="needCheckBox" :needSign="needSign" :dialogId="dialogId" :paramsForm="paramsForm"/>
+				<c-input  v-for="row in arr" :ref="row.code" :key="row.id"  :data="row" :needCheckBox="needCheckBox" :needSign="needSign" :dialogId="dialogId" :paramsForm="paramsForm" :listItemMin="listItemMin"/>
 			</v-flex>
 		</v-layout>
 	</v-container>	
@@ -23,6 +23,7 @@
 			maxCols: {type: Number, defuault:4},
 			needCheckBox:{type:  Boolean, default:false},
 			needSign:{type:  Boolean, default:false},
+			listItemMin:{type:  Boolean, default:false},
 		},
 		computed: {
 			classes () {
@@ -53,14 +54,14 @@
 						curRow+=rowInColB
 					else
 						curRow+=rowInColA
-					checkRow.push(curRow);
+					checkRow.push(curRow)
 				}
 				vm.inputs.forEach((row,i )=>{
 					if(checkRow.find(row =>row===i ) )
-						col++;
-					colsData[col].push(row);
+						col++
+					colsData[col].push(row)
 				});
-				vm.$root.$emit('dialog'+vm.dialogId+'InputsCols', {rowInColA,colsCnt:vm.colsCnt});
+				vm.$root.$emit('dialog'+vm.dialogId+'InputsCols', {rowInColA,colsCnt:vm.colsCnt})
 				return colsData
 			},
 		},
