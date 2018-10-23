@@ -16019,9 +16019,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/components/VBreadcrumbs/VBreadcrumbs.js":
+/***/ "./src/components/VBreadcrumbs/VBreadcrumbs.ts":
 /*!*****************************************************!*\
-  !*** ./src/components/VBreadcrumbs/VBreadcrumbs.js ***!
+  !*** ./src/components/VBreadcrumbs/VBreadcrumbs.ts ***!
   \*****************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -16030,7 +16030,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stylus_components_breadcrumbs_styl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../stylus/components/_breadcrumbs.styl */ "./src/stylus/components/_breadcrumbs.styl");
 /* harmony import */ var _stylus_components_breadcrumbs_styl__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_stylus_components_breadcrumbs_styl__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mixins_themeable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/themeable */ "./src/mixins/themeable.ts");
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! . */ "./src/components/VBreadcrumbs/index.ts");
+/* harmony import */ var _mixins_themeable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/themeable */ "./src/mixins/themeable.ts");
+/* harmony import */ var _util_console__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../util/console */ "./src/util/console.ts");
+/* harmony import */ var _util_mixins__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../util/mixins */ "./src/util/mixins.ts");
 var __assign = undefined && undefined.__assign || function () {
     __assign = Object.assign || function (t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -16043,16 +16046,29 @@ var __assign = undefined && undefined.__assign || function () {
     };
     return __assign.apply(this, arguments);
 };
+// Styles
+
+// Components
+
+// Mixins
+
+// Utils
 
 
+/* harmony default export */ __webpack_exports__["default"] = (Object(_util_mixins__WEBPACK_IMPORTED_MODULE_4__["default"])(_mixins_themeable__WEBPACK_IMPORTED_MODULE_2__["default"]
 /* @vue/component */
-/* harmony default export */ __webpack_exports__["default"] = ({
+).extend({
     name: 'v-breadcrumbs',
-    mixins: [_mixins_themeable__WEBPACK_IMPORTED_MODULE_1__["default"]],
     props: {
         divider: {
             type: String,
             default: '/'
+        },
+        items: {
+            type: Array,
+            default: function _default() {
+                return [];
+            }
         },
         large: Boolean,
         justifyCenter: Boolean,
@@ -16060,30 +16076,19 @@ var __assign = undefined && undefined.__assign || function () {
     },
     computed: {
         classes: function classes() {
-            return __assign({ 'v-breadcrumbs--large': this.large }, this.themeClasses);
-        },
-        computedDivider: function computedDivider() {
-            return this.$slots.divider ? this.$slots.divider : this.divider;
-        },
-        styles: function styles() {
-            var justify = this.justifyCenter ? 'center' : this.justifyEnd ? 'flex-end' : 'flex-start';
-            return {
-                'justify-content': justify
-            };
+            return __assign({ 'v-breadcrumbs--large': this.large, 'justify-center': this.justifyCenter, 'justify-end': this.justifyEnd }, this.themeClasses);
         }
     },
+    mounted: function mounted() {
+        if (this.justifyCenter) Object(_util_console__WEBPACK_IMPORTED_MODULE_3__["deprecate"])('justify-center', 'class="justify-center"', this);
+        if (this.justifyEnd) Object(_util_console__WEBPACK_IMPORTED_MODULE_3__["deprecate"])('justify-end', 'class="justify-end"', this);
+        if (this.$slots.default) Object(_util_console__WEBPACK_IMPORTED_MODULE_3__["deprecate"])('default slot', ':items and scoped slot "item"', this);
+    },
     methods: {
-        /**
-         * Add dividers between
-         * v-breadcrumbs-item
-         *
-         * @return {array}
-         */
-        genChildren: function genChildren() {
-            if (!this.$slots.default) return null;
-            var h = this.$createElement;
+        /* @deprecated */
+        genChildren /* istanbul ignore next */: function genChildren() {
+            if (!this.$slots.default) return undefined;
             var children = [];
-            var dividerData = { staticClass: 'v-breadcrumbs__divider' };
             var createDividers = false;
             for (var i = 0; i < this.$slots.default.length; i++) {
                 var elm = this.$slots.default[i];
@@ -16091,23 +16096,36 @@ var __assign = undefined && undefined.__assign || function () {
                     children.push(elm);
                 } else {
                     if (createDividers) {
-                        children.push(h('li', dividerData, this.computedDivider));
+                        children.push(this.genDivider());
                     }
                     children.push(elm);
                     createDividers = true;
                 }
             }
             return children;
+        },
+        genDivider: function genDivider() {
+            return this.$createElement(___WEBPACK_IMPORTED_MODULE_1__["VBreadcrumbsDivider"], this.$slots.divider ? this.$slots.divider : this.divider);
+        },
+        genItems: function genItems() {
+            var items = [];
+            var hasSlot = !!this.$scopedSlots.item;
+            for (var i = 0; i < this.items.length; i++) {
+                var item = this.items[i];
+                if (hasSlot) items.push(this.$scopedSlots.item({ item: item }));else items.push(this.$createElement(___WEBPACK_IMPORTED_MODULE_1__["VBreadcrumbsItem"], { key: item.text, props: item }, [item.text]));
+                if (i < this.items.length - 1) items.push(this.genDivider());
+            }
+            return items;
         }
     },
     render: function render(h) {
+        var children = this.$slots.default ? this.genChildren() : this.genItems();
         return h('ul', {
             staticClass: 'v-breadcrumbs',
-            'class': this.classes,
-            style: this.styles
-        }, this.genChildren());
+            'class': this.classes
+        }, children);
     }
-});
+}));
 
 /***/ }),
 
@@ -16163,7 +16181,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VBreadcrumbsDivider", function() { return VBreadcrumbsDivider; });
-/* harmony import */ var _VBreadcrumbs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VBreadcrumbs */ "./src/components/VBreadcrumbs/VBreadcrumbs.js");
+/* harmony import */ var _VBreadcrumbs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VBreadcrumbs */ "./src/components/VBreadcrumbs/VBreadcrumbs.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VBreadcrumbs", function() { return _VBreadcrumbs__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
 /* harmony import */ var _VBreadcrumbsItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VBreadcrumbsItem */ "./src/components/VBreadcrumbs/VBreadcrumbsItem.ts");
@@ -16740,7 +16758,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         startTimeout: function startTimeout() {
             if (!this.cycle) return;
-            this.slideTimeout = window.setTimeout(this.next, this.interval > 0 ? this.interval : 6000);
+            this.slideTimeout = window.setTimeout(this.next, +this.interval > 0 ? +this.interval : 6000);
         },
         updateReverse: function updateReverse(val, oldVal) {
             if (this.changedByControls) {
@@ -20976,8 +20994,8 @@ __webpack_require__.r(__webpack_exports__);
             this.isLoading = false;
             this.$emit('load', this.src);
         },
-        onError: function onError(err) {
-            Object(_util_console__WEBPACK_IMPORTED_MODULE_2__["consoleError"])("Image load failed\n\n" + ("src: " + this.normalisedSrc.src) + (err.message ? "\nOriginal error: " + err.message : ''), this);
+        onError: function onError() {
+            Object(_util_console__WEBPACK_IMPORTED_MODULE_2__["consoleError"])("Image load failed\n\n" + ("src: " + this.normalisedSrc.src), this);
             this.$emit('error', this.src);
         },
         getSrc: function getSrc() {
@@ -21487,7 +21505,10 @@ var BaseItemGroup = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_3__["default"])
         }
     },
     watch: {
-        internalValue: 'updateItemsState'
+        internalValue: function internalValue() {
+            // https://github.com/vuetifyjs/vuetify/issues/5352
+            this.$nextTick(this.updateItemsState);
+        }
     },
     created: function created() {
         if (this.multiple && !Array.isArray(this.internalValue)) {
@@ -25399,7 +25420,7 @@ var defaultMenuProps = {
             return [this.$createElement('div', {
                 staticClass: 'v-select__slot',
                 directives: this.directives
-            }, [this.genLabel(), this.prefix ? this.genAffix('prefix') : null, selections, this.suffix ? this.genAffix('suffix') : null, this.genClearIcon(), this.genIconSlot(), this.genProgress()]), this.genMenu()];
+            }, [this.genLabel(), this.prefix ? this.genAffix('prefix') : null, selections, this.suffix ? this.genAffix('suffix') : null, this.genClearIcon(), this.genIconSlot()]), this.genMenu(), this.genProgress()];
         },
         genInput: function genInput() {
             var input = _VTextField_VTextField__WEBPACK_IMPORTED_MODULE_5__["default"].methods.genInput.call(this);
@@ -31138,7 +31159,7 @@ var Vuetify = {
             return false;
         })(opts.components);
     },
-    version: '1.3.0'
+    version: '1.3.1'
 };
 function checkVueVersion(Vue, requiredVue) {
     var vueDep = requiredVue || '^2.5.10';
@@ -32801,7 +32822,7 @@ var Vuetify = {
         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
             directives: _directives__WEBPACK_IMPORTED_MODULE_3__["default"] }, args));
     },
-    version: '1.3.0'
+    version: '1.3.1'
 };
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Vuetify);
