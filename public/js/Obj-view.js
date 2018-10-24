@@ -3674,7 +3674,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
+exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n.v-date-picker-more-height\t\t\t\t\t\t\t\t{height: 392px;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
 
 // exports
 
@@ -3693,6 +3693,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3800,6 +3831,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			hasInput: false,
 			id: 0,
 			isNeed: false,
+			isDateTimeLike: false,
 			isNumeric: true,
 			isSliderLike: false,
 			listItemLenght: 18,
@@ -3810,6 +3842,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			maxLen: 0,
 			maxLenTypes: ['INPUT', 'NUMBER', 'PASSWORD'],
 			min: 0,
+			modalWindow: false,
+			modalWindowWithDate: false,
+			modalWindowWithTime: false,
 			multy: false,
 			name: '',
 			nullable: false,
@@ -3831,11 +3866,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			tip: '',
 			type: 'type',
 			value: '', // предпологаю число
+			valueDateArr: [], //[ ['2018-10-03', '12:52'],  ]
 			valueView: '',
 			valueRange: [], //[ [1,0], [1, 2] ]
 			valueRangeView: [],
 			valueArr: [], //['Петя','Вася','Катя',]
-			valueArrView: []
+			valueArrView: [],
+			valueArrViewTMP: []
 		};
 	},
 	props: {
@@ -3884,19 +3921,59 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			return vm.tableValues.map(function (element) {
 				return { value: element.value, text: ['LIST'].indexOf(vm.type) != -1 && vm.listItemMin ? element.text : element.textFull };
 			});
+		},
+		getmodalWindowWidth: function getmodalWindowWidth() {
+			var vm = this;
+			return vm.type == 'DATE' ? '295px' : vm.type == 'TIME' ? '295px' : vm.type == 'DATETIME' ? '585px' : '';
 		}
 	},
 	watch: {},
 	mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default.a],
 	methods: {
-		setNewVal: function setNewVal(_ref) {
-			var value = _ref.value,
-			    value2 = _ref.value2;
+		getValueDatetimeFromArr: function getValueDatetimeFromArr(_ref) {
+			var check = _ref.check,
+			    num = _ref.num;
 
 			var vm = this;
-			vm.value = value;
-			vm.value2 = value2;
+			check = check || false;
+			num = num || 0;
+			if (check) {
+				if (vm.modalWindowWithDate && vm.valueDateArr[num][0] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!!' });
+				if (vm.modalWindowWithTime && vm.valueDateArr[num][1] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите время!!' });
+			}
+			return (vm.valueDateArr[num][0] != null ? vm.valueDateArr[num][0] : '') + (vm.valueDateArr[num][0] != null && vm.valueDateArr[num][1] ? ' ' : '') + (vm.valueDateArr[num][1] != null ? vm.valueDateArr[num][1] : '');
+		},
+		parseToDateArr: function parseToDateArr(str) {
+			var vm = this,
+			    e = str.split(' ');
+			if (e.length > 0 && e[0] != '' && e[0].match(/^\d\d:\d\d$/) != null) {
+				e[1] = e[0];
+				e[0] = null;
+			}
+			e[0] = e.length > 0 && nvl(e[0]) != '' && e[0].match(/^\d\d\d\d-\d\d-\d\d$/) == null ? null : e[0];
+			e[1] = e.length > 1 && nvl(e[1]) != '' && e[1].match(/^\d\d:\d\d$/) == null ? null : e[1];
+			vm.valueDateArr.push([e[0], e[1]]);
+		},
+		setNewVal: function setNewVal(value) {
+			var vm = this;
+			if (vm.multy && vm.type == 'DATE') {
+				vm.valueDateArr.splice(0, vm.valueDateArr.length);
+				value.forEach(function (row) {
+					vm.parseToDateArr(row);
+				});
+				vm.valueArrView.splice(0, vm.valueArrView.length);
+				vm.valueArr.forEach(function (row) {
+					vm.valueArrView.push(vm.dateFormat(row));
+				});
+			} else {
+				vm.value = value;
+				vm.valueView = vm.dateFormat(vm.value);
+			}
 			vm.checkRefresh();
+		},
+		dateFormat: function dateFormat(str) {
+			//2018-10-03 12:52 в 03.10.2018 12:52
+			return str.replace(/^(\d\d\d\d)-(\d\d)-(\d\d)/, '$3.$2.$1');
 		},
 		valChange: function valChange(value) {
 			var vm = this;
@@ -3909,7 +3986,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		changeShow: function changeShow() {
 			var vm = this;
-			if (vm.type == 'PASSWORD') vm.show = !vm.show;else if (vm.type == 'LIST') vm.$refs.input.onClick();
+			if (vm.type == 'PASSWORD') vm.show = !vm.show;else if (vm.type == 'LIST' || !vm.multy && vm.isDateTimeLike) vm.$refs.input.onClick();
 		},
 		hasErrorSet: function hasErrorSet() {
 			this.hasError = true;
@@ -4056,8 +4133,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		vm.tickSize = vm.data.tick_size || vm.tickSize;
 		vm.thumbLabelNeed = vm.data.thumb_label_need || vm.thumbLabelNeed;
 
-		vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : vm.type == 'SLIDER' ? 'v-slider' : vm.type == 'RANGE' ? 'v-range-slider' : 'v-text-field';
-
 		if (vm.data.table_values != undefined && vm.data.table_values.length > 0) vm.data.table_values.forEach(function (element) {
 			vm.tableValues.push({ value: element.value, textFull: element.text, text: ['LIST'].indexOf(vm.type) == -1 ? element.text : element.text.length > vm.listItemLenght ? element.text.substring(0, vm.listItemLenght) + '...' : element.text });
 			if (isNaN(element.value)) vm.isNumeric = false;
@@ -4082,7 +4157,32 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.valueArr.push(element);
 		});
 
-		vm.isSliderLike = vm.type == 'SLIDER' || vm.type == 'RANGE';
+		vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : vm.type == 'SLIDER' ? 'v-slider' : vm.type == 'RANGE' ? 'v-range-slider' : vm.type == 'DATE' ? 'v-date-picker' : vm.type == 'TIME' ? 'v-time-picker' : 'v-text-field';
+
+		if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) {
+			vm.valueArr.forEach(function (row) {
+				vm.parseToDateArr(row);
+			});
+			if (vm.valueDateArr.length == 0) //подходит только для одной вводимой даты или диапазона из 2 дат, несколько диапазонов или множество дат должны формироваться отдельно
+				vm.valueDateArr.push([null, null]);
+			if (['DATE', 'DATETIME'].indexOf(vm.type) != -1) vm.modalWindowWithDate = true;
+			if (['TIME', 'DATETIME'].indexOf(vm.type) != -1) vm.modalWindowWithTime = true;
+			if (vm.multy) {
+				vm.valueArr.slice(0, vm.valueArr.length);
+				vm.valueDateArr.forEach(function (row, i) {
+					var e = vm.getValueDatetimeFromArr({ num: i });
+					if (e == '') return;
+					vm.valueArrViewTMP.push(e);
+					vm.valueArrView.push(vm.dateFormat(e));
+					vm.valueArr.push(e);
+				});
+			} else {
+				vm.value = vm.getValueDatetimeFromArr({});
+				vm.valueView = vm.dateFormat(vm.value);
+			}
+		}
+
+		vm.isSliderLike = ['SLIDER', 'RANGE'].indexOf(vm.type) != -1;
 		vm.thumbLabelNeed = vm.isSliderLike && vm.thumbLabelNeed ? 'always' : '';
 		if (vm.isSliderLike) {
 			if (vm.tableValues.length > 0) {
@@ -4105,6 +4205,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		if (['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(vm.type) == -1) vm.isNumeric = false;
 
 		if (['HIDDEN', 'INFO', 'NBSP', 'LINE'].indexOf(vm.type) == -1) vm.hasInput = true;
+
+		if (['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(vm.type) != -1) vm.isDateTimeLike = true;
 
 		if (vm.hasInput && !vm.nullable) {
 			vm.isNeed = true;
@@ -4462,7 +4564,7 @@ var render = function() {
                                     : _vm._e()
                                 ]
                               : [
-                                  !_vm.multy
+                                  !_vm.multy && !_vm.isDateTimeLike
                                     ? _c(_vm.currentInput, {
                                         ref: "input",
                                         tag: "component",
@@ -4515,60 +4617,414 @@ var render = function() {
                                           expression: "value"
                                         }
                                       })
-                                    : _c(_vm.currentInput, {
-                                        ref: "input",
-                                        tag: "component",
-                                        class: _vm.componentClassGet,
-                                        attrs: {
-                                          label: _vm.name,
-                                          hint: _vm.placeholder,
-                                          rules: _vm.rules,
-                                          disabled: _vm.disableGet,
-                                          readonly: !_vm.editable,
-                                          required: !!_vm.nullable,
-                                          "multi-line": _vm.columnSize > 50,
-                                          tabindex: _vm.sortSeq,
-                                          type: _vm.typeGet,
-                                          items: _vm.getListItems,
-                                          dense: "",
-                                          "append-icon": _vm.appendIconGet,
-                                          clearable: _vm.clearableGet,
-                                          mask: _vm.mask,
-                                          min: _vm.min,
-                                          max: _vm.max,
-                                          step: _vm.step,
-                                          multiple: "",
-                                          chips: "",
-                                          "deletable-chips": ""
-                                        },
-                                        on: {
-                                          change: _vm.valChange,
-                                          keyup: function($event) {
-                                            if (
-                                              !("button" in $event) &&
-                                              _vm._k(
-                                                $event.keyCode,
-                                                "enter",
-                                                13,
-                                                $event.key,
-                                                "Enter"
-                                              )
-                                            ) {
-                                              return null
-                                            }
-                                            return _vm.submit($event)
+                                    : _vm.multy && _vm.type == "LIST"
+                                      ? _c(_vm.currentInput, {
+                                          ref: "input",
+                                          tag: "component",
+                                          class: _vm.componentClassGet,
+                                          attrs: {
+                                            label: _vm.name,
+                                            hint: _vm.placeholder,
+                                            rules: _vm.rules,
+                                            disabled: _vm.disableGet,
+                                            readonly: !_vm.editable,
+                                            required: !!_vm.nullable,
+                                            "multi-line": _vm.columnSize > 50,
+                                            tabindex: _vm.sortSeq,
+                                            type: _vm.typeGet,
+                                            items: _vm.getListItems,
+                                            dense: "",
+                                            "append-icon": _vm.appendIconGet,
+                                            clearable: _vm.clearableGet,
+                                            mask: _vm.mask,
+                                            min: _vm.min,
+                                            max: _vm.max,
+                                            step: _vm.step,
+                                            multiple: "",
+                                            chips: "",
+                                            "deletable-chips": ""
                                           },
-                                          blur: _vm.onBlur,
-                                          "click:append": _vm.changeShow
-                                        },
-                                        model: {
-                                          value: _vm.valueArr,
-                                          callback: function($$v) {
-                                            _vm.valueArr = $$v
+                                          on: {
+                                            change: _vm.valChange,
+                                            keyup: function($event) {
+                                              if (
+                                                !("button" in $event) &&
+                                                _vm._k(
+                                                  $event.keyCode,
+                                                  "enter",
+                                                  13,
+                                                  $event.key,
+                                                  "Enter"
+                                                )
+                                              ) {
+                                                return null
+                                              }
+                                              return _vm.submit($event)
+                                            },
+                                            blur: _vm.onBlur,
+                                            "click:append": _vm.changeShow
                                           },
-                                          expression: "valueArr"
-                                        }
-                                      })
+                                          model: {
+                                            value: _vm.valueArr,
+                                            callback: function($$v) {
+                                              _vm.valueArr = $$v
+                                            },
+                                            expression: "valueArr"
+                                          }
+                                        })
+                                      : !_vm.multy && _vm.isDateTimeLike
+                                        ? _c(
+                                            "v-dialog",
+                                            {
+                                              ref: "modalWindow",
+                                              attrs: {
+                                                "return-value": _vm.value,
+                                                persistent: "",
+                                                lazy: "",
+                                                "full-width": "",
+                                                width: _vm.getmodalWindowWidth
+                                              },
+                                              on: {
+                                                "update:returnValue": [
+                                                  function($event) {
+                                                    _vm.value = $event
+                                                  },
+                                                  _vm.setNewVal
+                                                ],
+                                                show: _vm.changeChecked
+                                              },
+                                              model: {
+                                                value: _vm.modalWindow,
+                                                callback: function($$v) {
+                                                  _vm.modalWindow = $$v
+                                                },
+                                                expression: "modalWindow"
+                                              }
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                ref: "input",
+                                                attrs: {
+                                                  slot: "activator",
+                                                  label: _vm.name,
+                                                  hint: _vm.placeholder,
+                                                  rules: _vm.rules,
+                                                  disabled: _vm.disableGet,
+                                                  required: !!_vm.nullable,
+                                                  "prepend-icon": "event",
+                                                  readonly: "",
+                                                  tabindex: _vm.sortSeq,
+                                                  clearable: _vm.clearableGet,
+                                                  min: _vm.min,
+                                                  max: _vm.max
+                                                },
+                                                on: {
+                                                  change: _vm.valChange,
+                                                  keyup: function($event) {
+                                                    if (
+                                                      !("button" in $event) &&
+                                                      _vm._k(
+                                                        $event.keyCode,
+                                                        "enter",
+                                                        13,
+                                                        $event.key,
+                                                        "Enter"
+                                                      )
+                                                    ) {
+                                                      return null
+                                                    }
+                                                    return _vm.submit($event)
+                                                  },
+                                                  blur: _vm.onBlur,
+                                                  "click:append": _vm.changeShow
+                                                },
+                                                slot: "activator",
+                                                model: {
+                                                  value: _vm.valueView,
+                                                  callback: function($$v) {
+                                                    _vm.valueView = $$v
+                                                  },
+                                                  expression: "valueView"
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              [
+                                                _vm.modalWindowWithDate
+                                                  ? _c("v-date-picker", {
+                                                      ref: "datePicker",
+                                                      staticClass:
+                                                        "v-date-picker-more-height",
+                                                      attrs: {
+                                                        scrollable: "",
+                                                        locale: "ru"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm
+                                                            .valueDateArr[0][0],
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.valueDateArr[0],
+                                                            0,
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "valueDateArr[0][0]"
+                                                      }
+                                                    })
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                _vm.modalWindowWithTime
+                                                  ? _c("v-time-picker", {
+                                                      attrs: {
+                                                        scrollable: "",
+                                                        locale: "ru",
+                                                        format: "24hr"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm
+                                                            .valueDateArr[0][1],
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.valueDateArr[0],
+                                                            1,
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "valueDateArr[0][1]"
+                                                      }
+                                                    })
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                _c("v-spacer"),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-toolbar",
+                                                  {
+                                                    attrs: {
+                                                      dense: "",
+                                                      color: "primary"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "v-btn",
+                                                      {
+                                                        attrs: {
+                                                          flat: "",
+                                                          color: "primary"
+                                                        },
+                                                        on: {
+                                                          click: function(
+                                                            $event
+                                                          ) {
+                                                            _vm.modalWindow = false
+                                                          }
+                                                        }
+                                                      },
+                                                      [_vm._v("Отмена")]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c("v-spacer"),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-btn",
+                                                      {
+                                                        attrs: {
+                                                          flat: "",
+                                                          color: "primary"
+                                                        },
+                                                        on: {
+                                                          click: function(
+                                                            $event
+                                                          ) {
+                                                            _vm.$refs.modalWindow.save(
+                                                              _vm.getValueDatetimeFromArr(
+                                                                { check: true }
+                                                              )
+                                                            )
+                                                          }
+                                                        }
+                                                      },
+                                                      [_vm._v("Принять")]
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ]
+                                            ],
+                                            2
+                                          )
+                                        : _vm.multy && _vm.type == "DATE"
+                                          ? _c(
+                                              "v-dialog",
+                                              {
+                                                ref: "modalWindow",
+                                                attrs: {
+                                                  "return-value": _vm.valueArr,
+                                                  persistent: "",
+                                                  lazy: "",
+                                                  "full-width": "",
+                                                  width: _vm.getmodalWindowWidth
+                                                },
+                                                on: {
+                                                  "update:returnValue": [
+                                                    function($event) {
+                                                      _vm.valueArr = $event
+                                                    },
+                                                    _vm.setNewVal
+                                                  ],
+                                                  show: _vm.changeChecked
+                                                },
+                                                model: {
+                                                  value: _vm.modalWindow,
+                                                  callback: function($$v) {
+                                                    _vm.modalWindow = $$v
+                                                  },
+                                                  expression: "modalWindow"
+                                                }
+                                              },
+                                              [
+                                                _c("v-combobox", {
+                                                  ref: "input",
+                                                  attrs: {
+                                                    slot: "activator",
+                                                    label: _vm.name,
+                                                    hint: _vm.placeholder,
+                                                    rules: _vm.rules,
+                                                    disabled: _vm.disableGet,
+                                                    required: !!_vm.nullable,
+                                                    "prepend-icon": "event",
+                                                    readonly: "",
+                                                    tabindex: _vm.sortSeq,
+                                                    clearable: _vm.clearableGet,
+                                                    min: _vm.min,
+                                                    max: _vm.max,
+                                                    multiple: "",
+                                                    chips: "",
+                                                    "small-chips": ""
+                                                  },
+                                                  on: {
+                                                    change: _vm.valChange,
+                                                    keyup: function($event) {
+                                                      if (
+                                                        !("button" in $event) &&
+                                                        _vm._k(
+                                                          $event.keyCode,
+                                                          "enter",
+                                                          13,
+                                                          $event.key,
+                                                          "Enter"
+                                                        )
+                                                      ) {
+                                                        return null
+                                                      }
+                                                      return _vm.submit($event)
+                                                    },
+                                                    blur: _vm.onBlur,
+                                                    "click:append":
+                                                      _vm.changeShow
+                                                  },
+                                                  slot: "activator",
+                                                  model: {
+                                                    value: _vm.valueArrView,
+                                                    callback: function($$v) {
+                                                      _vm.valueArrView = $$v
+                                                    },
+                                                    expression: "valueArrView"
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                [
+                                                  _vm.modalWindowWithDate
+                                                    ? _c("v-date-picker", {
+                                                        ref: "datePicker",
+                                                        staticClass:
+                                                          "v-date-picker-more-height",
+                                                        attrs: {
+                                                          multiple: "",
+                                                          scrollable: "",
+                                                          locale: "ru"
+                                                        },
+                                                        model: {
+                                                          value:
+                                                            _vm.valueArrViewTMP,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.valueArrViewTMP = $$v
+                                                          },
+                                                          expression:
+                                                            "valueArrViewTMP"
+                                                        }
+                                                      })
+                                                    : _vm._e(),
+                                                  _vm._v(" "),
+                                                  _c("v-spacer"),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-toolbar",
+                                                    {
+                                                      attrs: {
+                                                        dense: "",
+                                                        color: "primary"
+                                                      }
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "v-btn",
+                                                        {
+                                                          attrs: {
+                                                            flat: "",
+                                                            color: "primary"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              _vm.modalWindow = false
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v("Отмена")]
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c("v-spacer"),
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-btn",
+                                                        {
+                                                          attrs: {
+                                                            flat: "",
+                                                            color: "primary"
+                                                          },
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              _vm.$refs.modalWindow.save(
+                                                                _vm.valueArrViewTMP
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v("Принять")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              ],
+                                              2
+                                            )
+                                          : _vm._e()
                                 ]
                           ],
                           2
@@ -4948,7 +5404,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		inputs: function inputs() {
 			var vm = this;
-			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value: "cur", multy: false, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', value: "node", multy: false, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', name: 'Название', placeholder: 'Описание объекта', type: 'NUMBER', value: "10", multy: false, nullable: true, column_size: 30, sort_seq: 3 }, { id: 4, form: 'object-tree-add', code: 'tree_range', name: 'Значение', placeholder: 'Описание диапазона', type: 'RANGE', value_arr: [[22, 30]], multy: false, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 5, form: 'object-tree-add', code: 'tree_val', name: 'Значение', placeholder: 'Описание значения', type: 'SLIDER', value: "20", multy: false, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 6, form: 'object-tree-add', code: 'obj_level1', name: 'Вложенность1', placeholder: 'Уровень вложенности объекта', type: 'RANGE', value_arr: [[1, 2]], multy: false, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 7, form: 'object-tree-add', code: 'tree_desc2', name: 'Название3', placeholder: 'Описание объекта', type: 'HIDDEN', value: "10", multy: false, nullable: true, column_size: 30, sort_seq: 3 }, { id: 8, form: 'object-tree-add', code: 'tree_group1', name: 'Тип1', placeholder: 'Тип объекта', type: 'SLIDER', value: "0", multy: false, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел' }, { value: 'ARM', text: 'Область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле' }] }, { id: 9, form: 'object-tree-add', code: 'm_obj_level2', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value_arr: ["cur"], multy: true, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем этом прям прям этом уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 11, form: 'object-tree-add', code: 'm_obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value_arr: ["cur"], multy: true, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 12, form: 'object-tree-add', code: 'm_tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', value_arr: ["node"], multy: true, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 13, form: 'object-tree-add', code: 'm_tree_desc', name: 'Название', placeholder: 'Описание объекта', type: 'NUMBER', value_arr: ["10"], multy: true, nullable: true, column_size: 30, sort_seq: 3 }, { id: 14, form: 'object-tree-add', code: 'm_tree_range', name: 'Значение', placeholder: 'Описание диапазона', type: 'RANGE', value_arr: [[22, 30]], multy: true, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 15, form: 'object-tree-add', code: 'm_tree_val', name: 'Значение', placeholder: 'Описание значения', type: 'SLIDER', value_arr: ["20"], multy: true, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 16, form: 'object-tree-add', code: 'm_obj_level1', name: 'Вложенность1', placeholder: 'Уровень вложенности объекта', type: 'RANGE', value_arr: [[1, 2]], multy: true, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 17, form: 'object-tree-add', code: 'm_tree_desc2', name: 'Название3', placeholder: 'Описание объекта', type: 'HIDDEN', value_arr: ["10"], multy: true, nullable: true, column_size: 30, sort_seq: 3 }, { id: 18, form: 'object-tree-add', code: 'm_tree_group1', name: 'Тип1', placeholder: 'Тип объекта', type: 'SLIDER', value_arr: ["0"], multy: true, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел' }, { value: 'ARM', text: 'Область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле' }] }];
+			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value: "cur", multy: false, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', value: "node", multy: false, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', name: 'Название', placeholder: 'Описание объекта', type: 'NUMBER', value: "10", multy: false, nullable: true, column_size: 30, sort_seq: 3 }, { id: 4, form: 'object-tree-add', code: 'tree_range', name: 'Значение', placeholder: 'Описание диапазона', type: 'RANGE', value_arr: [[22, 30]], multy: false, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 5, form: 'object-tree-add', code: 'tree_val', name: 'Значение', placeholder: 'Описание значения', type: 'SLIDER', value: "20", multy: false, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 6, form: 'object-tree-add', code: 'obj_level1', name: 'Вложенность1', placeholder: 'Уровень вложенности объекта', type: 'RANGE', value_arr: [[1, 2]], multy: false, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 7, form: 'object-tree-add', code: 'tree_desc2', name: 'Название3', placeholder: 'Описание объекта', type: 'HIDDEN', value: "10", multy: false, nullable: true, column_size: 30, sort_seq: 3 }, { id: 8, form: 'object-tree-add', code: 'tree_group1', name: 'Тип1', placeholder: 'Тип объекта', type: 'SLIDER', value: "0", multy: false, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел' }, { value: 'ARM', text: 'Область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле' }] }, { id: 9, form: 'object-tree-add', code: 'm_obj_level2', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value_arr: ["cur"], multy: true, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем этом прям прям этом уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 11, form: 'object-tree-add', code: 'm_obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value_arr: ["cur"], multy: true, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 12, form: 'object-tree-add', code: 'm_tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', value_arr: ["node"], multy: true, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 13, form: 'object-tree-add', code: 'm_tree_dates', name: 'Даты', placeholder: 'Даты объекта', type: 'DATE', value_arr: ['2018-10-03'], multy: true, nullable: false, column_size: 30, sort_seq: 2 }, { id: 14, form: 'object-tree-add', code: 'm_tree_date', name: 'Дата', placeholder: 'Дата объекта', type: 'DATE', value_arr: ['2018-10-03'], multy: false, nullable: false, column_size: 30, sort_seq: 2 }, { id: 15, form: 'object-tree-add', code: 'm_tree_time', name: 'Время', placeholder: 'Время объекта', type: 'TIME', value_arr: ['12:52'], multy: false, nullable: false, column_size: 30, sort_seq: 2 }, { id: 16, form: 'object-tree-add', code: 'm_tree_datetime', name: 'Дата Время', placeholder: 'Дата Время объекта', type: 'DATETIME', value_arr: ['2018-10-03 12:52'], multy: false, nullable: false, column_size: 30, sort_seq: 2 }];
 		}
 	},
 	components: {

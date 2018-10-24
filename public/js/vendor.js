@@ -17597,7 +17597,7 @@ var VTableOverflow = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_7__["createSi
                 });
                 return items.filter(function (item) {
                     return props.some(function (prop) {
-                        return filter(Object(_util_helpers__WEBPACK_IMPORTED_MODULE_7__["getObjectValueByPath"])(item, prop), search);
+                        return filter(Object(_util_helpers__WEBPACK_IMPORTED_MODULE_7__["getObjectValueByPath"])(item, prop, item[prop]), search);
                     });
                 });
             }
@@ -24890,7 +24890,7 @@ __webpack_require__.r(__webpack_exports__);
         isHalfEvent: function isHalfEvent(e) {
             if (this.halfIncrements) {
                 var rect = e.target && e.target.getBoundingClientRect();
-                if (rect && e.offsetX < rect.width / 2) return true;
+                if (rect && e.pageX - rect.left < rect.width / 2) return true;
             }
             return false;
         },
@@ -27514,9 +27514,6 @@ var __assign = undefined && undefined.__assign || function () {
         }
     },
     computed: {
-        isDark: function isDark() {
-            return this.tabGroup && this.tabGroup.selfIsDark;
-        },
         classes: function classes() {
             return __assign({ 'v-tabs__item': true, 'v-tabs__item--disabled': this.disabled }, this.groupClasses);
         },
@@ -27724,7 +27721,7 @@ __webpack_require__.r(__webpack_exports__);
             if (this.$listeners['input']) {
                 Object(_util_console__WEBPACK_IMPORTED_MODULE_12__["deprecate"])('@input', '@change', this);
             }
-            setTimeout(this.onResize, 33);
+            this.updateTabsView();
         },
         /**
          * When v-navigation-drawer changes the
@@ -29001,7 +28998,7 @@ var rangeMinutes = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_3__["createRang
             }
         },
         setInputData: function setInputData(value) {
-            if (value == null) {
+            if (value == null || value === '') {
                 this.inputHour = null;
                 this.inputMinute = null;
                 return;
@@ -29305,10 +29302,10 @@ var __assign = undefined && undefined.__assign || function () {
             // (1 + this.innerRadius) / 4 = radius of the circle equally distant from inner and outer circles
             var insideClick = this.double && this.euclidean(center, coords) / width < (1 + this.innerRadius) / 4;
             var value = Math.round(handAngle / this.degreesPerUnit) + this.min + (insideClick ? this.roundCount : 0);
-            // Necessary to fix edge case when selecting left part of max value
+            // Necessary to fix edge case when selecting left part of the value(s) at 12 o'clock
             var newValue;
             if (handAngle >= 360 - this.degreesPerUnit / 2) {
-                newValue = insideClick ? this.max : this.min;
+                newValue = insideClick ? this.max - this.roundCount + 1 : this.min;
             } else {
                 newValue = value;
             }
@@ -30219,10 +30216,6 @@ function ston(s) {
     provide: function provide() {
         return { treeview: this };
     },
-    model: {
-        prop: 'value',
-        event: 'change'
-    },
     props: __assign({ active: {
             type: Array,
             default: function _default() {
@@ -30270,29 +30263,38 @@ function ston(s) {
             },
             deep: true
         },
-        active: function active(v) {
+        active: function active(value) {
             var _this = this;
-            if (Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["deepEqual"])(__spread(this.activeCache), v)) return;
-            this.active.forEach(function (key) {
+            var old = __spread(this.activeCache);
+            if (!value || Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["deepEqual"])(old, value)) return;
+            old.forEach(function (key) {
+                return _this.updateActive(key, false);
+            });
+            value.forEach(function (key) {
                 return _this.updateActive(key, true);
             });
             this.emitActive();
         },
-        value: function value(v) {
+        value: function value(_value) {
             var _this = this;
-            if (!v || Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["deepEqual"])(__spread(this.selectedCache), v)) return;
-            this.value.forEach(function (key) {
+            var old = __spread(this.selectedCache);
+            if (!_value || Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["deepEqual"])(old, _value)) return;
+            old.forEach(function (key) {
+                return _this.updateSelected(key, false);
+            });
+            _value.forEach(function (key) {
                 return _this.updateSelected(key, true);
             });
             this.emitSelected();
         },
-        open: function open(v) {
+        open: function open(value) {
             var _this = this;
-            if (Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["deepEqual"])(__spread(this.openCache), v)) return;
-            this.openCache.forEach(function (key) {
+            var old = __spread(this.openCache);
+            if (Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["deepEqual"])(old, value)) return;
+            old.forEach(function (key) {
                 return _this.updateOpen(key, false);
             });
-            this.open.forEach(function (key) {
+            value.forEach(function (key) {
                 return _this.updateOpen(key, true);
             });
             this.emitOpen();
@@ -30389,7 +30391,7 @@ function ston(s) {
             this.$emit('update:open', __spread(this.openCache));
         },
         emitSelected: function emitSelected() {
-            this.$emit('change', __spread(this.selectedCache));
+            this.$emit('input', __spread(this.selectedCache));
         },
         emitActive: function emitActive() {
             this.$emit('update:active', __spread(this.activeCache));
@@ -30423,8 +30425,9 @@ function ston(s) {
             var key = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["getObjectValueByPath"])(node.item, this.itemKey);
             this.nodes[key].vnode = null;
         },
-        updateActive: function updateActive(key, value) {
+        updateActive: function updateActive(key, isActive) {
             var _this = this;
+            if (!this.nodes.hasOwnProperty(key)) return;
             if (!this.multipleActive) {
                 this.activeCache.forEach(function (active) {
                     _this.nodes[active].isActive = false;
@@ -30434,8 +30437,8 @@ function ston(s) {
             }
             var node = this.nodes[key];
             if (!node) return;
-            if (value) this.activeCache.add(key);
-            node.isActive = value;
+            if (isActive) this.activeCache.add(key);else this.activeCache.delete(key);
+            node.isActive = isActive;
             this.updateVnodeState(key);
         },
         updateSelected: function updateSelected(key, isSelected) {
@@ -30463,7 +30466,7 @@ function ston(s) {
             var _this = this;
             if (!this.nodes.hasOwnProperty(key)) return;
             var node = this.nodes[key];
-            if (node.vnode && !node.vnode.hasLoaded) {
+            if (node.children && !node.children.length && node.vnode && !node.vnode.hasLoaded) {
                 node.vnode.checkChildren().then(function () {
                     return _this.updateOpen(key, isOpen);
                 });
@@ -31159,7 +31162,7 @@ var Vuetify = {
             return false;
         })(opts.components);
     },
-    version: '1.3.1'
+    version: '1.3.2'
 };
 function checkVueVersion(Vue, requiredVue) {
     var vueDep = requiredVue || '^2.5.10';
@@ -32822,7 +32825,7 @@ var Vuetify = {
         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
             directives: _directives__WEBPACK_IMPORTED_MODULE_3__["default"] }, args));
     },
-    version: '1.3.1'
+    version: '1.3.2'
 };
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Vuetify);

@@ -48,16 +48,47 @@
 								</v-flex>
 							</template>
 							<template v-else>
-								<component v-if="!multy" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
+								<component v-if="!multy && !isDateTimeLike" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
 									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="getListItems" dense :counter="getCounter"
 									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
 									@change="valChange" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" 
 									:class="componentClassGet" />
-								<component v-else :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
+								<component v-else-if="multy && type=='LIST'" :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
 									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="getListItems" dense
 									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
 									@change="valChange" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" multiple chips deletable-chips
 									:class="componentClassGet" />
+								<v-dialog v-else-if="!multy && isDateTimeLike"	ref="modalWindow" v-model="modalWindow" :return-value.sync="value" persistent lazy full-width	:width="getmodalWindowWidth" @show='changeChecked' 
+										@update:returnValue="setNewVal" >
+									<v-text-field slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable" prepend-icon="event" readonly ref="input" 
+										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" 
+										@change="valChange"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" />
+									<template>
+										<v-date-picker v-if="modalWindowWithDate"  v-model="valueDateArr[0][0]" scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker"/>
+										<v-time-picker v-if="modalWindowWithTime"  v-model="valueDateArr[0][1]" scrollable locale="ru" format="24hr"/>
+										<v-spacer/>
+										<v-toolbar dense  color="primary" >	
+											<v-btn flat color="primary" @click="modalWindow = false">Отмена</v-btn>
+											<v-spacer/>
+											<v-btn flat color="primary" @click="$refs.modalWindow.save(getValueDatetimeFromArr({check:true,}))">Принять</v-btn>
+										</v-toolbar>
+									</template>
+								</v-dialog>
+								<v-dialog v-else-if="multy && type=='DATE'"	ref="modalWindow" v-model="modalWindow" :return-value.sync="valueArr" persistent lazy full-width	:width="getmodalWindowWidth" @show='changeChecked' 
+										@update:returnValue="setNewVal" >
+									<v-combobox slot="activator" v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable" prepend-icon="event" readonly ref="input" 
+										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" multiple chips  small-chips
+										@change="valChange"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" />
+									<template>
+										<v-date-picker v-if="modalWindowWithDate"  v-model="valueArrViewTMP" multiple  scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker" />
+										<v-spacer/>
+										<v-toolbar dense  color="primary" >	
+											<v-btn flat color="primary" @click="modalWindow = false">Отмена</v-btn>
+											<v-spacer/>
+											<v-btn flat color="primary" @click="$refs.modalWindow.save(valueArrViewTMP)">Принять</v-btn>
+										</v-toolbar>
+									</template>
+								</v-dialog>
 							</template>
 						</div>
 					</div>
@@ -104,6 +135,7 @@ time-with-seconds	##:##:##
 			hasInput: false,
 			id: 0,
 			isNeed:false,
+			isDateTimeLike:false,
 			isNumeric:true,
 			isSliderLike:false,
 			listItemLenght: 18,
@@ -114,6 +146,9 @@ time-with-seconds	##:##:##
 			maxLen:0,
 			maxLenTypes:['INPUT','NUMBER', 'PASSWORD'],
 			min:0,
+			modalWindow:false,
+			modalWindowWithDate:false,
+			modalWindowWithTime:false,
 			multy:false,
 			name: '',
 			nullable: false,
@@ -142,11 +177,13 @@ time-with-seconds	##:##:##
 			tip:'',
 			type: 'type',
 			value:'',// предпологаю число
+			valueDateArr:[],//[ ['2018-10-03', '12:52'],  ]
 			valueView:'',
 			valueRange:[],//[ [1,0], [1, 2] ]
 			valueRangeView:[],
 			valueArr:[],//['Петя','Вася','Катя',]
 			valueArrView:[],
+			valueArrViewTMP:[],
 		}),
 		props:{
 			data:{type: Object, required: true, default:()=>{return {}}},
@@ -207,6 +244,10 @@ time-with-seconds	##:##:##
 					return {value:element.value, text: (['LIST'].indexOf(vm.type)!=-1 && vm.listItemMin ? element.text : element.textFull)}
 				});
 			},
+			getmodalWindowWidth(){
+				let vm=this
+				return vm.type=='DATE'? '295px' : vm.type=='TIME'? '295px' : vm.type=='DATETIME' ? '585px' :''
+			},
 		},
 		watch: {
 		},
@@ -214,11 +255,49 @@ time-with-seconds	##:##:##
 			XStore,
 		],		
 		methods: {
-			setNewVal({value,value2,}){
+			getValueDatetimeFromArr({check, num}){
 				let vm=this
-				vm.value = value
-				vm.value2 = value2
+				check=check||false
+				num=num||0
+				if(check){
+					if(vm.modalWindowWithDate && vm.valueDateArr[num][0]==null)
+						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите дату!!'});
+					if(vm.modalWindowWithTime && vm.valueDateArr[num][1]==null)
+						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите время!!'});
+				}
+				return (vm.valueDateArr[num][0]!=null?vm.valueDateArr[num][0]:'')+(vm.valueDateArr[num][0]!=null && vm.valueDateArr[num][1]?' ':'') + (vm.valueDateArr[num][1]!=null?vm.valueDateArr[num][1]:'')
+			},
+			parseToDateArr(str){
+				let vm=this,
+					e = str.split(' ')
+				if(e.length>0 && e[0]!='' && e[0].match(/^\d\d:\d\d$/)!=null){
+					e[1]=e[0]
+					e[0]=null
+				}
+				e[0]= (e.length>0 && nvl(e[0])!='' && e[0].match(/^\d\d\d\d-\d\d-\d\d$/)==null) ? null : e[0]
+				e[1]= (e.length>1 && nvl(e[1])!='' &&e[1].match(/^\d\d:\d\d$/) ==null) ? null : e[1]
+				vm.valueDateArr.push( [e[0],e[1]] )
+			},
+			setNewVal(value){
+				let vm=this
+				if(vm.multy && vm.type=='DATE'){
+					vm.valueDateArr.splice (0,vm.valueDateArr.length)
+					value.forEach(row=>{
+						vm.parseToDateArr(row)
+					})
+					vm.valueArrView.splice (0,vm.valueArrView.length)
+					vm.valueArr.forEach(row=>{
+						vm.valueArrView.push(vm.dateFormat(row))
+					})
+				}
+				else{
+					vm.value = value
+					vm.valueView = vm.dateFormat(vm.value)
+				}
 				vm.checkRefresh()
+			},
+			dateFormat(str){//2018-10-03 12:52 в 03.10.2018 12:52
+				return str.replace(/^(\d\d\d\d)-(\d\d)-(\d\d)/, '$3.$2.$1' )
 			},
 			valChange(value){
 				let vm=this
@@ -234,7 +313,7 @@ time-with-seconds	##:##:##
 				let vm=this
 				if(vm.type=='PASSWORD')
 					vm.show = !vm.show
-				else if (vm.type=='LIST')
+				else if (vm.type=='LIST' || (!vm.multy && vm.isDateTimeLike))
 					vm.$refs.input.onClick()
 			},
 			hasErrorSet(){
@@ -354,12 +433,6 @@ time-with-seconds	##:##:##
 			vm.ticksNeed=!!vm.data.ticks_need||vm.ticksNeed
 			vm.tickSize=vm.data.tick_size||vm.tickSize
 			vm.thumbLabelNeed=vm.data.thumb_label_need||vm.thumbLabelNeed
-			
-			vm.currentInput= vm.type=='LIST'?'v-select':
-				vm.type=='BOOL'?'v-checkbox':
-				vm.type=='SLIDER'?'v-slider':
-				vm.type=='RANGE'?'v-range-slider':
-				'v-text-field'	
 
 			if(vm.data.table_values!=undefined && vm.data.table_values.length>0)
 				vm.data.table_values.forEach(element => {
@@ -392,7 +465,43 @@ time-with-seconds	##:##:##
 					vm.valueArr.push(element);
 				});
 
-			vm.isSliderLike= vm.type=='SLIDER' || vm.type=='RANGE'
+			vm.currentInput= vm.type=='LIST'?'v-select':
+				vm.type=='BOOL'?'v-checkbox':
+				vm.type=='SLIDER'?'v-slider':
+				vm.type=='RANGE'?'v-range-slider':
+				vm.type=='DATE'?'v-date-picker':
+				vm.type=='TIME'?'v-time-picker':
+				'v-text-field'	
+
+			if(['DATE', 'TIME', 'DATETIME'].indexOf(vm.type)!=-1){
+				vm.valueArr.forEach(row=>{
+					vm.parseToDateArr(row)
+				})
+				if(vm.valueDateArr.length==0)//подходит только для одной вводимой даты или диапазона из 2 дат, несколько диапазонов или множество дат должны формироваться отдельно
+					vm.valueDateArr.push([null,null]);
+				if(['DATE', 'DATETIME'].indexOf(vm.type)!=-1)
+					vm.modalWindowWithDate=true
+				if(['TIME', 'DATETIME'].indexOf(vm.type)!=-1)
+					vm.modalWindowWithTime=true
+				if(vm.multy){
+					vm.valueArr.slice(0,vm.valueArr.length)
+					vm.valueDateArr.forEach((row,i)=>{
+						let e = vm.getValueDatetimeFromArr({num:i})
+						if (e =='')
+							return
+						vm.valueArrViewTMP.push(e)
+						vm.valueArrView.push(vm.dateFormat(e))
+						vm.valueArr.push(e)
+					})
+					
+				}
+				else{
+					vm.value=vm.getValueDatetimeFromArr({})
+					vm.valueView=vm.dateFormat(vm.value)
+				}
+			}	
+
+			vm.isSliderLike=['SLIDER', 'RANGE'].indexOf(vm.type)!=-1
 			vm.thumbLabelNeed =  vm.isSliderLike && vm.thumbLabelNeed?'always':''
 			if(vm.isSliderLike ){
 				if( vm.tableValues.length>0){
@@ -420,6 +529,9 @@ time-with-seconds	##:##:##
 			
 			if(['HIDDEN','INFO','NBSP','LINE'].indexOf(vm.type)==-1)
 				vm.hasInput=true
+
+			if(['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(vm.type)!=-1)
+				vm.isDateTimeLike=true		
 
 			if(vm.hasInput && !vm.nullable){
 				vm.isNeed =true
@@ -462,6 +574,7 @@ time-with-seconds	##:##:##
 	.disabled-label 										{color: hsla(0,0%,100%,.5);}
 	.v-slider__ticks-container>.v-slider__ticks>span		{font-size: 12px;}
 	.theme--dark.v-chip.v-chip--disabled					{background: #737373;}
+	.v-date-picker-more-height								{height: 392px;}
 	/*i    border-bottom-color: #2c353f;
     border-bottom-style: groove;
     border-bottom-width: 0.5px;*/
