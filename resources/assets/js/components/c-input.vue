@@ -537,9 +537,15 @@ time-with-seconds	##:##:##
 						element[0]=nvl(element[0],vm.min)
 						element[1]=nvl(element[0],vm.max)
 						if( element[0]>vm.max)
+							element[0]=vm.max
+						if( element[0]<vm.min)
 							element[0]=vm.min
 						if( element[1]>vm.max)
+							element[1]=vm.max
+						if( element[1]<vm.min)
 							element[1]=vm.min
+						if( element[1]<element[1])
+							[element[0], element[1]] = [element[1], element[0]]
 						vm.valueRange.push([element[0] , element[1]])
 					})
 				else

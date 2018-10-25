@@ -2022,9 +2022,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			if (vm.valueArr != undefined && vm.valueArr.length > 0) vm.valueArr.forEach(function (element, i) {
 				element[0] = nvl(element[0], vm.min);
 				element[1] = nvl(element[0], vm.max);
-				if (element[0] > vm.max) element[0] = vm.min;
-				if (element[1] > vm.max) element[1] = vm.min;
-				vm.valueRange.push([element[0], element[1]]);
+				if (element[0] > vm.max) element[0] = vm.max;
+				if (element[0] < vm.min) element[0] = vm.min;
+				if (element[1] > vm.max) element[1] = vm.max;
+				if (element[1] < vm.min) element[1] = vm.min;
+				if (element[1] < element[1]) {
+					;
+					var _ref4 = [element[1], element[0]];
+					element[0] = _ref4[0];
+					element[1] = _ref4[1];
+				}vm.valueRange.push([element[0], element[1]]);
 			});else vm.valueRange.push([vm.min, vm.min]);
 		}
 		if (['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(vm.type) == -1) vm.isNumeric = false;
