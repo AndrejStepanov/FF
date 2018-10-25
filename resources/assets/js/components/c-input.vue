@@ -13,14 +13,14 @@
 						<div :class="templateClassGet">
 							<template v-if="isSliderLike">
 								<v-flex shrink style="width: 60px" v-if="type=='RANGE' && isNumeric" >
-									<v-text-field v-model="valueRange[0][0]" class="mt-0 min-width-35px body-1" hide-details single-line :disabled="disableGet" type="number" @change="valChange" :min="min" :max="max" :step="step"/>
+									<v-text-field v-model="valueRange[0][0]" class="mt-0 min-width-35px body-1" hide-details single-line :disabled="disableGet" type="number" @change="setNewVal" :min="min" :max="max" :step="step"/>
 								</v-flex>
 								<v-flex>
 									<component v-if="type=='RANGE'"  :is="currentInput" v-model="valueRange[0]" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
 										:multi-line="columnSize>50"  :tabindex="sortSeq" :type="typeGet" :color="checkBoxColor"
 										:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
 										:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"   :min="min" :max="max" :step="step" 
-										@change="valChange" @keyup.enter="submit"  @blur="onBlur"   >
+										@change="setNewVal" @keyup.enter="submit"  @blur="onBlur"   >
 										<template v-if="!isNumeric"	slot="thumb-label"	slot-scope="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
 										</template>
@@ -33,7 +33,7 @@
 										:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet"  :color="checkBoxColor"
 										:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
 										:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step" 
-										@change="valChange" @keyup.enter="submit"  @blur="onBlur"  >
+										@change="setNewVal" @keyup.enter="submit"  @blur="onBlur"  >
 										<template v-if="!isNumeric"	slot="thumb-label"	slot-scope="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
 										</template>
@@ -43,49 +43,49 @@
 									</component>
 								</v-flex>
 								<v-flex shrink style="width: 60px" v-if="isNumeric" >
-									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="disableGet" v-if="type=='RANGE'" v-model="valueRange[0][1]"  @change="valChange" :min="min" :max="max" :step="step"/>
-									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="disableGet" v-else v-model="value" @change="valChange" :min="min" :max="max" :step="step"/>
+									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="disableGet" v-if="type=='RANGE'" v-model="valueRange[0][1]"  @change="setNewVal" :min="min" :max="max" :step="step"/>
+									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="disableGet" v-else v-model="value" @change="setNewVal" :min="min" :max="max" :step="step"/>
 								</v-flex>
 							</template>
 							<template v-else>
 								<component v-if="!multy && !isDateTimeLike" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
 									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="getListItems" dense :counter="getCounter"
 									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
-									@change="valChange" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" 
+									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" 
 									:class="componentClassGet" />
 								<component v-else-if="multy && type=='LIST'" :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
 									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="getListItems" dense
 									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
-									@change="valChange" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" multiple chips deletable-chips
+									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" multiple chips deletable-chips small-chips
 									:class="componentClassGet" />
 								<v-dialog v-else-if="!multy && isDateTimeLike"	ref="modalWindow" v-model="modalWindow" :return-value.sync="value" persistent lazy full-width	:width="getmodalWindowWidth" @show='changeChecked' 
 										@update:returnValue="setNewVal" >
 									<v-text-field slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable" prepend-icon="event" readonly ref="input" 
 										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" 
-										@change="valChange"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" />
+										@change="setNewVal" @input="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" />
 									<template>
 										<v-date-picker v-if="modalWindowWithDate"  v-model="valueDateArr[0][0]" scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker"/>
 										<v-time-picker v-if="modalWindowWithTime"  v-model="valueDateArr[0][1]" scrollable locale="ru" format="24hr"/>
 										<v-spacer/>
 										<v-toolbar dense  color="primary" >	
-											<v-btn flat color="primary" @click="modalWindow = false">Отмена</v-btn>
+											<v-btn flat class="accent"  @click="modalWindow = false">Отмена</v-btn>
 											<v-spacer/>
-											<v-btn flat color="primary" @click="$refs.modalWindow.save(getValueDatetimeFromArr({check:true,}))">Принять</v-btn>
+											<v-btn flat class="accent"  @click="$refs.modalWindow.save(getValueDatetimeFromArr({check:true,}))">Принять</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
 								<v-dialog v-else-if="multy && type=='DATE'"	ref="modalWindow" v-model="modalWindow" :return-value.sync="valueArr" persistent lazy full-width	:width="getmodalWindowWidth" @show='changeChecked' 
 										@update:returnValue="setNewVal" >
 									<v-combobox slot="activator" v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable" prepend-icon="event" readonly ref="input" 
-										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" multiple chips  small-chips
-										@change="valChange"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" />
+										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" multiple chips deletable-chips small-chips
+										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" />
 									<template>
 										<v-date-picker v-if="modalWindowWithDate"  v-model="valueArrViewTMP" multiple  scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker" />
 										<v-spacer/>
-										<v-toolbar dense  color="primary" >	
-											<v-btn flat color="primary" @click="modalWindow = false">Отмена</v-btn>
+										<v-toolbar dense color="primary" >	
+											<v-btn flat class="accent" @click="modalWindow = false">Отмена</v-btn>
 											<v-spacer/>
-											<v-btn flat color="primary" @click="$refs.modalWindow.save(valueArrViewTMP)">Принять</v-btn>
+											<v-btn flat class="accent"  @click="saveModalWindowWithDateMulty()">Принять</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -246,7 +246,7 @@ time-with-seconds	##:##:##
 			},
 			getmodalWindowWidth(){
 				let vm=this
-				return vm.type=='DATE'? '295px' : vm.type=='TIME'? '295px' : vm.type=='DATETIME' ? '585px' :''
+				return vm.type=='DATE'? '290px' : vm.type=='TIME'? '290px' : vm.type=='DATETIME' ? '584px' :''
 			},
 		},
 		watch: {
@@ -261,9 +261,9 @@ time-with-seconds	##:##:##
 				num=num||0
 				if(check){
 					if(vm.modalWindowWithDate && vm.valueDateArr[num][0]==null)
-						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите дату!!'});
+						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите дату!'});
 					if(vm.modalWindowWithTime && vm.valueDateArr[num][1]==null)
-						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите время!!'});
+						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите время!'});
 				}
 				return (vm.valueDateArr[num][0]!=null?vm.valueDateArr[num][0]:'')+(vm.valueDateArr[num][0]!=null && vm.valueDateArr[num][1]?' ':'') + (vm.valueDateArr[num][1]!=null?vm.valueDateArr[num][1]:'')
 			},
@@ -285,23 +285,27 @@ time-with-seconds	##:##:##
 					value.forEach(row=>{
 						vm.parseToDateArr(row)
 					})
+					vm.valueArr.splice (0,vm.valueArr.length)
+					vm.valueDateArr.forEach((row,i)=>{
+						vm.valueArr.push(vm.getValueDatetimeFromArr({num:i}))
+					})
 					vm.valueArrView.splice (0,vm.valueArrView.length)
 					vm.valueArr.forEach(row=>{
-						vm.valueArrView.push(vm.dateFormat(row))
+						vm.valueArrView.push(dateFormater(row))
 					})
 				}
 				else{
 					vm.value = value
-					vm.valueView = vm.dateFormat(vm.value)
+					if(['DATE', 'TIME', 'DATETIME'].indexOf(vm.type)!=-1)
+						vm.valueView = dateFormater(vm.value)
 				}
 				vm.checkRefresh()
 			},
-			dateFormat(str){//2018-10-03 12:52 в 03.10.2018 12:52
-				return str.replace(/^(\d\d\d\d)-(\d\d)-(\d\d)/, '$3.$2.$1' )
-			},
-			valChange(value){
+			saveModalWindowWithDateMulty(){
 				let vm=this
-				vm.checkRefresh()
+				if(vm.modalWindowWithDate && vm.valueArrViewTMP.length==0)
+					showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите дату!'});
+				vm.$refs.modalWindow.save(vm.valueArrViewTMP)
 			},
 			changeSign(){
 				let vm=this
@@ -351,6 +355,7 @@ time-with-seconds	##:##:##
 					valueArr = vm.type=='RANGE' || vm.multy?[]:null,
 					valueArrView = vm.type=='RANGE' || vm.multy?[]:null
 				if(vm.type=='RANGE'){
+					value=valueView=null
 					if( vm.isNumeric ){
 						vm.valueRange.forEach(function(row) {
 							valueArr.push(row.slice(0))
@@ -366,6 +371,7 @@ time-with-seconds	##:##:##
 						vm.checked=	valueArr.length>0 ?true : false
 				}
 				else if(vm.hasInput && vm.multy){
+					value=valueView=null
 					valueArr=vm.valueArr.slice(0)
 					if (vm.type=='LIST')
 						vm.tableValues.forEach(function(row) {
@@ -374,7 +380,9 @@ time-with-seconds	##:##:##
 									valueArrView.push(row.textFull)
 							})
 						})
-					else 
+					else if (vm.type=='DATE')
+						valueArrView = vm.valueArrView.slice(0)
+					else
 						valueArrView = valueArr.slice(0)
 					if(!checkedFx)
 						vm.checked=	valueArr.length>0 ?true : false
@@ -389,10 +397,18 @@ time-with-seconds	##:##:##
 							if(row.value==value)
 								valueView = row.textFull
 						})
+					else if (vm.modalWindowWithDate)
+						valueView = vm.valueView
 					if(!checkedFx)
 						vm.checked=	 (value==='' || value==null) ?false:true
 				}
 				vm.setVal(value, valueView,valueArr, valueArrView)
+
+				if(vm.multy && vm.type=='DATE' && valueArr.length==0 )
+					vm.valueArrViewTMP.splice(0, vm.valueArrViewTMP.length)
+				if(['DATE', 'TIME', 'DATETIME'].indexOf(vm.type)!=-1 && !vm.multy && value=='')
+					vm.valueDateArr[0][0]=vm.valueDateArr[0][1]=null	
+
 			},
 			async setVal(value, value_view, value_arr, value_arr_view){
 				let vm=this
@@ -484,20 +500,19 @@ time-with-seconds	##:##:##
 				if(['TIME', 'DATETIME'].indexOf(vm.type)!=-1)
 					vm.modalWindowWithTime=true
 				if(vm.multy){
-					vm.valueArr.slice(0,vm.valueArr.length)
+					vm.valueArr.splice(0,vm.valueArr.length)
 					vm.valueDateArr.forEach((row,i)=>{
 						let e = vm.getValueDatetimeFromArr({num:i})
 						if (e =='')
 							return
 						vm.valueArrViewTMP.push(e)
-						vm.valueArrView.push(vm.dateFormat(e))
+						vm.valueArrView.push(dateFormater(e))
 						vm.valueArr.push(e)
 					})
-					
 				}
 				else{
 					vm.value=vm.getValueDatetimeFromArr({})
-					vm.valueView=vm.dateFormat(vm.value)
+					vm.valueView=dateFormater(vm.value)
 				}
 			}	
 
@@ -508,18 +523,24 @@ time-with-seconds	##:##:##
 					vm.tableValues.forEach(item=>{
 						vm.tickLabels.push(item.text)
 					})
+					vm.max=vm.tableValues.length-1 
+					vm.min=0
 					if(!vm.isNumeric){
 						vm.step=1
 						vm.ticksNeed=true
-						vm.min=0
-						vm.max=vm.tickLabels.length-1
 						vm.tickSize=vm.data.tick_size||2
 					}
 				}
 				vm.value=vm.value||vm.min
 				if(vm.valueArr!=undefined && vm.valueArr.length>0)
 					vm.valueArr.forEach((element,i) => {
-						vm.valueRange.push([vm.valueArr[i][0]||vm.min , vm.valueArr[i][1]||vm.min])
+						element[0]=nvl(element[0],vm.min)
+						element[1]=nvl(element[0],vm.max)
+						if( element[0]>vm.max)
+							element[0]=vm.min
+						if( element[1]>vm.max)
+							element[1]=vm.min
+						vm.valueRange.push([element[0] , element[1]])
 					})
 				else
 					vm.valueRange.push([vm.min , vm.min])
@@ -554,8 +575,7 @@ time-with-seconds	##:##:##
 			let tmp = new RegExp(vm.maskFin)
 			if(vm.hasInput && tmp!='')//надо помнить про экранирование
 				vm.rules.push(v => tmp.test(v) || vm.error)
-
-			vm.paramSetData( {num: vm.paramsForm, data:vm.data })
+			vm.paramSetData( {num: vm.paramsForm, data:{...vm.data,value :null, value_view :null, value_arr :null, value_arr_view:null,  } })
 			setTimeout(()=>{vm.checkRefresh(true)},500) 
 		},
 	}

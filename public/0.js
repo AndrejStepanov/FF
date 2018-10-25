@@ -1139,12 +1139,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			if (vm.dialogParamsGet.checkFunc) vm.dialogParamsGet.checkFunc(todo);
 			if (vm.dialogParamsGet.saveFunc) vm.dialogParamsGet.saveFunc(todo);else {
 				if (vm.paramsForm == 'auth-login') {
-					console.log(todo);
 					var tmp = {};
 					for (name in todo) {
 						tmp[name] = todo[name].value;
 					}todo = tmp;
 				}
+				console.log(todo);
 				sendRequest({ href: nvl(vm.dialogParamsGet.socetHref, '/data_command'), type: vm.dialogParamsGet.socetEvent, data: todo, hrefBack: vm.dialogParamsGet.hrefBack, handler: function handler() {
 						return vm.$refs.dialog.dialogClose();
 					} });
@@ -1504,6 +1504,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__mixins_x_store__);
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 //
@@ -1737,7 +1739,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		getmodalWindowWidth: function getmodalWindowWidth() {
 			var vm = this;
-			return vm.type == 'DATE' ? '295px' : vm.type == 'TIME' ? '295px' : vm.type == 'DATETIME' ? '585px' : '';
+			return vm.type == 'DATE' ? '290px' : vm.type == 'TIME' ? '290px' : vm.type == 'DATETIME' ? '584px' : '';
 		}
 	},
 	watch: {},
@@ -1751,8 +1753,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			check = check || false;
 			num = num || 0;
 			if (check) {
-				if (vm.modalWindowWithDate && vm.valueDateArr[num][0] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!!' });
-				if (vm.modalWindowWithTime && vm.valueDateArr[num][1] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите время!!' });
+				if (vm.modalWindowWithDate && vm.valueDateArr[num][0] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!' });
+				if (vm.modalWindowWithTime && vm.valueDateArr[num][1] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите время!' });
 			}
 			return (vm.valueDateArr[num][0] != null ? vm.valueDateArr[num][0] : '') + (vm.valueDateArr[num][0] != null && vm.valueDateArr[num][1] ? ' ' : '') + (vm.valueDateArr[num][1] != null ? vm.valueDateArr[num][1] : '');
 		},
@@ -1774,23 +1776,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				value.forEach(function (row) {
 					vm.parseToDateArr(row);
 				});
+				vm.valueArr.splice(0, vm.valueArr.length);
+				vm.valueDateArr.forEach(function (row, i) {
+					vm.valueArr.push(vm.getValueDatetimeFromArr({ num: i }));
+				});
 				vm.valueArrView.splice(0, vm.valueArrView.length);
 				vm.valueArr.forEach(function (row) {
-					vm.valueArrView.push(vm.dateFormat(row));
+					vm.valueArrView.push(dateFormater(row));
 				});
 			} else {
 				vm.value = value;
-				vm.valueView = vm.dateFormat(vm.value);
+				if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) vm.valueView = dateFormater(vm.value);
 			}
 			vm.checkRefresh();
 		},
-		dateFormat: function dateFormat(str) {
-			//2018-10-03 12:52 в 03.10.2018 12:52
-			return str.replace(/^(\d\d\d\d)-(\d\d)-(\d\d)/, '$3.$2.$1');
-		},
-		valChange: function valChange(value) {
+		saveModalWindowWithDateMulty: function saveModalWindowWithDateMulty() {
 			var vm = this;
-			vm.checkRefresh();
+			if (vm.modalWindowWithDate && vm.valueArrViewTMP.length == 0) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!' });
+			vm.$refs.modalWindow.save(vm.valueArrViewTMP);
 		},
 		changeSign: function changeSign() {
 			var vm = this;
@@ -1840,6 +1843,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 								vm = this, tmp1 = void 0, tmp2 = void 0, value = vm.value, valueView = vm.value, valueArr = vm.type == 'RANGE' || vm.multy ? [] : null, valueArrView = vm.type == 'RANGE' || vm.multy ? [] : null;
 
 								if (vm.type == 'RANGE') {
+									value = valueView = null;
 									if (vm.isNumeric) {
 										vm.valueRange.forEach(function (row) {
 											valueArr.push(row.slice(0));
@@ -1851,12 +1855,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 									});
 									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
 								} else if (vm.hasInput && vm.multy) {
+									value = valueView = null;
 									valueArr = vm.valueArr.slice(0);
 									if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
 										valueArr.forEach(function (rowVal) {
 											if (row.value == rowVal) valueArrView.push(row.textFull);
 										});
-									});else valueArrView = valueArr.slice(0);
+									});else if (vm.type == 'DATE') valueArrView = vm.valueArrView.slice(0);else valueArrView = valueArr.slice(0);
 									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
 								} else if (vm.hasInput) {
 									// работа просто с value
@@ -1865,12 +1870,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 										value = nvlo(vm.tableValues[value]).value;
 									} else if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
 										if (row.value == value) valueView = row.textFull;
-									});
+									});else if (vm.modalWindowWithDate) valueView = vm.valueView;
 									if (!checkedFx) vm.checked = value === '' || value == null ? false : true;
 								}
 								vm.setVal(value, valueView, valueArr, valueArrView);
 
-							case 3:
+								if (vm.multy && vm.type == 'DATE' && valueArr.length == 0) vm.valueArrViewTMP.splice(0, vm.valueArrViewTMP.length);
+								if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1 && !vm.multy && value == '') vm.valueDateArr[0][0] = vm.valueDateArr[0][1] = null;
+
+							case 5:
 							case 'end':
 								return _context.stop();
 						}
@@ -1981,17 +1989,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			if (['DATE', 'DATETIME'].indexOf(vm.type) != -1) vm.modalWindowWithDate = true;
 			if (['TIME', 'DATETIME'].indexOf(vm.type) != -1) vm.modalWindowWithTime = true;
 			if (vm.multy) {
-				vm.valueArr.slice(0, vm.valueArr.length);
+				vm.valueArr.splice(0, vm.valueArr.length);
 				vm.valueDateArr.forEach(function (row, i) {
 					var e = vm.getValueDatetimeFromArr({ num: i });
 					if (e == '') return;
 					vm.valueArrViewTMP.push(e);
-					vm.valueArrView.push(vm.dateFormat(e));
+					vm.valueArrView.push(dateFormater(e));
 					vm.valueArr.push(e);
 				});
 			} else {
 				vm.value = vm.getValueDatetimeFromArr({});
-				vm.valueView = vm.dateFormat(vm.value);
+				vm.valueView = dateFormater(vm.value);
 			}
 		}
 
@@ -2002,17 +2010,21 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				vm.tableValues.forEach(function (item) {
 					vm.tickLabels.push(item.text);
 				});
+				vm.max = vm.tableValues.length - 1;
+				vm.min = 0;
 				if (!vm.isNumeric) {
 					vm.step = 1;
 					vm.ticksNeed = true;
-					vm.min = 0;
-					vm.max = vm.tickLabels.length - 1;
 					vm.tickSize = vm.data.tick_size || 2;
 				}
 			}
 			vm.value = vm.value || vm.min;
 			if (vm.valueArr != undefined && vm.valueArr.length > 0) vm.valueArr.forEach(function (element, i) {
-				vm.valueRange.push([vm.valueArr[i][0] || vm.min, vm.valueArr[i][1] || vm.min]);
+				element[0] = nvl(element[0], vm.min);
+				element[1] = nvl(element[0], vm.max);
+				if (element[0] > vm.max) element[0] = vm.min;
+				if (element[1] > vm.max) element[1] = vm.min;
+				vm.valueRange.push([element[0], element[1]]);
 			});else vm.valueRange.push([vm.min, vm.min]);
 		}
 		if (['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(vm.type) == -1) vm.isNumeric = false;
@@ -2051,8 +2063,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.rules.push(function (v) {
 				return tmp.test(v) || vm.error;
 			});
-
-		vm.paramSetData({ num: vm.paramsForm, data: vm.data });
+		vm.paramSetData({ num: vm.paramsForm, data: _extends({}, vm.data, { value: null, value_view: null, value_arr: null, value_arr_view: null }) });
 		setTimeout(function () {
 			vm.checkRefresh(true);
 		}, 500);
@@ -2159,7 +2170,7 @@ var render = function() {
                                               max: _vm.max,
                                               step: _vm.step
                                             },
-                                            on: { change: _vm.valChange },
+                                            on: { change: _vm.setNewVal },
                                             model: {
                                               value: _vm.valueRange[0][0],
                                               callback: function($$v) {
@@ -2211,7 +2222,7 @@ var render = function() {
                                               step: _vm.step
                                             },
                                             on: {
-                                              change: _vm.valChange,
+                                              change: _vm.setNewVal,
                                               keyup: function($event) {
                                                 if (
                                                   !("button" in $event) &&
@@ -2277,7 +2288,7 @@ var render = function() {
                                               step: _vm.step
                                             },
                                             on: {
-                                              change: _vm.valChange,
+                                              change: _vm.setNewVal,
                                               keyup: function($event) {
                                                 if (
                                                   !("button" in $event) &&
@@ -2338,7 +2349,7 @@ var render = function() {
                                                   max: _vm.max,
                                                   step: _vm.step
                                                 },
-                                                on: { change: _vm.valChange },
+                                                on: { change: _vm.setNewVal },
                                                 model: {
                                                   value: _vm.valueRange[0][1],
                                                   callback: function($$v) {
@@ -2363,7 +2374,7 @@ var render = function() {
                                                   max: _vm.max,
                                                   step: _vm.step
                                                 },
-                                                on: { change: _vm.valChange },
+                                                on: { change: _vm.setNewVal },
                                                 model: {
                                                   value: _vm.value,
                                                   callback: function($$v) {
@@ -2404,7 +2415,7 @@ var render = function() {
                                           step: _vm.step
                                         },
                                         on: {
-                                          change: _vm.valChange,
+                                          change: _vm.setNewVal,
                                           keyup: function($event) {
                                             if (
                                               !("button" in $event) &&
@@ -2456,10 +2467,11 @@ var render = function() {
                                             step: _vm.step,
                                             multiple: "",
                                             chips: "",
-                                            "deletable-chips": ""
+                                            "deletable-chips": "",
+                                            "small-chips": ""
                                           },
                                           on: {
-                                            change: _vm.valChange,
+                                            change: _vm.setNewVal,
                                             keyup: function($event) {
                                               if (
                                                 !("button" in $event) &&
@@ -2533,7 +2545,8 @@ var render = function() {
                                                   max: _vm.max
                                                 },
                                                 on: {
-                                                  change: _vm.valChange,
+                                                  change: _vm.setNewVal,
+                                                  input: _vm.setNewVal,
                                                   keyup: function($event) {
                                                     if (
                                                       !("button" in $event) &&
@@ -2631,10 +2644,8 @@ var render = function() {
                                                     _c(
                                                       "v-btn",
                                                       {
-                                                        attrs: {
-                                                          flat: "",
-                                                          color: "primary"
-                                                        },
+                                                        staticClass: "accent",
+                                                        attrs: { flat: "" },
                                                         on: {
                                                           click: function(
                                                             $event
@@ -2651,10 +2662,8 @@ var render = function() {
                                                     _c(
                                                       "v-btn",
                                                       {
-                                                        attrs: {
-                                                          flat: "",
-                                                          color: "primary"
-                                                        },
+                                                        staticClass: "accent",
+                                                        attrs: { flat: "" },
                                                         on: {
                                                           click: function(
                                                             $event
@@ -2723,10 +2732,11 @@ var render = function() {
                                                     max: _vm.max,
                                                     multiple: "",
                                                     chips: "",
+                                                    "deletable-chips": "",
                                                     "small-chips": ""
                                                   },
                                                   on: {
-                                                    change: _vm.valChange,
+                                                    change: _vm.setNewVal,
                                                     keyup: function($event) {
                                                       if (
                                                         !("button" in $event) &&
@@ -2795,10 +2805,8 @@ var render = function() {
                                                       _c(
                                                         "v-btn",
                                                         {
-                                                          attrs: {
-                                                            flat: "",
-                                                            color: "primary"
-                                                          },
+                                                          staticClass: "accent",
+                                                          attrs: { flat: "" },
                                                           on: {
                                                             click: function(
                                                               $event
@@ -2815,17 +2823,13 @@ var render = function() {
                                                       _c(
                                                         "v-btn",
                                                         {
-                                                          attrs: {
-                                                            flat: "",
-                                                            color: "primary"
-                                                          },
+                                                          staticClass: "accent",
+                                                          attrs: { flat: "" },
                                                           on: {
                                                             click: function(
                                                               $event
                                                             ) {
-                                                              _vm.$refs.modalWindow.save(
-                                                                _vm.valueArrViewTMP
-                                                              )
+                                                              _vm.saveModalWindowWithDateMulty()
                                                             }
                                                           }
                                                         },

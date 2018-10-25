@@ -1,7 +1,8 @@
 const MAX_ID= 9999999,
 	MAX_INPUT_IN_COL= 6,
 	appTheme={  primary: '#2c353f', secondary: '#452F41', accent: '#555C3E', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50', checkBox:"#FFFFFF"},
-	authButtons= [ {id:1, title:'Войти', icon:'input', allig:'right', click:'dialogSave' , needCheck:true} ]
+	authButtons= [ {id:1, title:'Войти', icon:'input', allig:'right', click:'dialogSave' , needCheck:true} ],
+	dateFormatStr = '$3.$2.$1' //2018-10-03 - 1, 2 и 3 цифры
 
 function appThemeInit(){
 	let styleElt, styleSheet
@@ -43,6 +44,10 @@ function appThemeInit(){
 		'DIV#block_message Div.success--content>Div	{background-color: '+appTheme.success+';} '+
 		'.secondary-color 							{color: '+appTheme.secondary+';}'
 	
+}
+
+function dateFormater(str){//2018-10-03 12:52 в 03.10.2018 12:52
+	return nvl(str,'').replace(/^(\d\d\d\d)-(\d\d)-(\d\d)/, dateFormatStr )
 }
 
 function getNewId(){

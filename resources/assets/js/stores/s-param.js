@@ -37,7 +37,7 @@ export default {
 		},
 	},
 	mutations:{
-		allParamsClearing(state, {num, code, value}){
+		allParamsClearing(state, {num, }){
 			state.params[num] ={}
 		},
 		paramSettingData(state, {num,code, data}){

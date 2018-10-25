@@ -1503,9 +1503,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 	},
 	mutations: {
 		allParamsClearing: function allParamsClearing(state, _ref16) {
-			var num = _ref16.num,
-			    code = _ref16.code,
-			    value = _ref16.value;
+			var num = _ref16.num;
 
 			state.params[num] = {};
 		},
