@@ -58,17 +58,26 @@
 									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
 									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" multiple chips deletable-chips small-chips
 									:class="componentClassGet" />
-								<v-dialog v-else-if="!multy && isDateTimeLike && type!='DATETIME_RANGE'" ref="modalWindow" v-model="modalWindow" :return-value.sync="value" persistent lazy full-width	:width="getmodalWindowWidth" @show='changeChecked' 
-										@update:returnValue="setNewVal" >
+								<v-dialog v-else-if="!multy && isDateTimeLike " ref="modalWindow" v-model="modalWindow" :return-value.sync="value" persistent lazy full-width	:width="getmodalWindowWidth" @show='changeChecked' 
+										@update:returnValue="setNewVal" class='max-width'>
 									<v-text-field slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable"  readonly ref="input" 
 										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" 
-										@change="setNewVal" @input="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" />
+										@change="setNewVal" @input="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
 									<template>
 										<v-date-picker v-if="modalWindowWithDate  && type!='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker"/>
 										<v-time-picker v-else-if="type=='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" format="24hr"/>
 										<v-time-picker v-if="modalWindowWithTime && type!='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" format="24hr"/>
 										<v-date-picker v-else-if="type=='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker"/>
-										<v-spacer/>
+
+										<template v-if="type=='DATETIME_RANGE'">
+											<div class='v-date-picker-more-height v-picker v-card ' style="display: inline-grid;" >
+												<v-icon >fast_forward</v-icon>										
+												<v-icon >fast_forward</v-icon>										
+												<v-icon >fast_forward</v-icon>										
+											</div>
+											<v-date-picker v-model="valueArrPairs[1][0]" scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker"/>
+											<v-time-picker v-model="valueArrPairs[1][1]" scrollable locale="ru" format="24hr"/>
+										</template>
 										<v-toolbar dense  color="primary" >	
 											<v-btn flat class="accent"  @click="modalWindow = false">Отмена</v-btn>
 											<v-spacer/>
@@ -77,10 +86,10 @@
 									</template>
 								</v-dialog>
 								<v-dialog v-else-if="multy && type=='DATE'"	ref="modalWindow" v-model="modalWindow" :return-value.sync="valueArr" persistent lazy full-width	:width="getmodalWindowWidth" @show='changeChecked' 
-										@update:returnValue="setNewVal" >
+										@update:returnValue="setNewVal" class='max-width'>
 									<v-combobox slot="activator" v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable"  readonly ref="input" 
 										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" multiple chips deletable-chips small-chips
-										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" />
+										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
 									<template>
 										<v-date-picker v-if="modalWindowWithDate"  v-model="valueArr" multiple  scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker" />
 										<v-spacer/>
@@ -247,7 +256,7 @@ time-with-seconds	##:##:##
 			},
 			getmodalWindowWidth(){
 				let vm=this
-				return vm.type=='DATE'? '290px' : vm.type=='TIME'? '290px' : ['DATETIME', 'DATETIME_RANGE', 'TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1 ? '584px' :''
+				return vm.type=='DATE'? '290px' : vm.type=='TIME'? '290px' : ['DATETIME', 'TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1 ? '584px': ['DATETIME_RANGE'].indexOf(vm.type)!=-1 ? '1200px' :''
 			},
 		},
 		watch: {
@@ -256,28 +265,44 @@ time-with-seconds	##:##:##
 			XStore,
 		],		
 		methods: {
-			getValueDatetimeFromArr({check, num}){
-				let vm=this
+			getValueDatetimeFromArr({check, num, stage=0}){
+				let vm=this,
+					fstPart = null,
+					scndPart = null
 				check=check||false
 				num=num||0
-				if(check){
-					if((vm.modalWindowWithDate || vm.modalWindowWithRange) && vm.valueArrPairs[num][0]==null)
-						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите данные полностью!'});
-					if((vm.modalWindowWithTime || vm.modalWindowWithRange) && vm.valueArrPairs[num][1]==null)
+				if(vm.type!='DATETIME_RANGE' || stage==1){
+					fstPart = vm.valueArrPairs[num][0]!=null?vm.valueArrPairs[num][0]:''
+					scndPart = vm.valueArrPairs[num][1]!=null?vm.valueArrPairs[num][1]:''
+					if(check && ( (vm.modalWindowWithDate || vm.modalWindowWithRange) && fstPart=='' || (vm.modalWindowWithTime || vm.modalWindowWithRange) && scndPart=='') )
 						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите данные полностью!'});
 				}
-				return (vm.valueArrPairs[num][0]!=null?vm.valueArrPairs[num][0]:'')+
-					(vm.valueArrPairs[num][0]!=null && vm.valueArrPairs[num][1]? 
-						(['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1?vm.rangeSeparator:' '):
+				else{
+					fstPart = vm.getValueDatetimeFromArr({check,num,stage:1}) 
+					scndPart = vm.getValueDatetimeFromArr({check,num:num+1,stage:1}) 
+					if(check && ( (vm.modalWindowWithDate || vm.modalWindowWithRange) && fstPart=='' || (vm.modalWindowWithTime || vm.modalWindowWithRange) && scndPart=='') )
+						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите данные полностью!'});
+				}
+				return fstPart+
+					(fstPart!='' && scndPart!=''? 
+						(['TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1 && stage==0 ? vm.rangeSeparator:' '):
 						'') + 
-					(vm.valueArrPairs[num][1]!=null?vm.valueArrPairs[num][1]:'')
+					scndPart
 			},
-			parseToDateArr(str, stage=1){
+			parseToDateArr({str, stage=1, needReturnVal=false}){ //needReturnVal- служебная, никто кроме самой функции его использовать не должен
 				let vm=this, e=null, mask = null
+				str=str||''
 				if(vm.type=='DATETIME_RANGE' && stage==1){
 					e = str.split(vm.rangeSeparator)
-					vm.parseToDateArr(e[0],2)
-					vm.parseToDateArr(e[1],2)
+					e[0]=vm.parseToDateArr({str:e[0], stage:2, needReturnVal:true} )
+					e[1]=vm.parseToDateArr({str:e[1], stage:2, needReturnVal:true} )
+					if(e[0][0]>e[1][0])
+						[e[0], e[1]] = [e[1], e[0]]
+					if(e[0][0]==e[1][0] && e[0][1]>e[1][1])
+						[e[0], e[1]] = [e[1], e[0]]
+					vm.valueArrPairs.push(e[0] )	
+					vm.valueArrPairs.push(e[1] )	
+					return
 				}
 				else if(!vm.modalWindowWithRange || vm.type=='DATETIME_RANGE' && stage==2){
 					e = str.split(' ')	
@@ -298,7 +323,10 @@ time-with-seconds	##:##:##
 					if(e[0]>e[1])
 						[e[0], e[1]] = [e[1], e[0]]
 				}
-				vm.valueArrPairs.push( [e[0],e[1]] )
+				if(needReturnVal)
+					return [e[0],e[1]]
+				else
+					vm.valueArrPairs.push( [e[0],e[1]] )
 			},
 			setNewVal(value, checkedFx=false, initRun=false){
 				let vm=this, tmp=[]
@@ -311,7 +339,7 @@ time-with-seconds	##:##:##
 						vm.valueArr.splice (0,vm.valueArr.length)
 						vm.valueArrView.splice (0,vm.valueArrView.length)
 						tmp.forEach((row,i)=>{
-							vm.parseToDateArr(row)
+							vm.parseToDateArr({str:row})
 							vm.valueArr.push(vm.getValueDatetimeFromArr({num:i}))
 							vm.valueArrView.push(dateFormater(vm.valueArr[i]))
 						})
@@ -329,10 +357,10 @@ time-with-seconds	##:##:##
 				}
 				else{
 					vm.value = value
-					if(['DATE', 'TIME', 'DATETIME', 'TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1){
+					if(['DATE', 'TIME', 'DATETIME', 'TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1){
 						vm.valueArrPairs.splice (0,vm.valueArrPairs.length)
-						vm.parseToDateArr(vm.value)
-						if(['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1){
+						vm.parseToDateArr({str:vm.value})
+						if(['TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1){
 							vm.valueArr.splice (0,vm.valueArr.length)
 							vm.valueArr.push(vm.getValueDatetimeFromArr({}))
 							vm.value=vm.valueArr[0]
@@ -462,8 +490,11 @@ time-with-seconds	##:##:##
 				}
 				vm.setVal(value, valueView,valueArr, valueArrView,initRun)
 
-				if(['DATE', 'TIME', 'DATETIME'].indexOf(vm.type)!=-1 && !vm.multy && value=='')
-					vm.valueArrPairs[0][0]=vm.valueArrPairs[0][1]=null	
+				if(['DATE', 'TIME', 'DATETIME','DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1 && !vm.multy && value=='')
+					vm.valueArrPairs[0][0]=vm.valueArrPairs[0][1]=null
+
+				if(['DATETIME_RANGE'].indexOf(vm.type)!=-1 && !vm.multy && value=='')
+					vm.valueArrPairs[1][0]=vm.valueArrPairs[1][1]=null	
 
 			},
 			async setVal(value, value_view, value_arr, value_arr_view, initRun=false){
@@ -558,6 +589,7 @@ time-with-seconds	##:##:##
 						else
 							console.log('Обнаружен некорректно заданый диапазон исходных данных в '+vm.code)
 				vm.valueArrPairs.push([null,null]);
+				vm.valueArrPairs.push([null,null]);
 				if(['DATE', 'DATETIME', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1)
 					vm.modalWindowWithDate=true
 				if(['TIME', 'DATETIME','TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1)
@@ -646,6 +678,7 @@ time-with-seconds	##:##:##
 	span.input-contaner>span,
 	span.input-contaner										{-webkit-box-align: start;	-ms-flex-align: start;	align-items: flex-start;	display: -webkit-box;	display: -ms-flexbox;	display: flex;	-webkit-box-flex: 1;	-ms-flex: 1 1 auto;	flex: 1 1 auto;}
 	.min-width-35px 										{min-width: 35px;}
+	.max-width 												{width:100%}
 	i.rotate-90												{-webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -o-transform: rotate(90deg);-ms-transform: rotate(90deg);transform: rotate(90deg); }
 	.sign-box												{top: 15px;    margin-left: 0px;    margin-right: 0px; }
 	.v-input__append-inner .v-input__icon--clear i			{font-size: 15px; }

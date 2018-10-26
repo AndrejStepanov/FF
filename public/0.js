@@ -1486,7 +1486,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n.v-date-picker-more-height\t\t\t\t\t\t\t\t{height: 392px;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
+exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\n.max-width \t\t\t\t\t\t\t\t\t\t\t\t{width:100%\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n.v-date-picker-more-height\t\t\t\t\t\t\t\t{height: 392px;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
 
 // exports
 
@@ -1508,6 +1508,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1740,7 +1749,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		getmodalWindowWidth: function getmodalWindowWidth() {
 			var vm = this;
-			return vm.type == 'DATE' ? '290px' : vm.type == 'TIME' ? '290px' : ['DATETIME', 'DATETIME_RANGE', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? '584px' : '';
+			return vm.type == 'DATE' ? '290px' : vm.type == 'TIME' ? '290px' : ['DATETIME', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? '584px' : ['DATETIME_RANGE'].indexOf(vm.type) != -1 ? '1200px' : '';
 		}
 	},
 	watch: {},
@@ -1748,27 +1757,54 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 	methods: {
 		getValueDatetimeFromArr: function getValueDatetimeFromArr(_ref) {
 			var check = _ref.check,
-			    num = _ref.num;
+			    num = _ref.num,
+			    _ref$stage = _ref.stage,
+			    stage = _ref$stage === undefined ? 0 : _ref$stage;
 
-			var vm = this;
+			var vm = this,
+			    fstPart = null,
+			    scndPart = null;
 			check = check || false;
 			num = num || 0;
-			if (check) {
-				if ((vm.modalWindowWithDate || vm.modalWindowWithRange) && vm.valueArrPairs[num][0] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
-				if ((vm.modalWindowWithTime || vm.modalWindowWithRange) && vm.valueArrPairs[num][1] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
+			if (vm.type != 'DATETIME_RANGE' || stage == 1) {
+				fstPart = vm.valueArrPairs[num][0] != null ? vm.valueArrPairs[num][0] : '';
+				scndPart = vm.valueArrPairs[num][1] != null ? vm.valueArrPairs[num][1] : '';
+				if (check && ((vm.modalWindowWithDate || vm.modalWindowWithRange) && fstPart == '' || (vm.modalWindowWithTime || vm.modalWindowWithRange) && scndPart == '')) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
+			} else {
+				fstPart = vm.getValueDatetimeFromArr({ check: check, num: num, stage: 1 });
+				scndPart = vm.getValueDatetimeFromArr({ check: check, num: num + 1, stage: 1 });
+				if (check && ((vm.modalWindowWithDate || vm.modalWindowWithRange) && fstPart == '' || (vm.modalWindowWithTime || vm.modalWindowWithRange) && scndPart == '')) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
 			}
-			return (vm.valueArrPairs[num][0] != null ? vm.valueArrPairs[num][0] : '') + (vm.valueArrPairs[num][0] != null && vm.valueArrPairs[num][1] ? ['TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? vm.rangeSeparator : ' ' : '') + (vm.valueArrPairs[num][1] != null ? vm.valueArrPairs[num][1] : '');
+			return fstPart + (fstPart != '' && scndPart != '' ? ['TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1 && stage == 0 ? vm.rangeSeparator : ' ' : '') + scndPart;
 		},
-		parseToDateArr: function parseToDateArr(str) {
-			var stage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-
+		parseToDateArr: function parseToDateArr(_ref2) {
+			var str = _ref2.str,
+			    _ref2$stage = _ref2.stage,
+			    stage = _ref2$stage === undefined ? 1 : _ref2$stage,
+			    _ref2$needReturnVal = _ref2.needReturnVal,
+			    needReturnVal = _ref2$needReturnVal === undefined ? false : _ref2$needReturnVal;
+			//needReturnVal- служебная, никто кроме самой функции его использовать не должен
 			var vm = this,
 			    e = null,
 			    mask = null;
+			str = str || '';
 			if (vm.type == 'DATETIME_RANGE' && stage == 1) {
 				e = str.split(vm.rangeSeparator);
-				vm.parseToDateArr(e[0], 2);
-				vm.parseToDateArr(e[1], 2);
+				e[0] = vm.parseToDateArr({ str: e[0], stage: 2, needReturnVal: true });
+				e[1] = vm.parseToDateArr({ str: e[1], stage: 2, needReturnVal: true });
+				if (e[0][0] > e[1][0]) {
+					;
+					var _ref3 = [e[1], e[0]];
+					e[0] = _ref3[0];
+					e[1] = _ref3[1];
+				}if (e[0][0] == e[1][0] && e[0][1] > e[1][1]) {
+					;
+					var _ref4 = [e[1], e[0]];
+					e[0] = _ref4[0];
+					e[1] = _ref4[1];
+				}vm.valueArrPairs.push(e[0]);
+				vm.valueArrPairs.push(e[1]);
+				return;
 			} else if (!vm.modalWindowWithRange || vm.type == 'DATETIME_RANGE' && stage == 2) {
 				e = str.split(' ');
 				if (e.length > 0 && e[0] != '' && e[0].match(/^\d\d:\d\d$|^\d\d:\d\d:\d\d$/) != null) {
@@ -1785,12 +1821,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				e[1] = e.length > 1 && nvl(e[1]) != '' && e[1].match(mask) == null ? null : e[1];
 				if (e[0] > e[1]) {
 					;
-					var _ref2 = [e[1], e[0]];
-					e[0] = _ref2[0];
-					e[1] = _ref2[1];
+					var _ref5 = [e[1], e[0]];
+					e[0] = _ref5[0];
+					e[1] = _ref5[1];
 				}
 			}
-			vm.valueArrPairs.push([e[0], e[1]]);
+			if (needReturnVal) return [e[0], e[1]];else vm.valueArrPairs.push([e[0], e[1]]);
 		},
 		setNewVal: function setNewVal(value) {
 			var checkedFx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -1807,7 +1843,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 					vm.valueArr.splice(0, vm.valueArr.length);
 					vm.valueArrView.splice(0, vm.valueArrView.length);
 					tmp.forEach(function (row, i) {
-						vm.parseToDateArr(row);
+						vm.parseToDateArr({ str: row });
 						vm.valueArr.push(vm.getValueDatetimeFromArr({ num: i }));
 						vm.valueArrView.push(dateFormater(vm.valueArr[i]));
 					});
@@ -1822,10 +1858,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				vm.valueArrPairs[0][1] = value[1];
 			} else {
 				vm.value = value;
-				if (['DATE', 'TIME', 'DATETIME', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1) {
+				if (['DATE', 'TIME', 'DATETIME', 'TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
 					vm.valueArrPairs.splice(0, vm.valueArrPairs.length);
-					vm.parseToDateArr(vm.value);
-					if (['TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1) {
+					vm.parseToDateArr({ str: vm.value });
+					if (['TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
 						vm.valueArr.splice(0, vm.valueArr.length);
 						vm.valueArr.push(vm.getValueDatetimeFromArr({}));
 						vm.value = vm.valueArr[0];
@@ -1887,11 +1923,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.checkRefresh({});
 		},
 		checkRefresh: function () {
-			var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(_ref3) {
-				var _ref3$checkedFx = _ref3.checkedFx,
-				    checkedFx = _ref3$checkedFx === undefined ? false : _ref3$checkedFx,
-				    _ref3$initRun = _ref3.initRun,
-				    initRun = _ref3$initRun === undefined ? false : _ref3$initRun;
+			var _ref7 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(_ref6) {
+				var _ref6$checkedFx = _ref6.checkedFx,
+				    checkedFx = _ref6$checkedFx === undefined ? false : _ref6$checkedFx,
+				    _ref6$initRun = _ref6.initRun,
+				    initRun = _ref6$initRun === undefined ? false : _ref6$initRun;
 				var vm, tmp1, tmp2, value, valueView, valueArr, valueArrView;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
 					while (1) {
@@ -1939,9 +1975,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 								}
 								vm.setVal(value, valueView, valueArr, valueArrView, initRun);
 
-								if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1 && !vm.multy && value == '') vm.valueArrPairs[0][0] = vm.valueArrPairs[0][1] = null;
+								if (['DATE', 'TIME', 'DATETIME', 'DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1 && !vm.multy && value == '') vm.valueArrPairs[0][0] = vm.valueArrPairs[0][1] = null;
 
-							case 4:
+								if (['DATETIME_RANGE'].indexOf(vm.type) != -1 && !vm.multy && value == '') vm.valueArrPairs[1][0] = vm.valueArrPairs[1][1] = null;
+
+							case 5:
 							case 'end':
 								return _context.stop();
 						}
@@ -1949,14 +1987,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}, _callee, this);
 			}));
 
-			function checkRefresh(_x4) {
-				return _ref4.apply(this, arguments);
+			function checkRefresh(_x3) {
+				return _ref7.apply(this, arguments);
 			}
 
 			return checkRefresh;
 		}(),
 		setVal: function () {
-			var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value, value_view, value_arr, value_arr_view) {
+			var _ref8 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value, value_view, value_arr, value_arr_view) {
 				var initRun = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 				var vm;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
@@ -1980,8 +2018,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}, _callee2, this);
 			}));
 
-			function setVal(_x6, _x7, _x8, _x9) {
-				return _ref5.apply(this, arguments);
+			function setVal(_x5, _x6, _x7, _x8) {
+				return _ref8.apply(this, arguments);
 			}
 
 			return setVal;
@@ -2049,6 +2087,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		if (['DATE', 'TIME', 'DATETIME', 'DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
 			if (!vm.multy && vm.valueArr.length > 0) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) vm.value = vm.valueArr[0];else if (vm.valueArr[0].length > 1) vm.value = vm.valueArr[0][0] + vm.rangeSeparator + vm.valueArr[0][1];else console.log('Обнаружен некорректно заданый диапазон исходных данных в ' + vm.code);
 			vm.valueArrPairs.push([null, null]);
+			vm.valueArrPairs.push([null, null]);
 			if (['DATE', 'DATETIME', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.modalWindowWithDate = true;
 			if (['TIME', 'DATETIME', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.modalWindowWithTime = true;
 			if (['DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.modalWindowWithRange = true;
@@ -2079,9 +2118,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				if (element[1] < vm.min) element[1] = vm.min;
 				if (element[1] < element[0]) {
 					;
-					var _ref6 = [element[1], element[0]];
-					element[0] = _ref6[0];
-					element[1] = _ref6[1];
+					var _ref9 = [element[1], element[0]];
+					element[0] = _ref9[0];
+					element[1] = _ref9[1];
 				}vm.valueArrPairs.push([element[0], element[1]]);
 			});else vm.valueArrPairs.push([vm.min, vm.min]);
 		}
@@ -2564,13 +2603,12 @@ var render = function() {
                                             expression: "valueArr"
                                           }
                                         })
-                                      : !_vm.multy &&
-                                        _vm.isDateTimeLike &&
-                                        _vm.type != "DATETIME_RANGE"
+                                      : !_vm.multy && _vm.isDateTimeLike
                                         ? _c(
                                             "v-dialog",
                                             {
                                               ref: "modalWindow",
+                                              staticClass: "max-width",
                                               attrs: {
                                                 "return-value": _vm.value,
                                                 persistent: "",
@@ -2598,6 +2636,7 @@ var render = function() {
                                             [
                                               _c("v-text-field", {
                                                 ref: "input",
+                                                staticClass: "mt-0 body-1",
                                                 attrs: {
                                                   slot: "activator",
                                                   label: _vm.name,
@@ -2753,7 +2792,93 @@ var render = function() {
                                                       })
                                                     : _vm._e(),
                                                 _vm._v(" "),
-                                                _c("v-spacer"),
+                                                _vm.type == "DATETIME_RANGE"
+                                                  ? [
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "v-date-picker-more-height v-picker v-card ",
+                                                          staticStyle: {
+                                                            display:
+                                                              "inline-grid"
+                                                          }
+                                                        },
+                                                        [
+                                                          _c("v-icon", [
+                                                            _vm._v(
+                                                              "fast_forward"
+                                                            )
+                                                          ]),
+                                                          _vm._v(" "),
+                                                          _c("v-icon", [
+                                                            _vm._v(
+                                                              "fast_forward"
+                                                            )
+                                                          ]),
+                                                          _vm._v(" "),
+                                                          _c("v-icon", [
+                                                            _vm._v(
+                                                              "fast_forward"
+                                                            )
+                                                          ])
+                                                        ],
+                                                        1
+                                                      ),
+                                                      _vm._v(" "),
+                                                      _c("v-date-picker", {
+                                                        ref: "datePicker",
+                                                        staticClass:
+                                                          "v-date-picker-more-height",
+                                                        attrs: {
+                                                          scrollable: "",
+                                                          locale: "ru"
+                                                        },
+                                                        model: {
+                                                          value:
+                                                            _vm
+                                                              .valueArrPairs[1][0],
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm
+                                                                .valueArrPairs[1],
+                                                              0,
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "valueArrPairs[1][0]"
+                                                        }
+                                                      }),
+                                                      _vm._v(" "),
+                                                      _c("v-time-picker", {
+                                                        attrs: {
+                                                          scrollable: "",
+                                                          locale: "ru",
+                                                          format: "24hr"
+                                                        },
+                                                        model: {
+                                                          value:
+                                                            _vm
+                                                              .valueArrPairs[1][1],
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm
+                                                                .valueArrPairs[1],
+                                                              1,
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "valueArrPairs[1][1]"
+                                                        }
+                                                      })
+                                                    ]
+                                                  : _vm._e(),
                                                 _vm._v(" "),
                                                 _c(
                                                   "v-toolbar",
@@ -2813,6 +2938,7 @@ var render = function() {
                                               "v-dialog",
                                               {
                                                 ref: "modalWindow",
+                                                staticClass: "max-width",
                                                 attrs: {
                                                   "return-value": _vm.valueArr,
                                                   persistent: "",
@@ -2840,6 +2966,7 @@ var render = function() {
                                               [
                                                 _c("v-combobox", {
                                                   ref: "input",
+                                                  staticClass: "mt-0 body-1",
                                                   attrs: {
                                                     slot: "activator",
                                                     label: _vm.name,
