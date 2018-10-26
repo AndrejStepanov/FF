@@ -47,7 +47,7 @@ function appThemeInit(){
 }
 
 function dateFormater(str){//2018-10-03 12:52 в 03.10.2018 12:52
-	return nvl(str,'').replace(/^(\d\d\d\d)-(\d\d)-(\d\d)/, dateFormatStr )
+	return nvl(str,'').replace(/(\d\d\d\d)-(\d\d)-(\d\d)/g, dateFormatStr )
 }
 
 function getNewId(){

@@ -133,7 +133,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\mixins\\x-store.vue"
+Component.options.__file = "resources/assets/js/mixins/x-store.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -142,9 +142,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2a87027e", Component.options)
+    hotAPI.createRecord("data-v-fdfb74fe", Component.options)
   } else {
-    hotAPI.reload("data-v-2a87027e", Component.options)
+    hotAPI.reload("data-v-fdfb74fe", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -188,7 +188,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\mixins\\x-dialog.vue"
+Component.options.__file = "resources/assets/js/mixins/x-dialog.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -197,9 +197,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-341bcdd0", Component.options)
+    hotAPI.createRecord("data-v-18652a58", Component.options)
   } else {
-    hotAPI.reload("data-v-341bcdd0", Component.options)
+    hotAPI.reload("data-v-18652a58", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -339,13 +339,17 @@ var singletonElement = null
 var singletonCounter = 0
 var isProduction = false
 var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
 
 // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
 // tags it will allow on a page
 var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
 
-module.exports = function (parentId, list, _isProduction) {
+module.exports = function (parentId, list, _isProduction, _options) {
   isProduction = _isProduction
+
+  options = _options || {}
 
   var styles = listToStyles(parentId, list)
   addStylesToDom(styles)
@@ -410,7 +414,7 @@ function createStyleElement () {
 
 function addStyle (obj /* StyleObjectPart */) {
   var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
 
   if (styleElement) {
     if (isProduction) {
@@ -491,6 +495,9 @@ function applyToTag (styleElement, obj) {
 
   if (media) {
     styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
   }
 
   if (sourceMap) {
@@ -1996,7 +2003,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\c-app.vue"
+Component.options.__file = "resources/assets/js/components/c-app.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2005,9 +2012,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5aa91570", Component.options)
+    hotAPI.createRecord("data-v-39abbab0", Component.options)
   } else {
-    hotAPI.reload("data-v-5aa91570", Component.options)
+    hotAPI.reload("data-v-39abbab0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2235,7 +2242,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\c-head.vue"
+Component.options.__file = "resources/assets/js/components/c-head.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2244,9 +2251,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-74fcd621", Component.options)
+    hotAPI.createRecord("data-v-764ed8e1", Component.options)
   } else {
-    hotAPI.reload("data-v-74fcd621", Component.options)
+    hotAPI.reload("data-v-764ed8e1", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2267,13 +2274,13 @@ var content = __webpack_require__(21);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("ff4e575a", content, false);
+var update = __webpack_require__(6)("145f4a51", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-74fcd621\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./c-head.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-74fcd621\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./c-head.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-764ed8e1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./c-head.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-764ed8e1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./c-head.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -2286,7 +2293,7 @@ if(false) {
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(undefined);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -2401,7 +2408,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\c-profile.vue"
+Component.options.__file = "resources/assets/js/components/c-profile.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2410,9 +2417,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1441ad78", Component.options)
+    hotAPI.createRecord("data-v-8a209a90", Component.options)
   } else {
-    hotAPI.reload("data-v-1441ad78", Component.options)
+    hotAPI.reload("data-v-8a209a90", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2606,7 +2613,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1441ad78", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-8a209a90", module.exports)
   }
 }
 
@@ -2673,7 +2680,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-74fcd621", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-764ed8e1", module.exports)
   }
 }
 
@@ -2703,7 +2710,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\c-footer.vue"
+Component.options.__file = "resources/assets/js/components/c-footer.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2712,9 +2719,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-656fa21c", Component.options)
+    hotAPI.createRecord("data-v-5a4bf4dc", Component.options)
   } else {
-    hotAPI.reload("data-v-656fa21c", Component.options)
+    hotAPI.reload("data-v-5a4bf4dc", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2777,7 +2784,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-656fa21c", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-5a4bf4dc", module.exports)
   }
 }
 
@@ -2807,7 +2814,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\c-msg-list.vue"
+Component.options.__file = "resources/assets/js/components/c-msg-list.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2816,9 +2823,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-00c9ea2b", Component.options)
+    hotAPI.createRecord("data-v-2fdc8ceb", Component.options)
   } else {
-    hotAPI.reload("data-v-00c9ea2b", Component.options)
+    hotAPI.reload("data-v-2fdc8ceb", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2916,7 +2923,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\c-msg.vue"
+Component.options.__file = "resources/assets/js/components/c-msg.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2925,9 +2932,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4bd8da60", Component.options)
+    hotAPI.createRecord("data-v-8dd38fe0", Component.options)
   } else {
-    hotAPI.reload("data-v-4bd8da60", Component.options)
+    hotAPI.reload("data-v-8dd38fe0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -3207,7 +3214,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4bd8da60", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-8dd38fe0", module.exports)
   }
 }
 
@@ -3247,7 +3254,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-00c9ea2b", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-2fdc8ceb", module.exports)
   }
 }
 
@@ -3350,7 +3357,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-5aa91570", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-39abbab0", module.exports)
   }
 }
 
@@ -3381,7 +3388,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\mixins\\x-app.vue"
+Component.options.__file = "resources/assets/js/mixins/x-app.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -3390,9 +3397,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a88e9bfe", Component.options)
+    hotAPI.createRecord("data-v-7b7dae7e", Component.options)
   } else {
-    hotAPI.reload("data-v-a88e9bfe", Component.options)
+    hotAPI.reload("data-v-7b7dae7e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -3489,7 +3496,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\c-input-cols.vue"
+Component.options.__file = "resources/assets/js/components/c-input-cols.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -3498,9 +3505,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9e96bcd2", Component.options)
+    hotAPI.createRecord("data-v-65a99457", Component.options)
   } else {
-    hotAPI.reload("data-v-9e96bcd2", Component.options)
+    hotAPI.reload("data-v-65a99457", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -3616,7 +3623,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\c-input.vue"
+Component.options.__file = "resources/assets/js/components/c-input.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -3625,9 +3632,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-bff2f64e", Component.options)
+    hotAPI.createRecord("data-v-6e164bce", Component.options)
   } else {
-    hotAPI.reload("data-v-bff2f64e", Component.options)
+    hotAPI.reload("data-v-6e164bce", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -3648,13 +3655,13 @@ var content = __webpack_require__(82);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("38a6419d", content, false);
+var update = __webpack_require__(6)("0cb190ca", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-bff2f64e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./c-input.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-bff2f64e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./c-input.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6e164bce\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./c-input.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6e164bce\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./c-input.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -3667,7 +3674,7 @@ if(false) {
 /* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(undefined);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -3693,6 +3700,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
 //
 //
 //
@@ -3845,11 +3854,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			modalWindow: false,
 			modalWindowWithDate: false,
 			modalWindowWithTime: false,
+			modalWindowWithRange: false,
 			multy: false,
 			name: '',
 			nullable: false,
 			placeholder: '',
 			readonly: false,
+			rangeSeparator: ' до ',
 			rules: [],
 			show: false,
 			sign: 0,
@@ -3866,13 +3877,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			tip: '',
 			type: 'type',
 			value: '', // предпологаю число
-			valueDateArr: [], //[ ['2018-10-03', '12:52'],  ]
 			valueView: '',
-			valueRange: [], //[ [1,0], [1, 2] ]
-			valueRangeView: [],
 			valueArr: [], //['Петя','Вася','Катя',]
-			valueArrView: [],
-			valueArrViewTMP: []
+			valueArrPairs: [], //[ [1,0], [1, 2] ] для дат [ ['2018-10-03', '12:52'],  ]
+			valueArrView: []
 		};
 	},
 	props: {
@@ -3924,7 +3932,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		getmodalWindowWidth: function getmodalWindowWidth() {
 			var vm = this;
-			return vm.type == 'DATE' ? '290px' : vm.type == 'TIME' ? '290px' : vm.type == 'DATETIME' ? '584px' : '';
+			return vm.type == 'DATE' ? '290px' : vm.type == 'TIME' ? '290px' : ['DATETIME', 'DATETIME_RANGE', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? '584px' : '';
 		}
 	},
 	watch: {},
@@ -3938,52 +3946,104 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			check = check || false;
 			num = num || 0;
 			if (check) {
-				if (vm.modalWindowWithDate && vm.valueDateArr[num][0] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!' });
-				if (vm.modalWindowWithTime && vm.valueDateArr[num][1] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите время!' });
+				if ((vm.modalWindowWithDate || vm.modalWindowWithRange) && vm.valueArrPairs[num][0] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
+				if ((vm.modalWindowWithTime || vm.modalWindowWithRange) && vm.valueArrPairs[num][1] == null) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
 			}
-			return (vm.valueDateArr[num][0] != null ? vm.valueDateArr[num][0] : '') + (vm.valueDateArr[num][0] != null && vm.valueDateArr[num][1] ? ' ' : '') + (vm.valueDateArr[num][1] != null ? vm.valueDateArr[num][1] : '');
+			return (vm.valueArrPairs[num][0] != null ? vm.valueArrPairs[num][0] : '') + (vm.valueArrPairs[num][0] != null && vm.valueArrPairs[num][1] ? ['TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? vm.rangeSeparator : ' ' : '') + (vm.valueArrPairs[num][1] != null ? vm.valueArrPairs[num][1] : '');
 		},
 		parseToDateArr: function parseToDateArr(str) {
+			var stage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
 			var vm = this,
-			    e = str.split(' ');
-			if (e.length > 0 && e[0] != '' && e[0].match(/^\d\d:\d\d$/) != null) {
-				e[1] = e[0];
-				e[0] = null;
+			    e = null,
+			    mask = null;
+			if (vm.type == 'DATETIME_RANGE' && stage == 1) {
+				e = str.split(vm.rangeSeparator);
+				vm.parseToDateArr(e[0], 2);
+				vm.parseToDateArr(e[1], 2);
+			} else if (!vm.modalWindowWithRange || vm.type == 'DATETIME_RANGE' && stage == 2) {
+				e = str.split(' ');
+				if (e.length > 0 && e[0] != '' && e[0].match(/^\d\d:\d\d$|^\d\d:\d\d:\d\d$/) != null) {
+					e[1] = e[0];
+					e[0] = null;
+				}
+				e[0] = e.length > 0 && nvl(e[0]) != '' && e[0].match(/^\d\d\d\d-\d\d-\d\d$/) == null ? null : e[0];
+				e[1] = e.length > 1 && nvl(e[1]) != '' && e[1].match(/^\d\d:\d\d$|^\d\d:\d\d:\d\d$/) == null ? null : e[1];
+			} else {
+				e = str.split(vm.rangeSeparator);
+				mask = /^\d\d\d\d-\d\d-\d\d$/;
+				if (vm.type == 'TIME_RANGE') mask = /^\d\d:\d\d$|^\d\d:\d\d:\d\d$/;
+				e[0] = e.length > 0 && nvl(e[0]) != '' && e[0].match(mask) == null ? null : e[0];
+				e[1] = e.length > 1 && nvl(e[1]) != '' && e[1].match(mask) == null ? null : e[1];
+				if (e[0] > e[1]) {
+					;
+					var _ref2 = [e[1], e[0]];
+					e[0] = _ref2[0];
+					e[1] = _ref2[1];
+				}
 			}
-			e[0] = e.length > 0 && nvl(e[0]) != '' && e[0].match(/^\d\d\d\d-\d\d-\d\d$/) == null ? null : e[0];
-			e[1] = e.length > 1 && nvl(e[1]) != '' && e[1].match(/^\d\d:\d\d$/) == null ? null : e[1];
-			vm.valueDateArr.push([e[0], e[1]]);
+			vm.valueArrPairs.push([e[0], e[1]]);
 		},
 		setNewVal: function setNewVal(value) {
-			var vm = this;
-			if (vm.multy && vm.type == 'DATE') {
-				vm.valueDateArr.splice(0, vm.valueDateArr.length);
+			var checkedFx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+			var initRun = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+			var vm = this,
+			    tmp = [];
+			if (vm.multy) {
 				value.forEach(function (row) {
-					vm.parseToDateArr(row);
+					tmp.push(row);
 				});
-				vm.valueArr.splice(0, vm.valueArr.length);
-				vm.valueDateArr.forEach(function (row, i) {
-					vm.valueArr.push(vm.getValueDatetimeFromArr({ num: i }));
-				});
-				vm.valueArrView.splice(0, vm.valueArrView.length);
-				vm.valueArr.forEach(function (row) {
-					vm.valueArrView.push(dateFormater(row));
-				});
+				if (vm.type == 'DATE') {
+					vm.valueArrPairs.splice(0, vm.valueArrPairs.length);
+					vm.valueArr.splice(0, vm.valueArr.length);
+					vm.valueArrView.splice(0, vm.valueArrView.length);
+					tmp.forEach(function (row, i) {
+						vm.parseToDateArr(row);
+						vm.valueArr.push(vm.getValueDatetimeFromArr({ num: i }));
+						vm.valueArrView.push(dateFormater(vm.valueArr[i]));
+					});
+				} else if (vm.type == 'LIST') {
+					vm.valueArr.splice(0, vm.valueArr.length);
+					tmp.forEach(function (row) {
+						vm.valueArr.push(row);
+					});
+				}
+			} else if (vm.type == 'RANGE') {
+				vm.valueArrPairs[0][0] = value[0];
+				vm.valueArrPairs[0][1] = value[1];
 			} else {
 				vm.value = value;
-				if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) vm.valueView = dateFormater(vm.value);
+				if (['DATE', 'TIME', 'DATETIME', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1) {
+					vm.valueArrPairs.splice(0, vm.valueArrPairs.length);
+					vm.parseToDateArr(vm.value);
+					if (['TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1) {
+						vm.valueArr.splice(0, vm.valueArr.length);
+						vm.valueArr.push(vm.getValueDatetimeFromArr({}));
+						vm.value = vm.valueArr[0];
+					}
+					vm.valueView = dateFormater(vm.value);
+				}
 			}
-			vm.checkRefresh();
+			vm.checkRefresh({ checkedFx: checkedFx, initRun: initRun });
+		},
+		setNewValPairFst: function setNewValPairFst(value) {
+			var vm = this;
+			vm.setNewVal([value, vm.valueArrPairs[0][1]]);
+		},
+		setNewValPairScnd: function setNewValPairScnd(value) {
+			var vm = this;
+			vm.setNewVal([vm.valueArrPairs[0][0], value]);
 		},
 		saveModalWindowWithDateMulty: function saveModalWindowWithDateMulty() {
 			var vm = this;
-			if (vm.modalWindowWithDate && vm.valueArrViewTMP.length == 0) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!' });
-			vm.$refs.modalWindow.save(vm.valueArrViewTMP);
+			if (vm.modalWindowWithDate && vm.valueArr.length == 0) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!' });
+			vm.$refs.modalWindow.save(vm.valueArr);
 		},
 		changeSign: function changeSign() {
 			var vm = this;
 			if (vm.checked) vm.sign = (vm.sign + 1) % vm.signList.length;
-			vm.checkRefresh();
+			vm.checkRefresh({});
 		},
 		changeShow: function changeShow() {
 			var vm = this;
@@ -3994,12 +4054,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		submit: function submit() {
 			var vm = this;
-			vm.checkRefresh();
+			vm.checkRefresh({});
 			if (vm.dialogId > 0) vm.$root.$emit('dialog' + vm.paramsForm + 'Send', { param: vm.code, value: vm.value });
 		},
 		changeChecked: function changeChecked() {
 			var vm = this;
-			vm.checkRefresh(true);
+			vm.checkRefresh({ checkedFx: true });
 		},
 		onClick: function onClick() {
 			var vm = this,
@@ -4009,35 +4069,45 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				return;
 			vm.lastTimeSend = curTime;
 			vm.checked = true;
-			if (!tmp) vm.checkRefresh(true);
+			if (!tmp) vm.checkRefresh({ checkedFx: true });
 			setTimeout(function () {
 				vm.$refs.input.onClick();
 			}, 100);
 		},
 		onBlur: function onBlur() {
-			this.checkRefresh();
+			var vm = this;
+			vm.checkRefresh({});
 		},
 		checkRefresh: function () {
-			var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-				var checkedFx = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+			var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(_ref3) {
+				var _ref3$checkedFx = _ref3.checkedFx,
+				    checkedFx = _ref3$checkedFx === undefined ? false : _ref3$checkedFx,
+				    _ref3$initRun = _ref3.initRun,
+				    initRun = _ref3$initRun === undefined ? false : _ref3$initRun;
 				var vm, tmp1, tmp2, value, valueView, valueArr, valueArrView;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
-								vm = this, tmp1 = void 0, tmp2 = void 0, value = vm.value, valueView = vm.value, valueArr = vm.type == 'RANGE' || vm.multy ? [] : null, valueArrView = vm.type == 'RANGE' || vm.multy ? [] : null;
+								vm = this, tmp1 = void 0, tmp2 = void 0, value = vm.value, valueView = vm.value, valueArr = [], valueArrView = [];
 
-								if (vm.type == 'RANGE') {
+								if (vm.type == 'RANGE' && !vm.multy) {
 									value = valueView = null;
 									if (vm.isNumeric) {
-										vm.valueRange.forEach(function (row) {
+										vm.valueArrPairs.forEach(function (row) {
 											valueArr.push(row.slice(0));
 										});
 										valueArrView = valueArr.slice(0);
-									} else vm.valueRange.forEach(function (row) {
+									} else vm.valueArrPairs.forEach(function (row) {
 										valueArrView.push([nvlo(vm.tableValues[row[0]]).textFull, nvlo(vm.tableValues[row[1]]).textFull]);
 										valueArr.push([nvlo(vm.tableValues[row[0]]).value, nvlo(vm.tableValues[row[1]]).value]);
 									});
+									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
+								} else if (vm.modalWindowWithRange && !vm.multy) {
+									//считается что у нас есть только строки со значением и его отображением
+									valueView = vm.valueView;
+									valueArr.push(value.split(vm.rangeSeparator));
+									valueArrView.push(valueView.split(vm.rangeSeparator));
 									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
 								} else if (vm.hasInput && vm.multy) {
 									value = valueView = null;
@@ -4050,6 +4120,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
 								} else if (vm.hasInput) {
 									// работа просто с value
+									valueArr = valueArrView = null;
 									if (vm.isSliderLike && !vm.isNumeric) {
 										valueView = nvlo(vm.tableValues[value]).textFull;
 										value = nvlo(vm.tableValues[value]).value;
@@ -4058,12 +4129,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 									});else if (vm.modalWindowWithDate) valueView = vm.valueView;
 									if (!checkedFx) vm.checked = value === '' || value == null ? false : true;
 								}
-								vm.setVal(value, valueView, valueArr, valueArrView);
+								vm.setVal(value, valueView, valueArr, valueArrView, initRun);
 
-								if (vm.multy && vm.type == 'DATE' && valueArr.length == 0) vm.valueArrViewTMP.splice(0, vm.valueArrViewTMP.length);
-								if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1 && !vm.multy && value == '') vm.valueDateArr[0][0] = vm.valueDateArr[0][1] = null;
+								if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1 && !vm.multy && value == '') vm.valueArrPairs[0][0] = vm.valueArrPairs[0][1] = null;
 
-							case 5:
+							case 4:
 							case 'end':
 								return _context.stop();
 						}
@@ -4071,14 +4141,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}, _callee, this);
 			}));
 
-			function checkRefresh() {
-				return _ref2.apply(this, arguments);
+			function checkRefresh(_x4) {
+				return _ref4.apply(this, arguments);
 			}
 
 			return checkRefresh;
 		}(),
 		setVal: function () {
-			var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value, value_view, value_arr, value_arr_view) {
+			var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(value, value_view, value_arr, value_arr_view) {
+				var initRun = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 				var vm;
 				return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
 					while (1) {
@@ -4086,7 +4157,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 							case 0:
 								vm = this;
 
-								if (vm.hasInput && vm.needCheckBox) {
+								if (vm.hasInput && vm.needCheckBox && !initRun) {
 									vm.hasError = !vm.$refs.input.validate();
 									vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
 								}
@@ -4101,8 +4172,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}, _callee2, this);
 			}));
 
-			function setVal(_x2, _x3, _x4, _x5) {
-				return _ref3.apply(this, arguments);
+			function setVal(_x6, _x7, _x8, _x9) {
+				return _ref5.apply(this, arguments);
 			}
 
 			return setVal;
@@ -4144,6 +4215,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			if (isNaN(element.value)) vm.isNumeric = false;
 		});
 
+		if (vm.data.value_arr != undefined && vm.data.value_arr.length > 0) vm.data.value_arr.forEach(function (element) {
+			vm.valueArr.push(element);
+		});
+
 		if (vm.data.sign_list != undefined && vm.data.sign_list.length > 0) {
 			vm.signList.splice(0, vm.signList.length);
 			vm.data.sign_list.forEach(function (element) {
@@ -4159,33 +4234,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.classCss.push({ element: true });
 		});
 
-		if (vm.data.value_arr != undefined && vm.data.value_arr.length > 0) vm.data.value_arr.forEach(function (element) {
-			vm.valueArr.push(element);
-		});
-
 		vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : vm.type == 'SLIDER' ? 'v-slider' : vm.type == 'RANGE' ? 'v-range-slider' : vm.type == 'DATE' ? 'v-date-picker' : vm.type == 'TIME' ? 'v-time-picker' : 'v-text-field';
 
-		if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) {
-			vm.valueArr.forEach(function (row) {
-				vm.parseToDateArr(row);
-			});
-			if (vm.valueDateArr.length == 0) //подходит только для одной вводимой даты или диапазона из 2 дат, несколько диапазонов или множество дат должны формироваться отдельно
-				vm.valueDateArr.push([null, null]);
-			if (['DATE', 'DATETIME'].indexOf(vm.type) != -1) vm.modalWindowWithDate = true;
-			if (['TIME', 'DATETIME'].indexOf(vm.type) != -1) vm.modalWindowWithTime = true;
-			if (vm.multy) {
-				vm.valueArr.splice(0, vm.valueArr.length);
-				vm.valueDateArr.forEach(function (row, i) {
-					var e = vm.getValueDatetimeFromArr({ num: i });
-					if (e == '') return;
-					vm.valueArrViewTMP.push(e);
-					vm.valueArrView.push(dateFormater(e));
-					vm.valueArr.push(e);
-				});
-			} else {
-				vm.value = vm.getValueDatetimeFromArr({});
-				vm.valueView = dateFormater(vm.value);
-			}
+		if (vm.type == 'LIST' && !vm.multy && vm.valueArr.length > 0) vm.value = vm.valueArr[0];
+
+		if (['DATE', 'TIME', 'DATETIME', 'DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
+			if (!vm.multy && vm.valueArr.length > 0) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) vm.value = vm.valueArr[0];else if (vm.valueArr[0].length > 1) vm.value = vm.valueArr[0][0] + vm.rangeSeparator + vm.valueArr[0][1];else console.log('Обнаружен некорректно заданый диапазон исходных данных в ' + vm.code);
+			vm.valueArrPairs.push([null, null]);
+			if (['DATE', 'DATETIME', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.modalWindowWithDate = true;
+			if (['TIME', 'DATETIME', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.modalWindowWithTime = true;
+			if (['DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.modalWindowWithRange = true;
 		}
 
 		vm.isSliderLike = ['SLIDER', 'RANGE'].indexOf(vm.type) != -1;
@@ -4206,18 +4264,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			vm.value = vm.value || vm.min;
 			if (vm.valueArr != undefined && vm.valueArr.length > 0) vm.valueArr.forEach(function (element, i) {
 				element[0] = nvl(element[0], vm.min);
-				element[1] = nvl(element[0], vm.max);
+				element[1] = nvl(element[1], vm.max);
 				if (element[0] > vm.max) element[0] = vm.max;
 				if (element[0] < vm.min) element[0] = vm.min;
 				if (element[1] > vm.max) element[1] = vm.max;
 				if (element[1] < vm.min) element[1] = vm.min;
-				if (element[1] < element[1]) {
+				if (element[1] < element[0]) {
 					;
-					var _ref4 = [element[1], element[0]];
-					element[0] = _ref4[0];
-					element[1] = _ref4[1];
-				}vm.valueRange.push([element[0], element[1]]);
-			});else vm.valueRange.push([vm.min, vm.min]);
+					var _ref6 = [element[1], element[0]];
+					element[0] = _ref6[0];
+					element[1] = _ref6[1];
+				}vm.valueArrPairs.push([element[0], element[1]]);
+			});else vm.valueArrPairs.push([vm.min, vm.min]);
 		}
 		if (['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(vm.type) == -1) vm.isNumeric = false;
 
@@ -4256,9 +4314,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				return tmp.test(v) || vm.error;
 			});
 		vm.paramSetData({ num: vm.paramsForm, data: _extends({}, vm.data, { value: null, value_view: null, value_arr: null, value_arr_view: null }) });
-		setTimeout(function () {
-			vm.checkRefresh(true);
-		}, 500);
+		if (vm.multy && ['DATE', 'LIST'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArr, true, true);else if (!vm.multy && ['RANGE'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArrPairs[0], true, true);else vm.setNewVal(vm.value, true, true);
 	}
 });
 
@@ -4361,17 +4417,19 @@ var render = function() {
                                               max: _vm.max,
                                               step: _vm.step
                                             },
-                                            on: { change: _vm.setNewVal },
+                                            on: {
+                                              change: _vm.setNewValPairFst
+                                            },
                                             model: {
-                                              value: _vm.valueRange[0][0],
+                                              value: _vm.valueArrPairs[0][0],
                                               callback: function($$v) {
                                                 _vm.$set(
-                                                  _vm.valueRange[0],
+                                                  _vm.valueArrPairs[0],
                                                   0,
                                                   $$v
                                                 )
                                               },
-                                              expression: "valueRange[0][0]"
+                                              expression: "valueArrPairs[0][0]"
                                             }
                                           })
                                         ],
@@ -4442,11 +4500,15 @@ var render = function() {
                                               }
                                             ]),
                                             model: {
-                                              value: _vm.valueRange[0],
+                                              value: _vm.valueArrPairs[0],
                                               callback: function($$v) {
-                                                _vm.$set(_vm.valueRange, 0, $$v)
+                                                _vm.$set(
+                                                  _vm.valueArrPairs,
+                                                  0,
+                                                  $$v
+                                                )
                                               },
-                                              expression: "valueRange[0]"
+                                              expression: "valueArrPairs[0]"
                                             }
                                           })
                                         : _c(_vm.currentInput, {
@@ -4540,17 +4602,21 @@ var render = function() {
                                                   max: _vm.max,
                                                   step: _vm.step
                                                 },
-                                                on: { change: _vm.setNewVal },
+                                                on: {
+                                                  change: _vm.setNewValPairScnd
+                                                },
                                                 model: {
-                                                  value: _vm.valueRange[0][1],
+                                                  value:
+                                                    _vm.valueArrPairs[0][1],
                                                   callback: function($$v) {
                                                     _vm.$set(
-                                                      _vm.valueRange[0],
+                                                      _vm.valueArrPairs[0],
                                                       1,
                                                       $$v
                                                     )
                                                   },
-                                                  expression: "valueRange[0][1]"
+                                                  expression:
+                                                    "valueArrPairs[0][1]"
                                                 }
                                               })
                                             : _c("v-text-field", {
@@ -4689,7 +4755,9 @@ var render = function() {
                                             expression: "valueArr"
                                           }
                                         })
-                                      : !_vm.multy && _vm.isDateTimeLike
+                                      : !_vm.multy &&
+                                        _vm.isDateTimeLike &&
+                                        _vm.type != "DATETIME_RANGE"
                                         ? _c(
                                             "v-dialog",
                                             {
@@ -4728,7 +4796,6 @@ var render = function() {
                                                   rules: _vm.rules,
                                                   disabled: _vm.disableGet,
                                                   required: !!_vm.nullable,
-                                                  "prepend-icon": "event",
                                                   readonly: "",
                                                   tabindex: _vm.sortSeq,
                                                   clearable: _vm.clearableGet,
@@ -4767,7 +4834,8 @@ var render = function() {
                                               }),
                                               _vm._v(" "),
                                               [
-                                                _vm.modalWindowWithDate
+                                                _vm.modalWindowWithDate &&
+                                                _vm.type != "TIME_RANGE"
                                                   ? _c("v-date-picker", {
                                                       ref: "datePicker",
                                                       staticClass:
@@ -4779,23 +4847,50 @@ var render = function() {
                                                       model: {
                                                         value:
                                                           _vm
-                                                            .valueDateArr[0][0],
+                                                            .valueArrPairs[0][0],
                                                         callback: function(
                                                           $$v
                                                         ) {
                                                           _vm.$set(
-                                                            _vm.valueDateArr[0],
+                                                            _vm
+                                                              .valueArrPairs[0],
                                                             0,
                                                             $$v
                                                           )
                                                         },
                                                         expression:
-                                                          "valueDateArr[0][0]"
+                                                          "valueArrPairs[0][0]"
                                                       }
                                                     })
-                                                  : _vm._e(),
+                                                  : _vm.type == "TIME_RANGE"
+                                                    ? _c("v-time-picker", {
+                                                        attrs: {
+                                                          scrollable: "",
+                                                          locale: "ru",
+                                                          format: "24hr"
+                                                        },
+                                                        model: {
+                                                          value:
+                                                            _vm
+                                                              .valueArrPairs[0][0],
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm
+                                                                .valueArrPairs[0],
+                                                              0,
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "valueArrPairs[0][0]"
+                                                        }
+                                                      })
+                                                    : _vm._e(),
                                                 _vm._v(" "),
-                                                _vm.modalWindowWithTime
+                                                _vm.modalWindowWithTime &&
+                                                _vm.type != "DATE_RANGE"
                                                   ? _c("v-time-picker", {
                                                       attrs: {
                                                         scrollable: "",
@@ -4805,21 +4900,49 @@ var render = function() {
                                                       model: {
                                                         value:
                                                           _vm
-                                                            .valueDateArr[0][1],
+                                                            .valueArrPairs[0][1],
                                                         callback: function(
                                                           $$v
                                                         ) {
                                                           _vm.$set(
-                                                            _vm.valueDateArr[0],
+                                                            _vm
+                                                              .valueArrPairs[0],
                                                             1,
                                                             $$v
                                                           )
                                                         },
                                                         expression:
-                                                          "valueDateArr[0][1]"
+                                                          "valueArrPairs[0][1]"
                                                       }
                                                     })
-                                                  : _vm._e(),
+                                                  : _vm.type == "DATE_RANGE"
+                                                    ? _c("v-date-picker", {
+                                                        ref: "datePicker",
+                                                        staticClass:
+                                                          "v-date-picker-more-height",
+                                                        attrs: {
+                                                          scrollable: "",
+                                                          locale: "ru"
+                                                        },
+                                                        model: {
+                                                          value:
+                                                            _vm
+                                                              .valueArrPairs[0][1],
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm
+                                                                .valueArrPairs[0],
+                                                              1,
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "valueArrPairs[0][1]"
+                                                        }
+                                                      })
+                                                    : _vm._e(),
                                                 _vm._v(" "),
                                                 _c("v-spacer"),
                                                 _vm._v(" "),
@@ -4915,7 +5038,6 @@ var render = function() {
                                                     rules: _vm.rules,
                                                     disabled: _vm.disableGet,
                                                     required: !!_vm.nullable,
-                                                    "prepend-icon": "event",
                                                     readonly: "",
                                                     tabindex: _vm.sortSeq,
                                                     clearable: _vm.clearableGet,
@@ -4969,15 +5091,13 @@ var render = function() {
                                                           locale: "ru"
                                                         },
                                                         model: {
-                                                          value:
-                                                            _vm.valueArrViewTMP,
+                                                          value: _vm.valueArr,
                                                           callback: function(
                                                             $$v
                                                           ) {
-                                                            _vm.valueArrViewTMP = $$v
+                                                            _vm.valueArr = $$v
                                                           },
-                                                          expression:
-                                                            "valueArrViewTMP"
+                                                          expression: "valueArr"
                                                         }
                                                       })
                                                     : _vm._e(),
@@ -5075,7 +5195,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-bff2f64e", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-6e164bce", module.exports)
   }
 }
 
@@ -5126,7 +5246,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-9e96bcd2", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-65a99457", module.exports)
   }
 }
 
@@ -5297,7 +5417,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\apps\\Obj-View.vue"
+Component.options.__file = "resources/assets/js/apps/Obj-View.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -5306,9 +5426,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-fd019894", Component.options)
+    hotAPI.createRecord("data-v-7b30dc36", Component.options)
   } else {
-    hotAPI.reload("data-v-fd019894", Component.options)
+    hotAPI.reload("data-v-7b30dc36", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -5329,13 +5449,13 @@ var content = __webpack_require__(161);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("fcfa3c1a", content, false);
+var update = __webpack_require__(6)("a7dacb20", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fd019894\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./Obj-View.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-fd019894\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./Obj-View.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b30dc36\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Obj-View.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b30dc36\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Obj-View.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -5348,7 +5468,7 @@ if(false) {
 /* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(undefined);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -5413,7 +5533,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		inputs: function inputs() {
 			var vm = this;
-			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value: "cur", multy: false, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', value: "node", multy: false, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', name: 'Название', placeholder: 'Описание объекта', type: 'NUMBER', value: "10", multy: false, nullable: true, column_size: 30, sort_seq: 3 }, { id: 4, form: 'object-tree-add', code: 'tree_range', name: 'Значение', placeholder: 'Описание диапазона', type: 'RANGE', value_arr: [[22, 30]], multy: false, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 5, form: 'object-tree-add', code: 'tree_val', name: 'Значение', placeholder: 'Описание значения', type: 'SLIDER', value: "20", multy: false, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 6, form: 'object-tree-add', code: 'obj_level1', name: 'Вложенность1', placeholder: 'Уровень вложенности объекта', type: 'RANGE', value_arr: [[1, 2]], multy: false, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 7, form: 'object-tree-add', code: 'tree_desc2', name: 'Название3', placeholder: 'Описание объекта', type: 'HIDDEN', value: "10", multy: false, nullable: true, column_size: 30, sort_seq: 3 }, { id: 8, form: 'object-tree-add', code: 'tree_group1', name: 'Тип1', placeholder: 'Тип объекта', type: 'SLIDER', value: "0", multy: false, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел' }, { value: 'ARM', text: 'Область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле' }] }, { id: 9, form: 'object-tree-add', code: 'm_obj_level2', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value_arr: ["cur"], multy: true, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем этом прям прям этом уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 11, form: 'object-tree-add', code: 'm_obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value_arr: ["cur"], multy: true, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 12, form: 'object-tree-add', code: 'm_tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', value_arr: ["node", "ARM"], multy: true, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 13, form: 'object-tree-add', code: 'm_tree_dates', name: 'Даты', placeholder: 'Даты объекта', type: 'DATE', value_arr: ["2018-10-03", "2018-10-04"], multy: true, nullable: false, column_size: 30, sort_seq: 2 }, { id: 14, form: 'object-tree-add', code: 'm_tree_date', name: 'Дата', placeholder: 'Дата объекта', type: 'DATE', value_arr: ["2018-10-03"], multy: false, nullable: false, column_size: 30, sort_seq: 2 }, { id: 15, form: 'object-tree-add', code: 'm_tree_time', name: 'Время', placeholder: 'Время объекта', type: 'TIME', value_arr: ["12:52"], multy: false, nullable: false, column_size: 30, sort_seq: 2 }, { id: 16, form: 'object-tree-add', code: 'm_tree_datetime', name: 'Дата Время', placeholder: 'Дата Время объекта', type: 'DATETIME', value_arr: ["2018-10-03 12:52"], multy: false, nullable: false, column_size: 30, sort_seq: 2 }];
+			return [{ id: 1, form: 'object-tree-add', code: 'obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value_arr: ["cur"], multy: false, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 2, form: 'object-tree-add', code: 'tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', value_arr: ["node"], multy: false, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 3, form: 'object-tree-add', code: 'tree_desc', name: 'Название', placeholder: 'Описание объекта', type: 'NUMBER', value: "10", multy: false, nullable: true, column_size: 30, sort_seq: 3 }, { id: 4, form: 'object-tree-add', code: 'tree_range', name: 'Значение', placeholder: 'Описание диапазона', type: 'RANGE', value_arr: [[22, 30]], multy: false, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 5, form: 'object-tree-add', code: 'tree_val', name: 'Значение', placeholder: 'Описание значения', type: 'SLIDER', value: "20", multy: false, nullable: false, column_size: 30, sort_seq: 3, min: 10, max: 100 }, { id: 6, form: 'object-tree-add', code: 'obj_level1', name: 'Вложенность1', placeholder: 'Уровень вложенности объекта', type: 'RANGE', value_arr: [[0, 1]], multy: false, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 7, form: 'object-tree-add', code: 'tree_desc2', name: 'Название3', placeholder: 'Описание объекта', type: 'HIDDEN', value: "10", multy: false, nullable: true, column_size: 30, sort_seq: 3 }, { id: 8, form: 'object-tree-add', code: 'tree_group1', name: 'Тип1', placeholder: 'Тип объекта', type: 'SLIDER', value: "1", multy: false, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел' }, { value: 'ARM', text: 'Область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле' }] }, { id: 9, form: 'object-tree-add', code: 'm_obj_level2', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value_arr: ["cur"], multy: true, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем этом прям прям этом уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 11, form: 'object-tree-add', code: 'm_obj_level', name: 'Вложенность', placeholder: 'Уровень вложенности объекта', type: 'LIST', value_arr: ["cur"], multy: true, nullable: false, column_size: 30, sort_seq: 1, table_values: [{ value: 'cur', text: 'На текущем уровне' }, { value: 'inside', text: 'Вложенный' }] }, { id: 12, form: 'object-tree-add', code: 'm_tree_group', name: 'Тип', placeholder: 'Тип объекта', type: 'LIST', value_arr: ["node", "ARM"], multy: true, nullable: false, column_size: 30, sort_seq: 2, table_values: [{ value: 'node', text: 'Узел дерева' }, { value: 'ARM', text: 'Рабочая область' }, { value: 'filter', text: 'Фильтр' }, { value: 'input', text: 'Поле ввода' }] }, { id: 13, form: 'object-tree-add', code: 'm_tree_dates', name: 'Даты', placeholder: 'Даты объекта', type: 'DATE', value_arr: ["2018-10-03", "2018-10-04"], multy: true, nullable: false, column_size: 30, sort_seq: 2 }, { id: 14, form: 'object-tree-add', code: 'm_tree_date', name: 'Дата', placeholder: 'Дата объекта', type: 'DATE', value_arr: ["2018-10-03"], multy: false, nullable: false, column_size: 30, sort_seq: 2 }, { id: 15, form: 'object-tree-add', code: 'm_tree_time', name: 'Время', placeholder: 'Время объекта', type: 'TIME', value_arr: ["12:52"], multy: false, nullable: false, column_size: 30, sort_seq: 2 }, { id: 16, form: 'object-tree-add', code: 'm_tree_datetime', name: 'Дата Время', placeholder: 'Дата Время объекта', type: 'DATETIME', value_arr: ["2018-10-03 12:52"], multy: false, nullable: false, column_size: 30, sort_seq: 2 }, { id: 17, form: 'object-tree-add', code: 'm_tree_date_range', name: 'Дата диапазон', placeholder: 'Дата объекта диапазон', type: 'DATE_RANGE', value_arr: [["2018-10-03", "2018-10-04"]], multy: false, nullable: false, column_size: 30, sort_seq: 2 }, { id: 18, form: 'object-tree-add', code: 'm_tree_time_range', name: 'Время диапазон', placeholder: 'Время объекта диапазон', type: 'TIME_RANGE', value_arr: [["12:52", "12:53"]], multy: false, nullable: false, column_size: 30, sort_seq: 2 }];
 		}
 	},
 	components: {
@@ -5557,7 +5677,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-fd019894", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-7b30dc36", module.exports)
   }
 }
 

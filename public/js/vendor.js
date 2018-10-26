@@ -16686,6 +16686,9 @@ __webpack_require__.r(__webpack_exports__);
             }
         }
     },
+    mounted: function mounted() {
+        this.startTimeout();
+    },
     methods: {
         genDelimiters: function genDelimiters() {
             return this.$createElement('div', {
@@ -16745,10 +16748,6 @@ __webpack_require__.r(__webpack_exports__);
                     }
                 }
             }, children);
-        },
-        init: function init() {
-            _VWindow_VWindow__WEBPACK_IMPORTED_MODULE_1__["default"].options.methods.init.call(this);
-            this.startTimeout();
         },
         restartTimeout: function restartTimeout() {
             this.slideTimeout && clearTimeout(this.slideTimeout);
@@ -21515,15 +21514,9 @@ var BaseItemGroup = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_3__["default"])
             Object(_util_console__WEBPACK_IMPORTED_MODULE_4__["consoleWarn"])('Model must be bound to an array if the multiple property is true.', this);
         }
     },
-    mounted: function mounted() {
-        this.$nextTick(this.init);
-    },
     methods: {
         getValue: function getValue(item, i) {
             return item.value == null || item.value === '' ? i : item.value;
-        },
-        init: function init() {
-            this.updateItemsState();
         },
         onClick: function onClick(item, index) {
             this.updateInternalValue(this.getValue(item, index));
@@ -21534,9 +21527,15 @@ var BaseItemGroup = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_3__["default"])
             item.$on('change', function () {
                 return _this.onClick(item, index);
             });
+            // If no value provided and mandatory,
+            // assign first registered item
+            if (this.mandatory && this.internalLazyValue == null) {
+                this.updateMandatory();
+            }
             this.updateItem(item, index);
         },
         unregister: function unregister(item) {
+            if (this._isDestroyed) return;
             var index = this.items.indexOf(item);
             var value = this.getValue(item, index);
             this.items.splice(index, 1);
@@ -23586,6 +23585,9 @@ var __spread = undefined && undefined.__spread || function () {
                 class: {
                     'v-pagination__navigation--disabled': disabled
                 },
+                attrs: {
+                    type: 'button'
+                },
                 on: disabled ? {} : { click: fn }
             }, [h(_VIcon__WEBPACK_IMPORTED_MODULE_1__["default"], [icon])])]);
         },
@@ -23596,6 +23598,9 @@ var __spread = undefined && undefined.__spread || function () {
                 staticClass: 'v-pagination__item',
                 class: {
                     'v-pagination__item--active': i === this.value
+                },
+                attrs: {
+                    type: 'button'
                 },
                 on: {
                     click: function click() {
@@ -30881,6 +30886,12 @@ __webpack_require__.r(__webpack_exports__);
     watch: {
         internalIndex: 'updateReverse'
     },
+    mounted: function mounted() {
+        var _this = this;
+        this.$nextTick(function () {
+            return _this.isBooted = true;
+        });
+    },
     methods: {
         genContainer: function genContainer() {
             return this.$createElement('div', {
@@ -30892,14 +30903,6 @@ __webpack_require__.r(__webpack_exports__);
                     height: this.internalHeight
                 }
             }, this.$slots.default);
-        },
-        init: function init() {
-            var _this = this;
-            _VItemGroup_VItemGroup__WEBPACK_IMPORTED_MODULE_1__["BaseItemGroup"].options.methods.init.call(this);
-            // Ensure no entry animation
-            this.$nextTick(function () {
-                return _this.isBooted = true;
-            });
         },
         next: function next() {
             this.isReverse = false;
@@ -31162,7 +31165,7 @@ var Vuetify = {
             return false;
         })(opts.components);
     },
-    version: '1.3.2'
+    version: '1.3.3'
 };
 function checkVueVersion(Vue, requiredVue) {
     var vueDep = requiredVue || '^2.5.10';
@@ -32825,7 +32828,7 @@ var Vuetify = {
         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
             directives: _directives__WEBPACK_IMPORTED_MODULE_3__["default"] }, args));
     },
-    version: '1.3.2'
+    version: '1.3.3'
 };
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Vuetify);
@@ -40249,6 +40252,10 @@ var defaults = {
     return data;
   }],
 
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
   timeout: 0,
 
   xsrfCookieName: 'XSRF-TOKEN',
@@ -43363,7 +43370,7 @@ Axios.prototype.request = function request(config) {
     }, arguments[1]);
   }
 
-  config = utils.merge(defaults, this.defaults, { method: 'get' }, config);
+  config = utils.merge(defaults, {method: 'get'}, this.defaults, config);
   config.method = config.method.toLowerCase();
 
   // Hook up interceptors middleware
@@ -43538,9 +43545,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
       if (utils.isArray(val)) {
         key = key + '[]';
-      }
-
-      if (!utils.isArray(val)) {
+      } else {
         val = [val];
       }
 
