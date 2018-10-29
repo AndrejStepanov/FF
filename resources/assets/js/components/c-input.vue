@@ -4,22 +4,22 @@
 			<template slot='activator'>
 				<div class='input-contaner'>
 					<v-btn  icon v-if="needSign" @click="changeSign" small class="sign-box cursor-pointer" >
-						<v-icon small :disabled="disableGet" :class="signClassGet">{{signCur}}</v-icon>
+						<v-icon small :disabled="getDisable" :class="getSignClass">{{getSign}}</v-icon>
 					</v-btn>
 					<div class='input-contaner main-contaner' @click="onClick">
 						<div class='input-contaner slider-label' v-if="isSliderLike">
-							<span :class="labelColorGet" >{{name+(placeholder!=''?' ('+placeholder+')':'')}}</span>
+							<span :class="getLabelClass" >{{name+(placeholder!=''?' ('+placeholder+')':'')}}</span>
 						</div>
-						<div :class="templateClassGet">
+						<div :class="getInputContanerTemplateClass">
 							<template v-if="isSliderLike">
 								<v-flex shrink style="width: 60px" v-if="type=='RANGE' && isNumeric" >
-									<v-text-field v-model="valueArrPairs[0][0]" class="mt-0 min-width-35px body-1" hide-details single-line :disabled="disableGet" type="number" @change="setNewValPairFst" :min="min" :max="max" :step="step"/>
+									<v-text-field v-model="valueArrPairs[0][0]" class="mt-0 min-width-35px body-1" hide-details single-line :disabled="getDisable" type="number" @change="setNewValPairFst" :min="min" :max="max" :step="step"/>
 								</v-flex>
 								<v-flex>
-									<component v-if="type=='RANGE'"  :is="currentInput" v-model="valueArrPairs[0]" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
-											:multi-line="columnSize>50"  :tabindex="sortSeq" :type="typeGet" :color="checkBoxColor"
+									<component v-if="type=='RANGE'"  :is="currentInput" v-model="valueArrPairs[0]" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
+											:multi-line="columnSize>50"  :tabindex="sortSeq" :type="getComponentType" :color="checkBoxColor"
 											:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
-											:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"   :min="min" :max="max" :step="step" 
+											:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"   :min="min" :max="max" :step="step" 
 											@change="setNewVal" @keyup.enter="submit"  @blur="onBlur"   >
 										<template v-if="!isNumeric"	slot="thumb-label"	slot-scope="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
@@ -29,10 +29,10 @@
 										</template>
 									</component>
 
-									<component v-else :is="currentInput" v-model="value" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
-											:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet"  :color="checkBoxColor"
+									<component v-else :is="currentInput" v-model="value" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
+											:multi-line="columnSize>50" :tabindex="sortSeq" :type="getComponentType"  :color="checkBoxColor"
 											:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
-											:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step" 
+											:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step" 
 											@change="setNewVal" @keyup.enter="submit"  @blur="onBlur"  >
 										<template v-if="!isNumeric"	slot="thumb-label"	slot-scope="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
@@ -43,63 +43,63 @@
 									</component>
 								</v-flex>
 								<v-flex shrink style="width: 60px" v-if="isNumeric" >
-									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="disableGet" v-if="type=='RANGE'" v-model="valueArrPairs[0][1]"  @change="setNewValPairScnd" :min="min" :max="max" :step="step"/>
-									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="disableGet" v-else v-model="value" @change="setNewVal" :min="min" :max="max" :step="step"/>
+									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="getDisable" v-if="type=='RANGE'" v-model="valueArrPairs[0][1]"  @change="setNewValPairScnd" :min="min" :max="max" :step="step"/>
+									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="getDisable" v-else v-model="value" @change="setNewVal" :min="min" :max="max" :step="step"/>
 								</v-flex>
 							</template>
 							<template v-else>
-								<component v-if="!multy && !isDateTimeLike" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
-									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="getListItems" dense :counter="getCounter"
-									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
+								<component v-if="!multy && !isDateTimeLike" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
+									:multi-line="columnSize>50" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :counter="getCounter"
+									:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step"
 									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" 
-									:class="componentClassGet" />
-								<component v-else-if="multy && type=='LIST'" :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet" :readonly="!editable"  :required="!!nullable" ref="input"
-									:multi-line="columnSize>50" :tabindex="sortSeq" :type="typeGet" :items="getListItems" dense
-									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
+									:class="getComponentClass" />
+								<component v-else-if="multy && type=='LIST'" :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
+									:multi-line="columnSize>50" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense
+									:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step"
 									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" multiple chips deletable-chips small-chips
-									:class="componentClassGet" />
-								<v-dialog v-else-if="!multy && isDateTimeLike " ref="modalWindow" v-model="modalWindow" :return-value.sync="value" persistent lazy full-width	:width="getModalWindowWidth" @show='changeChecked' 
-										@update:returnValue="setNewVal" class="max-width" :content-class="getWindowClass">
-									<v-text-field slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable"  readonly ref="input" 
-										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" 
+									:class="getComponentClass" />
+								<v-dialog v-else-if="!multy && isDateTimeLike " ref="dialog" v-model="dialog" :return-value.sync="value" persistent lazy full-width	:width="getDialogWidth" @show='changeChecked' 
+										@update:returnValue="setNewVal" class="max-width" :content-class="getDialogClass">
+									<v-combobox slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
+										:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" 
 										@change="setNewVal" @input="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
 									<template>
-										<div  :style="getWindowMainDivStyle">
-											<v-date-picker v-if="modalWindowWithDate  && type!='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index'/>
+										<div  :style="getDialogMainDivStyle">
+											<v-date-picker v-if="dialogWithDate  && type!='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index'/>
 											<v-time-picker v-else-if="type=='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
-											<v-time-picker v-if="modalWindowWithTime && type!='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
+											<v-time-picker v-if="dialogWithTime && type!='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
 											<v-date-picker v-else-if="type=='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index' />
 
 											<template v-if="type=='DATETIME_RANGE'">
-												<div :class="getWindowSeparatorClass" >
-													<v-icon :class="getModalArrowClass">fast_forward</v-icon>										
-													<v-icon :class="getModalArrowClass">fast_forward</v-icon>										
-													<v-icon :class="getModalArrowClass">fast_forward</v-icon>										
+												<div :class="getDialogSeparatorClass" >
+													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
+													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
+													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
 												</div>
 												<v-date-picker v-model="valueArrPairs[1][0]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index' />
 												<v-time-picker v-model="valueArrPairs[1][1]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
 											</template>
 										</div>
 										<v-toolbar dense  color="primary" >	
-											<v-btn flat class="accent"  @click="modalWindow = false">Отмена</v-btn>
+											<v-btn flat class="accent"  @click="dialog = false">Отмена</v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="$refs.modalWindow.save(getValueDatetimeFromArr({check:true,}))">Принять</v-btn>
+											<v-btn flat class="accent"  @click="$refs.dialog.save(getValueDatetimeFromArr({check:true,}))">Принять</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
-								<v-dialog v-else-if="multy && type=='DATE'"	ref="modalWindow" v-model="modalWindow" :return-value.sync="valueArr" persistent lazy full-width	:width="getModalWindowWidth" @show='changeChecked' 
-										@update:returnValue="setNewVal" class="max-width" :content-class="getWindowClass">
-									<v-combobox slot="activator" v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable"  readonly ref="input" 
-										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" multiple chips deletable-chips small-chips
+								<v-dialog v-else-if="multy && type=='DATE'"	ref="dialog" v-model="dialog" :return-value.sync="valueArr" persistent lazy full-width	:width="getDialogWidth" @show='changeChecked' 
+										@update:returnValue="setNewVal" class="max-width" :content-class="getDialogClass">
+									<v-combobox slot="activator" v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
+										:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" multiple chips deletable-chips small-chips
 										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
 									<template>
-										<div  :style="getWindowMainDivStyle">
-											<v-date-picker v-if="modalWindowWithDate"  v-model="valueArr" multiple  scrollable locale="ru" class='v-date-picker-more-height' />
+										<div  :style="getDialogMainDivStyle">
+											<v-date-picker v-if="dialogWithDate"  v-model="valueArr" multiple  scrollable locale="ru" class='v-date-picker-more-height' />
 										</div>
 										<v-toolbar dense color="primary" >	
-											<v-btn flat class="accent" @click="modalWindow = false">Отмена</v-btn>
+											<v-btn flat class="accent" @click="dialog = false">Отмена</v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="saveModalWindowWithDateMulty()">Принять</v-btn>
+											<v-btn flat class="accent"  @click="saveDialogWithDateMulty()">Принять</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -143,6 +143,10 @@ time-with-seconds	##:##:##
 			columnType: '',
 			classCss: [],//[ "class1","class2",]
 			currentInput:'v-text-field',
+			dialog:false,
+			dialogWithDate:false,
+			dialogWithTime:false,
+			dialogWithRange:false,
 			editable:true,
 			error: 'Некорректное значение!',
 			hasError: false,
@@ -160,10 +164,6 @@ time-with-seconds	##:##:##
 			maxLen:0,
 			maxLenTypes:['INPUT','NUMBER', 'PASSWORD'],
 			min:0,
-			modalWindow:false,
-			modalWindowWithDate:false,
-			modalWindowWithTime:false,
-			modalWindowWithRange:false,
 			multy:false,
 			name: '',
 			nullable: false,
@@ -207,45 +207,45 @@ time-with-seconds	##:##:##
 			listItemMin:{type:  Boolean, default:false},
 		},
 		computed: {
-			typeGet(){
+			getComponentType(){
 				return this.type!='PASSWORD' ?this.type:
 					this.type=='PASSWORD'?this.show?'text':'password':
 					'text'
 			},
-			signCur(){
+			getSign(){
 				return !this.needSign?'':this.signList[this.sign].icon
 			},
-			appendIconGet(){
+			getAppendIcon(){
 				return this.type!='PASSWORD'?this.type=='LIST'?'$vuetify.icons.dropdown':'':
 					this.type!='PASSWORD'? this.show ? 'visibility_off' : 'visibility':
 					''
 			},
-			clearableGet(){
+			getClearable(){
 				return this.type!='PASSWORD'
 			},
-			templateClassGet(){
+			getInputContanerTemplateClass(){
 				return [
 					{"input-contaner": true},
 					{"slider-upper": this.isSliderLike && this.isNumeric},
 				]
 			},
-			labelColorGet(){
+			getLabelClass(){
 				return [
 					{"disabled-label": !this.checked},
 					{"error--text": ( this.hasError && this.$refs.input.validations!='' )},					
 				]
 			},
-			signClassGet(){
+			getSignClass(){
 				return [
 					{"rotate-90": this.needSign && this.signList[this.sign].icon=='pause' && this.signList[this.sign].code=='='},
 				]
 			},
-			componentClassGet(){
+			getComponentClass(){
 				return [
 					{"body-1":this.needSign},
 				]
 			},
-			disableGet(){
+			getDisable(){
 				return !this.needCheckBox?false:!this.checked
 			},	
 			getCounter(){
@@ -257,28 +257,28 @@ time-with-seconds	##:##:##
 					return {value:element.value, text: (['LIST'].indexOf(vm.type)!=-1 && vm.listItemMin ? element.text : element.textFull)}
 				});
 			},
-			getModalWindowWidth(){
+			getDialogWidth(){
 				let vm=this,
 					width= vm.type=='DATE'? 290 : 
 						vm.type=='TIME'? 290 : 
 						['DATETIME', 'TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1 ? 584: 
-						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && !vm.isNarrowWindow? 1200 :
-						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.isNarrowWindow? 584 :
+						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && !vm.isNarrowDialog? 1200 :
+						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.isNarrowDialog? 584 :
 						null
-				if(vm.getWindowMainDivStyle[1].overflowY=='scroll')
+				if(vm.getDialogMainDivStyle[1].overflowY=='scroll')
 					width+=17
 				return width+'px'
 			},
-			getWindowClass(){
+			getDialogClass(){
 				let vm=this
 				return "overflow-hidden "
 			},
-			getWindowMainDivStyle(){
+			getDialogMainDivStyle(){
 				let vm=this,
 					height=392/*стандартная высота одного элемента управления*/,
 					overflowY='hidden'
-				if(vm.type=='DATETIME_RANGE' && vm.isNarrowWindow || height+48>vm.$vuetify.breakpoint.height *0.9){
-					height=vm.$vuetify.breakpoint.height *0.9/*отступы*/ -48 /*кнопки*/ < 392*2+ 28/*разделитель */ + 48?   vm.$vuetify.breakpoint.height *0.9 -48:	392*2+ 28 + 48
+				if(vm.type=='DATETIME_RANGE' && vm.isNarrowDialog || height+48>vm.$vuetify.breakpoint.height *0.9){
+					height=vm.$vuetify.breakpoint.height *0.9/*отступы*/ -48 /*кнопки*/ < height*2+ 28/*разделитель */ + 48?   vm.$vuetify.breakpoint.height *0.9 -48:	height*2+ 28 + 48
 					overflowY='scroll'
 				}
 				return [
@@ -286,24 +286,24 @@ time-with-seconds	##:##:##
 					{ overflowY: overflowY }
 				]
 			},
-			getWindowSeparatorClass(){
+			getDialogSeparatorClass(){
 				let vm=this
 				return [
-					{"v-date-picker-more-height": !vm.isNarrowWindow},
-					{"window-display-inline-grid": !vm.isNarrowWindow},
-					{"window-narrow-display-div-arrow": vm.isNarrowWindow},					
+					{"v-date-picker-more-height": !vm.isNarrowDialog},
+					{"dialog-display-inline-grid": !vm.isNarrowDialog},
+					{"dialog-narrow-display-div-arrow": vm.isNarrowDialog},					
 					{"v-picker": true},
 					{"v-card": true},					  
 				]
 			},
-			getModalArrowClass(){
+			getDialogSeparatorArrowClass(){
 				let vm=this
 				return [
-					{"rotate-90": vm.isNarrowWindow},					  
-					{"window-narrow-display-arrow-width": vm.isNarrowWindow},					  
+					{"rotate-90": vm.isNarrowDialog},					  
+					{"dialog-narrow-display-arrow-width": vm.isNarrowDialog},					  
 				]
 			},			
-			isNarrowWindow(){
+			isNarrowDialog(){
 				let vm = this
 				return vm.$vuetify.breakpoint.width <= 1264
 			},
@@ -323,13 +323,13 @@ time-with-seconds	##:##:##
 				if(vm.type!='DATETIME_RANGE' || stage==1){
 					fstPart = vm.valueArrPairs[num][0]!=null?vm.valueArrPairs[num][0]:''
 					scndPart = vm.valueArrPairs[num][1]!=null?vm.valueArrPairs[num][1]:''
-					if(check && ( (vm.modalWindowWithDate || vm.modalWindowWithRange) && fstPart=='' || (vm.modalWindowWithTime || vm.modalWindowWithRange) && scndPart=='') )
+					if(check && ( (vm.dialogWithDate || vm.dialogWithRange) && fstPart=='' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart=='') )
 						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите данные полностью!'});
 				}
 				else{
 					fstPart = vm.getValueDatetimeFromArr({check,num,stage:1}) 
 					scndPart = vm.getValueDatetimeFromArr({check,num:num+1,stage:1}) 
-					if(check && ( (vm.modalWindowWithDate || vm.modalWindowWithRange) && fstPart=='' || (vm.modalWindowWithTime || vm.modalWindowWithRange) && scndPart=='') )
+					if(check && ( (vm.dialogWithDate || vm.dialogWithRange) && fstPart=='' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart=='') )
 						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите данные полностью!'});
 				}
 				return fstPart+
@@ -353,7 +353,7 @@ time-with-seconds	##:##:##
 					vm.valueArrPairs.push(e[1] )	
 					return
 				}
-				else if(!vm.modalWindowWithRange || vm.type=='DATETIME_RANGE' && stage==2){
+				else if(!vm.dialogWithRange || vm.type=='DATETIME_RANGE' && stage==2){
 					e = str.split(' ')	
 					if(e.length>0 && e[0]!='' && e[0].match(/^\d\d:\d\d$|^\d\d:\d\d:\d\d$/)!=null){
 						e[1]=e[0]
@@ -427,11 +427,11 @@ time-with-seconds	##:##:##
 				let vm=this
 				vm.setNewVal([vm.valueArrPairs[0][0], value])
 			},
-			saveModalWindowWithDateMulty(){
+			saveDialogWithDateMulty(){
 				let vm=this
-				if(vm.modalWindowWithDate && vm.valueArr.length==0)
+				if(vm.dialogWithDate && vm.valueArr.length==0)
 					showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите дату!'});
-				vm.$refs.modalWindow.save(vm.valueArr)
+				vm.$refs.dialog.save(vm.valueArr)
 			},
 			changeSign(){
 				let vm=this
@@ -497,7 +497,7 @@ time-with-seconds	##:##:##
 					if(!checkedFx)
 						vm.checked=	valueArr.length>0 ?true : false
 				}
-				else if(vm.modalWindowWithRange && !vm.multy){//считается что у нас есть только строки со значением и его отображением
+				else if(vm.dialogWithRange && !vm.multy){//считается что у нас есть только строки со значением и его отображением
 					valueView = vm.valueView
 					valueArr.push(value.split(vm.rangeSeparator)  )
 					valueArrView.push(valueView.split(vm.rangeSeparator)  )
@@ -532,7 +532,7 @@ time-with-seconds	##:##:##
 							if(row.value==value)
 								valueView = row.textFull
 						})
-					else if (vm.modalWindowWithDate)
+					else if (vm.dialogWithDate)
 						valueView = vm.valueView
 					if(!checkedFx)
 						vm.checked=	 (value==='' || value==null) ?false:true
@@ -640,11 +640,11 @@ time-with-seconds	##:##:##
 				vm.valueArrPairs.push([null,null]);
 				vm.valueArrPairs.push([null,null]);
 				if(['DATE', 'DATETIME', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1)
-					vm.modalWindowWithDate=true
+					vm.dialogWithDate=true
 				if(['TIME', 'DATETIME','TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1)
-					vm.modalWindowWithTime=true
+					vm.dialogWithTime=true
 				if(['DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1)
-					vm.modalWindowWithRange=true
+					vm.dialogWithRange=true
 			}	
 
 			vm.isSliderLike=['SLIDER', 'RANGE'].indexOf(vm.type)!=-1
@@ -739,9 +739,9 @@ time-with-seconds	##:##:##
 	.theme--dark.v-chip.v-chip--disabled					{background: #737373;}
 	.v-date-picker-more-height								{height: 392px;}
 	.higher-z-index											{z-index: 2;}
-	.window-display-inline-grid								{display: inline-grid;}
-	.window-narrow-display-div-arrow						{clear: right; display: inherit; width: 100%; height: 28px;}
-	.window-narrow-display-arrow-width						{width: 190px;}
+	.dialog-display-inline-grid								{display: inline-grid;}
+	.dialog-narrow-display-div-arrow						{clear: right; display: inherit; width: 100%; height: 28px;}
+	.dialog-narrow-display-arrow-width						{width: 190px;}
 	.overflow-hidden										{overflow: hidden;}
 	.overflow-y-scroll										{overflow-y: scroll;}
 	/*i    border-bottom-color: #2c353f;

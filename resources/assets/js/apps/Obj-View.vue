@@ -1,5 +1,5 @@
 <template>
-	<c-app curentSystem="Просмотр объектов" :panelRightShow="true" :panelRightDrawer="true" panelRightClass="display--flex flex-direction--column" panelRightWidth='350'>
+	<c-app curentSystem="Просмотр объектов" :panelRightShow="true" :panelRightDrawer="true" panelRightClass="display--flex flex-direction--column" panelRightWidth='358'>
 		<template slot="panelRight">
 			<v-toolbar-title class="text-xs-center check-size flex--inherit">Фильтр</v-toolbar-title> 
 			<v-btn block  small class="check-size accent flex--inherit" @click="filterSet()"  > <v-icon>search</v-icon> Поиск</v-btn>
@@ -58,6 +58,7 @@
 					{id:17, form:'object-tree-add',	code:'m_tree_date_range',			name:'Дата диапазон', 			placeholder:'Дата объекта диапазон', 		type:'DATE_RANGE', 			value_arr:[["2018-10-03","2018-10-04"]],					multy:false,	nullable:false, column_size:30, sort_seq:2, },
 					{id:18, form:'object-tree-add',	code:'m_tree_time_range',			name:'Время диапазон', 			placeholder:'Время объекта диапазон', 		type:'TIME_RANGE', 			value_arr:[["12:52","12:53"]],								multy:false,	nullable:false, column_size:30, sort_seq:2, },
 					{id:19, form:'object-tree-add',	code:'m_tree_datetime_range',		name:'Дата Время диапазон', 	placeholder:'Дата Время объекта', 			type:'DATETIME_RANGE', 		value_arr:[["2018-10-03 12:52","2018-10-04 12:53"]],		multy:false,	nullable:false, column_size:30, sort_seq:2, },
+					{id:20, form:'object-tree-add',	code:'m_tree_input',				name:'Ввод', 					placeholder:'Ввод объекта', 				type:'INPUT', 				value:"ыва",												multy:false,	nullable:false, column_size:30, sort_seq:2, },
 					
 				]
 			},

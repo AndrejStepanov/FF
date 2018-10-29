@@ -1486,7 +1486,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\n.max-width \t\t\t\t\t\t\t\t\t\t\t\t{width:100%\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n.v-date-picker-more-height\t\t\t\t\t\t\t\t{height: 392px;\n}\n.higher-z-index\t\t\t\t\t\t\t\t\t\t\t{z-index: 2;\n}\n.window-display-inline-grid\t\t\t\t\t\t\t\t{display: inline-grid;\n}\n.window-narrow-display-div-arrow\t\t\t\t\t\t{clear: right; display: inherit; width: 100%; height: 28px;\n}\n.window-narrow-display-arrow-width\t\t\t\t\t\t{width: 190px;\n}\n.overflow-hidden\t\t\t\t\t\t\t\t\t\t{overflow: hidden;\n}\n.overflow-y-scroll\t\t\t\t\t\t\t\t\t\t{overflow-y: scroll;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
+exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\n.max-width \t\t\t\t\t\t\t\t\t\t\t\t{width:100%\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n.v-date-picker-more-height\t\t\t\t\t\t\t\t{height: 392px;\n}\n.higher-z-index\t\t\t\t\t\t\t\t\t\t\t{z-index: 2;\n}\n.dialog-display-inline-grid\t\t\t\t\t\t\t\t{display: inline-grid;\n}\n.dialog-narrow-display-div-arrow\t\t\t\t\t\t{clear: right; display: inherit; width: 100%; height: 28px;\n}\n.dialog-narrow-display-arrow-width\t\t\t\t\t\t{width: 190px;\n}\n.overflow-hidden\t\t\t\t\t\t\t\t\t\t{overflow: hidden;\n}\n.overflow-y-scroll\t\t\t\t\t\t\t\t\t\t{overflow-y: scroll;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
 
 // exports
 
@@ -1654,6 +1654,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			columnType: '',
 			classCss: [], //[ "class1","class2",]
 			currentInput: 'v-text-field',
+			dialog: false,
+			dialogWithDate: false,
+			dialogWithTime: false,
+			dialogWithRange: false,
 			editable: true,
 			error: 'Некорректное значение!',
 			hasError: false,
@@ -1671,10 +1675,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			maxLen: 0,
 			maxLenTypes: ['INPUT', 'NUMBER', 'PASSWORD'],
 			min: 0,
-			modalWindow: false,
-			modalWindowWithDate: false,
-			modalWindowWithTime: false,
-			modalWindowWithRange: false,
 			multy: false,
 			name: '',
 			nullable: false,
@@ -1714,31 +1714,31 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		listItemMin: { type: Boolean, default: false }
 	},
 	computed: {
-		typeGet: function typeGet() {
+		getComponentType: function getComponentType() {
 			return this.type != 'PASSWORD' ? this.type : this.type == 'PASSWORD' ? this.show ? 'text' : 'password' : 'text';
 		},
-		signCur: function signCur() {
+		getSign: function getSign() {
 			return !this.needSign ? '' : this.signList[this.sign].icon;
 		},
-		appendIconGet: function appendIconGet() {
+		getAppendIcon: function getAppendIcon() {
 			return this.type != 'PASSWORD' ? this.type == 'LIST' ? '$vuetify.icons.dropdown' : '' : this.type != 'PASSWORD' ? this.show ? 'visibility_off' : 'visibility' : '';
 		},
-		clearableGet: function clearableGet() {
+		getClearable: function getClearable() {
 			return this.type != 'PASSWORD';
 		},
-		templateClassGet: function templateClassGet() {
+		getInputContanerTemplateClass: function getInputContanerTemplateClass() {
 			return [{ "input-contaner": true }, { "slider-upper": this.isSliderLike && this.isNumeric }];
 		},
-		labelColorGet: function labelColorGet() {
+		getLabelClass: function getLabelClass() {
 			return [{ "disabled-label": !this.checked }, { "error--text": this.hasError && this.$refs.input.validations != '' }];
 		},
-		signClassGet: function signClassGet() {
+		getSignClass: function getSignClass() {
 			return [{ "rotate-90": this.needSign && this.signList[this.sign].icon == 'pause' && this.signList[this.sign].code == '=' }];
 		},
-		componentClassGet: function componentClassGet() {
+		getComponentClass: function getComponentClass() {
 			return [{ "body-1": this.needSign }];
 		},
-		disableGet: function disableGet() {
+		getDisable: function getDisable() {
 			return !this.needCheckBox ? false : !this.checked;
 		},
 		getCounter: function getCounter() {
@@ -1750,36 +1750,36 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				return { value: element.value, text: ['LIST'].indexOf(vm.type) != -1 && vm.listItemMin ? element.text : element.textFull };
 			});
 		},
-		getModalWindowWidth: function getModalWindowWidth() {
+		getDialogWidth: function getDialogWidth() {
 			var vm = this,
-			    width = vm.type == 'DATE' ? 290 : vm.type == 'TIME' ? 290 : ['DATETIME', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? 584 : ['DATETIME_RANGE'].indexOf(vm.type) != -1 && !vm.isNarrowWindow ? 1200 : ['DATETIME_RANGE'].indexOf(vm.type) != -1 && vm.isNarrowWindow ? 584 : null;
-			if (vm.getWindowMainDivStyle[1].overflowY == 'scroll') width += 17;
+			    width = vm.type == 'DATE' ? 290 : vm.type == 'TIME' ? 290 : ['DATETIME', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? 584 : ['DATETIME_RANGE'].indexOf(vm.type) != -1 && !vm.isNarrowDialog ? 1200 : ['DATETIME_RANGE'].indexOf(vm.type) != -1 && vm.isNarrowDialog ? 584 : null;
+			if (vm.getDialogMainDivStyle[1].overflowY == 'scroll') width += 17;
 			return width + 'px';
 		},
-		getWindowClass: function getWindowClass() {
+		getDialogClass: function getDialogClass() {
 			var vm = this;
 			return "overflow-hidden ";
 		},
-		getWindowMainDivStyle: function getWindowMainDivStyle() {
+		getDialogMainDivStyle: function getDialogMainDivStyle() {
 			var vm = this,
 			    height = 392 /*стандартная высота одного элемента управления*/
 			,
 			    overflowY = 'hidden';
-			if (vm.type == 'DATETIME_RANGE' && vm.isNarrowWindow || height + 48 > vm.$vuetify.breakpoint.height * 0.9) {
-				height = vm.$vuetify.breakpoint.height * 0.9 /*отступы*/ - 48 /*кнопки*/ < 392 * 2 + 28 /*разделитель */ + 48 ? vm.$vuetify.breakpoint.height * 0.9 - 48 : 392 * 2 + 28 + 48;
+			if (vm.type == 'DATETIME_RANGE' && vm.isNarrowDialog || height + 48 > vm.$vuetify.breakpoint.height * 0.9) {
+				height = vm.$vuetify.breakpoint.height * 0.9 /*отступы*/ - 48 /*кнопки*/ < height * 2 + 28 /*разделитель */ + 48 ? vm.$vuetify.breakpoint.height * 0.9 - 48 : height * 2 + 28 + 48;
 				overflowY = 'scroll';
 			}
 			return [{ height: height + 'px' }, { overflowY: overflowY }];
 		},
-		getWindowSeparatorClass: function getWindowSeparatorClass() {
+		getDialogSeparatorClass: function getDialogSeparatorClass() {
 			var vm = this;
-			return [{ "v-date-picker-more-height": !vm.isNarrowWindow }, { "window-display-inline-grid": !vm.isNarrowWindow }, { "window-narrow-display-div-arrow": vm.isNarrowWindow }, { "v-picker": true }, { "v-card": true }];
+			return [{ "v-date-picker-more-height": !vm.isNarrowDialog }, { "dialog-display-inline-grid": !vm.isNarrowDialog }, { "dialog-narrow-display-div-arrow": vm.isNarrowDialog }, { "v-picker": true }, { "v-card": true }];
 		},
-		getModalArrowClass: function getModalArrowClass() {
+		getDialogSeparatorArrowClass: function getDialogSeparatorArrowClass() {
 			var vm = this;
-			return [{ "rotate-90": vm.isNarrowWindow }, { "window-narrow-display-arrow-width": vm.isNarrowWindow }];
+			return [{ "rotate-90": vm.isNarrowDialog }, { "dialog-narrow-display-arrow-width": vm.isNarrowDialog }];
 		},
-		isNarrowWindow: function isNarrowWindow() {
+		isNarrowDialog: function isNarrowDialog() {
 			var vm = this;
 			return vm.$vuetify.breakpoint.width <= 1264;
 		}
@@ -1801,11 +1801,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			if (vm.type != 'DATETIME_RANGE' || stage == 1) {
 				fstPart = vm.valueArrPairs[num][0] != null ? vm.valueArrPairs[num][0] : '';
 				scndPart = vm.valueArrPairs[num][1] != null ? vm.valueArrPairs[num][1] : '';
-				if (check && ((vm.modalWindowWithDate || vm.modalWindowWithRange) && fstPart == '' || (vm.modalWindowWithTime || vm.modalWindowWithRange) && scndPart == '')) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
+				if (check && ((vm.dialogWithDate || vm.dialogWithRange) && fstPart == '' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart == '')) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
 			} else {
 				fstPart = vm.getValueDatetimeFromArr({ check: check, num: num, stage: 1 });
 				scndPart = vm.getValueDatetimeFromArr({ check: check, num: num + 1, stage: 1 });
-				if (check && ((vm.modalWindowWithDate || vm.modalWindowWithRange) && fstPart == '' || (vm.modalWindowWithTime || vm.modalWindowWithRange) && scndPart == '')) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
+				if (check && ((vm.dialogWithDate || vm.dialogWithRange) && fstPart == '' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart == '')) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
 			}
 			return fstPart + (fstPart != '' && scndPart != '' ? ['TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1 && stage == 0 ? vm.rangeSeparator : ' ' : '') + scndPart;
 		},
@@ -1837,7 +1837,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				}vm.valueArrPairs.push(e[0]);
 				vm.valueArrPairs.push(e[1]);
 				return;
-			} else if (!vm.modalWindowWithRange || vm.type == 'DATETIME_RANGE' && stage == 2) {
+			} else if (!vm.dialogWithRange || vm.type == 'DATETIME_RANGE' && stage == 2) {
 				e = str.split(' ');
 				if (e.length > 0 && e[0] != '' && e[0].match(/^\d\d:\d\d$|^\d\d:\d\d:\d\d$/) != null) {
 					e[1] = e[0];
@@ -1911,10 +1911,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			var vm = this;
 			vm.setNewVal([vm.valueArrPairs[0][0], value]);
 		},
-		saveModalWindowWithDateMulty: function saveModalWindowWithDateMulty() {
+		saveDialogWithDateMulty: function saveDialogWithDateMulty() {
 			var vm = this;
-			if (vm.modalWindowWithDate && vm.valueArr.length == 0) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!' });
-			vm.$refs.modalWindow.save(vm.valueArr);
+			if (vm.dialogWithDate && vm.valueArr.length == 0) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!' });
+			vm.$refs.dialog.save(vm.valueArr);
 		},
 		changeSign: function changeSign() {
 			var vm = this;
@@ -1979,7 +1979,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 										valueArr.push([nvlo(vm.tableValues[row[0]]).value, nvlo(vm.tableValues[row[1]]).value]);
 									});
 									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
-								} else if (vm.modalWindowWithRange && !vm.multy) {
+								} else if (vm.dialogWithRange && !vm.multy) {
 									//считается что у нас есть только строки со значением и его отображением
 									valueView = vm.valueView;
 									valueArr.push(value.split(vm.rangeSeparator));
@@ -2002,7 +2002,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 										value = nvlo(vm.tableValues[value]).value;
 									} else if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
 										if (row.value == value) valueView = row.textFull;
-									});else if (vm.modalWindowWithDate) valueView = vm.valueView;
+									});else if (vm.dialogWithDate) valueView = vm.valueView;
 									if (!checkedFx) vm.checked = value === '' || value == null ? false : true;
 								}
 								vm.setVal(value, valueView, valueArr, valueArrView, initRun);
@@ -2120,9 +2120,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			if (!vm.multy && vm.valueArr.length > 0) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) vm.value = vm.valueArr[0];else if (vm.valueArr[0].length > 1) vm.value = vm.valueArr[0][0] + vm.rangeSeparator + vm.valueArr[0][1];else console.log('Обнаружен некорректно заданый диапазон исходных данных в ' + vm.code);
 			vm.valueArrPairs.push([null, null]);
 			vm.valueArrPairs.push([null, null]);
-			if (['DATE', 'DATETIME', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.modalWindowWithDate = true;
-			if (['TIME', 'DATETIME', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.modalWindowWithTime = true;
-			if (['DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.modalWindowWithRange = true;
+			if (['DATE', 'DATETIME', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.dialogWithDate = true;
+			if (['TIME', 'DATETIME', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.dialogWithTime = true;
+			if (['DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.dialogWithRange = true;
 		}
 
 		vm.isSliderLike = ['SLIDER', 'RANGE'].indexOf(vm.type) != -1;
@@ -2235,10 +2235,10 @@ var render = function() {
                             _c(
                               "v-icon",
                               {
-                                class: _vm.signClassGet,
-                                attrs: { small: "", disabled: _vm.disableGet }
+                                class: _vm.getSignClass,
+                                attrs: { small: "", disabled: _vm.getDisable }
                               },
-                              [_vm._v(_vm._s(_vm.signCur))]
+                              [_vm._v(_vm._s(_vm.getSign))]
                             )
                           ],
                           1
@@ -2257,7 +2257,7 @@ var render = function() {
                               "div",
                               { staticClass: "input-contaner slider-label" },
                               [
-                                _c("span", { class: _vm.labelColorGet }, [
+                                _c("span", { class: _vm.getLabelClass }, [
                                   _vm._v(
                                     _vm._s(
                                       _vm.name +
@@ -2273,7 +2273,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "div",
-                          { class: _vm.templateClassGet },
+                          { class: _vm.getInputContanerTemplateClass },
                           [
                             _vm.isSliderLike
                               ? [
@@ -2291,7 +2291,7 @@ var render = function() {
                                             attrs: {
                                               "hide-details": "",
                                               "single-line": "",
-                                              disabled: _vm.disableGet,
+                                              disabled: _vm.getDisable,
                                               type: "number",
                                               min: _vm.min,
                                               max: _vm.max,
@@ -2326,12 +2326,12 @@ var render = function() {
                                             tag: "component",
                                             attrs: {
                                               rules: _vm.rules,
-                                              disabled: _vm.disableGet,
+                                              disabled: _vm.getDisable,
                                               readonly: !_vm.editable,
                                               required: !!_vm.nullable,
                                               "multi-line": _vm.columnSize > 50,
                                               tabindex: _vm.sortSeq,
-                                              type: _vm.typeGet,
+                                              type: _vm.getComponentType,
                                               color: _vm.checkBoxColor,
                                               "always-dirty": _vm.isSliderLike,
                                               "persistent-hint":
@@ -2343,8 +2343,8 @@ var render = function() {
                                               tickSize: _vm.tickSize,
                                               "thumb-size": _vm.thumbSize,
                                               "tick-labels": _vm.tickLabels,
-                                              "append-icon": _vm.appendIconGet,
-                                              clearable: _vm.clearableGet,
+                                              "append-icon": _vm.getAppendIcon,
+                                              clearable: _vm.getClearable,
                                               mask: _vm.mask,
                                               min: _vm.min,
                                               max: _vm.max,
@@ -2396,12 +2396,12 @@ var render = function() {
                                             tag: "component",
                                             attrs: {
                                               rules: _vm.rules,
-                                              disabled: _vm.disableGet,
+                                              disabled: _vm.getDisable,
                                               readonly: !_vm.editable,
                                               required: !!_vm.nullable,
                                               "multi-line": _vm.columnSize > 50,
                                               tabindex: _vm.sortSeq,
-                                              type: _vm.typeGet,
+                                              type: _vm.getComponentType,
                                               color: _vm.checkBoxColor,
                                               "always-dirty": _vm.isSliderLike,
                                               "persistent-hint":
@@ -2413,8 +2413,8 @@ var render = function() {
                                               tickSize: _vm.tickSize,
                                               "thumb-size": _vm.thumbSize,
                                               "tick-labels": _vm.tickLabels,
-                                              "append-icon": _vm.appendIconGet,
-                                              clearable: _vm.clearableGet,
+                                              "append-icon": _vm.getAppendIcon,
+                                              clearable: _vm.getClearable,
                                               mask: _vm.mask,
                                               min: _vm.min,
                                               max: _vm.max,
@@ -2477,7 +2477,7 @@ var render = function() {
                                                   "hide-details": "",
                                                   "single-line": "",
                                                   type: "number",
-                                                  disabled: _vm.disableGet,
+                                                  disabled: _vm.getDisable,
                                                   min: _vm.min,
                                                   max: _vm.max,
                                                   step: _vm.step
@@ -2506,7 +2506,7 @@ var render = function() {
                                                   "hide-details": "",
                                                   "single-line": "",
                                                   type: "number",
-                                                  disabled: _vm.disableGet,
+                                                  disabled: _vm.getDisable,
                                                   min: _vm.min,
                                                   max: _vm.max,
                                                   step: _vm.step
@@ -2530,22 +2530,22 @@ var render = function() {
                                     ? _c(_vm.currentInput, {
                                         ref: "input",
                                         tag: "component",
-                                        class: _vm.componentClassGet,
+                                        class: _vm.getComponentClass,
                                         attrs: {
                                           label: _vm.name,
                                           hint: _vm.placeholder,
                                           rules: _vm.rules,
-                                          disabled: _vm.disableGet,
+                                          disabled: _vm.getDisable,
                                           readonly: !_vm.editable,
                                           required: !!_vm.nullable,
                                           "multi-line": _vm.columnSize > 50,
                                           tabindex: _vm.sortSeq,
-                                          type: _vm.typeGet,
+                                          type: _vm.getComponentType,
                                           items: _vm.getListItems,
                                           dense: "",
                                           counter: _vm.getCounter,
-                                          "append-icon": _vm.appendIconGet,
-                                          clearable: _vm.clearableGet,
+                                          "append-icon": _vm.getAppendIcon,
+                                          clearable: _vm.getClearable,
                                           mask: _vm.mask,
                                           min: _vm.min,
                                           max: _vm.max,
@@ -2583,21 +2583,21 @@ var render = function() {
                                       ? _c(_vm.currentInput, {
                                           ref: "input",
                                           tag: "component",
-                                          class: _vm.componentClassGet,
+                                          class: _vm.getComponentClass,
                                           attrs: {
                                             label: _vm.name,
                                             hint: _vm.placeholder,
                                             rules: _vm.rules,
-                                            disabled: _vm.disableGet,
+                                            disabled: _vm.getDisable,
                                             readonly: !_vm.editable,
                                             required: !!_vm.nullable,
                                             "multi-line": _vm.columnSize > 50,
                                             tabindex: _vm.sortSeq,
-                                            type: _vm.typeGet,
+                                            type: _vm.getComponentType,
                                             items: _vm.getListItems,
                                             dense: "",
-                                            "append-icon": _vm.appendIconGet,
-                                            clearable: _vm.clearableGet,
+                                            "append-icon": _vm.getAppendIcon,
+                                            clearable: _vm.getClearable,
                                             mask: _vm.mask,
                                             min: _vm.min,
                                             max: _vm.max,
@@ -2639,16 +2639,16 @@ var render = function() {
                                         ? _c(
                                             "v-dialog",
                                             {
-                                              ref: "modalWindow",
+                                              ref: "dialog",
                                               staticClass: "max-width",
                                               attrs: {
                                                 "return-value": _vm.value,
                                                 persistent: "",
                                                 lazy: "",
                                                 "full-width": "",
-                                                width: _vm.getModalWindowWidth,
+                                                width: _vm.getDialogWidth,
                                                 "content-class":
-                                                  _vm.getWindowClass
+                                                  _vm.getDialogClass
                                               },
                                               on: {
                                                 "update:returnValue": [
@@ -2660,15 +2660,15 @@ var render = function() {
                                                 show: _vm.changeChecked
                                               },
                                               model: {
-                                                value: _vm.modalWindow,
+                                                value: _vm.dialog,
                                                 callback: function($$v) {
-                                                  _vm.modalWindow = $$v
+                                                  _vm.dialog = $$v
                                                 },
-                                                expression: "modalWindow"
+                                                expression: "dialog"
                                               }
                                             },
                                             [
-                                              _c("v-text-field", {
+                                              _c("v-combobox", {
                                                 ref: "input",
                                                 staticClass: "mt-0 body-1",
                                                 attrs: {
@@ -2676,11 +2676,12 @@ var render = function() {
                                                   label: _vm.name,
                                                   hint: _vm.placeholder,
                                                   rules: _vm.rules,
-                                                  disabled: _vm.disableGet,
+                                                  disabled: _vm.getDisable,
                                                   required: !!_vm.nullable,
                                                   readonly: "",
+                                                  "append-icon": "",
                                                   tabindex: _vm.sortSeq,
-                                                  clearable: _vm.clearableGet,
+                                                  clearable: _vm.getClearable,
                                                   min: _vm.min,
                                                   max: _vm.max
                                                 },
@@ -2720,10 +2721,10 @@ var render = function() {
                                                   "div",
                                                   {
                                                     style:
-                                                      _vm.getWindowMainDivStyle
+                                                      _vm.getDialogMainDivStyle
                                                   },
                                                   [
-                                                    _vm.modalWindowWithDate &&
+                                                    _vm.dialogWithDate &&
                                                     _vm.type != "TIME_RANGE"
                                                       ? _c("v-date-picker", {
                                                           staticClass:
@@ -2779,7 +2780,7 @@ var render = function() {
                                                           })
                                                         : _vm._e(),
                                                     _vm._v(" "),
-                                                    _vm.modalWindowWithTime &&
+                                                    _vm.dialogWithTime &&
                                                     _vm.type != "DATE_RANGE"
                                                       ? _c("v-time-picker", {
                                                           staticClass:
@@ -2841,14 +2842,14 @@ var render = function() {
                                                             "div",
                                                             {
                                                               class:
-                                                                _vm.getWindowSeparatorClass
+                                                                _vm.getDialogSeparatorClass
                                                             },
                                                             [
                                                               _c(
                                                                 "v-icon",
                                                                 {
                                                                   class:
-                                                                    _vm.getModalArrowClass
+                                                                    _vm.getDialogSeparatorArrowClass
                                                                 },
                                                                 [
                                                                   _vm._v(
@@ -2861,7 +2862,7 @@ var render = function() {
                                                                 "v-icon",
                                                                 {
                                                                   class:
-                                                                    _vm.getModalArrowClass
+                                                                    _vm.getDialogSeparatorArrowClass
                                                                 },
                                                                 [
                                                                   _vm._v(
@@ -2874,7 +2875,7 @@ var render = function() {
                                                                 "v-icon",
                                                                 {
                                                                   class:
-                                                                    _vm.getModalArrowClass
+                                                                    _vm.getDialogSeparatorArrowClass
                                                                 },
                                                                 [
                                                                   _vm._v(
@@ -2962,7 +2963,7 @@ var render = function() {
                                                           click: function(
                                                             $event
                                                           ) {
-                                                            _vm.modalWindow = false
+                                                            _vm.dialog = false
                                                           }
                                                         }
                                                       },
@@ -2980,7 +2981,7 @@ var render = function() {
                                                           click: function(
                                                             $event
                                                           ) {
-                                                            _vm.$refs.modalWindow.save(
+                                                            _vm.$refs.dialog.save(
                                                               _vm.getValueDatetimeFromArr(
                                                                 { check: true }
                                                               )
@@ -3001,17 +3002,16 @@ var render = function() {
                                           ? _c(
                                               "v-dialog",
                                               {
-                                                ref: "modalWindow",
+                                                ref: "dialog",
                                                 staticClass: "max-width",
                                                 attrs: {
                                                   "return-value": _vm.valueArr,
                                                   persistent: "",
                                                   lazy: "",
                                                   "full-width": "",
-                                                  width:
-                                                    _vm.getModalWindowWidth,
+                                                  width: _vm.getDialogWidth,
                                                   "content-class":
-                                                    _vm.getWindowClass
+                                                    _vm.getDialogClass
                                                 },
                                                 on: {
                                                   "update:returnValue": [
@@ -3023,11 +3023,11 @@ var render = function() {
                                                   show: _vm.changeChecked
                                                 },
                                                 model: {
-                                                  value: _vm.modalWindow,
+                                                  value: _vm.dialog,
                                                   callback: function($$v) {
-                                                    _vm.modalWindow = $$v
+                                                    _vm.dialog = $$v
                                                   },
-                                                  expression: "modalWindow"
+                                                  expression: "dialog"
                                                 }
                                               },
                                               [
@@ -3039,11 +3039,12 @@ var render = function() {
                                                     label: _vm.name,
                                                     hint: _vm.placeholder,
                                                     rules: _vm.rules,
-                                                    disabled: _vm.disableGet,
+                                                    disabled: _vm.getDisable,
                                                     required: !!_vm.nullable,
                                                     readonly: "",
+                                                    "append-icon": "",
                                                     tabindex: _vm.sortSeq,
-                                                    clearable: _vm.clearableGet,
+                                                    clearable: _vm.getClearable,
                                                     min: _vm.min,
                                                     max: _vm.max,
                                                     multiple: "",
@@ -3087,10 +3088,10 @@ var render = function() {
                                                     "div",
                                                     {
                                                       style:
-                                                        _vm.getWindowMainDivStyle
+                                                        _vm.getDialogMainDivStyle
                                                     },
                                                     [
-                                                      _vm.modalWindowWithDate
+                                                      _vm.dialogWithDate
                                                         ? _c("v-date-picker", {
                                                             staticClass:
                                                               "v-date-picker-more-height",
@@ -3134,7 +3135,7 @@ var render = function() {
                                                             click: function(
                                                               $event
                                                             ) {
-                                                              _vm.modalWindow = false
+                                                              _vm.dialog = false
                                                             }
                                                           }
                                                         },
@@ -3152,7 +3153,7 @@ var render = function() {
                                                             click: function(
                                                               $event
                                                             ) {
-                                                              _vm.saveModalWindowWithDateMulty()
+                                                              _vm.saveDialogWithDateMulty()
                                                             }
                                                           }
                                                         },
