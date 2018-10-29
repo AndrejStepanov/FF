@@ -1727,16 +1727,26 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			return this.type != 'PASSWORD';
 		},
 		getInputContanerTemplateClass: function getInputContanerTemplateClass() {
-			return [{ "input-contaner": true }, { "slider-upper": this.isSliderLike && this.isNumeric }];
+			return {
+				"input-contaner": true,
+				"slider-upper": this.isSliderLike && this.isNumeric
+			};
 		},
 		getLabelClass: function getLabelClass() {
-			return [{ "disabled-label": !this.checked }, { "error--text": this.hasError && this.$refs.input.validations != '' }];
+			return {
+				"disabled-label": !this.checked,
+				"error--text": this.hasError && this.$refs.input.validations != ''
+			};
 		},
 		getSignClass: function getSignClass() {
-			return [{ "rotate-90": this.needSign && this.signList[this.sign].icon == 'pause' && this.signList[this.sign].code == '=' }];
+			return {
+				"rotate-90": this.needSign && this.signList[this.sign].icon == 'pause' && this.signList[this.sign].code == '='
+			};
 		},
 		getComponentClass: function getComponentClass() {
-			return [{ "body-1": this.needSign }];
+			return {
+				"body-1": this.needSign
+			};
 		},
 		getDisable: function getDisable() {
 			return !this.needCheckBox ? false : !this.checked;
@@ -1753,7 +1763,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		getDialogWidth: function getDialogWidth() {
 			var vm = this,
 			    width = vm.type == 'DATE' ? 290 : vm.type == 'TIME' ? 290 : ['DATETIME', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? 584 : ['DATETIME_RANGE'].indexOf(vm.type) != -1 && !vm.isNarrowDialog ? 1200 : ['DATETIME_RANGE'].indexOf(vm.type) != -1 && vm.isNarrowDialog ? 584 : null;
-			if (vm.getDialogMainDivStyle[1].overflowY == 'scroll') width += 17;
+			if (vm.getDialogMainDivStyle.overflowY == 'scroll') width += 17;
 			return width + 'px';
 		},
 		getDialogClass: function getDialogClass() {
@@ -1769,15 +1779,27 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				height = vm.$vuetify.breakpoint.height * 0.9 /*отступы*/ - 48 /*кнопки*/ < height * 2 + 28 /*разделитель */ + 48 ? vm.$vuetify.breakpoint.height * 0.9 - 48 : height * 2 + 28 + 48;
 				overflowY = 'scroll';
 			}
-			return [{ height: height + 'px' }, { overflowY: overflowY }];
+			return {
+				height: height + 'px',
+				overflowY: overflowY
+			};
 		},
 		getDialogSeparatorClass: function getDialogSeparatorClass() {
 			var vm = this;
-			return [{ "v-date-picker-more-height": !vm.isNarrowDialog }, { "dialog-display-inline-grid": !vm.isNarrowDialog }, { "dialog-narrow-display-div-arrow": vm.isNarrowDialog }, { "v-picker": true }, { "v-card": true }];
+			return {
+				"v-date-picker-more-height": !vm.isNarrowDialog,
+				"dialog-display-inline-grid": !vm.isNarrowDialog,
+				"dialog-narrow-display-div-arrow": vm.isNarrowDialog,
+				"v-picker": true,
+				"v-card": true
+			};
 		},
 		getDialogSeparatorArrowClass: function getDialogSeparatorArrowClass() {
 			var vm = this;
-			return [{ "rotate-90": vm.isNarrowDialog }, { "dialog-narrow-display-arrow-width": vm.isNarrowDialog }];
+			return {
+				"rotate-90": vm.isNarrowDialog,
+				"dialog-narrow-display-arrow-width": vm.isNarrowDialog
+			};
 		},
 		isNarrowDialog: function isNarrowDialog() {
 			var vm = this;

@@ -224,26 +224,26 @@ time-with-seconds	##:##:##
 				return this.type!='PASSWORD'
 			},
 			getInputContanerTemplateClass(){
-				return [
-					{"input-contaner": true},
-					{"slider-upper": this.isSliderLike && this.isNumeric},
-				]
+				return {
+					"input-contaner": true,
+					"slider-upper": this.isSliderLike && this.isNumeric,
+				}
 			},
 			getLabelClass(){
-				return [
-					{"disabled-label": !this.checked},
-					{"error--text": ( this.hasError && this.$refs.input.validations!='' )},					
-				]
+				return {
+					"disabled-label": !this.checked,
+					"error--text": ( this.hasError && this.$refs.input.validations!='' ),					
+				}
 			},
 			getSignClass(){
-				return [
-					{"rotate-90": this.needSign && this.signList[this.sign].icon=='pause' && this.signList[this.sign].code=='='},
-				]
+				return {
+					"rotate-90": this.needSign && this.signList[this.sign].icon=='pause' && this.signList[this.sign].code=='=',
+				}
 			},
 			getComponentClass(){
-				return [
-					{"body-1":this.needSign},
-				]
+				return {
+					"body-1":this.needSign,
+				}
 			},
 			getDisable(){
 				return !this.needCheckBox?false:!this.checked
@@ -265,7 +265,7 @@ time-with-seconds	##:##:##
 						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && !vm.isNarrowDialog? 1200 :
 						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.isNarrowDialog? 584 :
 						null
-				if(vm.getDialogMainDivStyle[1].overflowY=='scroll')
+				if(vm.getDialogMainDivStyle.overflowY=='scroll')
 					width+=17
 				return width+'px'
 			},
@@ -281,27 +281,27 @@ time-with-seconds	##:##:##
 					height=vm.$vuetify.breakpoint.height *0.9/*отступы*/ -48 /*кнопки*/ < height*2+ 28/*разделитель */ + 48?   vm.$vuetify.breakpoint.height *0.9 -48:	height*2+ 28 + 48
 					overflowY='scroll'
 				}
-				return [
-					{ height: height + 'px' },
-					{ overflowY: overflowY }
-				]
+				return {
+					height: height + 'px' ,
+					overflowY: overflowY,
+				}
 			},
 			getDialogSeparatorClass(){
 				let vm=this
-				return [
-					{"v-date-picker-more-height": !vm.isNarrowDialog},
-					{"dialog-display-inline-grid": !vm.isNarrowDialog},
-					{"dialog-narrow-display-div-arrow": vm.isNarrowDialog},					
-					{"v-picker": true},
-					{"v-card": true},					  
-				]
+				return {
+					"v-date-picker-more-height": !vm.isNarrowDialog,
+					"dialog-display-inline-grid": !vm.isNarrowDialog,
+					"dialog-narrow-display-div-arrow": vm.isNarrowDialog,					
+					"v-picker": true,
+					"v-card": true,					  
+				}
 			},
 			getDialogSeparatorArrowClass(){
 				let vm=this
-				return [
-					{"rotate-90": vm.isNarrowDialog},					  
-					{"dialog-narrow-display-arrow-width": vm.isNarrowDialog},					  
-				]
+				return {
+					"rotate-90": vm.isNarrowDialog,					  
+					"dialog-narrow-display-arrow-width": vm.isNarrowDialog,					  
+				}
 			},			
 			isNarrowDialog(){
 				let vm = this
