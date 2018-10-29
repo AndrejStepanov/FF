@@ -1,6 +1,17 @@
 <template> 
-	<v-layout v-if="type!='HIDDEN'" align-center :class="classCss"  row>
-		<v-tooltip  class='input-contaner' :disabled="tip==''" bottom>
+	<v-layout v-if="type!='HIDDEN'" align-center  row>
+		<div  v-if="type=='INFO'"  class="text-xs-center" style="width:90%; display:block; margin-left: 5%;">
+			<v-chip   style="width:100%; display:block; ">
+				{{name}}
+			</v-chip>
+		</div>
+		<div  v-else-if="type=='NBSP'">
+			&nbsp;
+		</div>
+		<div  v-else-if="type=='LINE'" style="width:100%; margin-top: 10px; margin-bottom: 10px; " >
+			<hr>
+		</div>
+		<v-tooltip v-else  class='input-contaner' :disabled="tip==''" bottom>
 			<template slot='activator'>
 				<div class='input-contaner'>
 					<v-btn  icon v-if="needSign" @click="changeSign" small class="sign-box cursor-pointer" >
@@ -48,9 +59,9 @@
 								</v-flex>
 							</template>
 							<template v-else>
-								<component v-if="!multy && !isDateTimeLike" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
+								<component v-if="!multy && !isNeedDialog" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
 									:multi-line="columnSize>50" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :counter="getCounter"
-									:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step"
+									:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step" auto-grow rows="1"
 									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" 
 									:class="getComponentClass" />
 								<component v-else-if="multy && type=='LIST'" :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
@@ -83,7 +94,7 @@
 										<v-toolbar dense  color="primary" >	
 											<v-btn flat class="accent"  @click="dialog = false">Отмена</v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="$refs.dialog.save(getValueDatetimeFromArr({check:true,}))">Принять</v-btn>
+											<v-btn flat class="accent"  @click="saveDialog(value)">Принять</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -99,7 +110,25 @@
 										<v-toolbar dense color="primary" >	
 											<v-btn flat class="accent" @click="dialog = false">Отмена</v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="saveDialogWithDateMulty()">Принять</v-btn>
+											<v-btn flat class="accent"  @click="saveDialog(value)">Принять</v-btn>
+										</v-toolbar>
+									</template>
+								</v-dialog>
+								<v-dialog v-else-if="!multy && isNeedDialog && [ 'TAB', ].indexOf(type)!=-1"	ref="dialog" v-model="dialog" :return-value.sync="value" persistent lazy full-width	:width="getDialogWidth" @show='changeChecked' 
+										@update:returnValue="setNewVal" class="max-width" :content-class="getDialogClass">
+									<v-combobox slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
+										:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max"
+										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
+									<template>
+										<div  :style="getDialogMainDivStyle">
+											<v-textarea v-if="type=='TAB'"  v-model="value" :label="name" :hint="placeholder" :rules="rulesChildInput" :readonly="!editable"  :required="!!nullable"
+												:multi-line="columnSize>50" :type="getComponentType"  dense :counter="getCounter" solo no-resize :height="getDialogMainDivHeight-140"
+												:clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step"/>
+										</div>
+										<v-toolbar dense color="primary" >	
+											<v-btn flat class="accent" @click="dialog = false">Отмена</v-btn>
+											<v-spacer/>
+											<v-btn flat class="accent"  @click="saveDialog(value)">Принять</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -110,7 +139,7 @@
 			</template>
 			<span >{{tip}}</span>
 		</v-tooltip>
-		<v-checkbox v-if="!!needCheckBox" v-model="checked" hide-details class="shrink ml-2 mb-2" @change="changeChecked" :color="checkBoxColor"></v-checkbox>
+		<v-checkbox v-if="!!needCheckBox && hasInput" v-model="checked" hide-details class="shrink ml-2 mb-2" @change="changeChecked" :color="checkBoxColor"></v-checkbox>
 	</v-layout>
 </template>
 //:append-outer-icon="appendOuterIconGet" 
@@ -153,6 +182,7 @@ time-with-seconds	##:##:##
 			hasInput: false,
 			id: 0,
 			isNeed:false,
+			isNeedDialog:false,
 			isDateTimeLike:false,
 			isNumeric:true,
 			isSliderLike:false,
@@ -171,6 +201,7 @@ time-with-seconds	##:##:##
 			readonly:false,
 			rangeSeparator:' до ',
 			rules:[],
+			rulesChildInput:[],
 			show:false,
 			sign:0,
 			signList:[
@@ -273,13 +304,18 @@ time-with-seconds	##:##:##
 				let vm=this
 				return "overflow-hidden "
 			},
+			getDialogMainDivHeight(){
+				let vm=this,
+					height=392/*стандартная высота одного элемента управления*/
+				return vm.type=='TEXT' || vm.$vuetify.breakpoint.height *0.9/*отступы*/ -48 /*кнопки*/ < height*2+ 28/*разделитель */ + 48?   vm.$vuetify.breakpoint.height *0.9 -48:	height*2+ 28 + 48
+			},
 			getDialogMainDivStyle(){
 				let vm=this,
 					height=392/*стандартная высота одного элемента управления*/,
 					overflowY='hidden'
-				if(vm.type=='DATETIME_RANGE' && vm.isNarrowDialog || height+48>vm.$vuetify.breakpoint.height *0.9){
-					height=vm.$vuetify.breakpoint.height *0.9/*отступы*/ -48 /*кнопки*/ < height*2+ 28/*разделитель */ + 48?   vm.$vuetify.breakpoint.height *0.9 -48:	height*2+ 28 + 48
-					overflowY='scroll'
+				if(vm.type=='DATETIME_RANGE' && vm.isNarrowDialog || height+48>vm.$vuetify.breakpoint.height *0.9 || vm.type=='TEXT'){
+					height = vm.getDialogMainDivHeight
+					overflowY=vm.type=='TEXT'?'auto':'scroll'
 				}
 				return {
 					height: height + 'px' ,
@@ -416,6 +452,8 @@ time-with-seconds	##:##:##
 						}
 						vm.valueView = dateFormater(vm.value)
 					}
+					else 
+						vm.valueView =value
 				}
 				vm.checkRefresh({checkedFx,initRun})
 			},
@@ -427,11 +465,18 @@ time-with-seconds	##:##:##
 				let vm=this
 				vm.setNewVal([vm.valueArrPairs[0][0], value])
 			},
-			saveDialogWithDateMulty(){
+			saveDialog(value){
 				let vm=this
-				if(vm.dialogWithDate && vm.valueArr.length==0)
-					showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите дату!'});
-				vm.$refs.dialog.save(vm.valueArr)
+				if(!vm.multy && vm.isDateTimeLike)
+					vm.$refs.dialog.save(vm.getValueDatetimeFromArr({check:true,}))
+				else if(vm.multy && vm.type=='DATE'){
+					if(vm.dialogWithDate && vm.valueArr.length==0)
+						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите дату!'});
+					vm.$refs.dialog.save(vm.valueArr)
+				}
+				else if(!vm.multy  && vm.type=='TAB' )
+					vm.$refs.dialog.save(value)
+
 			},
 			changeSign(){
 				let vm=this
@@ -478,7 +523,7 @@ time-with-seconds	##:##:##
 			async checkRefresh({checkedFx=false,initRun=false}){
 				let vm=this, tmp1, tmp2,
 					value = vm.value,
-					valueView =  vm.value,
+					valueView =  vm.value,//надо нормализировать для разных обработчиков
 					valueArr = [],
 					valueArrView = []
 				if(vm.type=='RANGE' && !vm.multy){
@@ -559,7 +604,8 @@ time-with-seconds	##:##:##
 			}			
 		},
 		created: function (){
-			let vm=this
+			let vm=this,
+				tmp=''
 			vm.checkBoxColor=appTheme.checkBox||vm.checkBoxColor
 			vm.id=vm.data.id||vm.id
 			vm.value=vm.data.value||vm.value
@@ -623,6 +669,7 @@ time-with-seconds	##:##:##
 				vm.type=='RANGE'?'v-range-slider':
 				vm.type=='DATE'?'v-date-picker':
 				vm.type=='TIME'?'v-time-picker':
+				vm.type=='TEXT'?'v-textarea':
 				'v-text-field'	
 			
 			if(vm.type=='LIST' && !vm.multy  && vm.valueArr.length>0)
@@ -689,16 +736,10 @@ time-with-seconds	##:##:##
 				vm.hasInput=true
 
 			if(['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(vm.type)!=-1)
-				vm.isDateTimeLike=true		
+				vm.isDateTimeLike=true
 
-			if(vm.hasInput && !vm.nullable){
-				vm.isNeed =true
-				vm.rules.push(v => v!=undefined && (v!='' || v===0) || 'Поле обязательное!')
-				vm.name='❗ '+vm.name//⭐
-			}
-
-			if(vm.hasInput && vm.needCheckBox && !vm.nullable)
-				vm.rules.push(v => !!vm.checked || 'Поле должно быть использовано!')
+			if(vm.isDateTimeLike || [ 'TAB'].indexOf(vm.type)!=-1)
+				vm.isNeedDialog=true	
 
 			if(vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type!='RANGE' )//Границы должны быть цифрой!
 				vm.rules.push(v => v>=vm.min|| !vm.checked || 'Значение должно быть не меньше '+vm.min+'!')
@@ -708,10 +749,24 @@ time-with-seconds	##:##:##
 
 			if(vm.hasInput && vm.maxLenTypes.indexOf(vm.type)!=-1 && vm.maxLen>0)
 				vm.rules.push(v => v.length <= vm.maxLen  || !vm.checked || 'Количество символов не должно превышать '+vm.maxLen+'!')
-
-			let tmp = new RegExp(vm.maskFin)
+			
+			tmp = new RegExp(vm.maskFin)
 			if(vm.hasInput && tmp!='')//надо помнить про экранирование
 				vm.rules.push(v => tmp.test(v) || vm.error)
+			
+			vm.rules.forEach( row=>{
+				vm.rulesChildInput.push(row)
+			})
+				
+			if(vm.hasInput && !vm.nullable){
+				vm.isNeed =true
+				vm.rules.push(v => v!=undefined && (v!='' || v===0) || 'Поле обязательное!')
+				vm.name='❗ '+vm.name//⭐
+			}
+
+			if(vm.hasInput && vm.needCheckBox && !vm.nullable)
+				vm.rules.push(v => !!vm.checked || 'Поле должно быть использовано!')
+
 			vm.paramSetData( {num: vm.paramsForm, data:{...vm.data,value :null, value_view :null, value_arr :null, value_arr_view:null,  } })
 			if(vm.multy && ['DATE', 'LIST'].indexOf(vm.type)!=-1)
 				vm.setNewVal(vm.valueArr,true,true)

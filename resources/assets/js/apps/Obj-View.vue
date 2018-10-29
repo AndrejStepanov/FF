@@ -51,14 +51,20 @@
 					{id:9, form:'object-tree-add',	code:'m_obj_level2', 				name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 	type:'LIST',				value_arr:["cur"],											multy:true,		nullable:false, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем этом прям прям этом уровне'},{value:'inside',text:'Вложенный'},],   },	
 					{id:11, form:'object-tree-add',	code:'m_obj_level', 				name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 	type:'LIST',				value_arr:["cur"],											multy:true,		nullable:false, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
 					{id:12, form:'object-tree-add',	code:'m_tree_group',				name:'Тип', 					placeholder:'Тип объекта', 					type:'LIST', 				value_arr:["node","ARM"],									multy:true,		nullable:false, column_size:30, sort_seq:2, table_values:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
+					{id:22, form:'object-tree-add',	code:'m_tree_info',					name:'Информация', 										 					type:'INFO', 																															sort_seq:2, },
+					{id:23, form:'object-tree-add',	code:'m_tree_nbsp',					name:'Информация', 										 					type:'NBSP', 																															sort_seq:2, },
+					
 					{id:13, form:'object-tree-add',	code:'m_tree_dates',				name:'Даты', 					placeholder:'Даты объекта', 				type:'DATE', 				value_arr:["2018-10-03", "2018-10-04"],						multy:true,		nullable:false, column_size:30, sort_seq:2, },
 					{id:14, form:'object-tree-add',	code:'m_tree_date',					name:'Дата', 					placeholder:'Дата объекта', 				type:'DATE', 				value_arr:["2018-10-03"],									multy:false,	nullable:false, column_size:30, sort_seq:2, },
 					{id:15, form:'object-tree-add',	code:'m_tree_time',					name:'Время', 					placeholder:'Время объекта', 				type:'TIME', 				value_arr:["12:52"],										multy:false,	nullable:false, column_size:30, sort_seq:2, },
+					{id:24, form:'object-tree-add',	code:'m_tree_line',					name:'Информация', 										 					type:'LINE', 																															sort_seq:2, },
 					{id:16, form:'object-tree-add',	code:'m_tree_datetime',				name:'Дата Время', 				placeholder:'Дата Время объекта', 			type:'DATETIME', 			value_arr:["2018-10-03 12:52"],								multy:false,	nullable:false, column_size:30, sort_seq:2, },
 					{id:17, form:'object-tree-add',	code:'m_tree_date_range',			name:'Дата диапазон', 			placeholder:'Дата объекта диапазон', 		type:'DATE_RANGE', 			value_arr:[["2018-10-03","2018-10-04"]],					multy:false,	nullable:false, column_size:30, sort_seq:2, },
 					{id:18, form:'object-tree-add',	code:'m_tree_time_range',			name:'Время диапазон', 			placeholder:'Время объекта диапазон', 		type:'TIME_RANGE', 			value_arr:[["12:52","12:53"]],								multy:false,	nullable:false, column_size:30, sort_seq:2, },
 					{id:19, form:'object-tree-add',	code:'m_tree_datetime_range',		name:'Дата Время диапазон', 	placeholder:'Дата Время объекта', 			type:'DATETIME_RANGE', 		value_arr:[["2018-10-03 12:52","2018-10-04 12:53"]],		multy:false,	nullable:false, column_size:30, sort_seq:2, },
 					{id:20, form:'object-tree-add',	code:'m_tree_input',				name:'Ввод', 					placeholder:'Ввод объекта', 				type:'INPUT', 				value:"ыва",												multy:false,	nullable:false, column_size:30, sort_seq:2, },
+					{id:21, form:'object-tree-add',	code:'m_tree_text',					name:'Текст', 					placeholder:'Ввод текста', 					type:'TEXT', 				value:"ыва",												multy:false,	nullable:false, column_size:30, sort_seq:2, },
+					{id:25, form:'object-tree-add',	code:'m_tree_line1',				name:'Информация', 										 					type:'LINE', 																															sort_seq:2, },
 					
 				]
 			},
