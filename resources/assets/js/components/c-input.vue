@@ -58,26 +58,28 @@
 									:append-icon="appendIconGet" :clearable="clearableGet" :mask="mask"  :min="min" :max="max" :step="step"
 									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" multiple chips deletable-chips small-chips
 									:class="componentClassGet" />
-								<v-dialog v-else-if="!multy && isDateTimeLike " ref="modalWindow" v-model="modalWindow" :return-value.sync="value" persistent lazy full-width	:width="getmodalWindowWidth" @show='changeChecked' 
-										@update:returnValue="setNewVal" class='max-width'>
+								<v-dialog v-else-if="!multy && isDateTimeLike " ref="modalWindow" v-model="modalWindow" :return-value.sync="value" persistent lazy full-width	:width="getModalWindowWidth" @show='changeChecked' 
+										@update:returnValue="setNewVal" class="max-width" :content-class="getWindowClass">
 									<v-text-field slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable"  readonly ref="input" 
 										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" 
 										@change="setNewVal" @input="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
 									<template>
-										<v-date-picker v-if="modalWindowWithDate  && type!='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker"/>
-										<v-time-picker v-else-if="type=='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" format="24hr"/>
-										<v-time-picker v-if="modalWindowWithTime && type!='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" format="24hr"/>
-										<v-date-picker v-else-if="type=='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker"/>
+										<div  :style="getWindowMainDivStyle">
+											<v-date-picker v-if="modalWindowWithDate  && type!='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index'/>
+											<v-time-picker v-else-if="type=='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
+											<v-time-picker v-if="modalWindowWithTime && type!='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
+											<v-date-picker v-else-if="type=='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index' />
 
-										<template v-if="type=='DATETIME_RANGE'">
-											<div class='v-date-picker-more-height v-picker v-card ' style="display: inline-grid;" >
-												<v-icon >fast_forward</v-icon>										
-												<v-icon >fast_forward</v-icon>										
-												<v-icon >fast_forward</v-icon>										
-											</div>
-											<v-date-picker v-model="valueArrPairs[1][0]" scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker"/>
-											<v-time-picker v-model="valueArrPairs[1][1]" scrollable locale="ru" format="24hr"/>
-										</template>
+											<template v-if="type=='DATETIME_RANGE'">
+												<div :class="getWindowSeparatorClass" >
+													<v-icon :class="getModalArrowClass">fast_forward</v-icon>										
+													<v-icon :class="getModalArrowClass">fast_forward</v-icon>										
+													<v-icon :class="getModalArrowClass">fast_forward</v-icon>										
+												</div>
+												<v-date-picker v-model="valueArrPairs[1][0]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index' />
+												<v-time-picker v-model="valueArrPairs[1][1]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
+											</template>
+										</div>
 										<v-toolbar dense  color="primary" >	
 											<v-btn flat class="accent"  @click="modalWindow = false">Отмена</v-btn>
 											<v-spacer/>
@@ -85,14 +87,15 @@
 										</v-toolbar>
 									</template>
 								</v-dialog>
-								<v-dialog v-else-if="multy && type=='DATE'"	ref="modalWindow" v-model="modalWindow" :return-value.sync="valueArr" persistent lazy full-width	:width="getmodalWindowWidth" @show='changeChecked' 
-										@update:returnValue="setNewVal" class='max-width'>
+								<v-dialog v-else-if="multy && type=='DATE'"	ref="modalWindow" v-model="modalWindow" :return-value.sync="valueArr" persistent lazy full-width	:width="getModalWindowWidth" @show='changeChecked' 
+										@update:returnValue="setNewVal" class="max-width" :content-class="getWindowClass">
 									<v-combobox slot="activator" v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="disableGet"  :required="!!nullable"  readonly ref="input" 
 										:tabindex="sortSeq"  :clearable="clearableGet"   :min="min" :max="max" multiple chips deletable-chips small-chips
 										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
 									<template>
-										<v-date-picker v-if="modalWindowWithDate"  v-model="valueArr" multiple  scrollable locale="ru" class='v-date-picker-more-height' ref="datePicker" />
-										<v-spacer/>
+										<div  :style="getWindowMainDivStyle">
+											<v-date-picker v-if="modalWindowWithDate"  v-model="valueArr" multiple  scrollable locale="ru" class='v-date-picker-more-height' />
+										</div>
 										<v-toolbar dense color="primary" >	
 											<v-btn flat class="accent" @click="modalWindow = false">Отмена</v-btn>
 											<v-spacer/>
@@ -254,9 +257,55 @@ time-with-seconds	##:##:##
 					return {value:element.value, text: (['LIST'].indexOf(vm.type)!=-1 && vm.listItemMin ? element.text : element.textFull)}
 				});
 			},
-			getmodalWindowWidth(){
+			getModalWindowWidth(){
+				let vm=this,
+					width= vm.type=='DATE'? 290 : 
+						vm.type=='TIME'? 290 : 
+						['DATETIME', 'TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1 ? 584: 
+						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && !vm.isNarrowWindow? 1200 :
+						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.isNarrowWindow? 584 :
+						null
+				if(vm.getWindowMainDivStyle[1].overflowY=='scroll')
+					width+=17
+				return width+'px'
+			},
+			getWindowClass(){
 				let vm=this
-				return vm.type=='DATE'? '290px' : vm.type=='TIME'? '290px' : ['DATETIME', 'TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1 ? '584px': ['DATETIME_RANGE'].indexOf(vm.type)!=-1 ? '1200px' :''
+				return "overflow-hidden "
+			},
+			getWindowMainDivStyle(){
+				let vm=this,
+					height=392/*стандартная высота одного элемента управления*/,
+					overflowY='hidden'
+				if(vm.type=='DATETIME_RANGE' && vm.isNarrowWindow || height+48>vm.$vuetify.breakpoint.height *0.9){
+					height=vm.$vuetify.breakpoint.height *0.9/*отступы*/ -48 /*кнопки*/ < 392*2+ 28/*разделитель */ + 48?   vm.$vuetify.breakpoint.height *0.9 -48:	392*2+ 28 + 48
+					overflowY='scroll'
+				}
+				return [
+					{ height: height + 'px' },
+					{ overflowY: overflowY }
+				]
+			},
+			getWindowSeparatorClass(){
+				let vm=this
+				return [
+					{"v-date-picker-more-height": !vm.isNarrowWindow},
+					{"window-display-inline-grid": !vm.isNarrowWindow},
+					{"window-narrow-display-div-arrow": vm.isNarrowWindow},					
+					{"v-picker": true},
+					{"v-card": true},					  
+				]
+			},
+			getModalArrowClass(){
+				let vm=this
+				return [
+					{"rotate-90": vm.isNarrowWindow},					  
+					{"window-narrow-display-arrow-width": vm.isNarrowWindow},					  
+				]
+			},			
+			isNarrowWindow(){
+				let vm = this
+				return vm.$vuetify.breakpoint.width <= 1264
 			},
 		},
 		watch: {
@@ -689,6 +738,12 @@ time-with-seconds	##:##:##
 	.v-slider__ticks-container>.v-slider__ticks>span		{font-size: 12px;}
 	.theme--dark.v-chip.v-chip--disabled					{background: #737373;}
 	.v-date-picker-more-height								{height: 392px;}
+	.higher-z-index											{z-index: 2;}
+	.window-display-inline-grid								{display: inline-grid;}
+	.window-narrow-display-div-arrow						{clear: right; display: inherit; width: 100%; height: 28px;}
+	.window-narrow-display-arrow-width						{width: 190px;}
+	.overflow-hidden										{overflow: hidden;}
+	.overflow-y-scroll										{overflow-y: scroll;}
 	/*i    border-bottom-color: #2c353f;
     border-bottom-style: groove;
     border-bottom-width: 0.5px;*/

@@ -3679,7 +3679,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\n.max-width \t\t\t\t\t\t\t\t\t\t\t\t{width:100%\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n.v-date-picker-more-height\t\t\t\t\t\t\t\t{height: 392px;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
+exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\n.max-width \t\t\t\t\t\t\t\t\t\t\t\t{width:100%\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n.v-date-picker-more-height\t\t\t\t\t\t\t\t{height: 392px;\n}\n.higher-z-index\t\t\t\t\t\t\t\t\t\t\t{z-index: 2;\n}\n.window-display-inline-grid\t\t\t\t\t\t\t\t{display: inline-grid;\n}\n.window-narrow-display-div-arrow\t\t\t\t\t\t{clear: right; display: inherit; width: 100%; height: 28px;\n}\n.window-narrow-display-arrow-width\t\t\t\t\t\t{width: 190px;\n}\n.overflow-hidden\t\t\t\t\t\t\t\t\t\t{overflow: hidden;\n}\n.overflow-y-scroll\t\t\t\t\t\t\t\t\t\t{overflow-y: scroll;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
 
 // exports
 
@@ -3700,6 +3700,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
+//
 //
 //
 //
@@ -3939,9 +3942,38 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				return { value: element.value, text: ['LIST'].indexOf(vm.type) != -1 && vm.listItemMin ? element.text : element.textFull };
 			});
 		},
-		getmodalWindowWidth: function getmodalWindowWidth() {
+		getModalWindowWidth: function getModalWindowWidth() {
+			var vm = this,
+			    width = vm.type == 'DATE' ? 290 : vm.type == 'TIME' ? 290 : ['DATETIME', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? 584 : ['DATETIME_RANGE'].indexOf(vm.type) != -1 && !vm.isNarrowWindow ? 1200 : ['DATETIME_RANGE'].indexOf(vm.type) != -1 && vm.isNarrowWindow ? 584 : null;
+			if (vm.getWindowMainDivStyle[1].overflowY == 'scroll') width += 17;
+			return width + 'px';
+		},
+		getWindowClass: function getWindowClass() {
 			var vm = this;
-			return vm.type == 'DATE' ? '290px' : vm.type == 'TIME' ? '290px' : ['DATETIME', 'TIME_RANGE', 'DATE_RANGE'].indexOf(vm.type) != -1 ? '584px' : ['DATETIME_RANGE'].indexOf(vm.type) != -1 ? '1200px' : '';
+			return "overflow-hidden ";
+		},
+		getWindowMainDivStyle: function getWindowMainDivStyle() {
+			var vm = this,
+			    height = 392 /*стандартная высота одного элемента управления*/
+			,
+			    overflowY = 'hidden';
+			if (vm.type == 'DATETIME_RANGE' && vm.isNarrowWindow || height + 48 > vm.$vuetify.breakpoint.height * 0.9) {
+				height = vm.$vuetify.breakpoint.height * 0.9 /*отступы*/ - 48 /*кнопки*/ < 392 * 2 + 28 /*разделитель */ + 48 ? vm.$vuetify.breakpoint.height * 0.9 - 48 : 392 * 2 + 28 + 48;
+				overflowY = 'scroll';
+			}
+			return [{ height: height + 'px' }, { overflowY: overflowY }];
+		},
+		getWindowSeparatorClass: function getWindowSeparatorClass() {
+			var vm = this;
+			return [{ "v-date-picker-more-height": !vm.isNarrowWindow }, { "window-display-inline-grid": !vm.isNarrowWindow }, { "window-narrow-display-div-arrow": vm.isNarrowWindow }, { "v-picker": true }, { "v-card": true }];
+		},
+		getModalArrowClass: function getModalArrowClass() {
+			var vm = this;
+			return [{ "rotate-90": vm.isNarrowWindow }, { "window-narrow-display-arrow-width": vm.isNarrowWindow }];
+		},
+		isNarrowWindow: function isNarrowWindow() {
+			var vm = this;
+			return vm.$vuetify.breakpoint.width <= 1264;
 		}
 	},
 	watch: {},
@@ -4805,7 +4837,9 @@ var render = function() {
                                                 persistent: "",
                                                 lazy: "",
                                                 "full-width": "",
-                                                width: _vm.getmodalWindowWidth
+                                                width: _vm.getModalWindowWidth,
+                                                "content-class":
+                                                  _vm.getWindowClass
                                               },
                                               on: {
                                                 "update:returnValue": [
@@ -4873,203 +4907,233 @@ var render = function() {
                                               }),
                                               _vm._v(" "),
                                               [
-                                                _vm.modalWindowWithDate &&
-                                                _vm.type != "TIME_RANGE"
-                                                  ? _c("v-date-picker", {
-                                                      ref: "datePicker",
-                                                      staticClass:
-                                                        "v-date-picker-more-height",
-                                                      attrs: {
-                                                        scrollable: "",
-                                                        locale: "ru"
-                                                      },
-                                                      model: {
-                                                        value:
-                                                          _vm
-                                                            .valueArrPairs[0][0],
-                                                        callback: function(
-                                                          $$v
-                                                        ) {
-                                                          _vm.$set(
-                                                            _vm
-                                                              .valueArrPairs[0],
-                                                            0,
-                                                            $$v
-                                                          )
-                                                        },
-                                                        expression:
-                                                          "valueArrPairs[0][0]"
-                                                      }
-                                                    })
-                                                  : _vm.type == "TIME_RANGE"
-                                                    ? _c("v-time-picker", {
-                                                        attrs: {
-                                                          scrollable: "",
-                                                          locale: "ru",
-                                                          format: "24hr"
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm
-                                                              .valueArrPairs[0][0],
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm
-                                                                .valueArrPairs[0],
-                                                              0,
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "valueArrPairs[0][0]"
-                                                        }
-                                                      })
-                                                    : _vm._e(),
-                                                _vm._v(" "),
-                                                _vm.modalWindowWithTime &&
-                                                _vm.type != "DATE_RANGE"
-                                                  ? _c("v-time-picker", {
-                                                      attrs: {
-                                                        scrollable: "",
-                                                        locale: "ru",
-                                                        format: "24hr"
-                                                      },
-                                                      model: {
-                                                        value:
-                                                          _vm
-                                                            .valueArrPairs[0][1],
-                                                        callback: function(
-                                                          $$v
-                                                        ) {
-                                                          _vm.$set(
-                                                            _vm
-                                                              .valueArrPairs[0],
-                                                            1,
-                                                            $$v
-                                                          )
-                                                        },
-                                                        expression:
-                                                          "valueArrPairs[0][1]"
-                                                      }
-                                                    })
-                                                  : _vm.type == "DATE_RANGE"
-                                                    ? _c("v-date-picker", {
-                                                        ref: "datePicker",
-                                                        staticClass:
-                                                          "v-date-picker-more-height",
-                                                        attrs: {
-                                                          scrollable: "",
-                                                          locale: "ru"
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm
-                                                              .valueArrPairs[0][1],
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm
-                                                                .valueArrPairs[0],
-                                                              1,
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "valueArrPairs[0][1]"
-                                                        }
-                                                      })
-                                                    : _vm._e(),
-                                                _vm._v(" "),
-                                                _vm.type == "DATETIME_RANGE"
-                                                  ? [
-                                                      _c(
-                                                        "div",
-                                                        {
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    style:
+                                                      _vm.getWindowMainDivStyle
+                                                  },
+                                                  [
+                                                    _vm.modalWindowWithDate &&
+                                                    _vm.type != "TIME_RANGE"
+                                                      ? _c("v-date-picker", {
                                                           staticClass:
-                                                            "v-date-picker-more-height v-picker v-card ",
-                                                          staticStyle: {
-                                                            display:
-                                                              "inline-grid"
+                                                            "v-date-picker-more-height higher-z-index",
+                                                          attrs: {
+                                                            scrollable: "",
+                                                            locale: "ru"
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm
+                                                                .valueArrPairs[0][0],
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                _vm
+                                                                  .valueArrPairs[0],
+                                                                0,
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "valueArrPairs[0][0]"
                                                           }
-                                                        },
-                                                        [
-                                                          _c("v-icon", [
-                                                            _vm._v(
-                                                              "fast_forward"
-                                                            )
-                                                          ]),
-                                                          _vm._v(" "),
-                                                          _c("v-icon", [
-                                                            _vm._v(
-                                                              "fast_forward"
-                                                            )
-                                                          ]),
-                                                          _vm._v(" "),
-                                                          _c("v-icon", [
-                                                            _vm._v(
-                                                              "fast_forward"
-                                                            )
-                                                          ])
-                                                        ],
-                                                        1
-                                                      ),
-                                                      _vm._v(" "),
-                                                      _c("v-date-picker", {
-                                                        ref: "datePicker",
-                                                        staticClass:
-                                                          "v-date-picker-more-height",
-                                                        attrs: {
-                                                          scrollable: "",
-                                                          locale: "ru"
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm
-                                                              .valueArrPairs[1][0],
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm
-                                                                .valueArrPairs[1],
-                                                              0,
-                                                              $$v
-                                                            )
+                                                        })
+                                                      : _vm.type == "TIME_RANGE"
+                                                        ? _c("v-time-picker", {
+                                                            staticClass:
+                                                              "higher-z-index",
+                                                            attrs: {
+                                                              scrollable: "",
+                                                              locale: "ru",
+                                                              format: "24hr"
+                                                            },
+                                                            model: {
+                                                              value:
+                                                                _vm
+                                                                  .valueArrPairs[0][0],
+                                                              callback: function(
+                                                                $$v
+                                                              ) {
+                                                                _vm.$set(
+                                                                  _vm
+                                                                    .valueArrPairs[0],
+                                                                  0,
+                                                                  $$v
+                                                                )
+                                                              },
+                                                              expression:
+                                                                "valueArrPairs[0][0]"
+                                                            }
+                                                          })
+                                                        : _vm._e(),
+                                                    _vm._v(" "),
+                                                    _vm.modalWindowWithTime &&
+                                                    _vm.type != "DATE_RANGE"
+                                                      ? _c("v-time-picker", {
+                                                          staticClass:
+                                                            "higher-z-index",
+                                                          attrs: {
+                                                            scrollable: "",
+                                                            locale: "ru",
+                                                            format: "24hr"
                                                           },
-                                                          expression:
-                                                            "valueArrPairs[1][0]"
-                                                        }
-                                                      }),
-                                                      _vm._v(" "),
-                                                      _c("v-time-picker", {
-                                                        attrs: {
-                                                          scrollable: "",
-                                                          locale: "ru",
-                                                          format: "24hr"
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm
-                                                              .valueArrPairs[1][1],
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
+                                                          model: {
+                                                            value:
                                                               _vm
-                                                                .valueArrPairs[1],
-                                                              1,
+                                                                .valueArrPairs[0][1],
+                                                            callback: function(
                                                               $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "valueArrPairs[1][1]"
-                                                        }
-                                                      })
-                                                    ]
-                                                  : _vm._e(),
+                                                            ) {
+                                                              _vm.$set(
+                                                                _vm
+                                                                  .valueArrPairs[0],
+                                                                1,
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "valueArrPairs[0][1]"
+                                                          }
+                                                        })
+                                                      : _vm.type == "DATE_RANGE"
+                                                        ? _c("v-date-picker", {
+                                                            staticClass:
+                                                              "v-date-picker-more-height higher-z-index",
+                                                            attrs: {
+                                                              scrollable: "",
+                                                              locale: "ru"
+                                                            },
+                                                            model: {
+                                                              value:
+                                                                _vm
+                                                                  .valueArrPairs[0][1],
+                                                              callback: function(
+                                                                $$v
+                                                              ) {
+                                                                _vm.$set(
+                                                                  _vm
+                                                                    .valueArrPairs[0],
+                                                                  1,
+                                                                  $$v
+                                                                )
+                                                              },
+                                                              expression:
+                                                                "valueArrPairs[0][1]"
+                                                            }
+                                                          })
+                                                        : _vm._e(),
+                                                    _vm._v(" "),
+                                                    _vm.type == "DATETIME_RANGE"
+                                                      ? [
+                                                          _c(
+                                                            "div",
+                                                            {
+                                                              class:
+                                                                _vm.getWindowSeparatorClass
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-icon",
+                                                                {
+                                                                  class:
+                                                                    _vm.getModalArrowClass
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "fast_forward"
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "v-icon",
+                                                                {
+                                                                  class:
+                                                                    _vm.getModalArrowClass
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "fast_forward"
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "v-icon",
+                                                                {
+                                                                  class:
+                                                                    _vm.getModalArrowClass
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "fast_forward"
+                                                                  )
+                                                                ]
+                                                              )
+                                                            ],
+                                                            1
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c("v-date-picker", {
+                                                            staticClass:
+                                                              "v-date-picker-more-height higher-z-index",
+                                                            attrs: {
+                                                              scrollable: "",
+                                                              locale: "ru"
+                                                            },
+                                                            model: {
+                                                              value:
+                                                                _vm
+                                                                  .valueArrPairs[1][0],
+                                                              callback: function(
+                                                                $$v
+                                                              ) {
+                                                                _vm.$set(
+                                                                  _vm
+                                                                    .valueArrPairs[1],
+                                                                  0,
+                                                                  $$v
+                                                                )
+                                                              },
+                                                              expression:
+                                                                "valueArrPairs[1][0]"
+                                                            }
+                                                          }),
+                                                          _vm._v(" "),
+                                                          _c("v-time-picker", {
+                                                            staticClass:
+                                                              "higher-z-index",
+                                                            attrs: {
+                                                              scrollable: "",
+                                                              locale: "ru",
+                                                              format: "24hr"
+                                                            },
+                                                            model: {
+                                                              value:
+                                                                _vm
+                                                                  .valueArrPairs[1][1],
+                                                              callback: function(
+                                                                $$v
+                                                              ) {
+                                                                _vm.$set(
+                                                                  _vm
+                                                                    .valueArrPairs[1],
+                                                                  1,
+                                                                  $$v
+                                                                )
+                                                              },
+                                                              expression:
+                                                                "valueArrPairs[1][1]"
+                                                            }
+                                                          })
+                                                        ]
+                                                      : _vm._e()
+                                                  ],
+                                                  2
+                                                ),
                                                 _vm._v(" "),
                                                 _c(
                                                   "v-toolbar",
@@ -5135,7 +5199,10 @@ var render = function() {
                                                   persistent: "",
                                                   lazy: "",
                                                   "full-width": "",
-                                                  width: _vm.getmodalWindowWidth
+                                                  width:
+                                                    _vm.getModalWindowWidth,
+                                                  "content-class":
+                                                    _vm.getWindowClass
                                                 },
                                                 on: {
                                                   "update:returnValue": [
@@ -5207,29 +5274,38 @@ var render = function() {
                                                 }),
                                                 _vm._v(" "),
                                                 [
-                                                  _vm.modalWindowWithDate
-                                                    ? _c("v-date-picker", {
-                                                        ref: "datePicker",
-                                                        staticClass:
-                                                          "v-date-picker-more-height",
-                                                        attrs: {
-                                                          multiple: "",
-                                                          scrollable: "",
-                                                          locale: "ru"
-                                                        },
-                                                        model: {
-                                                          value: _vm.valueArr,
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.valueArr = $$v
-                                                          },
-                                                          expression: "valueArr"
-                                                        }
-                                                      })
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _c("v-spacer"),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      style:
+                                                        _vm.getWindowMainDivStyle
+                                                    },
+                                                    [
+                                                      _vm.modalWindowWithDate
+                                                        ? _c("v-date-picker", {
+                                                            staticClass:
+                                                              "v-date-picker-more-height",
+                                                            attrs: {
+                                                              multiple: "",
+                                                              scrollable: "",
+                                                              locale: "ru"
+                                                            },
+                                                            model: {
+                                                              value:
+                                                                _vm.valueArr,
+                                                              callback: function(
+                                                                $$v
+                                                              ) {
+                                                                _vm.valueArr = $$v
+                                                              },
+                                                              expression:
+                                                                "valueArr"
+                                                            }
+                                                          })
+                                                        : _vm._e()
+                                                    ],
+                                                    1
+                                                  ),
                                                   _vm._v(" "),
                                                   _c(
                                                     "v-toolbar",
