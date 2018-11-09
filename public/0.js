@@ -1,14 +1,14 @@
 webpackJsonp([0],{
 
-/***/ 175:
+/***/ 178:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(176)
+var __vue_script__ = __webpack_require__(179)
 /* template */
-var __vue_template__ = __webpack_require__(182)
+var __vue_template__ = __webpack_require__(185)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48,14 +48,14 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 176:
+/***/ 179:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(180);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__);
 //
 //
@@ -175,19 +175,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 177:
+/***/ 180:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(178)
+  __webpack_require__(181)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(180)
+var __vue_script__ = __webpack_require__(183)
 /* template */
-var __vue_template__ = __webpack_require__(181)
+var __vue_template__ = __webpack_require__(184)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -227,13 +227,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 178:
+/***/ 181:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(179);
+var content = __webpack_require__(182);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -254,7 +254,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 179:
+/***/ 182:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)(false);
@@ -269,7 +269,7 @@ exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: 
 
 /***/ }),
 
-/***/ 180:
+/***/ 183:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -807,7 +807,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 181:
+/***/ 184:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -877,7 +877,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 182:
+/***/ 185:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1057,16 +1057,16 @@ if (false) {
 
 /***/ }),
 
-/***/ 187:
+/***/ 190:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_dialog__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__ = __webpack_require__(80);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -1167,7 +1167,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 188:
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1226,15 +1226,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 49:
+/***/ 51:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(187)
+var __vue_script__ = __webpack_require__(190)
 /* template */
-var __vue_template__ = __webpack_require__(188)
+var __vue_template__ = __webpack_require__(193)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1274,15 +1274,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 78:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(79)
+var __vue_script__ = __webpack_require__(81)
 /* template */
-var __vue_template__ = __webpack_require__(85)
+var __vue_template__ = __webpack_require__(87)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1322,12 +1322,12 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 79:
+/***/ 81:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(82);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__c_input__);
 //
 //
@@ -1399,19 +1399,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 80:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(81)
+  __webpack_require__(83)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(83)
+var __vue_script__ = __webpack_require__(85)
 /* template */
-var __vue_template__ = __webpack_require__(84)
+var __vue_template__ = __webpack_require__(86)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1451,13 +1451,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 81:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(82);
+var content = __webpack_require__(84);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -1478,7 +1478,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 82:
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)(false);
@@ -1486,14 +1486,14 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\ndiv.input-contaner,\n\tspan.input-contaner>span,\n\tspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\n.max-width \t\t\t\t\t\t\t\t\t\t\t\t{width:100%\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n.v-date-picker-more-height\t\t\t\t\t\t\t\t{height: 392px;\n}\n.higher-z-index\t\t\t\t\t\t\t\t\t\t\t{z-index: 2;\n}\n.dialog-display-inline-grid\t\t\t\t\t\t\t\t{display: inline-grid;\n}\n.dialog-narrow-display-div-arrow\t\t\t\t\t\t{clear: right; display: inherit; width: 100%; height: 28px;\n}\n.dialog-narrow-display-arrow-width\t\t\t\t\t\t{width: 190px;\n}\n.overflow-hidden\t\t\t\t\t\t\t\t\t\t{overflow: hidden;\n}\n.overflow-y-scroll\t\t\t\t\t\t\t\t\t\t{overflow-y: scroll;\n}\n\t/*i    border-bottom-color: #2c353f;\n    border-bottom-style: groove;\n    border-bottom-width: 0.5px;*/\n", ""]);
+exports.push([module.i, "\ndiv.input-contaner,\nspan.input-contaner>span,\nspan.input-contaner\t\t\t\t\t\t\t\t\t\t{-webkit-box-align: start;\t-ms-flex-align: start;\talign-items: flex-start;\tdisplay: -webkit-box;\tdisplay: -ms-flexbox;\tdisplay: flex;\t-webkit-box-flex: 1;\t-ms-flex: 1 1 auto;\tflex: 1 1 auto;\n}\n.min-width-35px \t\t\t\t\t\t\t\t\t\t{min-width: 35px;\n}\n.max-width \t\t\t\t\t\t\t\t\t\t\t\t{width:100%\n}\ni.rotate-90\t\t\t\t\t\t\t\t\t\t\t\t{-webkit-transform: rotate(90deg);transform: rotate(90deg);\n}\n.sign-box\t\t\t\t\t\t\t\t\t\t\t\t{top: 15px;    margin-left: 0px;    margin-right: 0px;\n}\n.v-input__append-inner .v-input__icon--clear i\t\t\t{font-size: 15px;\n}\n.main-contaner \t\t\t\t\t\t\t\t\t\t\t{display: block !important;\n}\n.slider-label \t\t\t\t\t\t\t\t\t\t\t{font-size: 11px;\n}\n.slider-upper \t\t\t\t\t\t\t\t\t\t\t{margin-top: -12px;\n}\n.disabled-label \t\t\t\t\t\t\t\t\t\t{color: hsla(0,0%,100%,.5);\n}\n.v-slider__ticks-container>.v-slider__ticks>span\t\t{font-size: 12px;\n}\n.theme--dark.v-chip.v-chip--disabled\t\t\t\t\t{background: #737373;\n}\n.v-date-picker-more-height\t\t\t\t\t\t\t\t{height: 392px;\n}\n.higher-z-index\t\t\t\t\t\t\t\t\t\t\t{z-index: 2;\n}\n.dialog-display-inline-grid\t\t\t\t\t\t\t\t{display: inline-grid;\n}\n.dialog-narrow-display-div-arrow\t\t\t\t\t\t{clear: right; display: inherit; width: 100%; height: 28px;\n}\n.dialog-narrow-display-arrow-width\t\t\t\t\t\t{width: 190px;\n}\n.theme--dark.v-table tbody tr[active]>td:first-child\t{background: #7d7979;\n}\t\t\n/*i    border-bottom-color: #2c353f;\nborder-bottom-style: groove;\nborder-bottom-width: 0.5px;*/\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 83:
+/***/ 85:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1508,7 +1508,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-//
 //
 //
 //
@@ -1692,9 +1691,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			hasError: false,
 			hasInput: false,
 			id: 0,
-			isNeed: false,
-			isNeedDialog: false,
 			isDateTimeLike: false,
+			isMounted: false,
+			isNeed: false,
+			isNeedTab: false,
 			isNumeric: true,
 			isSliderLike: false,
 			listItemLenght: 18,
@@ -1718,8 +1718,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			signList: [{ code: '=', icon: 'pause' }, { code: '!=', icon: 'code' }, { code: '>', icon: 'chevron_right' }, { code: '>=', icon: 'last_page' }, { code: '<', icon: 'chevron_left' }, { code: '<=', icon: 'first_page' }],
 			sortSeq: 0,
 			step: "1",
+			tabGroup: "",
+			tabHeader: [],
+			tabValues: [],
+			tabSelectedRows: [],
 			tableValues: [], //для листов [{value:'cur',text:'На текущем уровне'}], для TAB [{param1:1, param2:2, }]
-			tableHeader: [], //для TAB [{value:'param1',text:'Параметра1'},{value:'param2',text:'Параметра2'}]
+			tableHeader: [], //для TAB [{value:'param1',text:'Параметра1',visible:true},{value:'param2',text:'Параметра2',visible:true}]
 			thumbLabelNeed: false,
 			thumbSize: 10,
 			tickLabels: [],
@@ -1804,16 +1808,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		getDialogMainDivHeight: function getDialogMainDivHeight() {
 			var vm = this,
 			    height = 392; /*стандартная высота одного элемента управления*/
-			return vm.type == 'TEXT' || vm.$vuetify.breakpoint.height * 0.9 /*отступы*/ - 48 /*кнопки*/ < height * 2 + 28 /*разделитель */ + 48 ? vm.$vuetify.breakpoint.height * 0.9 - 48 : height * 2 + 28 + 48;
+			return vm.type == 'TEXT' || vm.isNeedTab || vm.$vuetify.breakpoint.height * 0.9 /*отступы*/ - 48 /*кнопки*/ < height * 2 + 28 /*разделитель */ + 48 ? vm.$vuetify.breakpoint.height * 0.9 - 48 : height * 2 + 28 + 48;
 		},
 		getDialogMainDivStyle: function getDialogMainDivStyle() {
 			var vm = this,
 			    height = 392 /*стандартная высота одного элемента управления*/
 			,
 			    overflowY = 'hidden';
-			if (vm.type == 'DATETIME_RANGE' && vm.isNarrowDialog || height + 48 > vm.$vuetify.breakpoint.height * 0.9 || vm.type == 'TEXT') {
+			if (vm.type == 'DATETIME_RANGE' && vm.isNarrowDialog || height + 48 > vm.$vuetify.breakpoint.height * 0.9 || vm.type == 'TEXT' || vm.isNeedTab) {
 				height = vm.getDialogMainDivHeight;
-				overflowY = vm.type == 'TEXT' ? 'auto' : 'scroll';
+				overflowY = vm.type == 'TEXT' || vm.isNeedTab ? 'auto' : 'scroll';
 			}
 			return {
 				height: height + 'px',
@@ -1840,9 +1844,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		isNarrowDialog: function isNarrowDialog() {
 			var vm = this;
 			return vm.$vuetify.breakpoint.width <= 1264;
+		},
+		getTabHeader: function getTabHeader() {
+			var vm = this;
+			if (!vm.isMounted) return [];
+			return vm.$parent.$refs[vm.tabGroup] ? vm.$parent.$refs[vm.tabGroup][0].tabHeader : [];
+		},
+		getTabValues: function getTabValues() {
+			var vm = this;
+			if (!vm.isMounted) return [];
+			return vm.$parent.$refs[vm.tabGroup] ? vm.$parent.$refs[vm.tabGroup][0].tabValues : [];
 		}
 	},
 	watch: {},
+	components: {
+		CTable: function CTable(resolve) {
+			__webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(177)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+		}
+	},
 	mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default.a],
 	methods: {
 		getValueDatetimeFromArr: function getValueDatetimeFromArr(_ref) {
@@ -1925,38 +1944,31 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			var vm = this,
 			    tmp = [];
 			if (vm.multy) {
-				value.forEach(function (row) {
-					tmp.push(row);
-				});
+				tmp = value.slice();
 				if (vm.type == 'DATE') {
-					vm.valueArrPairs.splice(0, vm.valueArrPairs.length);
-					vm.valueArr.splice(0, vm.valueArr.length);
-					vm.valueArrView.splice(0, vm.valueArrView.length);
+					vm.valueArrPairs = [];
+					vm.valueArr = [];
+					vm.valueArrView = [];
 					tmp.forEach(function (row, i) {
 						vm.parseToDateArr({ str: row });
 						vm.valueArr.push(vm.getValueDatetimeFromArr({ num: i }));
-						vm.valueArrView.push(dateFormater(vm.valueArr[i]));
+						vm.valueArrView.push(dateFormat(vm.valueArr[i]));
 					});
-				} else if (vm.type == 'LIST') {
-					vm.valueArr.splice(0, vm.valueArr.length);
-					tmp.forEach(function (row) {
-						vm.valueArr.push(row);
-					});
-				}
+				} else if (vm.type == 'LIST') vm.valueArr = tmp;
 			} else if (vm.type == 'RANGE') {
 				vm.valueArrPairs[0][0] = value[0];
 				vm.valueArrPairs[0][1] = value[1];
 			} else {
 				vm.value = value;
 				if (['DATE', 'TIME', 'DATETIME', 'TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
-					vm.valueArrPairs.splice(0, vm.valueArrPairs.length);
+					vm.valueArrPairs = [];
 					vm.parseToDateArr({ str: vm.value });
 					if (['TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
-						vm.valueArr.splice(0, vm.valueArr.length);
+						vm.valueArr = [];
 						vm.valueArr.push(vm.getValueDatetimeFromArr({}));
 						vm.value = vm.valueArr[0];
 					}
-					vm.valueView = dateFormater(vm.value);
+					vm.valueView = dateFormat(vm.value);
 				} else vm.valueView = value;
 			}
 			vm.checkRefresh({ checkedFx: checkedFx, initRun: initRun });
@@ -1971,10 +1983,27 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		},
 		saveDialog: function saveDialog(value) {
 			var vm = this;
-			if (!vm.multy && vm.isDateTimeLike) vm.$refs.dialog.save(vm.getValueDatetimeFromArr({ check: true }));else if (vm.multy && vm.type == 'DATE') {
+			if (vm.isNeedTab) {
+				value.forEach(function (row) {
+					var _loop = function _loop(code) {
+						if (vm.code == code) vm.$refs.dialog.save(row[code]);else if (vm.$parent.$refs[code]) {
+							if (row[code + '_code'] != undefined) vm.$parent.$refs[code][0].setNewVal(row[code + '_code']);else if (vm.$parent.$refs[code][0].type == 'LIST') vm.$parent.$refs[code][0].setNewVal(vm.$parent.$refs[code][0].tableValues.filter(function (item) {
+								return item.textFull == row[code];
+							}).map(function (item) {
+								return item.value;
+							}).join());else vm.$parent.$refs[code][0].setNewVal(row[code]);
+						}
+					};
+
+					for (var code in row) {
+						_loop(code);
+					}
+				});
+				vm.tabSelectedRows = [];
+			} else if (!vm.multy && vm.isDateTimeLike) vm.$refs.dialog.save(vm.getValueDatetimeFromArr({ check: true }));else if (vm.multy && vm.type == 'DATE') {
 				if (vm.dialogWithDate && vm.valueArr.length == 0) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!' });
 				vm.$refs.dialog.save(vm.valueArr);
-			} else if (!vm.multy && vm.type == 'TAB') vm.$refs.dialog.save(value);
+			}
 		},
 		changeSign: function changeSign() {
 			var vm = this;
@@ -2030,10 +2059,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 								if (vm.type == 'RANGE' && !vm.multy) {
 									value = valueView = null;
 									if (vm.isNumeric) {
-										vm.valueArrPairs.forEach(function (row) {
-											valueArr.push(row.slice(0));
-										});
-										valueArrView = valueArr.slice(0);
+										valueArr = vm.valueArrPairs.slice();
+										valueArrView = valueArr.slice();
 									} else vm.valueArrPairs.forEach(function (row) {
 										valueArrView.push([nvlo(vm.tableValues[row[0]]).textFull, nvlo(vm.tableValues[row[1]]).textFull]);
 										valueArr.push([nvlo(vm.tableValues[row[0]]).value, nvlo(vm.tableValues[row[1]]).value]);
@@ -2047,12 +2074,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
 								} else if (vm.hasInput && vm.multy) {
 									value = valueView = null;
-									valueArr = vm.valueArr.slice(0);
+									valueArr = vm.valueArr.slice();
 									if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
 										valueArr.forEach(function (rowVal) {
 											if (row.value == rowVal) valueArrView.push(row.textFull);
 										});
-									});else if (vm.type == 'DATE') valueArrView = vm.valueArrView.slice(0);else valueArrView = valueArr.slice(0);
+									});else if (vm.type == 'DATE') valueArrView = vm.valueArrView.slice();else valueArrView = valueArr.slice();
 									if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
 								} else if (vm.hasInput) {
 									// работа просто с value
@@ -2145,6 +2172,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		vm.max = vm.data.max || vm.max;
 		vm.maxLen = vm.data.max_len || vm.maxLen;
 		vm.step = vm.data.step || vm.step;
+		vm.tabGroup = vm.data.tab_group || vm.tabGroup;
 		vm.ticksNeed = !!vm.data.ticks_need || vm.ticksNeed;
 		vm.tickSize = vm.data.tick_size || vm.tickSize;
 		vm.thumbLabelNeed = vm.data.thumb_label_need || vm.thumbLabelNeed;
@@ -2154,24 +2182,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			if (isNaN(element.value)) vm.isNumeric = false;
 		});
 
-		if (vm.data.value_arr != undefined && vm.data.value_arr.length > 0) vm.data.value_arr.forEach(function (element) {
-			vm.valueArr.push(element);
-		});
+		if (vm.data.tab_header != undefined && vm.data.tab_header.length > 0) vm.tabHeader = vm.data.tab_header.slice();
 
-		if (vm.data.sign_list != undefined && vm.data.sign_list.length > 0) {
-			vm.signList.splice(0, vm.signList.length);
-			vm.data.sign_list.forEach(function (element) {
-				vm.signList.push(element);
-			});
-		}
+		if (vm.data.tab_values != undefined && vm.data.tab_values.length > 0) vm.tabValues = vm.data.tab_values.slice();
 
-		if (vm.data.table_header != undefined && vm.data.table_header.length > 0) vm.data.table_header.forEach(function (element) {
-			vm.tableHeader.push(element);
-		});
+		if (vm.data.value_arr != undefined && vm.data.value_arr.length > 0) vm.valueArr = vm.data.value_arr.slice();
 
-		if (vm.data.class != undefined && vm.data.class.length > 0) vm.data.class.forEach(function (element) {
-			vm.classCss.push({ element: true });
-		});
+		if (vm.data.sign_list != undefined && vm.data.sign_list.length > 0) vm.signList = vm.data.sign_list.slice();
+
+		if (vm.data.table_header != undefined && vm.data.table_header.length > 0) vm.tableHeader = vm.data.table_header.slice();
+
+		if (vm.data.class != undefined && vm.data.class.length > 0) vm.classCss = vm.data.class.slice();
 
 		vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : vm.type == 'SLIDER' ? 'v-slider' : vm.type == 'RANGE' ? 'v-range-slider' : vm.type == 'DATE' ? 'v-date-picker' : vm.type == 'TIME' ? 'v-time-picker' : vm.type == 'TEXT' ? 'v-textarea' : 'v-text-field';
 
@@ -2223,7 +2244,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 		if (['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(vm.type) != -1) vm.isDateTimeLike = true;
 
-		if (vm.isDateTimeLike || ['TAB'].indexOf(vm.type) != -1) vm.isNeedDialog = true;
+		if (vm.tabGroup != '') vm.isNeedTab = true;
 
 		if (vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type != 'RANGE') //Границы должны быть цифрой!
 			vm.rules.push(function (v) {
@@ -2244,9 +2265,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				return tmp.test(v) || vm.error;
 			});
 
-		vm.rules.forEach(function (row) {
-			vm.rulesChildInput.push(row);
-		});
+		vm.rulesChildInput = vm.rules.slice();
 
 		if (vm.hasInput && !vm.nullable) {
 			vm.isNeed = true;
@@ -2262,12 +2281,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 		vm.paramSetData({ num: vm.paramsForm, data: _extends({}, vm.data, { value: null, value_view: null, value_arr: null, value_arr_view: null }) });
 		if (vm.multy && ['DATE', 'LIST'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArr, true, true);else if (!vm.multy && ['RANGE'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArrPairs[0], true, true);else vm.setNewVal(vm.value, true, true);
+	},
+	mounted: function mounted() {
+		var vm = this;
+		vm.isMounted = true;
 	}
 });
 
 /***/ }),
 
-/***/ 84:
+/***/ 86:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2692,7 +2715,9 @@ var render = function() {
                                             : _vm._e()
                                         ]
                                       : [
-                                          !_vm.multy && !_vm.isNeedDialog
+                                          !_vm.multy &&
+                                          !_vm.isDateTimeLike &&
+                                          !_vm.isNeedTab
                                             ? _c(_vm.currentInput, {
                                                 ref: "input",
                                                 tag: "component",
@@ -3454,10 +3479,7 @@ var render = function() {
                                                       ],
                                                       2
                                                     )
-                                                  : !_vm.multy &&
-                                                    _vm.isNeedDialog &&
-                                                    ["TAB"].indexOf(_vm.type) !=
-                                                      -1
+                                                  : _vm.isNeedTab
                                                     ? _c(
                                                         "v-dialog",
                                                         {
@@ -3569,61 +3591,37 @@ var render = function() {
                                                                   _vm.getDialogMainDivStyle
                                                               },
                                                               [
-                                                                _vm.type ==
-                                                                "TAB"
-                                                                  ? _c(
-                                                                      "v-textarea",
-                                                                      {
-                                                                        attrs: {
-                                                                          label:
-                                                                            _vm.name,
-                                                                          hint:
-                                                                            _vm.placeholder,
-                                                                          rules:
-                                                                            _vm.rulesChildInput,
-                                                                          readonly: !_vm.editable,
-                                                                          required: !!_vm.nullable,
-                                                                          "multi-line":
-                                                                            _vm.columnSize >
-                                                                            50,
-                                                                          type:
-                                                                            _vm.getComponentType,
-                                                                          dense:
-                                                                            "",
-                                                                          counter:
-                                                                            _vm.getCounter,
-                                                                          solo:
-                                                                            "",
-                                                                          "no-resize":
-                                                                            "",
-                                                                          height:
-                                                                            _vm.getDialogMainDivHeight -
-                                                                            140,
-                                                                          clearable:
-                                                                            _vm.getClearable,
-                                                                          mask:
-                                                                            _vm.mask,
-                                                                          min:
-                                                                            _vm.min,
-                                                                          max:
-                                                                            _vm.max,
-                                                                          step:
-                                                                            _vm.step
-                                                                        },
-                                                                        model: {
-                                                                          value:
-                                                                            _vm.value,
-                                                                          callback: function(
-                                                                            $$v
-                                                                          ) {
-                                                                            _vm.value = $$v
-                                                                          },
-                                                                          expression:
-                                                                            "value"
-                                                                        }
-                                                                      }
-                                                                    )
-                                                                  : _vm._e()
+                                                                _c("c-table", {
+                                                                  ref: "table",
+                                                                  attrs: {
+                                                                    tableTitle:
+                                                                      "Выбор значения",
+                                                                    searchNeed: true,
+                                                                    headers:
+                                                                      _vm.getTabHeader,
+                                                                    items:
+                                                                      _vm.getTabValues,
+                                                                    typeSelect: _vm.multy
+                                                                      ? "one"
+                                                                      : "one",
+                                                                    "select-all": true,
+                                                                    noRowNum: false,
+                                                                    "hide-actions": false,
+                                                                    height:
+                                                                      _vm.getDialogMainDivHeight
+                                                                  },
+                                                                  model: {
+                                                                    value:
+                                                                      _vm.tabSelectedRows,
+                                                                    callback: function(
+                                                                      $$v
+                                                                    ) {
+                                                                      _vm.tabSelectedRows = $$v
+                                                                    },
+                                                                    expression:
+                                                                      "tabSelectedRows"
+                                                                  }
+                                                                })
                                                               ],
                                                               1
                                                             ),
@@ -3676,7 +3674,7 @@ var render = function() {
                                                                         $event
                                                                       ) {
                                                                         _vm.saveDialog(
-                                                                          _vm.value
+                                                                          _vm.tabSelectedRows
                                                                         )
                                                                       }
                                                                     }
@@ -3742,7 +3740,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 85:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {

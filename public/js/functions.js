@@ -4,7 +4,9 @@ const MAX_ID= 9999999,
 	authButtons= [ {id:1, title:'Войти', icon:'input', allig:'right', click:'dialogSave' , needCheck:true} ],
 	dateFormatStr = '$3.$2.$1' //2018-10-03 - 1, 2 и 3 цифры
 
-function appThemeInit(){
+var sysNumeral=null
+
+function appThemeInit({numeral}){
 	let styleElt, styleSheet
 	if (document.createStyleSheet)  //Если определен IE API, использовать его
 		styleSheet = document.createStyleSheet()
@@ -42,11 +44,53 @@ function appThemeInit(){
 		'DIV#block_message Div.warning--content>Div	{background-color: '+appTheme.warning+';} '+
 		'DIV#block_message Div.info--content>Div	{background-color: '+appTheme.info+';} '+
 		'DIV#block_message Div.success--content>Div	{background-color: '+appTheme.success+';} '+
-		'.secondary-color 							{color: '+appTheme.secondary+';}'
+		'.secondary-color 							{color: '+appTheme.secondary+';}'+
+		'.overflow-hidden							{overflow: hidden;}'+
+		'.overflow-y-scroll							{overflow-y: scroll;}'+
+		'.width-one-percent							{width: 1%;}'+
+		'.text-nobr									{white-space: nowrap;}'+
+		'tr.text-bold>td,'+
+		'td.text-bold								{font-weight: 700 !important;}'+
+		'td.text-right								{text-align: right;}'+
+		'td.text-left								{text-align: left;}'+
+		'td.text-center								{text-align: center;}'
+	if(numeral)
+		appNumeralInit(numeral)
 	
 }
 
-function dateFormater(str){//2018-10-03 12:52 в 03.10.2018 12:52
+function appNumeralInit(numeral){
+	numeral.register('locale', 'ru', {
+		delimiters: {
+			thousands: ' ',
+			decimal: ','
+		},
+		abbreviations: {
+			thousand: 'т',
+			million: 'м',
+			billion: 'б',
+			trillion: 'тр'
+		},
+		ordinal: function(number) {
+			var b = number % 10;
+			return number==0 || [2,6,7,8].indexOf(number)!=-1?'ой':
+				[1,4,5,9,0].indexOf(number)!=-1?'ый':
+				'ий'
+		},
+		currency: {
+			symbol: '₽'
+		}
+	});
+	numeral.locale('ru')
+	sysNumeral=numeral
+}
+
+function numberFormat(value,mask){
+	mask=mask||'0,0.000'
+	return sysNumeral(value).format(mask)
+}
+
+function dateFormat(str){//2018-10-03 12:52 в 03.10.2018 12:52
 	return nvl(str,'').replace(/(\d\d\d\d)-(\d\d)-(\d\d)/g, dateFormatStr )
 }
 
@@ -67,7 +111,14 @@ function genMap( stores ){
 		getters:storesParser(stores, 'getters', 'get'), actions:storesParser(stores, 'actions', 'do'),
 	} 
 }
-
+function isNumeric(n) {
+    
+	return !isNaN(parseFloat(n)) && isFinite(n);
+	 
+	// Метод isNaN пытается преобразовать переданный параметр в число. 
+	// Если параметр не может быть преобразован, возвращает true, иначе возвращает false.
+	// isNaN("12") // false 
+ }
 function storesParser(stores, field, prefix){
 	let tmp={}
 	for (m_title in stores)
@@ -91,7 +142,7 @@ function isInteger(num){
 	return (num ^ 0) === num
 }
 function nvl(val,replace=0){
-	if(!val || val==undefined || val=='' ) return replace; else return val;
+	if(!val || val==undefined || val==null || val=='' ) return replace; else return val;
 }
 
 function nvlo(val,replace={}){

@@ -59,7 +59,7 @@
 								</v-flex>
 							</template>
 							<template v-else>
-								<component v-if="!multy && !isNeedDialog" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
+								<component v-if="!multy && !isDateTimeLike && !isNeedTab" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
 									:multi-line="columnSize>50" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :counter="getCounter"
 									:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step" auto-grow rows="1"
 									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" 
@@ -114,21 +114,20 @@
 										</v-toolbar>
 									</template>
 								</v-dialog>
-								<v-dialog v-else-if="!multy && isNeedDialog && [ 'TAB', ].indexOf(type)!=-1"	ref="dialog" v-model="dialog" :return-value.sync="value" persistent lazy full-width	:width="getDialogWidth" @show='changeChecked' 
+								<v-dialog v-else-if="isNeedTab"	ref="dialog" v-model="dialog" :return-value.sync="value" persistent lazy full-width	:width="getDialogWidth" @show='changeChecked' 
 										@update:returnValue="setNewVal" class="max-width" :content-class="getDialogClass">
 									<v-combobox slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
 										:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max"
 										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
 									<template>
 										<div  :style="getDialogMainDivStyle">
-											<v-textarea v-if="type=='TAB'"  v-model="value" :label="name" :hint="placeholder" :rules="rulesChildInput" :readonly="!editable"  :required="!!nullable"
-												:multi-line="columnSize>50" :type="getComponentType"  dense :counter="getCounter" solo no-resize :height="getDialogMainDivHeight-140"
-												:clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step"/>
+											<c-table tableTitle="Выбор значения" :searchNeed="true" :headers="getTabHeader"	:items="getTabValues" v-model="tabSelectedRows"  ref="table"  
+												:typeSelect="multy?'one':'one'" :select-all="true" :noRowNum="false"	:hide-actions="false"  :height="getDialogMainDivHeight"/>
 										</div>
 										<v-toolbar dense color="primary" >	
 											<v-btn flat class="accent" @click="dialog = false">Отмена</v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="saveDialog(value)">Принять</v-btn>
+											<v-btn flat class="accent"  @click="saveDialog(tabSelectedRows)">Принять</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -181,9 +180,10 @@ time-with-seconds	##:##:##
 			hasError: false,
 			hasInput: false,
 			id: 0,
-			isNeed:false,
-			isNeedDialog:false,
 			isDateTimeLike:false,
+			isMounted:false,
+			isNeed:false,
+			isNeedTab:false,			
 			isNumeric:true,
 			isSliderLike:false,
 			listItemLenght: 18,
@@ -214,8 +214,12 @@ time-with-seconds	##:##:##
 			],
 			sortSeq: 0,
 			step:"1",
+			tabGroup:"",
+			tabHeader: [], 
+			tabValues: [],
+			tabSelectedRows:[],
 			tableValues: [],//для листов [{value:'cur',text:'На текущем уровне'}], для TAB [{param1:1, param2:2, }]
-			tableHeader: [],//для TAB [{value:'param1',text:'Параметра1'},{value:'param2',text:'Параметра2'}]
+			tableHeader: [],//для TAB [{value:'param1',text:'Параметра1',visible:true},{value:'param2',text:'Параметра2',visible:true}]
 			thumbLabelNeed:false,
 			thumbSize:10,
 			tickLabels: [],
@@ -307,15 +311,15 @@ time-with-seconds	##:##:##
 			getDialogMainDivHeight(){
 				let vm=this,
 					height=392/*стандартная высота одного элемента управления*/
-				return vm.type=='TEXT' || vm.$vuetify.breakpoint.height *0.9/*отступы*/ -48 /*кнопки*/ < height*2+ 28/*разделитель */ + 48?   vm.$vuetify.breakpoint.height *0.9 -48:	height*2+ 28 + 48
+				return vm.type=='TEXT' || vm.isNeedTab ||vm.$vuetify.breakpoint.height *0.9/*отступы*/ -48 /*кнопки*/ < height*2+ 28/*разделитель */ + 48?   vm.$vuetify.breakpoint.height *0.9 -48:	height*2+ 28 + 48
 			},
 			getDialogMainDivStyle(){
 				let vm=this,
 					height=392/*стандартная высота одного элемента управления*/,
 					overflowY='hidden'
-				if(vm.type=='DATETIME_RANGE' && vm.isNarrowDialog || height+48>vm.$vuetify.breakpoint.height *0.9 || vm.type=='TEXT'){
+				if(vm.type=='DATETIME_RANGE' && vm.isNarrowDialog || height+48>vm.$vuetify.breakpoint.height *0.9 || vm.type=='TEXT' || vm.isNeedTab){
 					height = vm.getDialogMainDivHeight
-					overflowY=vm.type=='TEXT'?'auto':'scroll'
+					overflowY=vm.type=='TEXT'|| vm.isNeedTab?'auto':'scroll'
 				}
 				return {
 					height: height + 'px' ,
@@ -343,8 +347,23 @@ time-with-seconds	##:##:##
 				let vm = this
 				return vm.$vuetify.breakpoint.width <= 1264
 			},
+			getTabHeader(){
+				let vm = this
+				if(!vm.isMounted)
+					return[];
+				return vm.$parent.$refs[vm.tabGroup]? vm.$parent.$refs[vm.tabGroup][0].tabHeader:[]
+			},	
+			getTabValues(){
+				let vm = this
+				if(!vm.isMounted)
+					return[];
+				return vm.$parent.$refs[vm.tabGroup]?vm.$parent.$refs[vm.tabGroup][0].tabValues:[]
+			},
 		},
 		watch: {
+		},
+		components: {
+			CTable: (resolve) =>{ require(['./c-table.vue'], resolve) },
 		},
 		mixins: [
 			XStore,
@@ -416,25 +435,19 @@ time-with-seconds	##:##:##
 			setNewVal(value, checkedFx=false, initRun=false){
 				let vm=this, tmp=[]
 				if(vm.multy ){
-					value.forEach(row=>{
-						tmp.push(row)
-					})
+					tmp = value.slice()
 					if(vm.type=='DATE'){
-						vm.valueArrPairs.splice (0,vm.valueArrPairs.length)
-						vm.valueArr.splice (0,vm.valueArr.length)
-						vm.valueArrView.splice (0,vm.valueArrView.length)
+						vm.valueArrPairs=[]
+						vm.valueArr=[]
+						vm.valueArrView=[]
 						tmp.forEach((row,i)=>{
 							vm.parseToDateArr({str:row})
 							vm.valueArr.push(vm.getValueDatetimeFromArr({num:i}))
-							vm.valueArrView.push(dateFormater(vm.valueArr[i]))
+							vm.valueArrView.push(dateFormat(vm.valueArr[i]))
 						})
 					}
-					else if(vm.type=='LIST'){
-						vm.valueArr.splice (0,vm.valueArr.length)
-						tmp.forEach(row=>{
-							vm.valueArr.push(row)
-						})
-					}
+					else if(vm.type=='LIST')
+						vm.valueArr=tmp
 				}
 				else if(vm.type=='RANGE'){
 					vm.valueArrPairs[0][0]=value[0]
@@ -443,14 +456,14 @@ time-with-seconds	##:##:##
 				else{
 					vm.value = value
 					if(['DATE', 'TIME', 'DATETIME', 'TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1){
-						vm.valueArrPairs.splice (0,vm.valueArrPairs.length)
+						vm.valueArrPairs=[]
 						vm.parseToDateArr({str:vm.value})
 						if(['TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1){
-							vm.valueArr.splice (0,vm.valueArr.length)
+							vm.valueArr=[]
 							vm.valueArr.push(vm.getValueDatetimeFromArr({}))
 							vm.value=vm.valueArr[0]
 						}
-						vm.valueView = dateFormater(vm.value)
+						vm.valueView = dateFormat(vm.value)
 					}
 					else 
 						vm.valueView =value
@@ -467,15 +480,35 @@ time-with-seconds	##:##:##
 			},
 			saveDialog(value){
 				let vm=this
-				if(!vm.multy && vm.isDateTimeLike)
+				if(vm.isNeedTab ){
+					value.forEach(row=>{
+						for (let code in row) {
+							if(vm.code == code )	
+								vm.$refs.dialog.save(row[code])
+							else if(vm.$parent.$refs[code]){
+								if(row[code+'_code']!=undefined)
+									vm.$parent.$refs[code][0].setNewVal( row[code+'_code'] )
+								else if(vm.$parent.$refs[code][0].type=='LIST')
+									vm.$parent.$refs[code][0].setNewVal( vm.$parent.$refs[code][0].tableValues.filter(item =>{
+										return item.textFull == row[code]
+									}).map( item =>{
+										return item.value
+									}).join()
+									)
+								else
+									vm.$parent.$refs[code][0].setNewVal(row[code])
+							}
+						}
+					})
+					vm.tabSelectedRows=[]
+				}
+				else if(!vm.multy && vm.isDateTimeLike)
 					vm.$refs.dialog.save(vm.getValueDatetimeFromArr({check:true,}))
 				else if(vm.multy && vm.type=='DATE'){
 					if(vm.dialogWithDate && vm.valueArr.length==0)
 						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите дату!'});
 					vm.$refs.dialog.save(vm.valueArr)
 				}
-				else if(!vm.multy  && vm.type=='TAB' )
-					vm.$refs.dialog.save(value)
 
 			},
 			changeSign(){
@@ -529,10 +562,8 @@ time-with-seconds	##:##:##
 				if(vm.type=='RANGE' && !vm.multy){
 					value=valueView=null
 					if( vm.isNumeric ){
-						vm.valueArrPairs.forEach(function(row) {
-							valueArr.push(row.slice(0))
-						})
-						valueArrView = valueArr.slice(0)
+						valueArr = vm.valueArrPairs.slice()
+						valueArrView = valueArr.slice()
 					}
 					else
 						vm.valueArrPairs.forEach(function(row) {
@@ -551,7 +582,7 @@ time-with-seconds	##:##:##
 				}
 				else if(vm.hasInput && vm.multy){
 					value=valueView=null
-					valueArr=vm.valueArr.slice(0)
+					valueArr=vm.valueArr.slice()
 					if (vm.type=='LIST')
 						vm.tableValues.forEach(function(row) {
 							valueArr.forEach(function(rowVal) {
@@ -560,9 +591,9 @@ time-with-seconds	##:##:##
 							})
 						})
 					else if (vm.type=='DATE')
-						valueArrView = vm.valueArrView.slice(0)
+						valueArrView = vm.valueArrView.slice()
 					else
-						valueArrView = valueArr.slice(0)
+						valueArrView = valueArr.slice()
 					if(!checkedFx)
 						vm.checked=	valueArr.length>0 ?true : false
 				}
@@ -628,6 +659,7 @@ time-with-seconds	##:##:##
 			vm.max=vm.data.max||vm.max
 			vm.maxLen=vm.data.max_len||vm.maxLen
 			vm.step=vm.data.step||vm.step
+			vm.tabGroup=vm.data.tab_group||vm.tabGroup
 			vm.ticksNeed=!!vm.data.ticks_need||vm.ticksNeed
 			vm.tickSize=vm.data.tick_size||vm.tickSize
 			vm.thumbLabelNeed=vm.data.thumb_label_need||vm.thumbLabelNeed
@@ -641,27 +673,23 @@ time-with-seconds	##:##:##
 						vm.isNumeric=false
 				});
 
-			if(vm.data.value_arr!=undefined && vm.data.value_arr.length>0)
-				vm.data.value_arr.forEach(element => {
-					vm.valueArr.push(element);
-				});
+			if(vm.data.tab_header!=undefined && vm.data.tab_header.length>0)
+				vm.tabHeader=vm.data.tab_header.slice()
 
-			if(vm.data.sign_list!=undefined && vm.data.sign_list.length>0){
-				vm.signList.splice(0,vm.signList.length)
-				vm.data.sign_list.forEach(element => {
-					vm.signList.push(element);
-				});
-			}
+			if(vm.data.tab_values!=undefined && vm.data.tab_values.length>0)
+				vm.tabValues=vm.data.tab_values.slice()
+
+			if(vm.data.value_arr!=undefined && vm.data.value_arr.length>0)
+				vm.valueArr=vm.data.value_arr.slice()
+
+			if(vm.data.sign_list!=undefined && vm.data.sign_list.length>0)
+				vm.signList=vm.data.sign_list.slice()
 
 			if(vm.data.table_header!=undefined && vm.data.table_header.length>0)
-				vm.data.table_header.forEach(element => {
-					vm.tableHeader.push(element);
-				});
+				vm.tableHeader=vm.data.table_header.slice()
 
 			if(vm.data.class!=undefined && vm.data.class.length>0)
-				vm.data.class.forEach(element => {
-					vm.classCss.push({element:true});
-				});
+				vm.classCss=vm.data.class.slice()
 
 			vm.currentInput= vm.type=='LIST'?'v-select':
 				vm.type=='BOOL'?'v-checkbox':
@@ -692,7 +720,7 @@ time-with-seconds	##:##:##
 					vm.dialogWithTime=true
 				if(['DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1)
 					vm.dialogWithRange=true
-			}	
+			}
 
 			vm.isSliderLike=['SLIDER', 'RANGE'].indexOf(vm.type)!=-1
 			vm.thumbLabelNeed =  vm.isSliderLike && vm.thumbLabelNeed?'always':''
@@ -738,8 +766,8 @@ time-with-seconds	##:##:##
 			if(['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(vm.type)!=-1)
 				vm.isDateTimeLike=true
 
-			if(vm.isDateTimeLike || [ 'TAB'].indexOf(vm.type)!=-1)
-				vm.isNeedDialog=true	
+			if(vm.tabGroup!='')
+				vm.isNeedTab=true	
 
 			if(vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type!='RANGE' )//Границы должны быть цифрой!
 				vm.rules.push(v => v>=vm.min|| !vm.checked || 'Значение должно быть не меньше '+vm.min+'!')
@@ -754,9 +782,7 @@ time-with-seconds	##:##:##
 			if(vm.hasInput && tmp!='')//надо помнить про экранирование
 				vm.rules.push(v => tmp.test(v) || vm.error)
 			
-			vm.rules.forEach( row=>{
-				vm.rulesChildInput.push(row)
-			})
+			vm.rulesChildInput = vm.rules.slice()
 				
 			if(vm.hasInput && !vm.nullable){
 				vm.isNeed =true
@@ -775,6 +801,10 @@ time-with-seconds	##:##:##
 			else
 				vm.setNewVal(vm.value,true,true)
 		},
+		mounted(){
+			let vm=this
+        	vm.isMounted = true;
+    	},
 	}
 </script>
 <style>
@@ -797,9 +827,8 @@ time-with-seconds	##:##:##
 	.dialog-display-inline-grid								{display: inline-grid;}
 	.dialog-narrow-display-div-arrow						{clear: right; display: inherit; width: 100%; height: 28px;}
 	.dialog-narrow-display-arrow-width						{width: 190px;}
-	.overflow-hidden										{overflow: hidden;}
-	.overflow-y-scroll										{overflow-y: scroll;}
+	.theme--dark.v-table tbody tr[active]>td:first-child	{background: #7d7979;}		
 	/*i    border-bottom-color: #2c353f;
-    border-bottom-style: groove;
-    border-bottom-width: 0.5px;*/
+	border-bottom-style: groove;
+	border-bottom-width: 0.5px;*/
 </style>
