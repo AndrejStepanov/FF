@@ -1,7 +1,7 @@
 export default {
 	namespaced: true,
 	state: {
-		userName:'Гость',
+		userName:'',
 		userId:'',
 		sysId:'',
 		isRoot:'',
@@ -28,7 +28,7 @@ export default {
 			state.isRoot=isRoot;
 		},
 		infoClearing(state){
-			state.userName='Гость';
+			state.userName='';
 			state.userId='';
 			state.sysId='';
 			state.isRoot='';

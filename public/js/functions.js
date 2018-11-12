@@ -81,7 +81,7 @@ function appNumeralInit(numeral){
 			symbol: '₽'
 		}
 	});
-	numeral.locale('ru')
+	numeral.locale(window.systemLanguage)
 	sysNumeral=numeral
 }
 
@@ -111,14 +111,6 @@ function genMap( stores ){
 		getters:storesParser(stores, 'getters', 'get'), actions:storesParser(stores, 'actions', 'do'),
 	} 
 }
-function isNumeric(n) {
-    
-	return !isNaN(parseFloat(n)) && isFinite(n);
-	 
-	// Метод isNaN пытается преобразовать переданный параметр в число. 
-	// Если параметр не может быть преобразован, возвращает true, иначе возвращает false.
-	// isNaN("12") // false 
- }
 function storesParser(stores, field, prefix){
 	let tmp={}
 	for (m_title in stores)
@@ -141,6 +133,16 @@ function sort(a, b, aFild, bFild){
 function isInteger(num){
 	return (num ^ 0) === num
 }
+
+function isNumeric(n) {
+    
+	return !isNaN(parseFloat(n)) && isFinite(n);
+	 
+	// Метод isNaN пытается преобразовать переданный параметр в число. 
+	// Если параметр не может быть преобразован, возвращает true, иначе возвращает false.
+	// isNaN("12") // false 
+ }
+
 function nvl(val,replace=0){
 	if(!val || val==undefined || val==null || val=='' ) return replace; else return val;
 }
@@ -149,27 +151,36 @@ function nvlo(val,replace={}){
 	if(!val || val==undefined || val=='' ) return replace; else return val;
 }
 
-function showMsg({title, text, type, params={}}){
+function showMsg({title, text, type, params={}, msgParams=[]}){
 	type=type||'error'
+	title=window._vue.$vuetify.t(title)||text
+	text=window._vue.$vuetify.t(text,msgParams)||title
 	window._vue.$store.dispatch('msg/doAdd', {title,text,type,...params,})
 	if(type=='error')
 		throw new Error(title+' - '+text)
 }
 
+function getErrDesc(errName){
+	return {title:'$vuetify.texts.errors.'+errName+'.title', text:'$vuetify.texts.errors.'+errName+'.text' }
+}
+function getMsgDesc(msgName, type='success'){
+	return {title:'$vuetify.texts.msgs.'+msgName+'.title', text:'$vuetify.texts.msgs.'+msgName+'.text' , type }
+}
+
 function sendRequest  (params){
 	if( this.nvl(params.type)==0 || this.nvl(params.href)==0  )
-		showMsg({title:'Ошибка отправки данных',text:'Неуказанн адрес для отправки!'});
+		showMsg(getErrDesc('noSendAddress') );
 	window._bus.axios.post(params.href, {type:params.type, _token: window.laravel.csrfToken,...params.data,}
 		).then((response) => {
 			if(nvl(params.needSucess,'N')=='Y' && response.data!='sucsess')
-				showMsg({ title:'Ошибка отправки данных', text:'Отправленные данные были отвергнуты!','params': params.default, });
+				showMsg({ ...getErrDesc('requestRefused') ,params: params.default, });
 			if(nvl(params.hrefBack)!='')
 				window.location.href = decodeURIComponent( params.hrefBack);
 			if(params.handler )
 				params.handler(response)
 		}).catch(
 			(error) =>
-				showMsg({ title: nvlo(error.response.data).title||nvlo(params.default).title||'Ошибка отправки данных', text:nvlo(error.response.data).message||nvlo(params.default).text||'Отправить данные не удалось!',
+				showMsg({ title: nvlo(error.response.data).title||nvlo(params.default).title||'$vuetify.texts.msgs.requestFaild.title'  , text:nvlo(error.response.data).message||nvlo(params.default).text||'$vuetify.texts.msgs.requestFaild.text',
 					'params': {status:error.response.status, trace:nvlo(error.response.data).trace, file:nvlo(error.response.data).file, line:nvlo(error.response.data).line}, })
 		);
 	return true

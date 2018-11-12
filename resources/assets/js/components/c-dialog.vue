@@ -4,7 +4,7 @@
 				:w="width" :h="height" @resizing="changeSize($event)"  :x="x" :y="y" :reInitEvent="dragReInitEvent">
 			<v-toolbar slot='header'  color="primary" >
 				<v-toolbar-side-icon/>
-				<v-toolbar-title >{{dialogConfigGet.title}}</v-toolbar-title>
+				<v-toolbar-title >{{ $vuetify.t(dialogConfigGet.title) }}</v-toolbar-title>
 				<v-spacer/>
 				<v-btn icon>
 					<v-icon>more_vert</v-icon>
@@ -21,9 +21,9 @@
 			<v-layout row justify-center color="primary" >
 				<v-flex xs12>
 					<v-toolbar dense  color="primary" >		
-						<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{row.title}}</v-btn>
+						<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{$vuetify.t(row.title)}}</v-btn>
 						<v-spacer/>
-						<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{row.title}}</v-btn>
+						<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{$vuetify.t(row.title)}}</v-btn>
 					</v-toolbar>
 				</v-flex>
 			</v-layout>
@@ -44,7 +44,7 @@
 			dialogId: {type: Number, required: true}, 
 			widthOrig: {type: Number, default: 500}, 
 			heightOrig: {type: Number, default: 1000}, 
-			buttons: {type: Array, default: () =>{return  [{id:1, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose', }] }},
+			buttons: {type: Array, default: () =>{return  [{id:1, title:'$vuetify.texts.simple.actions.close', icon:'close', allig:'right', click:'dialogClose', }] }},
 			dragActive: {type: Boolean, default: true}, 
 			dragDraggable: {type: Boolean, default: true}, 
 			dragActiveBehavior: {type: Boolean, default: true}, 

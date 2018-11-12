@@ -4,8 +4,8 @@
 			dialogIdOpened:0,
 			dialogModule:'',	
 			dialogsConfig: {
-				/*
-				trace:{id: getNewId(),  module:'m-input-fields',  name:"object-tree-add", title:"Параметры объекта", width:1024, height:600, params:{socetHref:"/data_command", socetEvent:"object.tree.add"},kyes:{treeId:0}, }
+				/* оставил для примера, в результирующей компоненте должна быть описана эта структура
+				trace:{id: getNewId(),  module:'m-input-fields',  name:"object-tree-add", title:"$vuetify.texts.modals.treeAdd.title", width:1024, height:600, params:{socetHref:"/data_command", socetEvent:"object.tree.add"},kyes:{treeId:0}, }
 				*/
 			},	
 		}),
@@ -26,7 +26,7 @@
 						break
 					}
 				if(res==0)
-					showMsg( {title:'Ошибка при открытии окна',text:'Идентификатор запрашиваемого окна не найден!'});
+					showMsg(  getErrDesc('noDialogOpen'));
 			},
 		},
 		created: function (){

@@ -23,7 +23,7 @@ export default {
             modeLine=modeLine||'multi-line';
             type=type||'error';
 			title=title||'Титул';
-			text=text=(status==401?'Необходимо авторизоваться!':text)||'Текст сообщения';
+			text=text=(status==401?window._vue.$vuetify.t('$vuetify.texts.simple.msgs.authNeed') :text)|| window._vue.$vuetify.t('$vuetify.texts.simple.msgs.defTextMes');
             status=status||'';
             trace=trace||'';
             file=file||'';

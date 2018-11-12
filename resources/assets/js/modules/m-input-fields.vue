@@ -19,8 +19,8 @@
 			dialogHeight:10,
 			paramsForm:'',
 			dialogButtons:  [
-				{id:1, title:'Сохранить', icon:'done', allig:'left', click:'dialogSave' , needCheck:true}, 
-				{id:2, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose'}
+				{id:1, title:'$vuetify.texts.simple.actions.save', icon:'done', allig:'left', click:'dialogSave' , needCheck:true}, 
+				{id:2, title:'$vuetify.texts.simple.actions.close', icon:'close', allig:'right', click:'dialogClose'}
 			],
 		}),
 		props:{
@@ -90,11 +90,12 @@
 		},
 		created: function (){
 			let vm=this
+			let dialogTitle = vm.$vuetify.t(vm.dialogConfigGet.title)
 			vm.paramsForm=vm.dialogConfigGet.name
 			vm.paramInit( {num: vm.paramsForm })
 			vm.$root.$on('dialog'+vm.dialogId+'InputsCols', (obj)=>{
-				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : obj.rowInColA *74 + 140 
-				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width :(vm.dialogConfigGet.title.length*20+110>obj.colsCnt*300?vm.dialogConfigGet.title.length*20+110:obj.colsCnt*300  )
+				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : 	obj.rowInColA *74 + 140 
+				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width : 	dialogTitle.length*20+110>obj.colsCnt*300	?	dialogTitle.length*20+110	:	obj.colsCnt*300
 			}); 
 			vm.$root.$on('dialog'+vm.paramsForm+'Send', ()=>{
 				vm.dialogSave();

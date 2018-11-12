@@ -27,7 +27,7 @@
     export default {
 		data:() => ({
 			dialogsConfig: {
-				auth:{id: getNewId(),  module:'m-input-fields',  name:"auth-login", title:"Авторизация", 	params:{ socetHref:"/login", socetEvent:"auth.login"}, }
+				auth:{id: getNewId(),  module:'m-input-fields',  name:"auth-login", title:"$vuetify.texts.modals.auth.title", 	params:{ socetHref:"/login", socetEvent:"auth.login"}, }
 			},
 			panelLeftShowen: false,
 			panelRightShowen: false,

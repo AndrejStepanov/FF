@@ -2,7 +2,7 @@
 	import CApp from '../components/c-app';
 	export default {
 		data: () => ({
-			curentSystem: 'Объекты',
+			curentSystem: '',
 		}),
 		components: {
 			CApp,

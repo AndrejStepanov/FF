@@ -4,7 +4,7 @@
 			<h3 class="headline mb-0">{{tableTitle}}</h3> 
 			<template v-if="searchNeed">
 				<v-spacer/>
-				<v-text-field	v-model="search"	append-icon="search"	label='Искать по полям'	single-line	hide-details clearable  	/>				
+				<v-text-field	v-model="search"	append-icon="search"	:label="$vuetify.t('$vuetify.texts.simple.labels.searchInFields')"	single-line	hide-details clearable  	/>				
 			</template>
 		</v-card-title>
 		<v-data-table	:value="selectedValues" :headers ="tabHeads" :items ="tabRows" :headersLength ="headersLength" :headerText ="headerText" :headerKey ="headerKey" :hideHeaders ="hideHeaders" :rowsPerPageText ="rowsPerPageText" :expand ="expand" 
@@ -42,9 +42,6 @@
 					</tr>
 				</template>
 			</template>
-			<v-alert slot="no-results" :value="true" color="error" icon="warning">
-				Поиск для "{{ search }}" ничего не нашел.
-			</v-alert>
 		</v-data-table>
 	</v-card>
 </template>

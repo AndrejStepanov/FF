@@ -26,7 +26,7 @@ export default {
 	actions:{	
 		async doInit({commit,getters,state},{config, params, }){
 			if(config==undefined || config.id==undefined)
-				showError({ title:'Ошибка инициализации окна', text:'Не указан идентификатор окна', });
+				showError(getErrDesc('noDialogInitId') );
 			if (getters.getById(config.id)!=0)
 				return
 			config.persistent=config.persistent||true

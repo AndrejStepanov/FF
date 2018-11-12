@@ -1,14 +1,15 @@
 <template>
 	<v-speed-dial v-model="fab"  direction="bottom" :open-on-hover="hover" transition="scale-transition" >
-		<v-btn slot="activator" class="accent"  hover v-model="fab">									<v-icon>account_circle</v-icon> &nbsp;{{profileUserName()}}		</v-btn>
-		<v-btn v-if="profileUserName()=='Гость' "  	small class="secondary"	@click='login' >			<v-icon>edit</v-icon>			&nbsp;Авторизоваться			</v-btn>
-		<v-btn v-if="profileUserName()=='Гость' "  	small class="secondary"	@click='registration' >		<v-icon>person_add</v-icon>		&nbsp;Зарегистрироваться		</v-btn>		
-		<v-btn v-if="profileUserName()!='Гость' " 	small class="secondary"	href='\register'> 			<v-icon>add</v-icon>			&nbsp;Изменить пароль			</v-btn>
-		<v-btn v-if="profileUserName()!='Гость' " 	small class="secondary"	@click='logout'>			<v-icon>delete</v-icon>			&nbsp; Выйти					</v-btn>
+		<v-btn slot="activator" class="accent"  hover v-model="fab">						<v-icon>account_circle</v-icon> &nbsp;{{profileUserName()==''?$vuetify.t('$vuetify.texts.simple.labels.guest'):profileUserName()}}		</v-btn>
+		<v-btn v-if="profileSysId()=='' "  	small class="secondary"	@click='login' >		<v-icon>edit</v-icon>			&nbsp;{{$vuetify.t('$vuetify.texts.simple.actions.auth')}} 												</v-btn>
+		<v-btn v-if="profileSysId()=='' "  	small class="secondary"	@click='registration' >	<v-icon>person_add</v-icon>		&nbsp;{{$vuetify.t('$vuetify.texts.simple.actions.registration')}} 										</v-btn>		
+		<v-btn v-if="profileSysId()!='' " 	small class="secondary"	href='\register'> 		<v-icon>add</v-icon>			&nbsp;{{$vuetify.t('$vuetify.texts.simple.actions.chacngePass')}} 										</v-btn>
+		<v-btn v-if="profileSysId()!='' " 	small class="secondary"	@click='logout'>		<v-icon>delete</v-icon>			&nbsp;{{$vuetify.t('$vuetify.texts.simple.actions.logOut')}} 											</v-btn>
 	</v-speed-dial>
 </template>
 
 <script>
+//
 	import XStore from '../mixins/x-store'
 	export default {
 		name:'c-profile',
@@ -29,7 +30,7 @@
 				window.location.href = "\\Регистрация?auth_href_back="+window.location.href;
 			},			
 			logout () {
-				sendRequest({href:'/logout', type:'logout', needSucess:'Y', hrefBack:'/', def:{title:'Ошибка при завершении сеанса',text:'Завершить сеанс не удалось!'}} )
+				sendRequest({href:'/logout', type:'logout', needSucess:'Y', hrefBack:'/', def: getErrDesc('noLogOut') } )
 			},
 			subscribeTicket(newTicket){
 				let vm=this,
@@ -41,7 +42,7 @@
 				.listen('.session.open', (e) => {
 					vm.profileLog({userName:e.data.name,userId:e.data.userId, sysId:e.data.sysId, isRoot:e.data.isRoot});
 					vm.subscribeTicket(e.data.newTicket)
-					showMsg({title:'Авторизация',text:'Выполнен вход под пользователем '+e.data.name+'!',  type:'success'});
+					showMsg({...getMsgDesc('loginSucsess'),   msgParams:[e.data.name],}	);
 					if(_hrefBack!=null)
 						window.location.href = decodeURIComponent(_hrefBack[1]);
 				})
@@ -49,7 +50,7 @@
 					if(vm.profileUserId()!='' && vm.profileUserId()==e.data.userId || vm.profileSysId()!='' && vm.profileSysId()==e.data.sysId)
 						vm.profileLogout();
 					vm.subscribeTicket(e.data.newTicket)
-					showMsg({title:'Авторизация',text:'Пользователь завершил свой сеанс!',  type:'success'  });
+					showMsg(getMsgDesc('logoutSucsess') );
 				});
 			},
 		},
@@ -58,6 +59,8 @@
 			let userInfo = window.userInfo||{}
 			if(nvl(userInfo.name)!='')
 				vm.profileLog({userName:userInfo.name, userId:userInfo.userId, sysId:userInfo.sysId, isRoot:userInfo.isRoot})
+			else
+				vm.profileLogout();
 			vm.subscribeTicket(window.laravel.ticket)
 		},
 	}

@@ -1,18 +1,18 @@
 webpackJsonp([2],{
 
-/***/ 177:
+/***/ 178:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(204)
+  __webpack_require__(192)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(191)
+var __vue_script__ = __webpack_require__(194)
 /* template */
-var __vue_template__ = __webpack_require__(192)
+var __vue_template__ = __webpack_require__(195)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52,16 +52,55 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 191:
+/***/ 192:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(193);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("38f07aa2", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-269fc7c6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./c-table.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-269fc7c6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./c-table.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 193:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* https://tallent.us/vue-scrolling-table/ */\n.c-table.tabFullHeight>div {height: 100%; width: 100%; overflow: auto;\n}\n.c-table.tabWithPagination>div.v-table__overflow {height: calc(100% - 59px); width: 100%; overflow: auto;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 194:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-//
-//
-//
 //
 //
 //
@@ -268,7 +307,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 192:
+/***/ 195:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -294,7 +333,9 @@ var render = function() {
                     _c("v-text-field", {
                       attrs: {
                         "append-icon": "search",
-                        label: "Искать по полям",
+                        label: _vm.$vuetify.t(
+                          "$vuetify.texts.simple.labels.searchInFields"
+                        ),
                         "single-line": "",
                         "hide-details": "",
                         clearable: ""
@@ -314,200 +355,169 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _c(
-        "v-data-table",
-        {
-          ref: "table",
-          class: _vm.getMainTableClass,
-          style: _vm.getMainTableStyle,
-          attrs: {
-            value: _vm.selectedValues,
-            headers: _vm.tabHeads,
-            items: _vm.tabRows,
-            headersLength: _vm.headersLength,
-            headerText: _vm.headerText,
-            headerKey: _vm.headerKey,
-            hideHeaders: _vm.hideHeaders,
-            rowsPerPageText: _vm.rowsPerPageText,
-            expand: _vm.expand,
-            hideActions: _vm.hideActions,
-            noResultsText: _vm.noResultsText,
-            nextIcon: _vm.nextIcon,
-            prevIcon: _vm.prevIcon,
-            rowsPerPageItems: _vm.rowsPerPageItems,
-            selectAll: _vm.selectAll,
-            search: _vm.search,
-            itemKey: _vm.itemKey,
-            customFilter: _vm.searchInTable
-          },
-          on: { "update:pagination": _vm.updateTabFirstNum },
-          scopedSlots: _vm._u([
-            {
-              key: "headers",
-              fn: function(props) {
-                return [
-                  _vm.manHead
-                    ? [
-                        _vm._t("headers", null, {
-                          headers: props.headers,
-                          indeterminate: props.indeterminate,
-                          all: props.all
-                        })
-                      ]
-                    : [
-                        _c(
-                          "tr",
-                          [
-                            !_vm.noRowNum
+      _c("v-data-table", {
+        ref: "table",
+        class: _vm.getMainTableClass,
+        style: _vm.getMainTableStyle,
+        attrs: {
+          value: _vm.selectedValues,
+          headers: _vm.tabHeads,
+          items: _vm.tabRows,
+          headersLength: _vm.headersLength,
+          headerText: _vm.headerText,
+          headerKey: _vm.headerKey,
+          hideHeaders: _vm.hideHeaders,
+          rowsPerPageText: _vm.rowsPerPageText,
+          expand: _vm.expand,
+          hideActions: _vm.hideActions,
+          noResultsText: _vm.noResultsText,
+          nextIcon: _vm.nextIcon,
+          prevIcon: _vm.prevIcon,
+          rowsPerPageItems: _vm.rowsPerPageItems,
+          selectAll: _vm.selectAll,
+          search: _vm.search,
+          itemKey: _vm.itemKey,
+          customFilter: _vm.searchInTable
+        },
+        on: { "update:pagination": _vm.updateTabFirstNum },
+        scopedSlots: _vm._u([
+          {
+            key: "headers",
+            fn: function(props) {
+              return [
+                _vm.manHead
+                  ? [
+                      _vm._t("headers", null, {
+                        headers: props.headers,
+                        indeterminate: props.indeterminate,
+                        all: props.all
+                      })
+                    ]
+                  : [
+                      _c(
+                        "tr",
+                        [
+                          !_vm.noRowNum
+                            ? _c(
+                                "th",
+                                {
+                                  staticClass: "column active width-one-percent"
+                                },
+                                [
+                                  _vm.selecttableTypes.indexOf(
+                                    _vm.typeSelect
+                                  ) != -1 && _vm.selectAll
+                                    ? _c("v-checkbox", {
+                                        attrs: {
+                                          "input-value":
+                                            _vm.typeSelect == "one"
+                                              ? _vm.selectedValues.length
+                                              : props.all,
+                                          indeterminate:
+                                            _vm.typeSelect == "one"
+                                              ? false
+                                              : props.indeterminate,
+                                          color: _vm.checkBoxColor,
+                                          "hide-details": ""
+                                        },
+                                        nativeOn: {
+                                          click: function($event) {
+                                            return _vm.toggleAll($event)
+                                          }
+                                        }
+                                      })
+                                    : [
+                                        _vm._v("\n\t\t\t\t\t\t\t№"),
+                                        _c("br"),
+                                        _vm._v("п/п\n\t\t\t\t\t\t")
+                                      ]
+                                ],
+                                2
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm._l(_vm.tabHeads, function(header) {
+                            return header.visible
                               ? _c(
                                   "th",
                                   {
-                                    staticClass:
-                                      "column active width-one-percent"
+                                    key: header.code,
+                                    staticClass: "column active"
                                   },
                                   [
-                                    _vm.selecttableTypes.indexOf(
-                                      _vm.typeSelect
-                                    ) != -1 && _vm.selectAll
-                                      ? _c("v-checkbox", {
-                                          attrs: {
-                                            "input-value":
-                                              _vm.typeSelect == "one"
-                                                ? _vm.selectedValues.length
-                                                : props.all,
-                                            indeterminate:
-                                              _vm.typeSelect == "one"
-                                                ? false
-                                                : props.indeterminate,
-                                            color: _vm.checkBoxColor,
-                                            "hide-details": ""
-                                          },
-                                          nativeOn: {
-                                            click: function($event) {
-                                              return _vm.toggleAll($event)
-                                            }
-                                          }
-                                        })
-                                      : [
-                                          _vm._v("\n\t\t\t\t\t\t\t№"),
-                                          _c("br"),
-                                          _vm._v("п/п\n\t\t\t\t\t\t")
-                                        ]
-                                  ],
-                                  2
+                                    _vm._v(
+                                      "\n\t\t\t\t\t\t" +
+                                        _vm._s(header.text) +
+                                        "\n\t\t\t\t\t"
+                                    )
+                                  ]
                                 )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm._l(_vm.tabHeads, function(header) {
-                              return header.visible
-                                ? _c(
-                                    "th",
-                                    {
-                                      key: header.code,
-                                      staticClass: "column active"
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n\t\t\t\t\t\t" +
-                                          _vm._s(header.text) +
-                                          "\n\t\t\t\t\t"
-                                      )
-                                    ]
-                                  )
-                                : _vm._e()
-                            })
-                          ],
-                          2
-                        )
-                      ]
-                ]
-              }
-            },
-            {
-              key: "items",
-              fn: function(props) {
-                return [
-                  _vm.manBody
-                    ? [
-                        _vm._t("items", null, {
-                          item: props.item,
-                          index: props.index,
-                          selected: props.selected,
-                          expanded: props.expanded
-                        })
-                      ]
-                    : [
-                        _c(
-                          "tr",
-                          {
-                            attrs: { active: props.selected },
-                            on: {
-                              click: function($event) {
-                                _vm.selectRow(props)
-                              }
-                            }
-                          },
-                          [
-                            !_vm.noRowNum
-                              ? _c("td", { staticClass: "width-one-percent" }, [
-                                  _vm._v(
-                                    "\t" +
-                                      _vm._s(props.item._id + 1) +
-                                      "\t\t\t\t"
-                                  )
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm._l(_vm.tabHeads, function(header) {
-                              return header.visible
-                                ? _c(
-                                    "td",
-                                    {
-                                      key: header.code,
-                                      class: header.clsssCell
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\t" +
-                                          _vm._s(props.item[header.code]) +
-                                          "\t\t\t"
-                                      )
-                                    ]
-                                  )
-                                : _vm._e()
-                            })
-                          ],
-                          2
-                        )
-                      ]
-                ]
-              }
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ]
+              ]
             }
-          ])
-        },
-        [
-          _c(
-            "v-alert",
-            {
-              attrs: {
-                slot: "no-results",
-                value: true,
-                color: "error",
-                icon: "warning"
-              },
-              slot: "no-results"
-            },
-            [
-              _vm._v(
-                '\n\t\t\tПоиск для "' +
-                  _vm._s(_vm.search) +
-                  '" ничего не нашел.\n\t\t'
-              )
-            ]
-          )
-        ],
-        1
-      )
+          },
+          {
+            key: "items",
+            fn: function(props) {
+              return [
+                _vm.manBody
+                  ? [
+                      _vm._t("items", null, {
+                        item: props.item,
+                        index: props.index,
+                        selected: props.selected,
+                        expanded: props.expanded
+                      })
+                    ]
+                  : [
+                      _c(
+                        "tr",
+                        {
+                          attrs: { active: props.selected },
+                          on: {
+                            click: function($event) {
+                              _vm.selectRow(props)
+                            }
+                          }
+                        },
+                        [
+                          !_vm.noRowNum
+                            ? _c("td", { staticClass: "width-one-percent" }, [
+                                _vm._v(
+                                  "\t" + _vm._s(props.item._id + 1) + "\t\t\t\t"
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm._l(_vm.tabHeads, function(header) {
+                            return header.visible
+                              ? _c(
+                                  "td",
+                                  { key: header.code, class: header.clsssCell },
+                                  [
+                                    _vm._v(
+                                      "\t" +
+                                        _vm._s(props.item[header.code]) +
+                                        "\t\t\t"
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ]
+              ]
+            }
+          }
+        ])
+      })
     ],
     1
   )
@@ -521,48 +531,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-269fc7c6", module.exports)
   }
 }
-
-/***/ }),
-
-/***/ 204:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(205);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("38f07aa2", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-269fc7c6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./c-table.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-269fc7c6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./c-table.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 205:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* https://tallent.us/vue-scrolling-table/ */\n.c-table.tabFullHeight>div {height: 100%; width: 100%; overflow: auto;\n}\n.c-table.tabWithPagination>div.v-table__overflow {height: calc(100% - 59px); width: 100%; overflow: auto;\n}\n", ""]);
-
-// exports
-
 
 /***/ })
 

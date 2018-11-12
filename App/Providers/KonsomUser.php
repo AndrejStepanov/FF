@@ -76,6 +76,7 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	public $dateSt;
 	public $dateFn;
 	public $oldTicket;
+	public $systemLanguage;
 
 	/**
 	 * Поиск по параметрам авторизации
@@ -94,6 +95,7 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 			$this->password=$this->hasher->make($credentials['password']);
 			$this->dateSt  = time();
 			$this->dateFn  = time()+ ( 8 * 60 * 60);
+			$this->systemLanguage  = 'ru';
 			return $this;
 		}
 		throw new \App\Exceptions\KonsomException('Ошибка при авторизации', 'Указанные логин и пароль не найдены!');
@@ -116,6 +118,7 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
         session()->push('authIsRoot',$this->isRoot);
         session()->push('authDateSt', $this->dateSt);
         session()->push('authDateFn', $this->dateFn);
+        session()->push('authSystemLanguage', $this->systemLanguage);
 	}
 
 	/**
@@ -135,8 +138,10 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 		$this->isRoot= session()->get('authIsRoot')[0];
 		$this->dateSt= session()->get('authDateSt')[0];
 		$this->dateFn= session()->get('authDateFn')[0];
+		$this->systemLanguage= session()->get('authSystemLanguage')[0];
 		if(  $this->dateFn > time())
 			return $this;
+		session()->invalidate();
 	}
 	/**
 	 * Поиск по идентификатору

@@ -1,14 +1,14 @@
 webpackJsonp([1],{
 
-/***/ 178:
+/***/ 179:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(179)
+var __vue_script__ = __webpack_require__(180)
 /* template */
-var __vue_template__ = __webpack_require__(185)
+var __vue_template__ = __webpack_require__(186)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48,14 +48,14 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 179:
+/***/ 180:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(180);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(181);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__);
 //
 //
@@ -106,7 +106,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		widthOrig: { type: Number, default: 500 },
 		heightOrig: { type: Number, default: 1000 },
 		buttons: { type: Array, default: function _default() {
-				return [{ id: 1, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
+				return [{ id: 1, title: '$vuetify.texts.simple.actions.close', icon: 'close', allig: 'right', click: 'dialogClose' }];
 			} },
 		dragActive: { type: Boolean, default: true },
 		dragDraggable: { type: Boolean, default: true },
@@ -175,19 +175,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 180:
+/***/ 181:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(181)
+  __webpack_require__(182)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(183)
+var __vue_script__ = __webpack_require__(184)
 /* template */
-var __vue_template__ = __webpack_require__(184)
+var __vue_template__ = __webpack_require__(185)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -227,13 +227,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 181:
+/***/ 182:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(182);
+var content = __webpack_require__(183);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -254,7 +254,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 182:
+/***/ 183:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)(false);
@@ -269,7 +269,7 @@ exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: 
 
 /***/ }),
 
-/***/ 183:
+/***/ 184:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -807,7 +807,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 184:
+/***/ 185:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -877,7 +877,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 185:
+/***/ 186:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -925,7 +925,7 @@ var render = function() {
               _c("v-toolbar-side-icon"),
               _vm._v(" "),
               _c("v-toolbar-title", [
-                _vm._v(_vm._s(_vm.dialogConfigGet.title))
+                _vm._v(_vm._s(_vm.$vuetify.t(_vm.dialogConfigGet.title)))
               ]),
               _vm._v(" "),
               _c("v-spacer"),
@@ -996,7 +996,7 @@ var render = function() {
                             row.icon != ""
                               ? _c("v-icon", [_vm._v(_vm._s(row.icon))])
                               : _vm._e(),
-                            _vm._v(" " + _vm._s(row.title))
+                            _vm._v(" " + _vm._s(_vm.$vuetify.t(row.title)))
                           ],
                           1
                         )
@@ -1024,7 +1024,7 @@ var render = function() {
                             row.icon != ""
                               ? _c("v-icon", [_vm._v(_vm._s(row.icon))])
                               : _vm._e(),
-                            _vm._v(" " + _vm._s(row.title))
+                            _vm._v(" " + _vm._s(_vm.$vuetify.t(row.title)))
                           ],
                           1
                         )
@@ -1057,13 +1057,13 @@ if (false) {
 
 /***/ }),
 
-/***/ 186:
+/***/ 187:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(187);
+var content = __webpack_require__(188);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -1084,7 +1084,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 187:
+/***/ 188:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)(false);
@@ -1099,14 +1099,14 @@ exports.push([module.i, "\n.overXAutoLi>li {overflow-x: auto;\n}\n.traceLine{cle
 
 /***/ }),
 
-/***/ 188:
+/***/ 189:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_dialog__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -1141,7 +1141,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	props: {
 		dialogId: { type: Number, required: true },
 		dialogButtons: { type: Array, default: function _default() {
-				return [{ id: 1, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
+				return [{ id: 1, title: '$vuetify.texts.simple.actions.close', icon: 'close', allig: 'right', click: 'dialogClose' }];
 			} }
 	},
 	computed: {
@@ -1175,7 +1175,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 189:
+/***/ 190:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1277,19 +1277,19 @@ if (false) {
 
 /***/ }),
 
-/***/ 53:
+/***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(186)
+  __webpack_require__(187)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(188)
+var __vue_script__ = __webpack_require__(189)
 /* template */
-var __vue_template__ = __webpack_require__(189)
+var __vue_template__ = __webpack_require__(190)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */

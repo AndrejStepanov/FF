@@ -18,6 +18,8 @@
                     name : '{{Auth::user()->name}}', sysId : '{{Auth::user()->id}}', userId : '{{Auth::user()->userId}}', isRoot : '{{Auth::user()->isRoot}}', 
                 @endif
             };
+            window.systemLanguage="{{Auth::check()? Auth::user()->systemLanguage :'ru'}}"
+            
         </script>
         <script src="{{asset('js/manifest.js')}}"></script>
         <script src="{{asset('js/vendor.js')}}"></script>

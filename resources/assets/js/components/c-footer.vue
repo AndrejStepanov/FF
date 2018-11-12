@@ -1,8 +1,8 @@
 <template>
 	<v-footer class='primary bold padding-right--0 ' fixed app>
-		<span >&nbsp;&nbsp;&nbsp;FF - Конструктор форм</span>
+		<span >&nbsp;&nbsp;&nbsp;{{ $vuetify.t('$vuetify.texts.simple.labels.os.name') }}</span>
 		<v-spacer ></v-spacer>
-		<span>&copy;  2018&nbsp;&nbsp;&nbsp;</span>
+		<span>&copy;  {{ $vuetify.t('$vuetify.texts.simple.labels.os.year') }}&nbsp;&nbsp;&nbsp;</span>
 	</v-footer>
 </template>
 

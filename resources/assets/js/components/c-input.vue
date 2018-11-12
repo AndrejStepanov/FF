@@ -92,9 +92,9 @@
 											</template>
 										</div>
 										<v-toolbar dense  color="primary" >	
-											<v-btn flat class="accent"  @click="dialog = false">Отмена</v-btn>
+											<v-btn flat class="accent"  @click="dialog = false">{{ $vuetify.t('$vuetify.texts.simple.actions.cancel') }}</v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="saveDialog(value)">Принять</v-btn>
+											<v-btn flat class="accent"  @click="saveDialog(value)">{{ $vuetify.t('$vuetify.texts.simple.actions.accept') }}</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -108,9 +108,9 @@
 											<v-date-picker v-if="dialogWithDate"  v-model="valueArr" multiple  scrollable locale="ru" class='v-date-picker-more-height' />
 										</div>
 										<v-toolbar dense color="primary" >	
-											<v-btn flat class="accent" @click="dialog = false">Отмена</v-btn>
+											<v-btn flat class="accent" @click="dialog = false">{{ $vuetify.t('$vuetify.texts.simple.actions.cancel') }}</v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="saveDialog(value)">Принять</v-btn>
+											<v-btn flat class="accent"  @click="saveDialog(value)">{{ $vuetify.t('$vuetify.texts.simple.actions.accept') }}</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -121,13 +121,13 @@
 										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
 									<template>
 										<div  :style="getDialogMainDivStyle">
-											<c-table tableTitle="Выбор значения" :searchNeed="true" :headers="getTabHeader"	:items="getTabValues" v-model="tabSelectedRows"  ref="table"  
+											<c-table tableTitle="$vuetify.texts.modals.treeAdd.title" :searchNeed="true" :headers="getTabHeader"	:items="getTabValues" v-model="tabSelectedRows"  ref="table"  
 												:typeSelect="multy?'one':'one'" :select-all="true" :noRowNum="false"	:hide-actions="false"  :height="getDialogMainDivHeight"/>
 										</div>
 										<v-toolbar dense color="primary" >	
-											<v-btn flat class="accent" @click="dialog = false">Отмена</v-btn>
+											<v-btn flat class="accent" @click="dialog = false">{{ $vuetify.t('$vuetify.texts.simple.actions.cancel') }}</v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="saveDialog(tabSelectedRows)">Принять</v-btn>
+											<v-btn flat class="accent"  @click="saveDialog(tabSelectedRows)">{{ $vuetify.t('$vuetify.texts.simple.actions.accept') }}</v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -176,7 +176,7 @@ time-with-seconds	##:##:##
 			dialogWithTime:false,
 			dialogWithRange:false,
 			editable:true,
-			error: 'Некорректное значение!',
+			error: '$vuetify.texts.msgs.incorrectValue.title',
 			hasError: false,
 			hasInput: false,
 			id: 0,
@@ -379,13 +379,13 @@ time-with-seconds	##:##:##
 					fstPart = vm.valueArrPairs[num][0]!=null?vm.valueArrPairs[num][0]:''
 					scndPart = vm.valueArrPairs[num][1]!=null?vm.valueArrPairs[num][1]:''
 					if(check && ( (vm.dialogWithDate || vm.dialogWithRange) && fstPart=='' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart=='') )
-						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите данные полностью!'});
+						showMsg( getErrDesc('notFullValue') );
 				}
 				else{
 					fstPart = vm.getValueDatetimeFromArr({check,num,stage:1}) 
 					scndPart = vm.getValueDatetimeFromArr({check,num:num+1,stage:1}) 
 					if(check && ( (vm.dialogWithDate || vm.dialogWithRange) && fstPart=='' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart=='') )
-						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите данные полностью!'});
+						showMsg( getErrDesc('notFullValue'));
 				}
 				return fstPart+
 					(fstPart!='' && scndPart!=''? 
@@ -506,7 +506,7 @@ time-with-seconds	##:##:##
 					vm.$refs.dialog.save(vm.getValueDatetimeFromArr({check:true,}))
 				else if(vm.multy && vm.type=='DATE'){
 					if(vm.dialogWithDate && vm.valueArr.length==0)
-						showMsg( {title:'Ошибка при указании данных',text:'Перед сохранением, укажите дату!'});
+						showMsg( getErrDesc('saveNoDate'));
 					vm.$refs.dialog.save(vm.valueArr)
 				}
 
@@ -770,28 +770,28 @@ time-with-seconds	##:##:##
 				vm.isNeedTab=true	
 
 			if(vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type!='RANGE' )//Границы должны быть цифрой!
-				vm.rules.push(v => v>=vm.min|| !vm.checked || 'Значение должно быть не меньше '+vm.min+'!')
+				vm.rules.push(v => v>=vm.min|| !vm.checked || vm.$vuetify.t('$vuetify.texts.simple.msgs.valMoreOrEq', ...([vm.min]) ) )
 
 			if(vm.hasInput && vm.isNumeric && !isNaN(vm.max) && vm.type!='RANGE' )
 				vm.rules.push(v => v<=vm.max || !vm.checked || 'Значение не должно превышать '+vm.max+'!')
 
 			if(vm.hasInput && vm.maxLenTypes.indexOf(vm.type)!=-1 && vm.maxLen>0)
-				vm.rules.push(v => v.length <= vm.maxLen  || !vm.checked || 'Количество символов не должно превышать '+vm.maxLen+'!')
+				vm.rules.push(v => v.length <= vm.maxLen  || !vm.checked || vm.$vuetify.t('$vuetify.texts.simple.msgs.valLessOrEq', ...([vm.maxLen]) ) )
 			
 			tmp = new RegExp(vm.maskFin)
 			if(vm.hasInput && tmp!='')//надо помнить про экранирование
-				vm.rules.push(v => tmp.test(v) || vm.error)
+				vm.rules.push(v => tmp.test(v) || vm.$vuetify.t( vm.error ))
 			
 			vm.rulesChildInput = vm.rules.slice()
 				
 			if(vm.hasInput && !vm.nullable){
 				vm.isNeed =true
-				vm.rules.push(v => v!=undefined && (v!='' || v===0) || 'Поле обязательное!')
+				vm.rules.push(v => v!=undefined && (v!='' || v===0) || vm.$vuetify.t('$vuetify.texts.simple.msgs.fieldIsNecessary' ) )
 				vm.name='❗ '+vm.name//⭐
 			}
 
 			if(vm.hasInput && vm.needCheckBox && !vm.nullable)
-				vm.rules.push(v => !!vm.checked || 'Поле должно быть использовано!')
+				vm.rules.push(v => !!vm.checked || vm.$vuetify.t('$vuetify.texts.simple.msgs.fieldMustUsed' ) )
 
 			vm.paramSetData( {num: vm.paramsForm, data:{...vm.data,value :null, value_view :null, value_arr :null, value_arr_view:null,  } })
 			if(vm.multy && ['DATE', 'LIST'].indexOf(vm.type)!=-1)

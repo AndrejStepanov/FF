@@ -27,7 +27,7 @@
 		props:{
 			dialogId: {type: Number, required: true}, 
 			dialogButtons: {type: Array, default: () =>{return [	
-				{id:1, title:'Закрыть', icon:'close', allig:'right', click:'dialogClose'}
+				{id:1, title:'$vuetify.texts.simple.actions.close', icon:'close', allig:'right', click:'dialogClose'}
 			] }},
 		},
 		computed: {

@@ -1,14 +1,14 @@
 webpackJsonp([0],{
 
-/***/ 178:
+/***/ 179:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(179)
+var __vue_script__ = __webpack_require__(180)
 /* template */
-var __vue_template__ = __webpack_require__(185)
+var __vue_template__ = __webpack_require__(186)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48,14 +48,14 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 179:
+/***/ 180:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(180);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(181);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__);
 //
 //
@@ -106,7 +106,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		widthOrig: { type: Number, default: 500 },
 		heightOrig: { type: Number, default: 1000 },
 		buttons: { type: Array, default: function _default() {
-				return [{ id: 1, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }];
+				return [{ id: 1, title: '$vuetify.texts.simple.actions.close', icon: 'close', allig: 'right', click: 'dialogClose' }];
 			} },
 		dragActive: { type: Boolean, default: true },
 		dragDraggable: { type: Boolean, default: true },
@@ -175,19 +175,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 180:
+/***/ 181:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(181)
+  __webpack_require__(182)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(183)
+var __vue_script__ = __webpack_require__(184)
 /* template */
-var __vue_template__ = __webpack_require__(184)
+var __vue_template__ = __webpack_require__(185)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -227,13 +227,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 181:
+/***/ 182:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(182);
+var content = __webpack_require__(183);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -254,7 +254,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 182:
+/***/ 183:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)(false);
@@ -269,7 +269,7 @@ exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: 
 
 /***/ }),
 
-/***/ 183:
+/***/ 184:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -807,7 +807,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 184:
+/***/ 185:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -877,7 +877,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 185:
+/***/ 186:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -925,7 +925,7 @@ var render = function() {
               _c("v-toolbar-side-icon"),
               _vm._v(" "),
               _c("v-toolbar-title", [
-                _vm._v(_vm._s(_vm.dialogConfigGet.title))
+                _vm._v(_vm._s(_vm.$vuetify.t(_vm.dialogConfigGet.title)))
               ]),
               _vm._v(" "),
               _c("v-spacer"),
@@ -996,7 +996,7 @@ var render = function() {
                             row.icon != ""
                               ? _c("v-icon", [_vm._v(_vm._s(row.icon))])
                               : _vm._e(),
-                            _vm._v(" " + _vm._s(row.title))
+                            _vm._v(" " + _vm._s(_vm.$vuetify.t(row.title)))
                           ],
                           1
                         )
@@ -1024,7 +1024,7 @@ var render = function() {
                             row.icon != ""
                               ? _c("v-icon", [_vm._v(_vm._s(row.icon))])
                               : _vm._e(),
-                            _vm._v(" " + _vm._s(row.title))
+                            _vm._v(" " + _vm._s(_vm.$vuetify.t(row.title)))
                           ],
                           1
                         )
@@ -1057,16 +1057,16 @@ if (false) {
 
 /***/ }),
 
-/***/ 190:
+/***/ 191:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_dialog__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -1091,7 +1091,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			dialogWidth: 10,
 			dialogHeight: 10,
 			paramsForm: '',
-			dialogButtons: [{ id: 1, title: 'Сохранить', icon: 'done', allig: 'left', click: 'dialogSave', needCheck: true }, { id: 2, title: 'Закрыть', icon: 'close', allig: 'right', click: 'dialogClose' }]
+			dialogButtons: [{ id: 1, title: '$vuetify.texts.simple.actions.save', icon: 'done', allig: 'left', click: 'dialogSave', needCheck: true }, { id: 2, title: '$vuetify.texts.simple.actions.close', icon: 'close', allig: 'right', click: 'dialogClose' }]
 		};
 	},
 	props: {
@@ -1153,11 +1153,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	},
 	created: function created() {
 		var vm = this;
+		var dialogTitle = vm.$vuetify.t(vm.dialogConfigGet.title);
 		vm.paramsForm = vm.dialogConfigGet.name;
 		vm.paramInit({ num: vm.paramsForm });
 		vm.$root.$on('dialog' + vm.dialogId + 'InputsCols', function (obj) {
 			vm.dialogHeight = vm.dialogConfigGet.height > 0 ? vm.dialogConfigGet.height : obj.rowInColA * 74 + 140;
-			vm.dialogWidth = vm.dialogConfigGet.width > 0 ? vm.dialogConfigGet.width : vm.dialogConfigGet.title.length * 20 + 110 > obj.colsCnt * 300 ? vm.dialogConfigGet.title.length * 20 + 110 : obj.colsCnt * 300;
+			vm.dialogWidth = vm.dialogConfigGet.width > 0 ? vm.dialogConfigGet.width : dialogTitle.length * 20 + 110 > obj.colsCnt * 300 ? dialogTitle.length * 20 + 110 : obj.colsCnt * 300;
 		});
 		vm.$root.$on('dialog' + vm.paramsForm + 'Send', function () {
 			vm.dialogSave();
@@ -1167,7 +1168,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 193:
+/***/ 196:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1226,15 +1227,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 51:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(190)
+var __vue_script__ = __webpack_require__(191)
 /* template */
-var __vue_template__ = __webpack_require__(193)
+var __vue_template__ = __webpack_require__(196)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1274,15 +1275,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 80:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(81)
+var __vue_script__ = __webpack_require__(82)
 /* template */
-var __vue_template__ = __webpack_require__(87)
+var __vue_template__ = __webpack_require__(88)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1322,12 +1323,12 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 81:
+/***/ 82:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__c_input__);
 //
 //
@@ -1399,19 +1400,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 82:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(83)
+  __webpack_require__(84)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(85)
+var __vue_script__ = __webpack_require__(86)
 /* template */
-var __vue_template__ = __webpack_require__(86)
+var __vue_template__ = __webpack_require__(87)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1451,13 +1452,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 83:
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(84);
+var content = __webpack_require__(85);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -1478,7 +1479,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 84:
+/***/ 85:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)(false);
@@ -1493,7 +1494,7 @@ exports.push([module.i, "\ndiv.input-contaner,\nspan.input-contaner>span,\nspan.
 
 /***/ }),
 
-/***/ 85:
+/***/ 86:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1687,7 +1688,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			dialogWithTime: false,
 			dialogWithRange: false,
 			editable: true,
-			error: 'Некорректное значение!',
+			error: '$vuetify.texts.msgs.incorrectValue.title',
 			hasError: false,
 			hasInput: false,
 			id: 0,
@@ -1859,7 +1860,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 	watch: {},
 	components: {
 		CTable: function CTable(resolve) {
-			__webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(177)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+			__webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(178)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 		}
 	},
 	mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default.a],
@@ -1878,11 +1879,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 			if (vm.type != 'DATETIME_RANGE' || stage == 1) {
 				fstPart = vm.valueArrPairs[num][0] != null ? vm.valueArrPairs[num][0] : '';
 				scndPart = vm.valueArrPairs[num][1] != null ? vm.valueArrPairs[num][1] : '';
-				if (check && ((vm.dialogWithDate || vm.dialogWithRange) && fstPart == '' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart == '')) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
+				if (check && ((vm.dialogWithDate || vm.dialogWithRange) && fstPart == '' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart == '')) showMsg(getErrDesc('notFullValue'));
 			} else {
 				fstPart = vm.getValueDatetimeFromArr({ check: check, num: num, stage: 1 });
 				scndPart = vm.getValueDatetimeFromArr({ check: check, num: num + 1, stage: 1 });
-				if (check && ((vm.dialogWithDate || vm.dialogWithRange) && fstPart == '' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart == '')) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите данные полностью!' });
+				if (check && ((vm.dialogWithDate || vm.dialogWithRange) && fstPart == '' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart == '')) showMsg(getErrDesc('notFullValue'));
 			}
 			return fstPart + (fstPart != '' && scndPart != '' ? ['TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1 && stage == 0 ? vm.rangeSeparator : ' ' : '') + scndPart;
 		},
@@ -2001,7 +2002,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 				});
 				vm.tabSelectedRows = [];
 			} else if (!vm.multy && vm.isDateTimeLike) vm.$refs.dialog.save(vm.getValueDatetimeFromArr({ check: true }));else if (vm.multy && vm.type == 'DATE') {
-				if (vm.dialogWithDate && vm.valueArr.length == 0) showMsg({ title: 'Ошибка при указании данных', text: 'Перед сохранением, укажите дату!' });
+				if (vm.dialogWithDate && vm.valueArr.length == 0) showMsg(getErrDesc('saveNoDate'));
 				vm.$refs.dialog.save(vm.valueArr);
 			}
 		},
@@ -2248,7 +2249,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 		if (vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type != 'RANGE') //Границы должны быть цифрой!
 			vm.rules.push(function (v) {
-				return v >= vm.min || !vm.checked || 'Значение должно быть не меньше ' + vm.min + '!';
+				var _vm$$vuetify;
+
+				return v >= vm.min || !vm.checked || (_vm$$vuetify = vm.$vuetify).t.apply(_vm$$vuetify, ['$vuetify.texts.simple.msgs.valMoreOrEq'].concat([vm.min]));
 			});
 
 		if (vm.hasInput && vm.isNumeric && !isNaN(vm.max) && vm.type != 'RANGE') vm.rules.push(function (v) {
@@ -2256,13 +2259,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		});
 
 		if (vm.hasInput && vm.maxLenTypes.indexOf(vm.type) != -1 && vm.maxLen > 0) vm.rules.push(function (v) {
-			return v.length <= vm.maxLen || !vm.checked || 'Количество символов не должно превышать ' + vm.maxLen + '!';
+			var _vm$$vuetify2;
+
+			return v.length <= vm.maxLen || !vm.checked || (_vm$$vuetify2 = vm.$vuetify).t.apply(_vm$$vuetify2, ['$vuetify.texts.simple.msgs.valLessOrEq'].concat([vm.maxLen]));
 		});
 
 		tmp = new RegExp(vm.maskFin);
 		if (vm.hasInput && tmp != '') //надо помнить про экранирование
 			vm.rules.push(function (v) {
-				return tmp.test(v) || vm.error;
+				return tmp.test(v) || vm.$vuetify.t(vm.error);
 			});
 
 		vm.rulesChildInput = vm.rules.slice();
@@ -2270,13 +2275,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 		if (vm.hasInput && !vm.nullable) {
 			vm.isNeed = true;
 			vm.rules.push(function (v) {
-				return v != undefined && (v != '' || v === 0) || 'Поле обязательное!';
+				return v != undefined && (v != '' || v === 0) || vm.$vuetify.t('$vuetify.texts.simple.msgs.fieldIsNecessary');
 			});
 			vm.name = '❗ ' + vm.name; //⭐
 		}
 
 		if (vm.hasInput && vm.needCheckBox && !vm.nullable) vm.rules.push(function (v) {
-			return !!vm.checked || 'Поле должно быть использовано!';
+			return !!vm.checked || vm.$vuetify.t('$vuetify.texts.simple.msgs.fieldMustUsed');
 		});
 
 		vm.paramSetData({ num: vm.paramsForm, data: _extends({}, vm.data, { value: null, value_view: null, value_arr: null, value_arr_view: null }) });
@@ -2290,7 +2295,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 /***/ }),
 
-/***/ 86:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -3228,7 +3233,15 @@ var render = function() {
                                                                   }
                                                                 }
                                                               },
-                                                              [_vm._v("Отмена")]
+                                                              [
+                                                                _vm._v(
+                                                                  _vm._s(
+                                                                    _vm.$vuetify.t(
+                                                                      "$vuetify.texts.simple.actions.cancel"
+                                                                    )
+                                                                  )
+                                                                )
+                                                              ]
                                                             ),
                                                             _vm._v(" "),
                                                             _c("v-spacer"),
@@ -3253,7 +3266,11 @@ var render = function() {
                                                               },
                                                               [
                                                                 _vm._v(
-                                                                  "Принять"
+                                                                  _vm._s(
+                                                                    _vm.$vuetify.t(
+                                                                      "$vuetify.texts.simple.actions.accept"
+                                                                    )
+                                                                  )
                                                                 )
                                                               ]
                                                             )
@@ -3441,7 +3458,11 @@ var render = function() {
                                                                 },
                                                                 [
                                                                   _vm._v(
-                                                                    "Отмена"
+                                                                    _vm._s(
+                                                                      _vm.$vuetify.t(
+                                                                        "$vuetify.texts.simple.actions.cancel"
+                                                                      )
+                                                                    )
                                                                   )
                                                                 ]
                                                               ),
@@ -3468,7 +3489,11 @@ var render = function() {
                                                                 },
                                                                 [
                                                                   _vm._v(
-                                                                    "Принять"
+                                                                    _vm._s(
+                                                                      _vm.$vuetify.t(
+                                                                        "$vuetify.texts.simple.actions.accept"
+                                                                      )
+                                                                    )
                                                                   )
                                                                 ]
                                                               )
@@ -3595,7 +3620,7 @@ var render = function() {
                                                                   ref: "table",
                                                                   attrs: {
                                                                     tableTitle:
-                                                                      "Выбор значения",
+                                                                      "$vuetify.texts.modals.treeAdd.title",
                                                                     searchNeed: true,
                                                                     headers:
                                                                       _vm.getTabHeader,
@@ -3654,7 +3679,11 @@ var render = function() {
                                                                   },
                                                                   [
                                                                     _vm._v(
-                                                                      "Отмена"
+                                                                      _vm._s(
+                                                                        _vm.$vuetify.t(
+                                                                          "$vuetify.texts.simple.actions.cancel"
+                                                                        )
+                                                                      )
                                                                     )
                                                                   ]
                                                                 ),
@@ -3681,7 +3710,11 @@ var render = function() {
                                                                   },
                                                                   [
                                                                     _vm._v(
-                                                                      "Принять"
+                                                                      _vm._s(
+                                                                        _vm.$vuetify.t(
+                                                                          "$vuetify.texts.simple.actions.accept"
+                                                                        )
+                                                                      )
                                                                     )
                                                                   ]
                                                                 )
@@ -3740,7 +3773,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 87:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {

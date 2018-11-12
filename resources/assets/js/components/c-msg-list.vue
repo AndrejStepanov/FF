@@ -13,7 +13,7 @@
         name:"c-msg-list",
         data: () => ({
 			dialogsConfig: {
-				trace:{id: getNewId(),  module:'m-error-desc',  name:"errorTrace", title:"Трассировка", width:1024, height:600}
+				trace:{id: getNewId(),  module:'m-error-desc',  name:"errorTrace", title:"$vuetify.texts.modals.traceShow.title", width:1024, height:600}
 			},	
         }),
         computed: {
@@ -33,7 +33,7 @@
                 let vm=this
                 let tmp = vm.msgAllMsg.find((msg)=>{ return msg.id==id })
                 if(!tmp)
-                    showMsg({title: "Ошибка отображения трассировки", text:"Трассировка не найдена"});
+                    showMsg( getErrDesc('traceNotFound'));
                 vm.dialogSetAllParams({ name:"errorTrace", params:{id,msg:tmp} });
                 vm.dialogShow(vm.dialogsConfig.trace.id)
             }

@@ -60,7 +60,7 @@
 				}
 			},
 			async: {type: Function},
-			loadingText: {type: String, default: 'Загрузка...'},
+			loadingText: {type: String, default: '$vuetify.texts.simple.labels.loading' },
 			draggable: {type: Boolean, default: false},
 			dragOverBackgroundColor: {type: String, default: "#C9FDC9"},
 			klass: String
@@ -156,7 +156,7 @@
 			},
 			initializeLoading() {
 				var item = {}
-				item[this.textFieldName] = this.loadingText
+				item[this.textFieldName] = this.$vuetify.t( this.loadingText)
 				item.disabled = item.loading = true
 				return this.initializeDataItem(item)
 			},
