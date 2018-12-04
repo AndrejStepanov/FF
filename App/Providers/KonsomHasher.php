@@ -69,4 +69,14 @@ class KonsomHasher implements HasherContract{
     protected function cost(array $options = [])    {
         return $options['rounds'] ?? $this->rounds;
     }
+    /**
+     * Get information about the given hashed value.
+     *
+     * @param  string $hashedValue
+     * @return array
+     */
+    public function info($hashedValue)
+    {
+        return password_get_info($hashedValue);
+    }
 }

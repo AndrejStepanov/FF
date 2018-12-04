@@ -180,7 +180,7 @@ function sendRequest  (params){
 				params.handler(response)
 		}).catch(
 			(error) =>
-				showMsg({ title: nvlo(error.response.data).title||nvlo(params.default).title||'$vuetify.texts.msgs.requestFaild.title'  , text:nvlo(error.response.data).message||nvlo(params.default).text||'$vuetify.texts.msgs.requestFaild.text',
+				showMsg({ title: nvlo(error.response.data).title||nvlo(params.default).title||'$vuetify.texts.errors.requestFaild.title'  , text:nvlo(error.response.data).message||nvlo(params.default).text||'$vuetify.texts.errors.requestFaild.text',
 					'params': {status:error.response.status, trace:nvlo(error.response.data).trace, file:nvlo(error.response.data).file, line:nvlo(error.response.data).line}, })
 		);
 	return true

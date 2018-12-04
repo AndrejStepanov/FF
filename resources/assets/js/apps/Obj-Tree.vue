@@ -1,5 +1,5 @@
 <template>
-	<c-app :curentSystem="$vuetify.t('$vuetify.texts.main.links.objWork.name')" :panelLeftShow="true" :panelLeftDrawer="true" panelLeftClass="display--flex flex-direction--column">
+	<c-app :curentSystem="$vuetify.t('$vuetify.texts.main.links.objWork.name')" :panelLeft="{show:true, class:'display--flex flex-direction--column'}"  :mainPanelConfig="mainPanelConfig">
 		<template slot="panelLeft">
 			<v-text-field id="treeSearch" name="treeSearch" class="check-size flex--inherit" append-icon="search" v-model="treeSearch"  single-line :label="$vuetify.t('$vuetify.texts.simple.actions.search')" @keyup.enter="treeSearchSubmit"/>
 			<v-btn block  small class="check-size accent flex--inherit" @click="openDialog(dialogsConfig.treeAdd.id)" > <v-icon>add</v-icon> {{ $vuetify.t('$vuetify.texts.simple.actions.add') }}</v-btn>
@@ -8,7 +8,9 @@
 				<c-tree @item-click = "itemClick" textFieldName="tree_name" typeFieldName="tree_group"  socetHref="/socet_command" socetEvent="object.tree.by.root" socetChanel="channel.ObjTreeData" :iconDic="iconDic" app />
 			</v-responsive>
 		</template>
-		<component v-bind:is="dialogModule" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened"/>
+		<template slot="dialogs">
+			<component v-bind:is="dialogModule" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened"/>
+		</template>
 	</c-app>
 </template>
 
@@ -23,7 +25,8 @@
 			iconDic:{'misc':'photo_library', 'object':'description', 'filter':'filter_list', 'filter':'filter_list', 'input':'input', 'default':'folder_open',  },		
 			dialogsConfig: {
 				treeAdd:{id: getNewId(),  module:'m-input-fields',  name:"object-tree-add", title:"$vuetify.texts.modals.treeAdd.title", 	params:{socetHref:"/data_command", socetEvent:"object.tree.add"},kyes:{ treeId:{value:0}, }, }
-			},														
+			},
+			mainPanelConfig: {  name: 'first',   width:'100%',	height:'100%',  layout: 'vertical' },
 		}),
 		components: {
 			CTree,

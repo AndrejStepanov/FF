@@ -1,7 +1,7 @@
 <template>
 	<v-card  >
 		<v-card-title v-if="tableTitle!='' || searchNeed" ref="title">
-			<h3 class="headline mb-0">{{tableTitle}}</h3> 
+			<h3 class="headline mb-0">{{$vuetify.t(tableTitle)}}</h3> 
 			<template v-if="searchNeed">
 				<v-spacer/>
 				<v-text-field	v-model="search"	append-icon="search"	:label="$vuetify.t('$vuetify.texts.simple.labels.searchInFields')"	single-line	hide-details clearable  	/>				

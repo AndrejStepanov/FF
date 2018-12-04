@@ -1,14 +1,14 @@
 webpackJsonp([0],{
 
-/***/ 179:
+/***/ 187:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(180)
+var __vue_script__ = __webpack_require__(188)
 /* template */
-var __vue_template__ = __webpack_require__(186)
+var __vue_template__ = __webpack_require__(194)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48,14 +48,14 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 180:
+/***/ 188:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__c_drag_resize_c_drag_resize__);
 //
 //
@@ -175,19 +175,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 181:
+/***/ 189:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(182)
+  __webpack_require__(190)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(184)
+var __vue_script__ = __webpack_require__(192)
 /* template */
-var __vue_template__ = __webpack_require__(185)
+var __vue_template__ = __webpack_require__(193)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -227,17 +227,17 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 182:
+/***/ 190:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(183);
+var content = __webpack_require__(191);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("68ecb6b4", content, false, {});
+var update = __webpack_require__(3)("68ecb6b4", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -254,10 +254,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 183:
+/***/ 191:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -269,7 +269,7 @@ exports.push([module.i, "\n:root{    --stick-size: 8px;\n}\n.cdr {    position: 
 
 /***/ }),
 
-/***/ 184:
+/***/ 192:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -807,7 +807,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 185:
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -877,7 +877,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 186:
+/***/ 194:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1057,16 +1057,16 @@ if (false) {
 
 /***/ }),
 
-/***/ 191:
+/***/ 199:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_x_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(179);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog__ = __webpack_require__(187);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_c_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_c_dialog__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_c_input_cols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_c_input_cols__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -1168,7 +1168,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 196:
+/***/ 204:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1227,15 +1227,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 52:
+/***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(191)
+var __vue_script__ = __webpack_require__(199)
 /* template */
-var __vue_template__ = __webpack_require__(196)
+var __vue_template__ = __webpack_require__(204)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1275,15 +1275,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 81:
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(82)
+var __vue_script__ = __webpack_require__(85)
 /* template */
-var __vue_template__ = __webpack_require__(88)
+var __vue_template__ = __webpack_require__(91)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1323,12 +1323,12 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 82:
+/***/ 85:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__c_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__c_input__);
 //
 //
@@ -1400,19 +1400,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 83:
+/***/ 86:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(84)
+  __webpack_require__(87)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(86)
+var __vue_script__ = __webpack_require__(89)
 /* template */
-var __vue_template__ = __webpack_require__(87)
+var __vue_template__ = __webpack_require__(90)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1452,17 +1452,17 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 84:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(85);
+var content = __webpack_require__(88);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("0cb190ca", content, false, {});
+var update = __webpack_require__(3)("0cb190ca", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1479,10 +1479,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 85:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -1494,12 +1494,12 @@ exports.push([module.i, "\ndiv.input-contaner,\nspan.input-contaner>span,\nspan.
 
 /***/ }),
 
-/***/ 86:
+/***/ 89:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_x_store__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__mixins_x_store__);
@@ -1860,7 +1860,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 	watch: {},
 	components: {
 		CTable: function CTable(resolve) {
-			__webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(178)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
+			__webpack_require__.e/* require */(3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(186)]; ((resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__));}.bind(this)).catch(__webpack_require__.oe);
 		}
 	},
 	mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_x_store___default.a],
@@ -2295,7 +2295,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 /***/ }),
 
-/***/ 87:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2328,308 +2328,346 @@ var render = function() {
                 1
               )
             : _vm.type == "NBSP"
-              ? _c("div", [_vm._v("\n\t\t \n\t")])
-              : _vm.type == "LINE"
-                ? _c(
-                    "div",
-                    {
-                      staticStyle: {
-                        width: "100%",
-                        "margin-top": "10px",
-                        "margin-bottom": "10px"
-                      }
-                    },
-                    [_c("hr")]
-                  )
-                : _c(
-                    "v-tooltip",
-                    {
-                      staticClass: "input-contaner",
-                      attrs: { disabled: _vm.tip == "", bottom: "" }
-                    },
-                    [
-                      _c("template", { slot: "activator" }, [
+            ? _c("div", [_vm._v("\n\t\t \n\t")])
+            : _vm.type == "LINE"
+            ? _c(
+                "div",
+                {
+                  staticStyle: {
+                    width: "100%",
+                    "margin-top": "10px",
+                    "margin-bottom": "10px"
+                  }
+                },
+                [_c("hr")]
+              )
+            : _c(
+                "v-tooltip",
+                {
+                  staticClass: "input-contaner",
+                  attrs: { disabled: _vm.tip == "", bottom: "" }
+                },
+                [
+                  _c("template", { slot: "activator" }, [
+                    _c(
+                      "div",
+                      { staticClass: "input-contaner" },
+                      [
+                        _vm.needSign
+                          ? _c(
+                              "v-btn",
+                              {
+                                staticClass: "sign-box cursor-pointer",
+                                attrs: { icon: "", small: "" },
+                                on: { click: _vm.changeSign }
+                              },
+                              [
+                                _c(
+                                  "v-icon",
+                                  {
+                                    class: _vm.getSignClass,
+                                    attrs: {
+                                      small: "",
+                                      disabled: _vm.getDisable
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(_vm.getSign))]
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
                         _c(
                           "div",
-                          { staticClass: "input-contaner" },
+                          {
+                            staticClass: "input-contaner main-contaner",
+                            on: { click: _vm.onClick }
+                          },
                           [
-                            _vm.needSign
+                            _vm.isSliderLike
                               ? _c(
-                                  "v-btn",
+                                  "div",
                                   {
-                                    staticClass: "sign-box cursor-pointer",
-                                    attrs: { icon: "", small: "" },
-                                    on: { click: _vm.changeSign }
+                                    staticClass: "input-contaner slider-label"
                                   },
                                   [
-                                    _c(
-                                      "v-icon",
-                                      {
-                                        class: _vm.getSignClass,
-                                        attrs: {
-                                          small: "",
-                                          disabled: _vm.getDisable
-                                        }
-                                      },
-                                      [_vm._v(_vm._s(_vm.getSign))]
-                                    )
-                                  ],
-                                  1
+                                    _c("span", { class: _vm.getLabelClass }, [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.name +
+                                            (_vm.placeholder != ""
+                                              ? " (" + _vm.placeholder + ")"
+                                              : "")
+                                        )
+                                      )
+                                    ])
+                                  ]
                                 )
                               : _vm._e(),
                             _vm._v(" "),
                             _c(
                               "div",
-                              {
-                                staticClass: "input-contaner main-contaner",
-                                on: { click: _vm.onClick }
-                              },
+                              { class: _vm.getInputContanerTemplateClass },
                               [
                                 _vm.isSliderLike
-                                  ? _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "input-contaner slider-label"
-                                      },
-                                      [
-                                        _c(
-                                          "span",
-                                          { class: _vm.getLabelClass },
-                                          [
-                                            _vm._v(
-                                              _vm._s(
-                                                _vm.name +
-                                                  (_vm.placeholder != ""
-                                                    ? " (" +
-                                                      _vm.placeholder +
-                                                      ")"
-                                                    : "")
-                                              )
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { class: _vm.getInputContanerTemplateClass },
-                                  [
-                                    _vm.isSliderLike
-                                      ? [
-                                          _vm.type == "RANGE" && _vm.isNumeric
-                                            ? _c(
-                                                "v-flex",
-                                                {
-                                                  staticStyle: {
-                                                    width: "60px"
-                                                  },
-                                                  attrs: { shrink: "" }
+                                  ? [
+                                      _vm.type == "RANGE" && _vm.isNumeric
+                                        ? _c(
+                                            "v-flex",
+                                            {
+                                              staticStyle: { width: "60px" },
+                                              attrs: { shrink: "" }
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                staticClass:
+                                                  "mt-0 min-width-35px body-1",
+                                                attrs: {
+                                                  "hide-details": "",
+                                                  "single-line": "",
+                                                  disabled: _vm.getDisable,
+                                                  type: "number",
+                                                  min: _vm.min,
+                                                  max: _vm.max,
+                                                  step: _vm.step
                                                 },
-                                                [
-                                                  _c("v-text-field", {
+                                                on: {
+                                                  change: _vm.setNewValPairFst
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.valueArrPairs[0][0],
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.valueArrPairs[0],
+                                                      0,
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "valueArrPairs[0][0]"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-flex",
+                                        [
+                                          _vm.type == "RANGE"
+                                            ? _c(_vm.currentInput, {
+                                                ref: "input",
+                                                tag: "component",
+                                                attrs: {
+                                                  rules: _vm.rules,
+                                                  disabled: _vm.getDisable,
+                                                  readonly: !_vm.editable,
+                                                  required: !!_vm.nullable,
+                                                  "multi-line":
+                                                    _vm.columnSize > 50,
+                                                  tabindex: _vm.sortSeq,
+                                                  type: _vm.getComponentType,
+                                                  color: _vm.checkBoxColor,
+                                                  "always-dirty":
+                                                    _vm.isSliderLike,
+                                                  "persistent-hint":
+                                                    _vm.isSliderLike,
+                                                  "thumb-label":
+                                                    _vm.thumbLabelNeed,
+                                                  ticks: _vm.ticksNeed
+                                                    ? "always"
+                                                    : "",
+                                                  tickSize: _vm.tickSize,
+                                                  "thumb-size": _vm.thumbSize,
+                                                  "tick-labels": _vm.tickLabels,
+                                                  "append-icon":
+                                                    _vm.getAppendIcon,
+                                                  clearable: _vm.getClearable,
+                                                  mask: _vm.mask,
+                                                  min: _vm.min,
+                                                  max: _vm.max,
+                                                  step: _vm.step
+                                                },
+                                                on: {
+                                                  change: _vm.setNewVal,
+                                                  keyup: function($event) {
+                                                    if (
+                                                      !("button" in $event) &&
+                                                      _vm._k(
+                                                        $event.keyCode,
+                                                        "enter",
+                                                        13,
+                                                        $event.key,
+                                                        "Enter"
+                                                      )
+                                                    ) {
+                                                      return null
+                                                    }
+                                                    return _vm.submit($event)
+                                                  },
+                                                  blur: _vm.onBlur
+                                                },
+                                                scopedSlots: _vm._u([
+                                                  {
+                                                    key: "thumb-label",
+                                                    fn: function(props) {
+                                                      return _vm.isNumeric
+                                                        ? [
+                                                            _vm._t(
+                                                              "thumb-label"
+                                                            )
+                                                          ]
+                                                        : undefined
+                                                    }
+                                                  }
+                                                ]),
+                                                model: {
+                                                  value: _vm.valueArrPairs[0],
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.valueArrPairs,
+                                                      0,
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression: "valueArrPairs[0]"
+                                                }
+                                              })
+                                            : _c(_vm.currentInput, {
+                                                ref: "input",
+                                                tag: "component",
+                                                attrs: {
+                                                  rules: _vm.rules,
+                                                  disabled: _vm.getDisable,
+                                                  readonly: !_vm.editable,
+                                                  required: !!_vm.nullable,
+                                                  "multi-line":
+                                                    _vm.columnSize > 50,
+                                                  tabindex: _vm.sortSeq,
+                                                  type: _vm.getComponentType,
+                                                  color: _vm.checkBoxColor,
+                                                  "always-dirty":
+                                                    _vm.isSliderLike,
+                                                  "persistent-hint":
+                                                    _vm.isSliderLike,
+                                                  "thumb-label":
+                                                    _vm.thumbLabelNeed,
+                                                  ticks: _vm.ticksNeed
+                                                    ? "always"
+                                                    : "",
+                                                  tickSize: _vm.tickSize,
+                                                  "thumb-size": _vm.thumbSize,
+                                                  "tick-labels": _vm.tickLabels,
+                                                  "append-icon":
+                                                    _vm.getAppendIcon,
+                                                  clearable: _vm.getClearable,
+                                                  mask: _vm.mask,
+                                                  min: _vm.min,
+                                                  max: _vm.max,
+                                                  step: _vm.step
+                                                },
+                                                on: {
+                                                  change: _vm.setNewVal,
+                                                  keyup: function($event) {
+                                                    if (
+                                                      !("button" in $event) &&
+                                                      _vm._k(
+                                                        $event.keyCode,
+                                                        "enter",
+                                                        13,
+                                                        $event.key,
+                                                        "Enter"
+                                                      )
+                                                    ) {
+                                                      return null
+                                                    }
+                                                    return _vm.submit($event)
+                                                  },
+                                                  blur: _vm.onBlur
+                                                },
+                                                scopedSlots: _vm._u([
+                                                  {
+                                                    key: "thumb-label",
+                                                    fn: function(props) {
+                                                      return _vm.isNumeric
+                                                        ? [
+                                                            _vm._t(
+                                                              "thumb-label"
+                                                            )
+                                                          ]
+                                                        : undefined
+                                                    }
+                                                  }
+                                                ]),
+                                                model: {
+                                                  value: _vm.value,
+                                                  callback: function($$v) {
+                                                    _vm.value = $$v
+                                                  },
+                                                  expression: "value"
+                                                }
+                                              })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _vm.isNumeric
+                                        ? _c(
+                                            "v-flex",
+                                            {
+                                              staticStyle: { width: "60px" },
+                                              attrs: { shrink: "" }
+                                            },
+                                            [
+                                              _vm.type == "RANGE"
+                                                ? _c("v-text-field", {
                                                     staticClass:
                                                       "mt-0 min-width-35px body-1",
                                                     attrs: {
                                                       "hide-details": "",
                                                       "single-line": "",
-                                                      disabled: _vm.getDisable,
                                                       type: "number",
+                                                      disabled: _vm.getDisable,
                                                       min: _vm.min,
                                                       max: _vm.max,
                                                       step: _vm.step
                                                     },
                                                     on: {
                                                       change:
-                                                        _vm.setNewValPairFst
+                                                        _vm.setNewValPairScnd
                                                     },
                                                     model: {
                                                       value:
-                                                        _vm.valueArrPairs[0][0],
+                                                        _vm.valueArrPairs[0][1],
                                                       callback: function($$v) {
                                                         _vm.$set(
                                                           _vm.valueArrPairs[0],
-                                                          0,
+                                                          1,
                                                           $$v
                                                         )
                                                       },
                                                       expression:
-                                                        "valueArrPairs[0][0]"
+                                                        "valueArrPairs[0][1]"
                                                     }
                                                   })
-                                                ],
-                                                1
-                                              )
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-flex",
-                                            [
-                                              _vm.type == "RANGE"
-                                                ? _c(_vm.currentInput, {
-                                                    ref: "input",
-                                                    tag: "component",
+                                                : _c("v-text-field", {
+                                                    staticClass:
+                                                      "mt-0 min-width-35px body-1",
                                                     attrs: {
-                                                      rules: _vm.rules,
+                                                      "hide-details": "",
+                                                      "single-line": "",
+                                                      type: "number",
                                                       disabled: _vm.getDisable,
-                                                      readonly: !_vm.editable,
-                                                      required: !!_vm.nullable,
-                                                      "multi-line":
-                                                        _vm.columnSize > 50,
-                                                      tabindex: _vm.sortSeq,
-                                                      type:
-                                                        _vm.getComponentType,
-                                                      color: _vm.checkBoxColor,
-                                                      "always-dirty":
-                                                        _vm.isSliderLike,
-                                                      "persistent-hint":
-                                                        _vm.isSliderLike,
-                                                      "thumb-label":
-                                                        _vm.thumbLabelNeed,
-                                                      ticks: _vm.ticksNeed
-                                                        ? "always"
-                                                        : "",
-                                                      tickSize: _vm.tickSize,
-                                                      "thumb-size":
-                                                        _vm.thumbSize,
-                                                      "tick-labels":
-                                                        _vm.tickLabels,
-                                                      "append-icon":
-                                                        _vm.getAppendIcon,
-                                                      clearable:
-                                                        _vm.getClearable,
-                                                      mask: _vm.mask,
                                                       min: _vm.min,
                                                       max: _vm.max,
                                                       step: _vm.step
                                                     },
                                                     on: {
-                                                      change: _vm.setNewVal,
-                                                      keyup: function($event) {
-                                                        if (
-                                                          !(
-                                                            "button" in $event
-                                                          ) &&
-                                                          _vm._k(
-                                                            $event.keyCode,
-                                                            "enter",
-                                                            13,
-                                                            $event.key,
-                                                            "Enter"
-                                                          )
-                                                        ) {
-                                                          return null
-                                                        }
-                                                        return _vm.submit(
-                                                          $event
-                                                        )
-                                                      },
-                                                      blur: _vm.onBlur
+                                                      change: _vm.setNewVal
                                                     },
-                                                    scopedSlots: _vm._u([
-                                                      {
-                                                        key: "thumb-label",
-                                                        fn: function(props) {
-                                                          return _vm.isNumeric
-                                                            ? [
-                                                                _vm._t(
-                                                                  "thumb-label"
-                                                                )
-                                                              ]
-                                                            : undefined
-                                                        }
-                                                      }
-                                                    ]),
-                                                    model: {
-                                                      value:
-                                                        _vm.valueArrPairs[0],
-                                                      callback: function($$v) {
-                                                        _vm.$set(
-                                                          _vm.valueArrPairs,
-                                                          0,
-                                                          $$v
-                                                        )
-                                                      },
-                                                      expression:
-                                                        "valueArrPairs[0]"
-                                                    }
-                                                  })
-                                                : _c(_vm.currentInput, {
-                                                    ref: "input",
-                                                    tag: "component",
-                                                    attrs: {
-                                                      rules: _vm.rules,
-                                                      disabled: _vm.getDisable,
-                                                      readonly: !_vm.editable,
-                                                      required: !!_vm.nullable,
-                                                      "multi-line":
-                                                        _vm.columnSize > 50,
-                                                      tabindex: _vm.sortSeq,
-                                                      type:
-                                                        _vm.getComponentType,
-                                                      color: _vm.checkBoxColor,
-                                                      "always-dirty":
-                                                        _vm.isSliderLike,
-                                                      "persistent-hint":
-                                                        _vm.isSliderLike,
-                                                      "thumb-label":
-                                                        _vm.thumbLabelNeed,
-                                                      ticks: _vm.ticksNeed
-                                                        ? "always"
-                                                        : "",
-                                                      tickSize: _vm.tickSize,
-                                                      "thumb-size":
-                                                        _vm.thumbSize,
-                                                      "tick-labels":
-                                                        _vm.tickLabels,
-                                                      "append-icon":
-                                                        _vm.getAppendIcon,
-                                                      clearable:
-                                                        _vm.getClearable,
-                                                      mask: _vm.mask,
-                                                      min: _vm.min,
-                                                      max: _vm.max,
-                                                      step: _vm.step
-                                                    },
-                                                    on: {
-                                                      change: _vm.setNewVal,
-                                                      keyup: function($event) {
-                                                        if (
-                                                          !(
-                                                            "button" in $event
-                                                          ) &&
-                                                          _vm._k(
-                                                            $event.keyCode,
-                                                            "enter",
-                                                            13,
-                                                            $event.key,
-                                                            "Enter"
-                                                          )
-                                                        ) {
-                                                          return null
-                                                        }
-                                                        return _vm.submit(
-                                                          $event
-                                                        )
-                                                      },
-                                                      blur: _vm.onBlur
-                                                    },
-                                                    scopedSlots: _vm._u([
-                                                      {
-                                                        key: "thumb-label",
-                                                        fn: function(props) {
-                                                          return _vm.isNumeric
-                                                            ? [
-                                                                _vm._t(
-                                                                  "thumb-label"
-                                                                )
-                                                              ]
-                                                            : undefined
-                                                        }
-                                                      }
-                                                    ]),
                                                     model: {
                                                       value: _vm.value,
                                                       callback: function($$v) {
@@ -2640,116 +2678,553 @@ var render = function() {
                                                   })
                                             ],
                                             1
-                                          ),
-                                          _vm._v(" "),
-                                          _vm.isNumeric
-                                            ? _c(
-                                                "v-flex",
-                                                {
-                                                  staticStyle: {
-                                                    width: "60px"
+                                          )
+                                        : _vm._e()
+                                    ]
+                                  : [
+                                      !_vm.multy &&
+                                      !_vm.isDateTimeLike &&
+                                      !_vm.isNeedTab
+                                        ? _c(_vm.currentInput, {
+                                            ref: "input",
+                                            tag: "component",
+                                            class: _vm.getComponentClass,
+                                            attrs: {
+                                              label: _vm.name,
+                                              hint: _vm.placeholder,
+                                              rules: _vm.rules,
+                                              disabled: _vm.getDisable,
+                                              readonly: !_vm.editable,
+                                              required: !!_vm.nullable,
+                                              "multi-line": _vm.columnSize > 50,
+                                              tabindex: _vm.sortSeq,
+                                              type: _vm.getComponentType,
+                                              items: _vm.getListItems,
+                                              dense: "",
+                                              counter: _vm.getCounter,
+                                              "append-icon": _vm.getAppendIcon,
+                                              clearable: _vm.getClearable,
+                                              mask: _vm.mask,
+                                              min: _vm.min,
+                                              max: _vm.max,
+                                              step: _vm.step,
+                                              "auto-grow": "",
+                                              rows: "1"
+                                            },
+                                            on: {
+                                              change: _vm.setNewVal,
+                                              keyup: function($event) {
+                                                if (
+                                                  !("button" in $event) &&
+                                                  _vm._k(
+                                                    $event.keyCode,
+                                                    "enter",
+                                                    13,
+                                                    $event.key,
+                                                    "Enter"
+                                                  )
+                                                ) {
+                                                  return null
+                                                }
+                                                return _vm.submit($event)
+                                              },
+                                              blur: _vm.onBlur,
+                                              "click:append": _vm.changeShow
+                                            },
+                                            model: {
+                                              value: _vm.value,
+                                              callback: function($$v) {
+                                                _vm.value = $$v
+                                              },
+                                              expression: "value"
+                                            }
+                                          })
+                                        : _vm.multy && _vm.type == "LIST"
+                                        ? _c(_vm.currentInput, {
+                                            ref: "input",
+                                            tag: "component",
+                                            class: _vm.getComponentClass,
+                                            attrs: {
+                                              label: _vm.name,
+                                              hint: _vm.placeholder,
+                                              rules: _vm.rules,
+                                              disabled: _vm.getDisable,
+                                              readonly: !_vm.editable,
+                                              required: !!_vm.nullable,
+                                              "multi-line": _vm.columnSize > 50,
+                                              tabindex: _vm.sortSeq,
+                                              type: _vm.getComponentType,
+                                              items: _vm.getListItems,
+                                              dense: "",
+                                              "append-icon": _vm.getAppendIcon,
+                                              clearable: _vm.getClearable,
+                                              mask: _vm.mask,
+                                              min: _vm.min,
+                                              max: _vm.max,
+                                              step: _vm.step,
+                                              multiple: "",
+                                              chips: "",
+                                              "deletable-chips": "",
+                                              "small-chips": ""
+                                            },
+                                            on: {
+                                              change: _vm.setNewVal,
+                                              keyup: function($event) {
+                                                if (
+                                                  !("button" in $event) &&
+                                                  _vm._k(
+                                                    $event.keyCode,
+                                                    "enter",
+                                                    13,
+                                                    $event.key,
+                                                    "Enter"
+                                                  )
+                                                ) {
+                                                  return null
+                                                }
+                                                return _vm.submit($event)
+                                              },
+                                              blur: _vm.onBlur,
+                                              "click:append": _vm.changeShow
+                                            },
+                                            model: {
+                                              value: _vm.valueArr,
+                                              callback: function($$v) {
+                                                _vm.valueArr = $$v
+                                              },
+                                              expression: "valueArr"
+                                            }
+                                          })
+                                        : !_vm.multy && _vm.isDateTimeLike
+                                        ? _c(
+                                            "v-dialog",
+                                            {
+                                              ref: "dialog",
+                                              staticClass: "max-width",
+                                              attrs: {
+                                                "return-value": _vm.value,
+                                                persistent: "",
+                                                lazy: "",
+                                                "full-width": "",
+                                                width: _vm.getDialogWidth,
+                                                "content-class":
+                                                  _vm.getDialogClass
+                                              },
+                                              on: {
+                                                "update:returnValue": [
+                                                  function($event) {
+                                                    _vm.value = $event
                                                   },
-                                                  attrs: { shrink: "" }
-                                                },
-                                                [
-                                                  _vm.type == "RANGE"
-                                                    ? _c("v-text-field", {
-                                                        staticClass:
-                                                          "mt-0 min-width-35px body-1",
-                                                        attrs: {
-                                                          "hide-details": "",
-                                                          "single-line": "",
-                                                          type: "number",
-                                                          disabled:
-                                                            _vm.getDisable,
-                                                          min: _vm.min,
-                                                          max: _vm.max,
-                                                          step: _vm.step
-                                                        },
-                                                        on: {
-                                                          change:
-                                                            _vm.setNewValPairScnd
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm
-                                                              .valueArrPairs[0][1],
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm
-                                                                .valueArrPairs[0],
-                                                              1,
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "valueArrPairs[0][1]"
-                                                        }
-                                                      })
-                                                    : _c("v-text-field", {
-                                                        staticClass:
-                                                          "mt-0 min-width-35px body-1",
-                                                        attrs: {
-                                                          "hide-details": "",
-                                                          "single-line": "",
-                                                          type: "number",
-                                                          disabled:
-                                                            _vm.getDisable,
-                                                          min: _vm.min,
-                                                          max: _vm.max,
-                                                          step: _vm.step
-                                                        },
-                                                        on: {
-                                                          change: _vm.setNewVal
-                                                        },
-                                                        model: {
-                                                          value: _vm.value,
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.value = $$v
-                                                          },
-                                                          expression: "value"
-                                                        }
-                                                      })
+                                                  _vm.setNewVal
                                                 ],
-                                                1
-                                              )
-                                            : _vm._e()
-                                        ]
-                                      : [
-                                          !_vm.multy &&
-                                          !_vm.isDateTimeLike &&
-                                          !_vm.isNeedTab
-                                            ? _c(_vm.currentInput, {
+                                                show: _vm.changeChecked
+                                              },
+                                              model: {
+                                                value: _vm.dialog,
+                                                callback: function($$v) {
+                                                  _vm.dialog = $$v
+                                                },
+                                                expression: "dialog"
+                                              }
+                                            },
+                                            [
+                                              _c("v-combobox", {
                                                 ref: "input",
-                                                tag: "component",
-                                                class: _vm.getComponentClass,
+                                                staticClass: "mt-0 body-1",
                                                 attrs: {
+                                                  slot: "activator",
                                                   label: _vm.name,
                                                   hint: _vm.placeholder,
                                                   rules: _vm.rules,
                                                   disabled: _vm.getDisable,
-                                                  readonly: !_vm.editable,
                                                   required: !!_vm.nullable,
-                                                  "multi-line":
-                                                    _vm.columnSize > 50,
+                                                  readonly: "",
+                                                  "append-icon": "",
                                                   tabindex: _vm.sortSeq,
-                                                  type: _vm.getComponentType,
-                                                  items: _vm.getListItems,
-                                                  dense: "",
-                                                  counter: _vm.getCounter,
-                                                  "append-icon":
-                                                    _vm.getAppendIcon,
                                                   clearable: _vm.getClearable,
-                                                  mask: _vm.mask,
+                                                  min: _vm.min,
+                                                  max: _vm.max
+                                                },
+                                                on: {
+                                                  change: _vm.setNewVal,
+                                                  input: _vm.setNewVal,
+                                                  keyup: function($event) {
+                                                    if (
+                                                      !("button" in $event) &&
+                                                      _vm._k(
+                                                        $event.keyCode,
+                                                        "enter",
+                                                        13,
+                                                        $event.key,
+                                                        "Enter"
+                                                      )
+                                                    ) {
+                                                      return null
+                                                    }
+                                                    return _vm.submit($event)
+                                                  },
+                                                  blur: _vm.onBlur,
+                                                  "click:append": _vm.changeShow
+                                                },
+                                                slot: "activator",
+                                                model: {
+                                                  value: _vm.valueView,
+                                                  callback: function($$v) {
+                                                    _vm.valueView = $$v
+                                                  },
+                                                  expression: "valueView"
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    style:
+                                                      _vm.getDialogMainDivStyle
+                                                  },
+                                                  [
+                                                    _vm.dialogWithDate &&
+                                                    _vm.type != "TIME_RANGE"
+                                                      ? _c("v-date-picker", {
+                                                          staticClass:
+                                                            "v-date-picker-more-height higher-z-index",
+                                                          attrs: {
+                                                            scrollable: "",
+                                                            locale: "ru"
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm
+                                                                .valueArrPairs[0][0],
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                _vm
+                                                                  .valueArrPairs[0],
+                                                                0,
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "valueArrPairs[0][0]"
+                                                          }
+                                                        })
+                                                      : _vm.type == "TIME_RANGE"
+                                                      ? _c("v-time-picker", {
+                                                          staticClass:
+                                                            "higher-z-index",
+                                                          attrs: {
+                                                            scrollable: "",
+                                                            locale: "ru",
+                                                            format: "24hr"
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm
+                                                                .valueArrPairs[0][0],
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                _vm
+                                                                  .valueArrPairs[0],
+                                                                0,
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "valueArrPairs[0][0]"
+                                                          }
+                                                        })
+                                                      : _vm._e(),
+                                                    _vm._v(" "),
+                                                    _vm.dialogWithTime &&
+                                                    _vm.type != "DATE_RANGE"
+                                                      ? _c("v-time-picker", {
+                                                          staticClass:
+                                                            "higher-z-index",
+                                                          attrs: {
+                                                            scrollable: "",
+                                                            locale: "ru",
+                                                            format: "24hr"
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm
+                                                                .valueArrPairs[0][1],
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                _vm
+                                                                  .valueArrPairs[0],
+                                                                1,
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "valueArrPairs[0][1]"
+                                                          }
+                                                        })
+                                                      : _vm.type == "DATE_RANGE"
+                                                      ? _c("v-date-picker", {
+                                                          staticClass:
+                                                            "v-date-picker-more-height higher-z-index",
+                                                          attrs: {
+                                                            scrollable: "",
+                                                            locale: "ru"
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm
+                                                                .valueArrPairs[0][1],
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                _vm
+                                                                  .valueArrPairs[0],
+                                                                1,
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "valueArrPairs[0][1]"
+                                                          }
+                                                        })
+                                                      : _vm._e(),
+                                                    _vm._v(" "),
+                                                    _vm.type == "DATETIME_RANGE"
+                                                      ? [
+                                                          _c(
+                                                            "div",
+                                                            {
+                                                              class:
+                                                                _vm.getDialogSeparatorClass
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-icon",
+                                                                {
+                                                                  class:
+                                                                    _vm.getDialogSeparatorArrowClass
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "fast_forward"
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "v-icon",
+                                                                {
+                                                                  class:
+                                                                    _vm.getDialogSeparatorArrowClass
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "fast_forward"
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "v-icon",
+                                                                {
+                                                                  class:
+                                                                    _vm.getDialogSeparatorArrowClass
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "fast_forward"
+                                                                  )
+                                                                ]
+                                                              )
+                                                            ],
+                                                            1
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c("v-date-picker", {
+                                                            staticClass:
+                                                              "v-date-picker-more-height higher-z-index",
+                                                            attrs: {
+                                                              scrollable: "",
+                                                              locale: "ru"
+                                                            },
+                                                            model: {
+                                                              value:
+                                                                _vm
+                                                                  .valueArrPairs[1][0],
+                                                              callback: function(
+                                                                $$v
+                                                              ) {
+                                                                _vm.$set(
+                                                                  _vm
+                                                                    .valueArrPairs[1],
+                                                                  0,
+                                                                  $$v
+                                                                )
+                                                              },
+                                                              expression:
+                                                                "valueArrPairs[1][0]"
+                                                            }
+                                                          }),
+                                                          _vm._v(" "),
+                                                          _c("v-time-picker", {
+                                                            staticClass:
+                                                              "higher-z-index",
+                                                            attrs: {
+                                                              scrollable: "",
+                                                              locale: "ru",
+                                                              format: "24hr"
+                                                            },
+                                                            model: {
+                                                              value:
+                                                                _vm
+                                                                  .valueArrPairs[1][1],
+                                                              callback: function(
+                                                                $$v
+                                                              ) {
+                                                                _vm.$set(
+                                                                  _vm
+                                                                    .valueArrPairs[1],
+                                                                  1,
+                                                                  $$v
+                                                                )
+                                                              },
+                                                              expression:
+                                                                "valueArrPairs[1][1]"
+                                                            }
+                                                          })
+                                                        ]
+                                                      : _vm._e()
+                                                  ],
+                                                  2
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-toolbar",
+                                                  {
+                                                    attrs: {
+                                                      dense: "",
+                                                      color: "primary"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "v-btn",
+                                                      {
+                                                        staticClass: "accent",
+                                                        attrs: { flat: "" },
+                                                        on: {
+                                                          click: function(
+                                                            $event
+                                                          ) {
+                                                            _vm.dialog = false
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.$vuetify.t(
+                                                              "$vuetify.texts.simple.actions.cancel"
+                                                            )
+                                                          )
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c("v-spacer"),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-btn",
+                                                      {
+                                                        staticClass: "accent",
+                                                        attrs: { flat: "" },
+                                                        on: {
+                                                          click: function(
+                                                            $event
+                                                          ) {
+                                                            _vm.saveDialog(
+                                                              _vm.value
+                                                            )
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.$vuetify.t(
+                                                              "$vuetify.texts.simple.actions.accept"
+                                                            )
+                                                          )
+                                                        )
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ]
+                                            ],
+                                            2
+                                          )
+                                        : _vm.multy && _vm.type == "DATE"
+                                        ? _c(
+                                            "v-dialog",
+                                            {
+                                              ref: "dialog",
+                                              staticClass: "max-width",
+                                              attrs: {
+                                                "return-value": _vm.valueArr,
+                                                persistent: "",
+                                                lazy: "",
+                                                "full-width": "",
+                                                width: _vm.getDialogWidth,
+                                                "content-class":
+                                                  _vm.getDialogClass
+                                              },
+                                              on: {
+                                                "update:returnValue": [
+                                                  function($event) {
+                                                    _vm.valueArr = $event
+                                                  },
+                                                  _vm.setNewVal
+                                                ],
+                                                show: _vm.changeChecked
+                                              },
+                                              model: {
+                                                value: _vm.dialog,
+                                                callback: function($$v) {
+                                                  _vm.dialog = $$v
+                                                },
+                                                expression: "dialog"
+                                              }
+                                            },
+                                            [
+                                              _c("v-combobox", {
+                                                ref: "input",
+                                                staticClass: "mt-0 body-1",
+                                                attrs: {
+                                                  slot: "activator",
+                                                  label: _vm.name,
+                                                  hint: _vm.placeholder,
+                                                  rules: _vm.rules,
+                                                  disabled: _vm.getDisable,
+                                                  required: !!_vm.nullable,
+                                                  readonly: "",
+                                                  "append-icon": "",
+                                                  tabindex: _vm.sortSeq,
+                                                  clearable: _vm.getClearable,
                                                   min: _vm.min,
                                                   max: _vm.max,
-                                                  step: _vm.step,
-                                                  "auto-grow": "",
-                                                  rows: "1"
+                                                  multiple: "",
+                                                  chips: "",
+                                                  "deletable-chips": "",
+                                                  "small-chips": ""
                                                 },
                                                 on: {
                                                   change: _vm.setNewVal,
@@ -2771,976 +3246,321 @@ var render = function() {
                                                   blur: _vm.onBlur,
                                                   "click:append": _vm.changeShow
                                                 },
+                                                slot: "activator",
                                                 model: {
-                                                  value: _vm.value,
+                                                  value: _vm.valueArrView,
                                                   callback: function($$v) {
-                                                    _vm.value = $$v
+                                                    _vm.valueArrView = $$v
                                                   },
-                                                  expression: "value"
+                                                  expression: "valueArrView"
                                                 }
-                                              })
-                                            : _vm.multy && _vm.type == "LIST"
-                                              ? _c(_vm.currentInput, {
-                                                  ref: "input",
-                                                  tag: "component",
-                                                  class: _vm.getComponentClass,
-                                                  attrs: {
-                                                    label: _vm.name,
-                                                    hint: _vm.placeholder,
-                                                    rules: _vm.rules,
-                                                    disabled: _vm.getDisable,
-                                                    readonly: !_vm.editable,
-                                                    required: !!_vm.nullable,
-                                                    "multi-line":
-                                                      _vm.columnSize > 50,
-                                                    tabindex: _vm.sortSeq,
-                                                    type: _vm.getComponentType,
-                                                    items: _vm.getListItems,
-                                                    dense: "",
-                                                    "append-icon":
-                                                      _vm.getAppendIcon,
-                                                    clearable: _vm.getClearable,
-                                                    mask: _vm.mask,
-                                                    min: _vm.min,
-                                                    max: _vm.max,
-                                                    step: _vm.step,
-                                                    multiple: "",
-                                                    chips: "",
-                                                    "deletable-chips": "",
-                                                    "small-chips": ""
+                                              }),
+                                              _vm._v(" "),
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    style:
+                                                      _vm.getDialogMainDivStyle
                                                   },
-                                                  on: {
-                                                    change: _vm.setNewVal,
-                                                    keyup: function($event) {
-                                                      if (
-                                                        !("button" in $event) &&
-                                                        _vm._k(
-                                                          $event.keyCode,
-                                                          "enter",
-                                                          13,
-                                                          $event.key,
-                                                          "Enter"
-                                                        )
-                                                      ) {
-                                                        return null
-                                                      }
-                                                      return _vm.submit($event)
-                                                    },
-                                                    blur: _vm.onBlur,
-                                                    "click:append":
-                                                      _vm.changeShow
-                                                  },
-                                                  model: {
-                                                    value: _vm.valueArr,
-                                                    callback: function($$v) {
-                                                      _vm.valueArr = $$v
-                                                    },
-                                                    expression: "valueArr"
-                                                  }
-                                                })
-                                              : !_vm.multy && _vm.isDateTimeLike
-                                                ? _c(
-                                                    "v-dialog",
-                                                    {
-                                                      ref: "dialog",
-                                                      staticClass: "max-width",
-                                                      attrs: {
-                                                        "return-value":
-                                                          _vm.value,
-                                                        persistent: "",
-                                                        lazy: "",
-                                                        "full-width": "",
-                                                        width:
-                                                          _vm.getDialogWidth,
-                                                        "content-class":
-                                                          _vm.getDialogClass
-                                                      },
-                                                      on: {
-                                                        "update:returnValue": [
-                                                          function($event) {
-                                                            _vm.value = $event
+                                                  [
+                                                    _vm.dialogWithDate
+                                                      ? _c("v-date-picker", {
+                                                          staticClass:
+                                                            "v-date-picker-more-height",
+                                                          attrs: {
+                                                            multiple: "",
+                                                            scrollable: "",
+                                                            locale: "ru"
                                                           },
-                                                          _vm.setNewVal
-                                                        ],
-                                                        show: _vm.changeChecked
+                                                          model: {
+                                                            value: _vm.valueArr,
+                                                            callback: function(
+                                                              $$v
+                                                            ) {
+                                                              _vm.valueArr = $$v
+                                                            },
+                                                            expression:
+                                                              "valueArr"
+                                                          }
+                                                        })
+                                                      : _vm._e()
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-toolbar",
+                                                  {
+                                                    attrs: {
+                                                      dense: "",
+                                                      color: "primary"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "v-btn",
+                                                      {
+                                                        staticClass: "accent",
+                                                        attrs: { flat: "" },
+                                                        on: {
+                                                          click: function(
+                                                            $event
+                                                          ) {
+                                                            _vm.dialog = false
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.$vuetify.t(
+                                                              "$vuetify.texts.simple.actions.cancel"
+                                                            )
+                                                          )
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c("v-spacer"),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-btn",
+                                                      {
+                                                        staticClass: "accent",
+                                                        attrs: { flat: "" },
+                                                        on: {
+                                                          click: function(
+                                                            $event
+                                                          ) {
+                                                            _vm.saveDialog(
+                                                              _vm.value
+                                                            )
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.$vuetify.t(
+                                                              "$vuetify.texts.simple.actions.accept"
+                                                            )
+                                                          )
+                                                        )
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ]
+                                            ],
+                                            2
+                                          )
+                                        : _vm.isNeedTab
+                                        ? _c(
+                                            "v-dialog",
+                                            {
+                                              ref: "dialog",
+                                              staticClass: "max-width",
+                                              attrs: {
+                                                "return-value": _vm.value,
+                                                persistent: "",
+                                                lazy: "",
+                                                "full-width": "",
+                                                width: _vm.getDialogWidth,
+                                                "content-class":
+                                                  _vm.getDialogClass
+                                              },
+                                              on: {
+                                                "update:returnValue": [
+                                                  function($event) {
+                                                    _vm.value = $event
+                                                  },
+                                                  _vm.setNewVal
+                                                ],
+                                                show: _vm.changeChecked
+                                              },
+                                              model: {
+                                                value: _vm.dialog,
+                                                callback: function($$v) {
+                                                  _vm.dialog = $$v
+                                                },
+                                                expression: "dialog"
+                                              }
+                                            },
+                                            [
+                                              _c("v-combobox", {
+                                                ref: "input",
+                                                staticClass: "mt-0 body-1",
+                                                attrs: {
+                                                  slot: "activator",
+                                                  label: _vm.name,
+                                                  hint: _vm.placeholder,
+                                                  rules: _vm.rules,
+                                                  disabled: _vm.getDisable,
+                                                  required: !!_vm.nullable,
+                                                  readonly: "",
+                                                  "append-icon": "",
+                                                  tabindex: _vm.sortSeq,
+                                                  clearable: _vm.getClearable,
+                                                  min: _vm.min,
+                                                  max: _vm.max
+                                                },
+                                                on: {
+                                                  change: _vm.setNewVal,
+                                                  keyup: function($event) {
+                                                    if (
+                                                      !("button" in $event) &&
+                                                      _vm._k(
+                                                        $event.keyCode,
+                                                        "enter",
+                                                        13,
+                                                        $event.key,
+                                                        "Enter"
+                                                      )
+                                                    ) {
+                                                      return null
+                                                    }
+                                                    return _vm.submit($event)
+                                                  },
+                                                  blur: _vm.onBlur,
+                                                  "click:append": _vm.changeShow
+                                                },
+                                                slot: "activator",
+                                                model: {
+                                                  value: _vm.valueView,
+                                                  callback: function($$v) {
+                                                    _vm.valueView = $$v
+                                                  },
+                                                  expression: "valueView"
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    style:
+                                                      _vm.getDialogMainDivStyle
+                                                  },
+                                                  [
+                                                    _c("c-table", {
+                                                      ref: "table",
+                                                      attrs: {
+                                                        tableTitle:
+                                                          "$vuetify.texts.modals.treeAdd.title",
+                                                        searchNeed: true,
+                                                        headers:
+                                                          _vm.getTabHeader,
+                                                        items: _vm.getTabValues,
+                                                        typeSelect: _vm.multy
+                                                          ? "one"
+                                                          : "one",
+                                                        "select-all": true,
+                                                        noRowNum: false,
+                                                        "hide-actions": false,
+                                                        height:
+                                                          _vm.getDialogMainDivHeight
                                                       },
                                                       model: {
-                                                        value: _vm.dialog,
+                                                        value:
+                                                          _vm.tabSelectedRows,
                                                         callback: function(
                                                           $$v
                                                         ) {
-                                                          _vm.dialog = $$v
+                                                          _vm.tabSelectedRows = $$v
                                                         },
-                                                        expression: "dialog"
+                                                        expression:
+                                                          "tabSelectedRows"
                                                       }
-                                                    },
-                                                    [
-                                                      _c("v-combobox", {
-                                                        ref: "input",
-                                                        staticClass:
-                                                          "mt-0 body-1",
-                                                        attrs: {
-                                                          slot: "activator",
-                                                          label: _vm.name,
-                                                          hint: _vm.placeholder,
-                                                          rules: _vm.rules,
-                                                          disabled:
-                                                            _vm.getDisable,
-                                                          required: !!_vm.nullable,
-                                                          readonly: "",
-                                                          "append-icon": "",
-                                                          tabindex: _vm.sortSeq,
-                                                          clearable:
-                                                            _vm.getClearable,
-                                                          min: _vm.min,
-                                                          max: _vm.max
-                                                        },
+                                                    })
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-toolbar",
+                                                  {
+                                                    attrs: {
+                                                      dense: "",
+                                                      color: "primary"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "v-btn",
+                                                      {
+                                                        staticClass: "accent",
+                                                        attrs: { flat: "" },
                                                         on: {
-                                                          change: _vm.setNewVal,
-                                                          input: _vm.setNewVal,
-                                                          keyup: function(
+                                                          click: function(
                                                             $event
                                                           ) {
-                                                            if (
-                                                              !(
-                                                                "button" in
-                                                                $event
-                                                              ) &&
-                                                              _vm._k(
-                                                                $event.keyCode,
-                                                                "enter",
-                                                                13,
-                                                                $event.key,
-                                                                "Enter"
-                                                              )
-                                                            ) {
-                                                              return null
-                                                            }
-                                                            return _vm.submit(
-                                                              $event
-                                                            )
-                                                          },
-                                                          blur: _vm.onBlur,
-                                                          "click:append":
-                                                            _vm.changeShow
-                                                        },
-                                                        slot: "activator",
-                                                        model: {
-                                                          value: _vm.valueView,
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.valueView = $$v
-                                                          },
-                                                          expression:
-                                                            "valueView"
-                                                        }
-                                                      }),
-                                                      _vm._v(" "),
-                                                      [
-                                                        _c(
-                                                          "div",
-                                                          {
-                                                            style:
-                                                              _vm.getDialogMainDivStyle
-                                                          },
-                                                          [
-                                                            _vm.dialogWithDate &&
-                                                            _vm.type !=
-                                                              "TIME_RANGE"
-                                                              ? _c(
-                                                                  "v-date-picker",
-                                                                  {
-                                                                    staticClass:
-                                                                      "v-date-picker-more-height higher-z-index",
-                                                                    attrs: {
-                                                                      scrollable:
-                                                                        "",
-                                                                      locale:
-                                                                        "ru"
-                                                                    },
-                                                                    model: {
-                                                                      value:
-                                                                        _vm
-                                                                          .valueArrPairs[0][0],
-                                                                      callback: function(
-                                                                        $$v
-                                                                      ) {
-                                                                        _vm.$set(
-                                                                          _vm
-                                                                            .valueArrPairs[0],
-                                                                          0,
-                                                                          $$v
-                                                                        )
-                                                                      },
-                                                                      expression:
-                                                                        "valueArrPairs[0][0]"
-                                                                    }
-                                                                  }
-                                                                )
-                                                              : _vm.type ==
-                                                                "TIME_RANGE"
-                                                                ? _c(
-                                                                    "v-time-picker",
-                                                                    {
-                                                                      staticClass:
-                                                                        "higher-z-index",
-                                                                      attrs: {
-                                                                        scrollable:
-                                                                          "",
-                                                                        locale:
-                                                                          "ru",
-                                                                        format:
-                                                                          "24hr"
-                                                                      },
-                                                                      model: {
-                                                                        value:
-                                                                          _vm
-                                                                            .valueArrPairs[0][0],
-                                                                        callback: function(
-                                                                          $$v
-                                                                        ) {
-                                                                          _vm.$set(
-                                                                            _vm
-                                                                              .valueArrPairs[0],
-                                                                            0,
-                                                                            $$v
-                                                                          )
-                                                                        },
-                                                                        expression:
-                                                                          "valueArrPairs[0][0]"
-                                                                      }
-                                                                    }
-                                                                  )
-                                                                : _vm._e(),
-                                                            _vm._v(" "),
-                                                            _vm.dialogWithTime &&
-                                                            _vm.type !=
-                                                              "DATE_RANGE"
-                                                              ? _c(
-                                                                  "v-time-picker",
-                                                                  {
-                                                                    staticClass:
-                                                                      "higher-z-index",
-                                                                    attrs: {
-                                                                      scrollable:
-                                                                        "",
-                                                                      locale:
-                                                                        "ru",
-                                                                      format:
-                                                                        "24hr"
-                                                                    },
-                                                                    model: {
-                                                                      value:
-                                                                        _vm
-                                                                          .valueArrPairs[0][1],
-                                                                      callback: function(
-                                                                        $$v
-                                                                      ) {
-                                                                        _vm.$set(
-                                                                          _vm
-                                                                            .valueArrPairs[0],
-                                                                          1,
-                                                                          $$v
-                                                                        )
-                                                                      },
-                                                                      expression:
-                                                                        "valueArrPairs[0][1]"
-                                                                    }
-                                                                  }
-                                                                )
-                                                              : _vm.type ==
-                                                                "DATE_RANGE"
-                                                                ? _c(
-                                                                    "v-date-picker",
-                                                                    {
-                                                                      staticClass:
-                                                                        "v-date-picker-more-height higher-z-index",
-                                                                      attrs: {
-                                                                        scrollable:
-                                                                          "",
-                                                                        locale:
-                                                                          "ru"
-                                                                      },
-                                                                      model: {
-                                                                        value:
-                                                                          _vm
-                                                                            .valueArrPairs[0][1],
-                                                                        callback: function(
-                                                                          $$v
-                                                                        ) {
-                                                                          _vm.$set(
-                                                                            _vm
-                                                                              .valueArrPairs[0],
-                                                                            1,
-                                                                            $$v
-                                                                          )
-                                                                        },
-                                                                        expression:
-                                                                          "valueArrPairs[0][1]"
-                                                                      }
-                                                                    }
-                                                                  )
-                                                                : _vm._e(),
-                                                            _vm._v(" "),
-                                                            _vm.type ==
-                                                            "DATETIME_RANGE"
-                                                              ? [
-                                                                  _c(
-                                                                    "div",
-                                                                    {
-                                                                      class:
-                                                                        _vm.getDialogSeparatorClass
-                                                                    },
-                                                                    [
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          class:
-                                                                            _vm.getDialogSeparatorArrowClass
-                                                                        },
-                                                                        [
-                                                                          _vm._v(
-                                                                            "fast_forward"
-                                                                          )
-                                                                        ]
-                                                                      ),
-                                                                      _vm._v(
-                                                                        " "
-                                                                      ),
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          class:
-                                                                            _vm.getDialogSeparatorArrowClass
-                                                                        },
-                                                                        [
-                                                                          _vm._v(
-                                                                            "fast_forward"
-                                                                          )
-                                                                        ]
-                                                                      ),
-                                                                      _vm._v(
-                                                                        " "
-                                                                      ),
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          class:
-                                                                            _vm.getDialogSeparatorArrowClass
-                                                                        },
-                                                                        [
-                                                                          _vm._v(
-                                                                            "fast_forward"
-                                                                          )
-                                                                        ]
-                                                                      )
-                                                                    ],
-                                                                    1
-                                                                  ),
-                                                                  _vm._v(" "),
-                                                                  _c(
-                                                                    "v-date-picker",
-                                                                    {
-                                                                      staticClass:
-                                                                        "v-date-picker-more-height higher-z-index",
-                                                                      attrs: {
-                                                                        scrollable:
-                                                                          "",
-                                                                        locale:
-                                                                          "ru"
-                                                                      },
-                                                                      model: {
-                                                                        value:
-                                                                          _vm
-                                                                            .valueArrPairs[1][0],
-                                                                        callback: function(
-                                                                          $$v
-                                                                        ) {
-                                                                          _vm.$set(
-                                                                            _vm
-                                                                              .valueArrPairs[1],
-                                                                            0,
-                                                                            $$v
-                                                                          )
-                                                                        },
-                                                                        expression:
-                                                                          "valueArrPairs[1][0]"
-                                                                      }
-                                                                    }
-                                                                  ),
-                                                                  _vm._v(" "),
-                                                                  _c(
-                                                                    "v-time-picker",
-                                                                    {
-                                                                      staticClass:
-                                                                        "higher-z-index",
-                                                                      attrs: {
-                                                                        scrollable:
-                                                                          "",
-                                                                        locale:
-                                                                          "ru",
-                                                                        format:
-                                                                          "24hr"
-                                                                      },
-                                                                      model: {
-                                                                        value:
-                                                                          _vm
-                                                                            .valueArrPairs[1][1],
-                                                                        callback: function(
-                                                                          $$v
-                                                                        ) {
-                                                                          _vm.$set(
-                                                                            _vm
-                                                                              .valueArrPairs[1],
-                                                                            1,
-                                                                            $$v
-                                                                          )
-                                                                        },
-                                                                        expression:
-                                                                          "valueArrPairs[1][1]"
-                                                                      }
-                                                                    }
-                                                                  )
-                                                                ]
-                                                              : _vm._e()
-                                                          ],
-                                                          2
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "v-toolbar",
-                                                          {
-                                                            attrs: {
-                                                              dense: "",
-                                                              color: "primary"
-                                                            }
-                                                          },
-                                                          [
-                                                            _c(
-                                                              "v-btn",
-                                                              {
-                                                                staticClass:
-                                                                  "accent",
-                                                                attrs: {
-                                                                  flat: ""
-                                                                },
-                                                                on: {
-                                                                  click: function(
-                                                                    $event
-                                                                  ) {
-                                                                    _vm.dialog = false
-                                                                  }
-                                                                }
-                                                              },
-                                                              [
-                                                                _vm._v(
-                                                                  _vm._s(
-                                                                    _vm.$vuetify.t(
-                                                                      "$vuetify.texts.simple.actions.cancel"
-                                                                    )
-                                                                  )
-                                                                )
-                                                              ]
-                                                            ),
-                                                            _vm._v(" "),
-                                                            _c("v-spacer"),
-                                                            _vm._v(" "),
-                                                            _c(
-                                                              "v-btn",
-                                                              {
-                                                                staticClass:
-                                                                  "accent",
-                                                                attrs: {
-                                                                  flat: ""
-                                                                },
-                                                                on: {
-                                                                  click: function(
-                                                                    $event
-                                                                  ) {
-                                                                    _vm.saveDialog(
-                                                                      _vm.value
-                                                                    )
-                                                                  }
-                                                                }
-                                                              },
-                                                              [
-                                                                _vm._v(
-                                                                  _vm._s(
-                                                                    _vm.$vuetify.t(
-                                                                      "$vuetify.texts.simple.actions.accept"
-                                                                    )
-                                                                  )
-                                                                )
-                                                              ]
-                                                            )
-                                                          ],
-                                                          1
-                                                        )
-                                                      ]
-                                                    ],
-                                                    2
-                                                  )
-                                                : _vm.multy &&
-                                                  _vm.type == "DATE"
-                                                  ? _c(
-                                                      "v-dialog",
-                                                      {
-                                                        ref: "dialog",
-                                                        staticClass:
-                                                          "max-width",
-                                                        attrs: {
-                                                          "return-value":
-                                                            _vm.valueArr,
-                                                          persistent: "",
-                                                          lazy: "",
-                                                          "full-width": "",
-                                                          width:
-                                                            _vm.getDialogWidth,
-                                                          "content-class":
-                                                            _vm.getDialogClass
-                                                        },
-                                                        on: {
-                                                          "update:returnValue": [
-                                                            function($event) {
-                                                              _vm.valueArr = $event
-                                                            },
-                                                            _vm.setNewVal
-                                                          ],
-                                                          show:
-                                                            _vm.changeChecked
-                                                        },
-                                                        model: {
-                                                          value: _vm.dialog,
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.dialog = $$v
-                                                          },
-                                                          expression: "dialog"
+                                                            _vm.dialog = false
+                                                          }
                                                         }
                                                       },
                                                       [
-                                                        _c("v-combobox", {
-                                                          ref: "input",
-                                                          staticClass:
-                                                            "mt-0 body-1",
-                                                          attrs: {
-                                                            slot: "activator",
-                                                            label: _vm.name,
-                                                            hint:
-                                                              _vm.placeholder,
-                                                            rules: _vm.rules,
-                                                            disabled:
-                                                              _vm.getDisable,
-                                                            required: !!_vm.nullable,
-                                                            readonly: "",
-                                                            "append-icon": "",
-                                                            tabindex:
-                                                              _vm.sortSeq,
-                                                            clearable:
-                                                              _vm.getClearable,
-                                                            min: _vm.min,
-                                                            max: _vm.max,
-                                                            multiple: "",
-                                                            chips: "",
-                                                            "deletable-chips":
-                                                              "",
-                                                            "small-chips": ""
-                                                          },
-                                                          on: {
-                                                            change:
-                                                              _vm.setNewVal,
-                                                            keyup: function(
-                                                              $event
-                                                            ) {
-                                                              if (
-                                                                !(
-                                                                  "button" in
-                                                                  $event
-                                                                ) &&
-                                                                _vm._k(
-                                                                  $event.keyCode,
-                                                                  "enter",
-                                                                  13,
-                                                                  $event.key,
-                                                                  "Enter"
-                                                                )
-                                                              ) {
-                                                                return null
-                                                              }
-                                                              return _vm.submit(
-                                                                $event
-                                                              )
-                                                            },
-                                                            blur: _vm.onBlur,
-                                                            "click:append":
-                                                              _vm.changeShow
-                                                          },
-                                                          slot: "activator",
-                                                          model: {
-                                                            value:
-                                                              _vm.valueArrView,
-                                                            callback: function(
-                                                              $$v
-                                                            ) {
-                                                              _vm.valueArrView = $$v
-                                                            },
-                                                            expression:
-                                                              "valueArrView"
-                                                          }
-                                                        }),
-                                                        _vm._v(" "),
-                                                        [
-                                                          _c(
-                                                            "div",
-                                                            {
-                                                              style:
-                                                                _vm.getDialogMainDivStyle
-                                                            },
-                                                            [
-                                                              _vm.dialogWithDate
-                                                                ? _c(
-                                                                    "v-date-picker",
-                                                                    {
-                                                                      staticClass:
-                                                                        "v-date-picker-more-height",
-                                                                      attrs: {
-                                                                        multiple:
-                                                                          "",
-                                                                        scrollable:
-                                                                          "",
-                                                                        locale:
-                                                                          "ru"
-                                                                      },
-                                                                      model: {
-                                                                        value:
-                                                                          _vm.valueArr,
-                                                                        callback: function(
-                                                                          $$v
-                                                                        ) {
-                                                                          _vm.valueArr = $$v
-                                                                        },
-                                                                        expression:
-                                                                          "valueArr"
-                                                                      }
-                                                                    }
-                                                                  )
-                                                                : _vm._e()
-                                                            ],
-                                                            1
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "v-toolbar",
-                                                            {
-                                                              attrs: {
-                                                                dense: "",
-                                                                color: "primary"
-                                                              }
-                                                            },
-                                                            [
-                                                              _c(
-                                                                "v-btn",
-                                                                {
-                                                                  staticClass:
-                                                                    "accent",
-                                                                  attrs: {
-                                                                    flat: ""
-                                                                  },
-                                                                  on: {
-                                                                    click: function(
-                                                                      $event
-                                                                    ) {
-                                                                      _vm.dialog = false
-                                                                    }
-                                                                  }
-                                                                },
-                                                                [
-                                                                  _vm._v(
-                                                                    _vm._s(
-                                                                      _vm.$vuetify.t(
-                                                                        "$vuetify.texts.simple.actions.cancel"
-                                                                      )
-                                                                    )
-                                                                  )
-                                                                ]
-                                                              ),
-                                                              _vm._v(" "),
-                                                              _c("v-spacer"),
-                                                              _vm._v(" "),
-                                                              _c(
-                                                                "v-btn",
-                                                                {
-                                                                  staticClass:
-                                                                    "accent",
-                                                                  attrs: {
-                                                                    flat: ""
-                                                                  },
-                                                                  on: {
-                                                                    click: function(
-                                                                      $event
-                                                                    ) {
-                                                                      _vm.saveDialog(
-                                                                        _vm.value
-                                                                      )
-                                                                    }
-                                                                  }
-                                                                },
-                                                                [
-                                                                  _vm._v(
-                                                                    _vm._s(
-                                                                      _vm.$vuetify.t(
-                                                                        "$vuetify.texts.simple.actions.accept"
-                                                                      )
-                                                                    )
-                                                                  )
-                                                                ]
-                                                              )
-                                                            ],
-                                                            1
-                                                          )
-                                                        ]
-                                                      ],
-                                                      2
-                                                    )
-                                                  : _vm.isNeedTab
-                                                    ? _c(
-                                                        "v-dialog",
-                                                        {
-                                                          ref: "dialog",
-                                                          staticClass:
-                                                            "max-width",
-                                                          attrs: {
-                                                            "return-value":
-                                                              _vm.value,
-                                                            persistent: "",
-                                                            lazy: "",
-                                                            "full-width": "",
-                                                            width:
-                                                              _vm.getDialogWidth,
-                                                            "content-class":
-                                                              _vm.getDialogClass
-                                                          },
-                                                          on: {
-                                                            "update:returnValue": [
-                                                              function($event) {
-                                                                _vm.value = $event
-                                                              },
-                                                              _vm.setNewVal
-                                                            ],
-                                                            show:
-                                                              _vm.changeChecked
-                                                          },
-                                                          model: {
-                                                            value: _vm.dialog,
-                                                            callback: function(
-                                                              $$v
-                                                            ) {
-                                                              _vm.dialog = $$v
-                                                            },
-                                                            expression: "dialog"
-                                                          }
-                                                        },
-                                                        [
-                                                          _c("v-combobox", {
-                                                            ref: "input",
-                                                            staticClass:
-                                                              "mt-0 body-1",
-                                                            attrs: {
-                                                              slot: "activator",
-                                                              label: _vm.name,
-                                                              hint:
-                                                                _vm.placeholder,
-                                                              rules: _vm.rules,
-                                                              disabled:
-                                                                _vm.getDisable,
-                                                              required: !!_vm.nullable,
-                                                              readonly: "",
-                                                              "append-icon": "",
-                                                              tabindex:
-                                                                _vm.sortSeq,
-                                                              clearable:
-                                                                _vm.getClearable,
-                                                              min: _vm.min,
-                                                              max: _vm.max
-                                                            },
-                                                            on: {
-                                                              change:
-                                                                _vm.setNewVal,
-                                                              keyup: function(
-                                                                $event
-                                                              ) {
-                                                                if (
-                                                                  !(
-                                                                    "button" in
-                                                                    $event
-                                                                  ) &&
-                                                                  _vm._k(
-                                                                    $event.keyCode,
-                                                                    "enter",
-                                                                    13,
-                                                                    $event.key,
-                                                                    "Enter"
-                                                                  )
-                                                                ) {
-                                                                  return null
-                                                                }
-                                                                return _vm.submit(
-                                                                  $event
-                                                                )
-                                                              },
-                                                              blur: _vm.onBlur,
-                                                              "click:append":
-                                                                _vm.changeShow
-                                                            },
-                                                            slot: "activator",
-                                                            model: {
-                                                              value:
-                                                                _vm.valueView,
-                                                              callback: function(
-                                                                $$v
-                                                              ) {
-                                                                _vm.valueView = $$v
-                                                              },
-                                                              expression:
-                                                                "valueView"
-                                                            }
-                                                          }),
-                                                          _vm._v(" "),
-                                                          [
-                                                            _c(
-                                                              "div",
-                                                              {
-                                                                style:
-                                                                  _vm.getDialogMainDivStyle
-                                                              },
-                                                              [
-                                                                _c("c-table", {
-                                                                  ref: "table",
-                                                                  attrs: {
-                                                                    tableTitle:
-                                                                      "$vuetify.texts.modals.treeAdd.title",
-                                                                    searchNeed: true,
-                                                                    headers:
-                                                                      _vm.getTabHeader,
-                                                                    items:
-                                                                      _vm.getTabValues,
-                                                                    typeSelect: _vm.multy
-                                                                      ? "one"
-                                                                      : "one",
-                                                                    "select-all": true,
-                                                                    noRowNum: false,
-                                                                    "hide-actions": false,
-                                                                    height:
-                                                                      _vm.getDialogMainDivHeight
-                                                                  },
-                                                                  model: {
-                                                                    value:
-                                                                      _vm.tabSelectedRows,
-                                                                    callback: function(
-                                                                      $$v
-                                                                    ) {
-                                                                      _vm.tabSelectedRows = $$v
-                                                                    },
-                                                                    expression:
-                                                                      "tabSelectedRows"
-                                                                  }
-                                                                })
-                                                              ],
-                                                              1
-                                                            ),
-                                                            _vm._v(" "),
-                                                            _c(
-                                                              "v-toolbar",
-                                                              {
-                                                                attrs: {
-                                                                  dense: "",
-                                                                  color:
-                                                                    "primary"
-                                                                }
-                                                              },
-                                                              [
-                                                                _c(
-                                                                  "v-btn",
-                                                                  {
-                                                                    staticClass:
-                                                                      "accent",
-                                                                    attrs: {
-                                                                      flat: ""
-                                                                    },
-                                                                    on: {
-                                                                      click: function(
-                                                                        $event
-                                                                      ) {
-                                                                        _vm.dialog = false
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      _vm._s(
-                                                                        _vm.$vuetify.t(
-                                                                          "$vuetify.texts.simple.actions.cancel"
-                                                                        )
-                                                                      )
-                                                                    )
-                                                                  ]
-                                                                ),
-                                                                _vm._v(" "),
-                                                                _c("v-spacer"),
-                                                                _vm._v(" "),
-                                                                _c(
-                                                                  "v-btn",
-                                                                  {
-                                                                    staticClass:
-                                                                      "accent",
-                                                                    attrs: {
-                                                                      flat: ""
-                                                                    },
-                                                                    on: {
-                                                                      click: function(
-                                                                        $event
-                                                                      ) {
-                                                                        _vm.saveDialog(
-                                                                          _vm.tabSelectedRows
-                                                                        )
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      _vm._s(
-                                                                        _vm.$vuetify.t(
-                                                                          "$vuetify.texts.simple.actions.accept"
-                                                                        )
-                                                                      )
-                                                                    )
-                                                                  ]
-                                                                )
-                                                              ],
-                                                              1
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.$vuetify.t(
+                                                              "$vuetify.texts.simple.actions.cancel"
                                                             )
-                                                          ]
-                                                        ],
-                                                        2
-                                                      )
-                                                    : _vm._e()
-                                        ]
-                                  ],
-                                  2
-                                )
-                              ]
+                                                          )
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c("v-spacer"),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-btn",
+                                                      {
+                                                        staticClass: "accent",
+                                                        attrs: { flat: "" },
+                                                        on: {
+                                                          click: function(
+                                                            $event
+                                                          ) {
+                                                            _vm.saveDialog(
+                                                              _vm.tabSelectedRows
+                                                            )
+                                                          }
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            _vm.$vuetify.t(
+                                                              "$vuetify.texts.simple.actions.accept"
+                                                            )
+                                                          )
+                                                        )
+                                                      ]
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ]
+                                            ],
+                                            2
+                                          )
+                                        : _vm._e()
+                                    ]
+                              ],
+                              2
                             )
-                          ],
-                          1
+                          ]
                         )
-                      ]),
-                      _vm._v(" "),
-                      _c("span", [_vm._v(_vm._s(_vm.tip))])
-                    ],
-                    2
-                  ),
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [_vm._v(_vm._s(_vm.tip))])
+                ],
+                2
+              ),
           _vm._v(" "),
           !!_vm.needCheckBox && _vm.hasInput
             ? _c("v-checkbox", {
@@ -3773,7 +3593,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 88:
+/***/ 91:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {

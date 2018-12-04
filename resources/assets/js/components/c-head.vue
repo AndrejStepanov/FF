@@ -5,7 +5,7 @@
             <v-icon large  >stars</v-icon>
         </v-btn>
 
-        <v-toolbar-title>{{curentSystem}}</v-toolbar-title>
+        <v-toolbar-title v-if="$vuetify.breakpoint.name!='xs'" >{{curentSystem}}</v-toolbar-title>
         <v-spacer/>
         <c-profile/>
         <v-toolbar-side-icon @click="toolbarClicked('Right')"  v-if="showRight"/>

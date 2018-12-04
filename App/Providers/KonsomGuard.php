@@ -451,7 +451,7 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth{
             $this->cycleRememberToken($user);
 
         if (isset($this->events)) 
-            $this->events->dispatch(new \Illuminate\Auth\Events\Logout($user));
+            $this->events->dispatch(new \Illuminate\Auth\Events\Logout($this->name,$user));
 
         // Once we have fired the logout event we will clear the users out of memory
         // so they are no longer available as the user is no longer considered as
@@ -506,7 +506,7 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth{
     protected function fireAttemptEvent(array $credentials, $remember = false)    {
         if (isset($this->events)) 
             $this->events->dispatch(new \Illuminate\Auth\Events\Attempting(
-                $credentials, $remember
+                $this->name,$credentials, $remember
             ));
     }
 
@@ -519,7 +519,7 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth{
      */
     protected function fireLoginEvent($user, $remember = false)   {
         if (isset($this->events)) 
-            $this->events->dispatch(new \Illuminate\Auth\Events\Login($user, $remember));
+            $this->events->dispatch(new \Illuminate\Auth\Events\Login($this->name,$user, $remember));
     }
 
     /**
@@ -530,7 +530,7 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth{
      */
     protected function fireAuthenticatedEvent($user)    {
         if (isset($this->events)) 
-            $this->events->dispatch(new \Illuminate\Auth\Events\Authenticated($user));
+            $this->events->dispatch(new \Illuminate\Auth\Events\Authenticated($this->name,$user));
     }
 
     /**
@@ -542,7 +542,7 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth{
      */
     protected function fireFailedEvent($user, array $credentials)    {
         if (isset($this->events)) 
-            $this->events->dispatch(new \Illuminate\Auth\Events\Failed($user, $credentials));
+            $this->events->dispatch(new \Illuminate\Auth\Events\Failed($this->name,$user, $credentials));
     }
 
     /**
