@@ -1,8 +1,8 @@
 <template>
 	<v-container grid-list-md>
 		<v-layout row wrap>
-			<v-flex v-for="(arr, index) in colsData" :key="index"  :class="classes" >
-				<c-input  v-for="row in arr" :ref="row.code" :key="row.id"  :data="row" :needCheckBox="needCheckBox" :needSign="needSign" :dialogId="dialogId" :paramsForm="paramsForm" :listItemMin="listItemMin"/>
+			<v-flex v-for="(arr, index) in colsData" :key="index"  :class="[classes,  colsData.length>0&&index!=colsData.length? 'pr-3':'',  colsData.length>0&&index>0? 'pl-3':'' ]" >
+				<c-input  v-for="(row, num) in arr" :ref="row.code" :key="row.id"  :data="row" :needCheckBox="needCheckBox" :needSign="needSign" :dialogId="dialogId" :paramsForm="paramsForm" :listItemMin="listItemMin" :needPT="allPT||num>0"/>
 			</v-flex>
 		</v-layout>
 	</v-container>	
@@ -21,18 +21,21 @@
 			dialogId: {type: Number, defuault:0},
 			paramsForm: {type: String, defuault:''},
 			maxCols: {type: Number, defuault:4},
+			maxInputCountInCol:{type: Number, defuault:0},
+			fixColCnt:{type: Number, defuault:0},
 			needCheckBox:{type:  Boolean, default:false},
 			needSign:{type:  Boolean, default:false},
 			listItemMin:{type:  Boolean, default:false},
+			allPT:{type:  Boolean, default:false},
 		},
 		computed: {
 			classes () {
 				return [
-					{'xs12': this.colsCnt==1},
-					{'xs6': this.colsCnt==2},
-					{'xs4': this.colsCnt==3},
-					{'xs3': this.colsCnt==4},
+					'xs'+(12/this.colsCnt),
 				]
+			},
+			maxInputInCol(){
+				return this.maxInputCountInCol>0?this.maxInputCountInCol:MAX_INPUT_IN_COL
 			},
 			colsData(){
 				let vm=this;
@@ -43,8 +46,14 @@
 					col=0,
 					checkRow=[],
 					colsData=[]
-				vm.colsCnt=Math.ceil(len/MAX_INPUT_IN_COL)
-				vm.colsCnt=vm.colsCnt>vm.maxCols?vm.maxCols:vm.colsCnt;
+				if(vm.fixColCnt>0)
+					vm.colsCnt=vm.fixColCnt
+				else{
+					vm.colsCnt=Math.ceil(len/vm.maxInputInCol)
+					vm.colsCnt=vm.colsCnt>vm.maxCols?vm.maxCols:vm.colsCnt;
+				}
+				if(vm.colsCnt>len)
+					vm.colsCnt=len
 				rowInColA=Math.ceil(len/vm.colsCnt)
 				for(let i=1; i<=vm.colsCnt;i++){
 					colsData.push([]);

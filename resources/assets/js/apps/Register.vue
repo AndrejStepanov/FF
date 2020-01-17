@@ -1,5 +1,5 @@
 <template>
-    <c-app curentSystem="Регистрация"  >
+    <c-app curentSystem="Регистрация"  dark>
 		<v-container fluid fill-height>
 			<v-layout align-center justify-center>
 				<v-flex xs12 sm8 md4>
@@ -17,7 +17,7 @@
 						</v-card-text>
 						<v-layout row justify-center color="primary" >
 							<v-flex xs12>
-								<v-toolbar slot='header' dense  color="primary" >		
+								<v-toolbar v-slot:header dense  color="primary" >		
 									<v-spacer/>
 									<v-btn class='accent' @click="submit "   :disabled="!valid"><v-icon>input</v-icon>&nbsp;Зарегистрироваться</v-btn>
 								</v-toolbar>
@@ -56,7 +56,7 @@
 					return;
 				let href_back=window.location.search.match(new RegExp('href_back=([^&=]+)'));
 				sendRequest({href:'/register', type:'register', needSucess:'Y', hrefBack:(href_back!=null?href_back[1]:'/'), def:{title:'Ошибка регистрации', text:'Указаны не корректные данные!'},
-					data:{name: vm.name, login: vm.login, password: vm.password, password_confirmation: vm.passwordConfirmation,	_token: window.Laravel.csrfToken},  })
+					data:{name: vm.name, login: vm.login, password: vm.password, password_confirmation: vm.passwordConfirmation},  })
 			},
 		},
     }

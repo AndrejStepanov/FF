@@ -1,7 +1,9 @@
 <template>
-	<c-app :curentSystem="$vuetify.t('$vuetify.texts.main.links.obgView.name')" :panelRight="{show:true, class:'display--flex flex-direction--column', filter:true}" :mainPanelConfig="mainPanelConfig">
-		<template slot="panelRight">
-			<c-filter filterName="object-tree-add" />
+	<c-app :curentSystem="$vuetify.lang.t('$vuetify.texts.main.links.obgView.name')" :panelRight="{show:true, class:'display--flex flex-direction--column', filter:true}" :mainPanelConfig="mainPanelConfig">
+		<template v-slot:panelRight>
+			<div class='display--flex flex-direction--column max-height'>
+				<c-filter filterName="object-tree-add" />
+			</div>
 		</template>
 	</c-app>
 </template>

@@ -1,10 +1,19 @@
 const MAX_ID= 9999999,
 	MAX_INPUT_IN_COL= 6,
-	appTheme={  primary: '#2c353f', secondary: '#452F41', accent: '#555C3E', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50', checkBox:"#FFFFFF"},
-	authButtons= [ {id:1, title:'Войти', icon:'input', allig:'right', click:'dialogSave' , needCheck:true} ],
+	curTheme='light',
+	appTheme={ 
+		light: curTheme=='light', 
+		dark: curTheme=='dark', 
+		themes: {   
+			light: {primary: '#4caf50', secondary: '#4caf50', accent: '#5186de', tertiary: '#495057', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50'},
+			dark: {	primary: '#1868A5', secondary: '#939598', accent: '#2A91D8', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50', checkBox:"#FFFFFF"},
+		}
+	},
 	dateFormatStr = '$3.$2.$1' //2018-10-03 - 1, 2 и 3 цифры
-
+//primary: '#2c353f', secondary: '#452F41', accent: '#555C3E',
 var sysNumeral=null
+
+window.systemLanguage='ru'
 
 function appThemeInit({numeral}){
 	let styleElt, styleSheet
@@ -18,45 +27,33 @@ function appThemeInit({numeral}){
 		styleSheet = document.styleSheets[document.styleSheets.length-1]
 	}
 	styleElt.innerHTML = styleSheet.cssText = 
-		'.accent-color								{color: '+appTheme.accent+';} '+
-		'.primary--text 							{color: white !important;} '+
-		'.margin-5px	 							{color: white !important;} '+
-		'.cursor-pointer							{cursor: pointer} '+
-		'.top-center 								{top:50%;} '+
+		'.color-accent								{color: '+appTheme.themes[curTheme].accent+' !important;} '+ //оранжевый
+		'.color-primary								{color: '+appTheme.themes[curTheme].primary+' !important;} '+ //синий
+		'.color-secondary							{color: '+appTheme.themes[curTheme].secondary+' !important;} '+ //салатовый
+		'.background-accent							{background: '+appTheme.themes[curTheme].accent+' !important;} '+ //оранжевый
+		'.background-primary						{background: '+appTheme.themes[curTheme].primary+' !important;} '+ //синий
+		'.background-secondary						{background: '+appTheme.themes[curTheme].secondary+' !important;} '+ //салатовый
+		'.max-height 								{height: 100%;} '+
 		'.overflow-y-auto 							{overflow-y: auto;} '+
+		'.flex--99 									{flex: 99;} '+
+		'.flex-grow--99 							{flex-grow: 99 !important;} '+
 		'.display--grid 							{display: grid;} '+
 		'.display--flex 							{display: flex;} '+
 		'.flex-direction--column					{flex-direction: column;} '+
+		'.flex-direction--row						{flex-direction: row;} '+
 		'.flex--inherit								{flex: inherit;} '+
-		'.flex--99 									{flex:99} '+
-		'.padding-right--0 							{padding-right: 0px !important;} '+
-		'.max-height 								{height: 100%;} '+
-		'.dispContent 								{display: contents;} '+
-		'.underline 								{text-decoration: underline;} '+
-		'.noPadding 								{padding: 0px !important;} '+
-		'DIV#block_message							{position: fixed;z-index: 800;right: 0px;bottom: 15px;padding: 10px;width: 450px;/*overflow: auto;*/vertical-align: middle;text-valign: middle;} '+
-		'DIV#block_message>Div,'+
-		'DIV#block_message>Div>Div					{display: block;position: relative;height: auto;margin-bottom: 5px;  background-color: transparent;} '+
-		'DIV#block_message>Div>Div>Div				{border-radius: 20px;} '+
-		'DIV#block_message>Div>Div>Div>Div			{padding: 0px; height: auto;} '+
-		'DIV#block_message button.noMarginLeft		{margin-left: 7px;} '+
-		'DIV#block_message Div.error--content>Div	{background-color: '+appTheme.error+';} '+
-		'DIV#block_message Div.warning--content>Div	{background-color: '+appTheme.warning+';} '+
-		'DIV#block_message Div.info--content>Div	{background-color: '+appTheme.info+';} '+
-		'DIV#block_message Div.success--content>Div	{background-color: '+appTheme.success+';} '+
-		'.secondary-color 							{color: '+appTheme.secondary+';}'+
-		'.overflow-hidden							{overflow: hidden;}'+
-		'.overflow-y-scroll							{overflow-y: scroll;}'+
-		'.width-one-percent							{width: 1%;}'+
+		'nav div.check-size,'+
+		'button.check-size        				  	{max-width: 90%;   margin-left: 5%;}'+
+		'button.check-size        				  	{min-width: 90% !important; margin-bottom: 10px;}'+
 		'.text-nobr									{white-space: nowrap;}'+
-		'tr.text-bold>td,'+
-		'td.text-bold								{font-weight: 700 !important;}'+
+		'td.text-bold,'+
+		'tr.text-bold>td							{font-weight: 700 !important;}'+
 		'td.text-right								{text-align: right;}'+
 		'td.text-left								{text-align: left;}'+
 		'td.text-center								{text-align: center;}'
+	window._bus.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.getElementsByTagName("META").namedItem("csrf-token").getAttribute('content') // for all requests
 	if(numeral)
 		appNumeralInit(numeral)
-	
 }
 
 function appNumeralInit(numeral){
@@ -89,6 +86,14 @@ function numberFormat(value,mask){
 	mask=mask||'0,0.000'
 	return sysNumeral(value).format(mask)
 }
+function createDictionary(obj, keyVal, keyText, needSort=false){
+	let tmp = [];
+	for(row in obj)
+		tmp.push({value: obj[row][keyVal], text: obj[row][keyText]})
+	if(needSort)
+		tmp.sort(  function (a, b) {return sort(a, b, 'text', 'text')} )
+	return tmp
+}
 
 function dateFormat(str){//2018-10-03 12:52 в 03.10.2018 12:52
 	return nvl(str,'').replace(/(\d\d\d\d)-(\d\d)-(\d\d)/g, dateFormatStr )
@@ -101,7 +106,7 @@ function getNewId(){
 function loadDialogs(dialogsConfig){
 	let tmp={}
 	for (name in dialogsConfig)
-		if(tmp[dialogsConfig[name].module]==undefined )
+		if(tmp[dialogsConfig[name].module]===undefined )
 			tmp[dialogsConfig[name].module]= dialogsConfig[name].load
 	return tmp
 }
@@ -113,10 +118,21 @@ function genMap( stores ){
 }
 function storesParser(stores, field, prefix){
 	let tmp={}
-	for (m_title in stores)
-		for (title in stores[m_title][field])
+	for (let m_title in stores)
+		for (let title in stores[m_title][field])
 			tmp[m_title+title.replace(prefix,'')]= m_title+'/'+title
 	return tmp
+}
+function getLocationParam(name){
+	if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+	   return decodeURIComponent(name[1]);
+ }
+
+ function sendReqToApp({args, callback}){
+	if(getLocationParam('debug')=='Y' )
+		sendRequest({href:"/ARM/PLAN/MONTH_GRAF/ajax_receiver.php?"+args, type:'type', data:{  }, default: getErrDesc('requestFaild'),  handler:(response) => {	window._vue.$children[0][callback](response.data)	} })
+	else
+		top.postMessage({args,callback},'*'); 
 }
 
 function sort(a, b, aFild, bFild){
@@ -128,6 +144,14 @@ function sort(a, b, aFild, bFild){
 		return -1
 	// a должно быть равным b
 	return 0
+}
+function list(arr=[], sep=','){
+	let tmp = ''
+	arr.forEach(row=>{
+		if(nvl(row)!='')
+			tmp+=', '+row
+	})
+	return tmp.slice(2)
 }
 
 function isInteger(num){
@@ -144,7 +168,7 @@ function isNumeric(n) {
  }
 
 function nvl(val,replace=0){
-	if(!val || val==undefined || val==null || val=='' ) return replace; else return val;
+	if(val===false || val===undefined || val===null || val==='' ) return replace; else return val;
 }
 
 function nvlo(val,replace={}){
@@ -153,35 +177,49 @@ function nvlo(val,replace={}){
 
 function showMsg({title, text, type, params={}, msgParams=[]}){
 	type=type||'error'
-	title=window._vue.$vuetify.t(title)||text
-	text=window._vue.$vuetify.t(text,msgParams)||title
-	window._vue.$store.dispatch('msg/doAdd', {title,text,type,...params,})
+	title=window._vue.$vuetify.lang.t(title)||text
+	text=window._vue.$vuetify.lang.t(text,msgParams)||title
+	window._vue.$store.dispatch('msg/doAdd', {title,text,type, ...params, })
 	if(type=='error')
 		throw new Error(title+' - '+text)
 }
 
 function getErrDesc(errName){
-	return {title:'$vuetify.texts.errors.'+errName+'.title', text:'$vuetify.texts.errors.'+errName+'.text' }
+	return {title:'texts.errors.'+errName+'.title', text:'texts.errors.'+errName+'.text' }
 }
 function getMsgDesc(msgName, type='success'){
 	return {title:'$vuetify.texts.msgs.'+msgName+'.title', text:'$vuetify.texts.msgs.'+msgName+'.text' , type }
 }
 
 function sendRequest  (params){
+	let _hrefBackAuth=getLocationParam('auth_href_back')
 	if( this.nvl(params.type)==0 || this.nvl(params.href)==0  )
 		showMsg(getErrDesc('noSendAddress') );
-	window._bus.axios.post(params.href, {type:params.type, _token: window.laravel.csrfToken,...params.data,}
+	window._bus.axios.post(params.href, {type:params.type, ...params.data,}
 		).then((response) => {
 			if(nvl(params.needSucess,'N')=='Y' && response.data!='sucsess')
-				showMsg({ ...getErrDesc('requestRefused') ,params: params.default, });
+				return false;
+				//showMsg({ ...getErrDesc('requestRefused') ,params: params.default, });
 			if(nvl(params.hrefBack)!='')
 				window.location.href = decodeURIComponent( params.hrefBack);
+			if(['/login','/register'].indexOf(params.href)!=-1 && _hrefBackAuth!=null)
+				window.location.href = decodeURIComponent(_hrefBackAuth)
 			if(params.handler )
 				params.handler(response)
+			if(params.handlerMust )
+				params.handlerMust()
 		}).catch(
-			(error) =>
-				showMsg({ title: nvlo(error.response.data).title||nvlo(params.default).title||'$vuetify.texts.errors.requestFaild.title'  , text:nvlo(error.response.data).message||nvlo(params.default).text||'$vuetify.texts.errors.requestFaild.text',
-					'params': {status:error.response.status, trace:nvlo(error.response.data).trace, file:nvlo(error.response.data).file, line:nvlo(error.response.data).line}, })
+			(error) =>{
+				console.log(error)
+				let r = nvlo(error.response)
+				if(params.handlerMust )
+					params.handlerMust()
+				if(params.handlerErr )
+					params.handlerErr()
+				showMsg({ title: nvlo(r.data).title||nvlo(params.default).title||'texts.errors.requestFaild.title'  , text:nvlo(r.data).message||nvlo(params.default).text||'texts.errors.requestFaild.text',
+					'params': {status:r.status, trace:nvlo(r.data).trace, file:nvlo(nvl(error.response).data).file, line:nvlo(r.data).line}, })
+				return false
+			}
 		);
 	return true
 }

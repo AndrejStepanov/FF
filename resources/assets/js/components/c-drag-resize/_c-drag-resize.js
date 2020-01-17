@@ -51,16 +51,7 @@ export default {
 		vm.stickDrag =  vm.bodyDrag = false;
 		vm.stickAxis = null;
 		vm.stickStartPos = {mouseX: 0, mouseY: 0, x: 0, y: 0, w: 0, h: 0};
-		vm.limits = {
-			minLeft: null,
-			maxLeft: null,
-			minRight: null,
-			maxRight: null,
-			minTop: null,
-			maxTop: null,
-			minBottom: null,
-			maxBottom: null
-		};
+		vm.limits = { minLeft: null, maxLeft: null, minRight: null, maxRight: null, minTop: null, maxTop: null, minBottom: null, maxBottom: null };
 		vm.currentStick = [];
 		//vm.$root.$on(vm.reInitEvent, (obj)=>{vm.initVals();}); надо как то придумать, что бы окно после этого вызова центроалось.		
 	},
@@ -304,24 +295,8 @@ export default {
 		},
 		stickUp() {
 			this.stickDrag = false;
-			this.stickStartPos = {
-				mouseX: 0,
-				mouseY: 0,
-				x: 0,
-				y: 0,
-				w: 0,
-				h: 0
-			};
-			this.limits = {
-				minLeft: null,
-				maxLeft: null,
-				minRight: null,
-				maxRight: null,
-				minTop: null,
-				maxTop: null,
-				minBottom: null,
-				maxBottom: null
-			};
+			this.stickStartPos = {mouseX: 0,mouseY: 0,x: 0,y: 0,w: 0,h: 0};
+			this.limits = {minLeft: null,	maxLeft: null,	minRight: null,	maxRight: null,	minTop: null,	maxTop: null,	minBottom: null, maxBottom: null	};
 			this.rawTop = this.top;
 			this.rawBottom = this.bottom;
 			this.rawLeft = this.left;

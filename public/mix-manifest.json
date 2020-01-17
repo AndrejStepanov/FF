@@ -1,10 +1,10 @@
 {
-    "/js/vendor.js": "/js/vendor.js",
-    "/js/Obj-view.js": "/js/Obj-view.js",
-    "/js/Obj-tree.js": "/js/Obj-tree.js",
-    "/js/Main.js": "/js/Main.js",
-    "/css/app.css": "/css/app.css",
     "/js/Auth.js": "/js/Auth.js",
+    "/css/app.css": "/css/app.css",
+    "/js/Main.js": "/js/Main.js",
+    "/js/Obj-tree.js": "/js/Obj-tree.js",
+    "/js/Obj-view.js": "/js/Obj-view.js",
     "/js/Register.js": "/js/Register.js",
-    "/js/manifest.js": "/js/manifest.js"
+    "/js/manifest.js": "/js/manifest.js",
+    "/js/vendor.js": "/js/vendor.js"
 }

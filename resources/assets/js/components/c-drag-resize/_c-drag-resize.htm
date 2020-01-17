@@ -1,0 +1,7 @@
+<div class="cdr" :style="style" :class="[active ? 'active' : 'inactive', noLineStyle?'noLine':'' ]" >
+	<div @mousedown="bodyDown($event);" @touchstart="bodyDown($event)">
+		<slot name="header" />
+	</div>
+    <slot></slot>
+    <div v-for="stick in sticks" class="cdr-stick" :class="['cdr-stick-' + stick, isResizable ? '' : 'not-resizable']" @mousedown.stop.prevent="stickDown(stick, $event)" @touchstart.stop.prevent="stickDown(stick, $event)"/>
+</div>

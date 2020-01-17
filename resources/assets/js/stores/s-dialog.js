@@ -27,8 +27,10 @@ export default {
 		async doInit({commit,getters,state},{config, params, }){
 			if(config==undefined || config.id==undefined)
 				showError(getErrDesc('noDialogInitId') );
-			if (getters.getById(config.id)!=0)
+			if (getters.getById(config.id)!=0){
+				console.log('Диалог №'+config.id+' уже зарегестрирован!');
 				return
+			}
 			config.persistent=config.persistent||true
 			commit('adding',{config, params})
 		},

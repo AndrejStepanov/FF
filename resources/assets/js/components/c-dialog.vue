@@ -1,37 +1,43 @@
 <template>
 	<v-dialog value = "true" :persistent="dialogConfigGet.persistent" no-click-animation >
 		<c-drag-resize :isActive="dragActive" :isDraggable="dragDraggable" :isResizable="dragResizable" :preventActiveBehavior="dragActiveBehavior" :parentLimitation="dragLimitation" :sticks="dragSticks" :noLineStyle="dragNoLineStyle"
-				:w="width" :h="height" @resizing="changeSize($event)"  :x="x" :y="y" :reInitEvent="dragReInitEvent">
-			<v-toolbar slot='header'  color="primary" >
-				<v-toolbar-side-icon/>
-				<v-toolbar-title >{{ $vuetify.t(dialogConfigGet.title) }}</v-toolbar-title>
-				<v-spacer/>
-				<v-btn icon>
-					<v-icon>more_vert</v-icon>
-				</v-btn>
-				<v-btn icon @click.native="dialogClose">
-					<v-icon>clear</v-icon>
-				</v-btn>
-			</v-toolbar>
-		
-			<v-card :height="heightSlot" style="overflow-y: auto;">	
-				<slot />
+				:w="width" :h="height" @resizing="changeSize($event)"  :x="x" :y="y" :reInitEvent="dragReInitEvent"> 
+			<template v-slot:header >
+				<v-toolbar  dense color="primary" dark >
+					<v-toolbar-title > {{ $vuetify.lang.t(dialogConfigGet.title) }}</v-toolbar-title>
+					<v-spacer/>
+					<v-btn icon x-small>
+						<v-icon>more_vert</v-icon>
+					</v-btn>
+					<v-btn icon @click.native="dialogClose" x-small>
+						<v-icon>clear</v-icon>
+					</v-btn>
+				</v-toolbar>
+			</template>
+			<v-card >	
+				<v-card-text :height="heightSlot" :style="{height:heightSlot, overflowY: 'auto'}">
+					<slot />
+				</v-card-text>
+				<v-divider></v-divider>
+				<v-card-actions >							
+					<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" :loading="row.loading||false"  > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{$vuetify.lang.t(row.title)}}</v-btn>
+					<v-spacer/>
+					<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" :loading="row.loading||false" > {{$vuetify.lang.t(row.title)}}&nbsp;<v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon></v-btn>
+				</v-card-actions>
 			</v-card>
 
-			<v-layout row justify-center color="primary" >
-				<v-flex xs12>
-					<v-toolbar dense  color="primary" >		
-						<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{$vuetify.t(row.title)}}</v-btn>
-						<v-spacer/>
-						<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{$vuetify.t(row.title)}}</v-btn>
-					</v-toolbar>
-				</v-flex>
-			</v-layout>
+			<v-layout  >
+
+			</v-layout> <!---->
 		</c-drag-resize>
 	</v-dialog>
 </template>
 
 <script>
+/*
+По хъорошему - нужно дождаться когда онка начнут таскаться во вьютифи
+
+				*/
 	import XStore from '../mixins/x-store'
 	import cDragResize from './c-drag-resize/c-drag-resize';
     export default {
@@ -86,7 +92,7 @@
 		methods: {
             changeSize(newRect) {
 				let vm=this
-				vm.heightSlot = newRect.height-130+'';
+				vm.heightSlot = newRect.height-130+'px';
 			},
 			buttonClick(button){
 				let vm=this

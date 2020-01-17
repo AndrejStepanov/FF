@@ -1,5 +1,5 @@
 <template> 
-	<v-layout v-if="type!='HIDDEN'" align-center  row>
+	<v-row v-if="type!='HIDDEN'" align-center  :class="[needPT?'pt-2':'',  'flex-nowrap']" row>
 		<div  v-if="type=='INFO'"  class="text-xs-center" style="width:90%; display:block; margin-left: 5%;">
 			<v-chip   style="width:100%; display:block; ">
 				{{name}}
@@ -12,8 +12,8 @@
 			<hr>
 		</div>
 		<v-tooltip v-else  class='input-contaner' :disabled="tip==''" bottom>
-			<template slot='activator'>
-				<div class='input-contaner'>
+			<template v-slot:activator="{ on }">
+				<div class='input-contaner flex-grow--99' v-on="on">
 					<v-btn  icon v-if="needSign" @click="changeSign" small class="sign-box cursor-pointer" >
 						<v-icon small :disabled="getDisable" :class="getSignClass">{{getSign}}</v-icon>
 					</v-btn>
@@ -24,110 +24,130 @@
 						<div :class="getInputContanerTemplateClass">
 							<template v-if="isSliderLike">
 								<v-flex shrink style="width: 60px" v-if="type=='RANGE' && isNumeric" >
-									<v-text-field v-model="valueArrPairs[0][0]" class="mt-0 min-width-35px body-1" hide-details single-line :disabled="getDisable" type="number" @change="setNewValPairFst" :min="min" :max="max" :step="step"/>
+									<v-text-field v-model="valueArrPairs[0][0]" class=" min-width-35px body-1" hide-details single-line :disabled="getDisable" type="number" @change="setNewValPairFst" min max step :id="id+'_sub_left'"/>
 								</v-flex>
 								<v-flex>
 									<component v-if="type=='RANGE'"  :is="currentInput" v-model="valueArrPairs[0]" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
-											:multi-line="columnSize>50"  :tabindex="sortSeq" :type="getComponentType" :color="checkBoxColor"
+											:multi-line="isMultiLine"  :tabindex="sortSeq" :type="getComponentType" :color="checkBoxColor" id
 											:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
-											:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"   :min="min" :max="max" :step="step" 
-											@change="setNewVal" @keyup.enter="submit"  @blur="onBlur"   >
-										<template v-if="!isNumeric"	slot="thumb-label"	slot-scope="props">
+											:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"   :min="min" :max="max" :step="step" 
+											@change="setNewVal" @keyup.enter="submit"  @blur="onBlur"  dense >
+										<template v-if="!isNumeric"	v-slot:thumb-label="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
 										</template>
-										<template v-if="isNumeric" slot="thumb-label"	slot-scope="props">
+										<template v-if="isNumeric" v-slot:thumb-label="props">
 											<slot name="thumb-label" />
 										</template>
 									</component>
 
 									<component v-else :is="currentInput" v-model="value" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
-											:multi-line="columnSize>50" :tabindex="sortSeq" :type="getComponentType"  :color="checkBoxColor"
+											:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType"  :color="checkBoxColor" id
 											:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
-											:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step" 
-											@change="setNewVal" @keyup.enter="submit"  @blur="onBlur"  >
-										<template v-if="!isNumeric"	slot="thumb-label"	slot-scope="props">
+											:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step" 
+											@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" dense >
+										<template v-if="!isNumeric"	v-slot:thumb-label="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
 										</template>
-										<template v-if="isNumeric" slot="thumb-label"	slot-scope="props">
+										<template v-if="isNumeric" v-slot:thumb-label="props">
 											<slot name="thumb-label" />
 										</template>
 									</component>
 								</v-flex>
 								<v-flex shrink style="width: 60px" v-if="isNumeric" >
-									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="getDisable" v-if="type=='RANGE'" v-model="valueArrPairs[0][1]"  @change="setNewValPairScnd" :min="min" :max="max" :step="step"/>
-									<v-text-field  class="mt-0 min-width-35px body-1" hide-details single-line type="number" :disabled="getDisable" v-else v-model="value" @change="setNewVal" :min="min" :max="max" :step="step"/>
+									<v-text-field  class=" min-width-35px body-1" hide-details single-line type="number" :disabled="getDisable" v-if="type=='RANGE'" v-model="valueArrPairs[0][1]"  @change="setNewValPairScnd" :min="min" :max="max" :step="step" :id="id+'_sub_right'"/>
+									<v-text-field  class=" min-width-35px body-1" hide-details single-line type="number" :disabled="getDisable" v-else v-model="value" @change="setNewVal" :min="min" :max="max" :step="step" :id="id+'_sub_right'"/>
 								</v-flex>
 							</template>
 							<template v-else>
 								<component v-if="!multy && !isDateTimeLike && !isNeedTab" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
-									:multi-line="columnSize>50" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :counter="getCounter"
-									:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step" auto-grow rows="1"
+									:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :counter="getCounter"
+									:error="inputErrorState"  :error-messages="inputErrorText" id
+									:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step" auto-grow rows="1"
 									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" 
 									:class="getComponentClass" />
 								<component v-else-if="multy && type=='LIST'" :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
-									:multi-line="columnSize>50" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense
-									:append-icon="getAppendIcon" :clearable="getClearable" :mask="mask"  :min="min" :max="max" :step="step"
+									:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense id
+									:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step"
 									@change="setNewVal" @keyup.enter="submit"  @blur="onBlur" @click:append="changeShow" multiple chips deletable-chips small-chips
 									:class="getComponentClass" />
-								<v-dialog v-else-if="!multy && isDateTimeLike " ref="dialog" v-model="dialog" :return-value.sync="value" persistent lazy full-width	:width="getDialogWidth" @show='changeChecked' 
-										@update:returnValue="setNewVal" class="max-width" :content-class="getDialogClass">
-									<v-combobox slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
-										:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" 
-										@change="setNewVal" @input="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
+								<v-dialog v-else-if="!multy && isDateTimeLike " ref="dialog" v-model="dialog" :return-value.sync="value" persistent	:width="getDialogWidth" @show='changeChecked' 
+										@update:return-value="setNewVal" class="max-width" :content-class="getDialogClass">
+									<template v-slot:activator="{ on }">
+										<v-combobox  v-on="on" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
+											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" 
+											@keyup.enter="submit"   class=" body-1" /><!-- //@click:append="changeShow" @blur="onBlur" --> 
+									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
-											<v-date-picker v-if="dialogWithDate  && type!='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index'/>
-											<v-time-picker v-else-if="type=='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
-											<v-time-picker v-if="dialogWithTime && type!='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
-											<v-date-picker v-else-if="type=='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index' />
+											<v-date-picker v-if="dialogWithDate  && type!='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable :locale="profileLanguage()" :class="[dialogDatePanelCnt>1?'with-append-on-right':'',  'v-date-picker-more-height','higher-z-index']" :max="max" :min="min" ref="date1"/>
+											<v-time-picker v-else-if="type=='TIME_RANGE'"  v-model="valueArrPairs[0][0]" scrollable :locale="profileLanguage()" :class="[dialogDatePanelCnt>1?'with-append-on-right':'', 'higher-z-index', 'time-head-norm']"  format="24hr" ref="time1"/>
+											<div v-if="dialogDatePanelCnt==1 &&  ['DATETIME','TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(type)!=-1" :class="getDialogSeparatorClass" >
+												<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>							
+												<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>																		
+												<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
+											</div>
+											<v-time-picker v-if="dialogWithTime && type!='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable :locale="profileLanguage()" :class="[['DATETIME','TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(type)!=-1 && dialogDatePanelCnt>1?'is-append-on-right':'','higher-z-index', 'time-head-norm']" format="24hr" ref="date2"/>
+											<v-date-picker v-else-if="type=='DATE_RANGE'"  v-model="valueArrPairs[0][1]" scrollable :locale="profileLanguage()" :class="[dialogDatePanelCnt>1?'is-append-on-right':'',  'v-date-picker-more-height','higher-z-index']" ref="time2"/>
 
 											<template v-if="type=='DATETIME_RANGE'">
-												<div :class="getDialogSeparatorClass" >
-													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
-													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
+												<div :class="getDialogSeparatorClassDateRange" >
+													<v-icon :class="getDialogSeparatorDateRangeArrowClass">fast_forward</v-icon>										
+													<v-icon :class="getDialogSeparatorDateRangeArrowClass">fast_forward</v-icon>										
+													<v-icon :class="getDialogSeparatorDateRangeArrowClass">fast_forward</v-icon>										
+												</div>
+												<v-date-picker v-model="valueArrPairs[1][0]" scrollable :locale="profileLanguage()" :class="[dialogDatePanelCnt>1?'with-append-on-right':'',  'v-date-picker-more-height','higher-z-index']" />
+												<div v-if="dialogDatePanelCnt==1" :class="getDialogSeparatorClass" >
+													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>							
+													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>																		
 													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
 												</div>
-												<v-date-picker v-model="valueArrPairs[1][0]" scrollable locale="ru" class='v-date-picker-more-height higher-z-index' />
-												<v-time-picker v-model="valueArrPairs[1][1]" scrollable locale="ru" class='higher-z-index' format="24hr"/>
+												<v-time-picker v-model="valueArrPairs[1][1]" scrollable :locale="profileLanguage()" :class="[dialogDatePanelCnt>1?'is-append-on-right':'','higher-z-index', 'time-head-norm']" format="24hr"/>
 											</template>
 										</div>
-										<v-toolbar dense  color="primary" >	
-											<v-btn flat class="accent"  @click="dialog = false">{{ $vuetify.t('$vuetify.texts.simple.actions.cancel') }}</v-btn>
+										<v-divider></v-divider>
+										<v-toolbar dense >	
+											<v-btn small class="accent"  @click="saveDialog(value)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="saveDialog(value)">{{ $vuetify.t('$vuetify.texts.simple.actions.accept') }}</v-btn>
+											<v-btn small class="accent"  @click="dialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
-								<v-dialog v-else-if="multy && type=='DATE'"	ref="dialog" v-model="dialog" :return-value.sync="valueArr" persistent lazy full-width	:width="getDialogWidth" @show='changeChecked' 
-										@update:returnValue="setNewVal" class="max-width" :content-class="getDialogClass">
-									<v-combobox slot="activator" v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
-										:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" multiple chips deletable-chips small-chips
-										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
+								<v-dialog v-else-if="multy && type=='DATE'"	ref="dialog" v-model="dialog" :return-value.sync="valueArr" persistent :width="getDialogWidth" @show='changeChecked' 
+										@update:return-value="setNewVal" class="max-width" :content-class="getDialogClass">
+									<template v-slot:activator="{ on }">
+										<v-combobox  v-on="on" v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"   ref="input"  append-icon=""
+											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" multiple chips  small-chips 
+											@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class=" body-1" />
+									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
-											<v-date-picker v-if="dialogWithDate"  v-model="valueArr" multiple  scrollable locale="ru" class='v-date-picker-more-height' />
+											<v-date-picker v-if="dialogWithDate"  v-model="valueArr" multiple  scrollable :locale="profileLanguage()" class='v-date-picker-more-height' />
 										</div>
-										<v-toolbar dense color="primary" >	
-											<v-btn flat class="accent" @click="dialog = false">{{ $vuetify.t('$vuetify.texts.simple.actions.cancel') }}</v-btn>
+										<v-divider></v-divider>
+										<v-toolbar dense >	
+											<v-btn small class="accent"  @click="saveDialog(value)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="saveDialog(value)">{{ $vuetify.t('$vuetify.texts.simple.actions.accept') }}</v-btn>
+											<v-btn small class="accent"  @click="dialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
-								<v-dialog v-else-if="isNeedTab"	ref="dialog" v-model="dialog" :return-value.sync="value" persistent lazy full-width	:width="getDialogWidth" @show='changeChecked' 
-										@update:returnValue="setNewVal" class="max-width" :content-class="getDialogClass">
-									<v-combobox slot="activator" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
-										:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max"
-										@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class="mt-0 body-1" />
+								<v-dialog v-else-if="isNeedTab"	ref="dialog" v-model="dialog" :return-value.sync="value" persistent :width="getDialogWidth" @show='changeChecked' 
+										@update:return-value="setNewVal" class="max-width" :content-class="getDialogClass" overlay-color="white" overlay-opacity="1">
+									<template v-slot:activator="{ on }">
+										<v-combobox v-on="on" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
+											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max"
+											@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class=" body-1" />
+									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
 											<c-table tableTitle="$vuetify.texts.modals.treeAdd.title" :searchNeed="true" :headers="getTabHeader"	:items="getTabValues" v-model="tabSelectedRows"  ref="table"  
-												:typeSelect="multy?'one':'one'" :select-all="true" :noRowNum="false"	:hide-actions="false"  :height="getDialogMainDivHeight"/>
+												:vDataTableProp="{showSelect:true, singleSelect:!multy}"  withRowNum	:hideDefaultFooter="false"  :height="getDialogMainDivHeight" />
 										</div>
-										<v-toolbar dense color="primary" >	
-											<v-btn flat class="accent" @click="dialog = false">{{ $vuetify.t('$vuetify.texts.simple.actions.cancel') }}</v-btn>
+										<v-divider></v-divider>
+										<v-toolbar dense >	
+											<v-btn small class="accent"  @click="saveDialog(value)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
-											<v-btn flat class="accent"  @click="saveDialog(tabSelectedRows)">{{ $vuetify.t('$vuetify.texts.simple.actions.accept') }}</v-btn>
+											<v-btn small class="accent"  @click="dialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -136,35 +156,20 @@
 					</div>
 				</div>
 			</template>
-			<span >{{tip}}</span>
+			<span >{{ $vuetify.lang.t(tip)}}</span>
 		</v-tooltip>
 		<v-checkbox v-if="!!needCheckBox && hasInput" v-model="checked" hide-details class="shrink ml-2 mb-2" @change="changeChecked" :color="checkBoxColor"></v-checkbox>
-	</v-layout>
+	</v-row>
 </template>
-//:append-outer-icon="appendOuterIconGet" 
-/*
-Masks
-#	Any digit
-A	Any capital letter
-a	Any small letter
-N	Any capital alphanumeric character
-n	Any small alphanumeric character
-X	Any special symbol (-!$%^&*()_+|~=`{}[]:";'<>?,./\) or space
-Pre-made
-credit-card	#### - #### - #### - ####
-date-with-time	##/##/#### ##:##
-phone	(###) ### - ####
-social	###-##-####
-time	##:##
-time-with-seconds	##:##:##
-*/
 
 <script>
 	import XStore from '../mixins/x-store'
+	import {VSelect,VSlider,VRangeSlider,VTextarea } from 'vuetify/lib' //из-за хитрого загрузчика, который анализирует только шаблон, динамические окмпоененты приходится импортировать руками. иначе они не подгрузятся
 	export default {
 		name:'c-input',
 		data: () => ({
-			checkBoxColor:'white',//переопределяется в created
+			callBackEval:'',
+			checkBoxColor:'false',//переопределяется в created
 			checked:false,
 			code: 'code',
 			columnSize: 0,
@@ -179,21 +184,26 @@ time-with-seconds	##:##:##
 			error: '$vuetify.texts.msgs.incorrectValue.title',
 			hasError: false,
 			hasInput: false,
+			dataPickerHeight: 392,
 			id: 0,
+			inputErrorState:false,
+			inputErrorText:'',
+			isBirthDate:false,
 			isDateTimeLike:false,
 			isMounted:false,
+			isMultiLine:false,
 			isNeed:false,
 			isNeedTab:false,			
 			isNumeric:true,
 			isSliderLike:false,
 			listItemLenght: 18,
 			lastTimeSend: 0,
-			mask: null,
+			vMask: null,
 			maskFin: '',
-			max:40,
+			max:null,
 			maxLen:0,
 			maxLenTypes:['INPUT','NUMBER', 'PASSWORD'],
-			min:0,
+			min:null,
 			multy:false,
 			name: '',
 			nullable: false,
@@ -239,6 +249,7 @@ time-with-seconds	##:##:##
 			paramsForm: {type: String, defuault:''},
 			needCheckBox:{type:  Boolean, default:false},
 			needSign:{type:  Boolean, default:false},
+			needPT:{type:  Boolean, default:false},
 			listItemMin:{type:  Boolean, default:false},
 		},
 		computed: {
@@ -266,7 +277,7 @@ time-with-seconds	##:##:##
 			},
 			getLabelClass(){
 				return {
-					"disabled-label": !this.checked,
+					"disabled-label": this.needCheckBox && !this.checked,
 					"error--text": ( this.hasError && this.$refs.input.validations!='' ),					
 				}
 			},
@@ -281,7 +292,7 @@ time-with-seconds	##:##:##
 				}
 			},
 			getDisable(){
-				return !this.needCheckBox?false:!this.checked
+				return !this.needCheckBox? !this.editable  : !this.checked
 			},	
 			getCounter(){
 				return this.maxLenTypes.indexOf(this.type)!=-1 && this.maxLen>0?this.maxLen:false
@@ -292,15 +303,27 @@ time-with-seconds	##:##:##
 					return {value:element.value, text: (['LIST'].indexOf(vm.type)!=-1 && vm.listItemMin ? element.text : element.textFull)}
 				});
 			},
+			getDialogScrollY(){
+				let vm=this
+				return ['DATETIME','TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1 && (vm.dialogDatePanelCnt==1 || vm.$vuetify.breakpoint.height<489) || 
+					vm.dialogDatePanelCnt==2 && ['DATETIME_RANGE'].indexOf(vm.type)!=-1 ||
+					vm.type=='DATETIME_RANGE' && vm.dialogDatePanelCnt<=2 || 
+					vm.dataPickerHeight+48>vm.$vuetify.breakpoint.height *0.9 ||  
+					vm.isNeedTab || 
+					vm.type=='TEXT'
+			},
 			getDialogWidth(){
 				let vm=this,
 					width= vm.type=='DATE'? 290 : 
 						vm.type=='TIME'? 290 : 
-						['DATETIME', 'TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1 ? 584: 
-						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && !vm.isNarrowDialog? 1200 :
-						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.isNarrowDialog? 584 :
+						['TIME_RANGE','DATE_RANGE','DATETIME'].indexOf(vm.type)!=-1 && vm.dialogDatePanelCnt==1 ? 290 :
+						['TIME_RANGE','DATE_RANGE','DATETIME'].indexOf(vm.type)!=-1 ? 581: 
+						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.dialogDatePanelCnt==4? 1194 :
+						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.dialogDatePanelCnt==2? 581 :
+						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.dialogDatePanelCnt==1? 290 :
+						vm.isNeedTab?'max':
 						null
-				if(vm.getDialogMainDivStyle.overflowY=='scroll')
+				if( vm.getDialogScrollY && !vm.isNeedTab )//скрол плашка
 					width+=17
 				return width+'px'
 			},
@@ -309,29 +332,48 @@ time-with-seconds	##:##:##
 				return "overflow-hidden "
 			},
 			getDialogMainDivHeight(){
-				let vm=this,
-					height=392/*стандартная высота одного элемента управления*/
-				return vm.type=='TEXT' || vm.isNeedTab ||vm.$vuetify.breakpoint.height *0.9/*отступы*/ -48 /*кнопки*/ < height*2+ 28/*разделитель */ + 48?   vm.$vuetify.breakpoint.height *0.9 -48:	height*2+ 28 + 48
+				let vm=this
+				return vm.getDialogScrollY  ?  vm.$vuetify.breakpoint.height *0.9 -48:	vm.dataPickerHeight /*стандартная высота одного элемента управления для дат*/
 			},
 			getDialogMainDivStyle(){
 				let vm=this,
-					height=392/*стандартная высота одного элемента управления*/,
+					height=vm.dataPickerHeight/*стандартная высота одного элемента управления*/,
 					overflowY='hidden'
-				if(vm.type=='DATETIME_RANGE' && vm.isNarrowDialog || height+48>vm.$vuetify.breakpoint.height *0.9 || vm.type=='TEXT' || vm.isNeedTab){
+				if( vm.getDialogScrollY ){
 					height = vm.getDialogMainDivHeight
-					overflowY=vm.type=='TEXT'|| vm.isNeedTab?'auto':'scroll'
+					overflowY='auto'
 				}
 				return {
 					height: height + 'px' ,
 					overflowY: overflowY,
+					overflowX: 'hidden',
 				}
 			},
 			getDialogSeparatorClass(){
 				let vm=this
 				return {
-					"v-date-picker-more-height": !vm.isNarrowDialog,
-					"dialog-display-inline-grid": !vm.isNarrowDialog,
-					"dialog-narrow-display-div-arrow": vm.isNarrowDialog,					
+					"v-date-picker-more-height": vm.dialogDatePanelCnt>1,
+					"dialog-display-inline-grid": vm.dialogDatePanelCnt>1,
+					"dialog-narrow-display-div-arrow": vm.dialogDatePanelCnt==1,
+					"flex-direction--row":vm.dialogDatePanelCnt==1,
+					"flex-direction--column":vm.dialogDatePanelCnt>1,
+					"separator-dark-bc": vm.$vuetify.theme.dark && (vm.dialogDatePanelCnt>1 ||  ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1),
+					"separator-light-bc": !vm.$vuetify.theme.dark && (vm.dialogDatePanelCnt>1 ||  ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1),
+					"background-primary":vm.dialogDatePanelCnt==1 && ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)==-1,
+					"v-picker": true,
+					"v-card": true,					  
+				}
+			},
+			getDialogSeparatorClassDateRange(){
+				let vm=this
+				return {
+					"v-date-picker-more-height": vm.dialogDatePanelCnt>2,
+					"dialog-display-inline-grid": vm.dialogDatePanelCnt>2,
+					"dialog-narrow-display-div-arrow": vm.dialogDatePanelCnt<=2,	
+					"flex-direction--row":vm.dialogDatePanelCnt<=2,
+					"flex-direction--column":vm.dialogDatePanelCnt>2,				
+					"separator-dark-bc": vm.$vuetify.theme.dark,
+					"separator-light-bc": !vm.$vuetify.theme.dark,
 					"v-picker": true,
 					"v-card": true,					  
 				}
@@ -339,13 +381,28 @@ time-with-seconds	##:##:##
 			getDialogSeparatorArrowClass(){
 				let vm=this
 				return {
-					"rotate-90": vm.isNarrowDialog,					  
-					"dialog-narrow-display-arrow-width": vm.isNarrowDialog,					  
+					"rotate-90": vm.dialogDatePanelCnt==1,					  
+					"dialog-narrow-display-arrow-width": vm.dialogDatePanelCnt==1 && ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)==-1,					  
+					"dialog-narrow-display-arrow-width-min": vm.dialogDatePanelCnt==1 &&	['TIME_RANGE','DATE_RANGE','DATETIME'].indexOf(vm.type)!=-1,		
+					'accent-color':true,	 
+					'flex--99 ':true, 
 				}
-			},			
-			isNarrowDialog(){
+			},	
+			getDialogSeparatorDateRangeArrowClass(){
+				let vm=this
+				return {
+					"rotate-90": vm.dialogDatePanelCnt<=2,					  
+					"dialog-narrow-display-arrow-width": vm.dialogDatePanelCnt<=2 && ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)==-1,					  
+					"dialog-narrow-display-arrow-width-min": vm.dialogDatePanelCnt<=2 &&	['TIME_RANGE','DATE_RANGE','DATETIME'].indexOf(vm.type)!=-1,		
+					'accent-color':true,	
+					'flex--99 ':true,  
+				}
+			},
+			dialogDatePanelCnt(){
 				let vm = this
-				return vm.$vuetify.breakpoint.width <= 1264
+				return vm.$vuetify.breakpoint.lgAndUp ? 4:
+					vm.$vuetify.breakpoint.width>650 ? 2:
+					1
 			},
 			getTabHeader(){
 				let vm = this
@@ -359,11 +416,17 @@ time-with-seconds	##:##:##
 					return[];
 				return vm.$parent.$refs[vm.tabGroup]?vm.$parent.$refs[vm.tabGroup][0].tabValues:[]
 			},
+			//переход на вьюэкс
+			
 		},
 		watch: {
+			dialog (val) {
+				val && this.isBirthDate && this.$nextTick(() => (this.$refs.date1.activePicker = 'YEAR'))
+			}
 		},
 		components: {
 			CTable: (resolve) =>{ require(['./c-table.vue'], resolve) },
+			VSelect,VSlider,VRangeSlider,VTextarea,
 		},
 		mixins: [
 			XStore,
@@ -376,14 +439,14 @@ time-with-seconds	##:##:##
 				check=check||false
 				num=num||0
 				if(vm.type!='DATETIME_RANGE' || stage==1){
-					fstPart = vm.valueArrPairs[num][0]!=null?vm.valueArrPairs[num][0]:''
-					scndPart = vm.valueArrPairs[num][1]!=null?vm.valueArrPairs[num][1]:''
+					fstPart = vm.type=='TIME'?'':vm.valueArrPairs[num][0]!=null?vm.valueArrPairs[num][0]:''
+					scndPart = vm.type=='DATE'?'': vm.valueArrPairs[num][1]!=null?vm.valueArrPairs[num][1]:''
 					if(check && ( (vm.dialogWithDate || vm.dialogWithRange) && fstPart=='' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart=='') )
 						showMsg( getErrDesc('notFullValue') );
 				}
 				else{
 					fstPart = vm.getValueDatetimeFromArr({check,num,stage:1}) 
-					scndPart = vm.getValueDatetimeFromArr({check,num:num+1,stage:1}) 
+					scndPart = vm.getValueDatetimeFromArr({check,num:num+1,stage:1})
 					if(check && ( (vm.dialogWithDate || vm.dialogWithRange) && fstPart=='' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart=='') )
 						showMsg( getErrDesc('notFullValue'));
 				}
@@ -454,7 +517,13 @@ time-with-seconds	##:##:##
 					vm.valueArrPairs[0][1]=value[1]
 				}
 				else{
-					vm.value = value
+					if(['DATE', 'TIME'].indexOf(vm.type)!=-1){
+						vm.valueArrPairs=[]
+						vm.parseToDateArr({str:value})
+						vm.value = vm.getValueDatetimeFromArr({num:0})
+					}
+					else
+						vm.value = value
 					if(['DATE', 'TIME', 'DATETIME', 'TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1){
 						vm.valueArrPairs=[]
 						vm.parseToDateArr({str:vm.value})
@@ -469,6 +538,8 @@ time-with-seconds	##:##:##
 						vm.valueView =value
 				}
 				vm.checkRefresh({checkedFx,initRun})
+				if(vm.callBackEval!='')
+					eval(vm.callBackEval)
 			},
 			setNewValPairFst(value){
 				let vm=this
@@ -537,7 +608,7 @@ time-with-seconds	##:##:##
 				let vm=this
 				vm.checkRefresh({checkedFx:true})
 			},	
-			onClick(){
+			onClick(e){
 				let vm=this,
 					tmp = vm.checked,
 					curTime = new Date().getTime()
@@ -547,7 +618,7 @@ time-with-seconds	##:##:##
 				vm.checked=true
 				if(!tmp)
 					vm.checkRefresh({checkedFx:true})
-				setTimeout(()=>{vm.$refs.input.onClick()},100)
+				setTimeout(()=>{vm.$refs.input.onClick(e)},100)
 			},
 			onBlur(){
 				let vm=this
@@ -636,10 +707,11 @@ time-with-seconds	##:##:##
 		},
 		created: function (){
 			let vm=this,
-				tmp=''
+				regexp=''
+			vm.callBackEval=vm.data.after_edit_script||vm.callBackEval
 			vm.checkBoxColor=appTheme.checkBox||vm.checkBoxColor
 			vm.id=vm.data.id||vm.id
-			vm.value=vm.data.value||vm.value
+			vm.value=nvl(vm.data.value,vm.value)
 			vm.code=vm.data.code||vm.code
 			vm.name=vm.data.name||vm.name
 			vm.tip=vm.data.tip||vm.tip
@@ -649,30 +721,32 @@ time-with-seconds	##:##:##
 			vm.columnType=vm.data.column_type||vm.columnType
 			vm.columnSize=vm.data.column_size||vm.columnSize
 			vm.sortSeq=vm.data.sort_seq||vm.sortSeq
-			vm.mask=vm.data.mask||vm.mask
+			vm.vMask=vm.data.vMask||vm.vMask
 			vm.maskFin=vm.data.mask_fin||vm.maskFin
 			vm.error=vm.data.error||vm.error
-			vm.checked=!!vm.data.checked||vm.checked
-			vm.editable=!!vm.data.editable||vm.editable
-			vm.multy=!!vm.data.multy||vm.multy
-			vm.min=vm.data.min||vm.min
+			vm.checked=vm.data.checked==undefined? vm.checked:!!vm.data.checked
+			vm.editable=vm.data.editable==undefined? vm.editable:!!vm.data.editable
+			vm.multy=vm.data.multy==undefined? vm.multy:!!vm.data.multy
+			vm.min=nvl(vm.data.min,vm.min)
 			vm.max=vm.data.max||vm.max
 			vm.maxLen=vm.data.max_len||vm.maxLen
 			vm.step=vm.data.step||vm.step
 			vm.tabGroup=vm.data.tab_group||vm.tabGroup
-			vm.ticksNeed=!!vm.data.ticks_need||vm.ticksNeed
+			vm.ticksNeed=vm.data.ticks_need==undefined? vm.ticksNeed:!!vm.data.ticks_need
 			vm.tickSize=vm.data.tick_size||vm.tickSize
 			vm.thumbLabelNeed=vm.data.thumb_label_need||vm.thumbLabelNeed
-
+			vm.isBirthDate=vm.data.isBirthDate||vm.isBirthDate
+			
+			vm.isMultiLine = vm.columnSize>50
 			if(vm.data.table_values!=undefined && vm.data.table_values.length>0)
 				vm.data.table_values.forEach(element => {
+					let text = nvl(element.text,element.value)
 					vm.tableValues.push(
-						{value:element.value, textFull:element.text, text:(['LIST'].indexOf(vm.type)==-1?element.text : element.text.length>vm.listItemLenght? element.text.substring(0,vm.listItemLenght)+'...':element.text ),}
+						{value:element.value, textFull:text, text:(['LIST'].indexOf(vm.type)==-1?text : text.length>vm.listItemLenght? text.substring(0,vm.listItemLenght)+'...':text ),}
 					);
 					if(isNaN(element.value))
 						vm.isNumeric=false
 				});
-
 			if(vm.data.tab_header!=undefined && vm.data.tab_header.length>0)
 				vm.tabHeader=vm.data.tab_header.slice()
 
@@ -698,18 +772,28 @@ time-with-seconds	##:##:##
 				vm.type=='DATE'?'v-date-picker':
 				vm.type=='TIME'?'v-time-picker':
 				vm.type=='TEXT'?'v-textarea':
+				vm.type=='INPUT' && vm.isMultiLine?'v-textarea':
 				'v-text-field'	
 			
 			if(vm.type=='LIST' && !vm.multy  && vm.valueArr.length>0)
 				vm.value= vm.valueArr[0]
 
-			if(['DATE', 'TIME', 'DATETIME','DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1){
+			if(['DATE', 'TIME', 'DATETIME','DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1){ 
+				vm.max=isNaN(vm.max)?vm.max:''
+				vm.min=isNaN(vm.min)?vm.min:''
 				if(!vm.multy && vm.valueArr.length>0)
 					if(['DATE', 'TIME', 'DATETIME'].indexOf(vm.type)!=-1)
 						vm.value = vm.valueArr[0]
 					else
-						if(vm.valueArr[0].length>1 )
-							vm.value=vm.valueArr[0][0] +vm.rangeSeparator + vm.valueArr[0][1]
+						if(vm.valueArr[0].length>1 && nvl(vm.valueArr[0][0],'')!='' && nvl(vm.valueArr[0][1],'')!='' )
+							if(['DATETIME_RANGE'].indexOf(vm.type)!=-1)
+								vm.value=vm.valueArr[0][0] +vm.rangeSeparator + vm.valueArr[0][1]
+							else if(['DATE_RANGE'].indexOf(vm.type)!=-1)
+								vm.value=nvl(vm.valueArr[0][0].match (/^\d\d\d\d-\d\d-\d\d/),['--'])[0] +vm.rangeSeparator + nvl(vm.valueArr[0][1].match (/^\d\d\d\d-\d\d-\d\d/),['--'])[0]
+							else if(['TIME_RANGE'].indexOf(vm.type)!=-1)
+								vm.value=nvl(vm.valueArr[0][0].match (/\s\d\d:\d\d$|\s\d\d:\d\d:\d\d$/),['--'])[0] +vm.rangeSeparator + nvl(vm.valueArr[0][1].match (/\s\d\d:\d\d$|\s\d\d:\d\d:\d\d$/),['--'])[0]
+							else
+								console.log('Обнаружена коллизия исходных данных в '+vm.code)
 						else
 							console.log('Обнаружен некорректно заданый диапазон исходных данных в '+vm.code)
 				vm.valueArrPairs.push([null,null]);
@@ -737,7 +821,7 @@ time-with-seconds	##:##:##
 						vm.tickSize=vm.data.tick_size||2
 					}
 				}
-				vm.value=vm.value||vm.min
+				vm.value=nvl(vm.value,vm.min)
 				if(vm.valueArr!=undefined && vm.valueArr.length>0)
 					vm.valueArr.forEach((element,i) => {
 						element[0]=nvl(element[0],vm.min)
@@ -769,31 +853,31 @@ time-with-seconds	##:##:##
 			if(vm.tabGroup!='')
 				vm.isNeedTab=true	
 
-			if(vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type!='RANGE' )//Границы должны быть цифрой!
-				vm.rules.push(v => v>=vm.min|| !vm.checked || vm.$vuetify.t('$vuetify.texts.simple.msgs.valMoreOrEq', ...([vm.min]) ) )
+			if(vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type!='RANGE' && vm.min!=null )//Границы должны быть цифрой!
+				vm.rules.push(v => v>=vm.min|| !vm.checked || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.valMoreOrEq', ...([vm.min]) ) )
 
-			if(vm.hasInput && vm.isNumeric && !isNaN(vm.max) && vm.type!='RANGE' )
+			if(vm.hasInput && vm.isNumeric && !isNaN(vm.max) && vm.type!='RANGE' && vm.max!=null )
 				vm.rules.push(v => v<=vm.max || !vm.checked || 'Значение не должно превышать '+vm.max+'!')
 
 			if(vm.hasInput && vm.maxLenTypes.indexOf(vm.type)!=-1 && vm.maxLen>0)
-				vm.rules.push(v => v.length <= vm.maxLen  || !vm.checked || vm.$vuetify.t('$vuetify.texts.simple.msgs.valLessOrEq', ...([vm.maxLen]) ) )
+				vm.rules.push(v => v.length <= vm.maxLen  || !vm.checked || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.valLessOrEq', ...([vm.maxLen]) ) )
 			
-			tmp = new RegExp(vm.maskFin)
-			if(vm.hasInput && tmp!='')//надо помнить про экранирование
-				vm.rules.push(v => tmp.test(v) || vm.$vuetify.t( vm.error ))
+			regexp = new RegExp(vm.maskFin)
+			if(vm.hasInput && regexp!='')//надо помнить про экранирование
+				vm.rules.push(v => regexp.test(v) || vm.$vuetify.lang.t( vm.error ))
 			
 			vm.rulesChildInput = vm.rules.slice()
 				
 			if(vm.hasInput && !vm.nullable){
 				vm.isNeed =true
-				vm.rules.push(v => v!=undefined && (v!='' || v===0) || vm.$vuetify.t('$vuetify.texts.simple.msgs.fieldIsNecessary' ) )
-				vm.name='❗ '+vm.name//⭐
+				vm.rules.push(v => v!=undefined && (v!='' || v===0) || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.fieldIsNecessary' ) )
+				vm.name='⭐ '+vm.name//❗
 			}
 
 			if(vm.hasInput && vm.needCheckBox && !vm.nullable)
-				vm.rules.push(v => !!vm.checked || vm.$vuetify.t('$vuetify.texts.simple.msgs.fieldMustUsed' ) )
+				vm.rules.push(v => !!vm.checked || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.fieldMustUsed' ) )
 
-			vm.paramSetData( {num: vm.paramsForm, data:{...vm.data,value :null, value_view :null, value_arr :null, value_arr_view:null,  } })
+			vm.paramSetData( {num: vm.paramsForm, data:{...vm.data,value :null, value_view :null, value_arr :null, value_arr_view:null, table_values:null,  } })
 			if(vm.multy && ['DATE', 'LIST'].indexOf(vm.type)!=-1)
 				vm.setNewVal(vm.valueArr,true,true)
 			else if(!vm.multy && ['RANGE'].indexOf(vm.type)!=-1)
@@ -819,15 +903,25 @@ time-with-seconds	##:##:##
 	.main-contaner 											{display: block !important;}
 	.slider-label 											{font-size: 11px;}
 	.slider-upper 											{margin-top: -12px;}
-	.disabled-label 										{color: hsla(0,0%,100%,.5);}
+	.with-append-on-right									{box-shadow : none !important; border-bottom-right-radius: inherit !important;   border-top-right-radius: inherit !important;}
+	.is-append-on-right										{margin-left: -4px; box-shadow : none !important; border-bottom-left-radius: inherit !important;   border-top-left-radius: inherit !important;}
+	.time-head-norm>div.v-picker__title						{height: 88px;}
+	.time-head-norm>div.v-picker__body						{height: 304px;}
+	.disabled-label 										{color: rgba(0,0,0,.38);}
 	.v-slider__ticks-container>.v-slider__ticks>span		{font-size: 12px;}
 	.theme--dark.v-chip.v-chip--disabled					{background: #737373;}
+	.separator-dark-bc										{background: #737373;}
+	.separator-light-bc										{background: #e0e0e0;}
 	.v-date-picker-more-height								{height: 392px;}
 	.higher-z-index											{z-index: 2;}
 	.dialog-display-inline-grid								{display: inline-grid;}
 	.dialog-narrow-display-div-arrow						{clear: right; display: inherit; width: 100%; height: 28px;}
 	.dialog-narrow-display-arrow-width						{width: 190px;}
+	.dialog-narrow-display-arrow-width-min					{width: 85px;}
 	.theme--dark.v-table tbody tr[active]>td:first-child	{background: #7d7979;}		
+	.v-slider__tick-label									{font-size: 11px;}
+	.text-xs-center>.v-chip									{text-align: center;
+}
 	/*i    border-bottom-color: #2c353f;
 	border-bottom-style: groove;
 	border-bottom-width: 0.5px;*/

@@ -17,13 +17,13 @@ export default {
 	actions:{
 		doAdd({commit,getters,state},{timeout, y,x, modeLine, type, title, text,status,trace,file,line,}){
 			let id = Math.floor(Math.random() * MAX_ID)
-			timeout=timeout||6000;
+			timeout=timeout||5;
             y=y||'top';
             x=x||'right';
             modeLine=modeLine||'multi-line';
             type=type||'error';
 			title=title||'Титул';
-			text=text=(status==401?window._vue.$vuetify.t('$vuetify.texts.simple.msgs.authNeed') :text)|| window._vue.$vuetify.t('$vuetify.texts.simple.msgs.defTextMes');
+			text=text=(status==401?window._vue.$vuetify.lang.t('$vuetify.texts.simple.msgs.authNeed') :text)|| window._vue.$vuetify.lang.t('$vuetify.texts.simple.msgs.defTextMes');
             status=status||'';
             trace=trace||'';
             file=file||'';

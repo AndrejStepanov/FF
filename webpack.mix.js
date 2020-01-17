@@ -1,5 +1,6 @@
 let mix = require('laravel-mix');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -26,6 +27,7 @@ mix.js('resources/assets/js/main/Main.js', 'public/js')
 			new CopyWebpackPlugin([
 				{ from: 'resources/assets/js/helpers/functions.js', to: 'js' },
 			]),
+			new VuetifyLoaderPlugin(),
 		],
 	})
    .sass('resources/assets/sass/app.scss', 'public/css')

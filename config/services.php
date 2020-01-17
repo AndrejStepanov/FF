@@ -35,4 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'vkontakte' => [
+        'client_id' => 6767776,
+        'client_secret' => 'G4qQDMsSJoHr32ETYUAl',
+        'redirect' => env('APP_URL').'/login/vk/callback'
+    ],
 ];

@@ -156,7 +156,7 @@
 			},
 			initializeLoading() {
 				var item = {}
-				item[this.textFieldName] = this.$vuetify.t( this.loadingText)
+				item[this.textFieldName] = this.$vuetify.lang.t( this.loadingText)
 				item.disabled = item.loading = true
 				return this.initializeDataItem(item)
 			},

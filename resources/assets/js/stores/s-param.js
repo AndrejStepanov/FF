@@ -13,6 +13,13 @@ export default {
 		getTodo: (state,getters) =>(num)=> {
 			return getters.getGroup(num)
 		},
+		getTodoChecked: (state,getters) =>(num)=> {
+			let data= getters.getGroup(num), tmp={}
+			for(let name in data)
+				if(nvl(data[name].checked,false))
+					tmp[name]=data[name]
+			return tmp
+		},
 	},
 	actions:{	
 		async doInit({commit,getters,state},{num,}){

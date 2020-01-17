@@ -1,11 +1,6 @@
 <template>
-	<v-speed-dial v-model="fab"  direction="bottom" :open-on-hover="hover" transition="scale-transition" >
-		<v-btn slot="activator" class="accent"  hover v-model="fab">						<v-icon>account_circle</v-icon> &nbsp;{{profileUserName()==''?$vuetify.t('$vuetify.texts.simple.labels.guest'):profileUserName()}}		</v-btn>
-		<v-btn v-if="profileSysId()=='' "  	small class="secondary"	@click='login' >		<v-icon>edit</v-icon>			&nbsp;{{$vuetify.t('$vuetify.texts.simple.actions.auth')}} 												</v-btn>
-		<v-btn v-if="profileSysId()=='' "  	small class="secondary"	@click='registration' >	<v-icon>person_add</v-icon>		&nbsp;{{$vuetify.t('$vuetify.texts.simple.actions.registration')}} 										</v-btn>		
-		<v-btn v-if="profileSysId()!='' " 	small class="secondary"	href='\register'> 		<v-icon>add</v-icon>			&nbsp;{{$vuetify.t('$vuetify.texts.simple.actions.chacngePass')}} 										</v-btn>
-		<v-btn v-if="profileSysId()!='' " 	small class="secondary"	@click='logout'>		<v-icon>delete</v-icon>			&nbsp;{{$vuetify.t('$vuetify.texts.simple.actions.logOut')}} 											</v-btn>
-	</v-speed-dial>
+		<v-btn v-if="profileUserName()==''" class="accent"   @click="$root.$emit('openAuthDialog')" > 	&nbsp;{{$vuetify.lang.t('$vuetify.texts.simple.labels.auth')}}&nbsp;		<v-icon >account_circle</v-icon> 	</v-btn>	
+		<v-btn v-else 						class="accent"   @click="$root.$emit('systemLogout')" > 	&nbsp;{{profileUserName()}}&nbsp;											<v-icon >close</v-icon>  			</v-btn>	
 </template>
 
 <script>
@@ -14,54 +9,17 @@
 	export default {
 		name:'c-profile',
 		data: () => ({
-			fab: false,
+			fab: true,
 			hover: false,//открывать при наведении
-			userTicket:'',
 		}),		
 		mixins: [
 			XStore,
 		],
 		methods: {
-			login(){
-				let vm=this
-				vm.$root.$emit('openAuthDialog')
-			},
-			registration(){
-				window.location.href = "\\Регистрация?auth_href_back="+window.location.href;
-			},			
-			logout () {
-				sendRequest({href:'/logout', type:'logout', needSucess:'Y', hrefBack:'/', def: getErrDesc('noLogOut') } )
-			},
-			subscribeTicket(newTicket){
-				let vm=this,
-				 	_hrefBack=window.location.search.match(new RegExp('auth_href_back=([^&=]+)'));
-				if(vm.userTicket!='' )
-					window.echo.connector.channels['channel.AuthChange.'+vm.userTicket].unsubscribe()
-				vm.userTicket=newTicket
-				window.echo.channel('channel.AuthChange.'+vm.userTicket )
-				.listen('.session.open', (e) => {
-					vm.profileLog({userName:e.data.name,userId:e.data.userId, sysId:e.data.sysId, isRoot:e.data.isRoot});
-					vm.subscribeTicket(e.data.newTicket)
-					showMsg({...getMsgDesc('loginSucsess'),   msgParams:[e.data.name],}	);
-					if(_hrefBack!=null)
-						window.location.href = decodeURIComponent(_hrefBack[1]);
-				})
-				.listen('.session.close', (e) => {
-					if(vm.profileUserId()!='' && vm.profileUserId()==e.data.userId || vm.profileSysId()!='' && vm.profileSysId()==e.data.sysId)
-						vm.profileLogout();
-					vm.subscribeTicket(e.data.newTicket)
-					showMsg(getMsgDesc('logoutSucsess') );
-				});
-			},
+		},
+		created: function (){
 		},
 	 	mounted: function (){	
-			let vm=this
-			let userInfo = window.userInfo||{}
-			if(nvl(userInfo.name)!='')
-				vm.profileLog({userName:userInfo.name, userId:userInfo.userId, sysId:userInfo.sysId, isRoot:userInfo.isRoot})
-			else
-				vm.profileLogout();
-			vm.subscribeTicket(window.laravel.ticket)
 		},
 	}
 </script>

@@ -129,6 +129,10 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth{
         return false;
     }
 
+    public function initUser(array $credentials = [], $remember = false)   {
+        return $this->lastAttempted = $user = $this->provider->retrieveByCredentials($credentials);
+    }
+
     /**
      * Determine if the user matches the credentials.
      *
@@ -368,8 +372,7 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth{
     public function login(AuthenticatableContract $user, $remember = false)   {
         $ticket = new Ticket();
         $user ->oldTicket =getTicket();
-        $ticket->closeTicket( );        
-        
+        $ticket->closeTicket( );     
         $this->updateSession($user->getAuthIdentifier());
 
         // If the user should be permanently "remembered" by the application we will
@@ -386,7 +389,7 @@ class KonsomGuard implements StatefulGuard, SupportsBasicAuth{
         // based on the login and logout events fired from the guard instances.
         $this->fireLoginEvent($user, $remember);
 
-        $this->setUser($user);
+        $this->setUser($user);  
     }
 
     /**

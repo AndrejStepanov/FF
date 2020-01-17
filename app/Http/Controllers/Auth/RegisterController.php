@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use App\Providers\KonsomHasher;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Ticket;
+use App\Traits\AuthHelpers;
 
 class RegisterController extends Controller{
     /*
@@ -22,14 +25,19 @@ class RegisterController extends Controller{
     |
     */
 
-    use RegistersUsers;
+    use RegistersUsers,AuthHelpers;
 
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/sucsess';
+    protected function redirectTo()  {
+        session()->put('url.intended', '/sucsess');
+        $ticket = new Ticket();
+        $ticket->createTicket();
+        return '/sucsess';
+    }
 
     /**
      * Create a new controller instance.
@@ -51,12 +59,10 @@ class RegisterController extends Controller{
         $data=$request->all();
         $this->validator($data)->validate();
         if (count(User::where('login', $data['login'])->first())>0)
-            return error('Ошибка при регистрации','Пользователь с таким логином уже существует!');
-         if (count(User::where('name', $data['name'])->first())>0)
-            return error('Ошибка при регистрации','Пользователь с таким именем уже существует!');
+            return error('Ошибка при регистрации','Пользователь с таким электронным адресом уже существует!');
 
         event(new Registered($user = $this->create($data)));
-
+        
         $this->guard()->login($user);
 
         return $this->registered($request, $user) ?: redirect($this->redirectPath());
@@ -70,9 +76,10 @@ class RegisterController extends Controller{
      */
     protected function validator(array $data)    {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'login' => 'required|string|max:255',
-            'password' => 'required|string|confirmed',
+            'login' => 'required|email|max:255',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'password' => 'required|string|confirmed|min:6',
         ]);
     }
 
@@ -80,14 +87,10 @@ class RegisterController extends Controller{
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Models\User
+     * @return \App\Providers\KonsomUser
      */
     protected function create(array $data)    {
-        $hasher = new KonsomHasher();
-        return User::create([
-            'name' => $data['name'],
-            'login' => $data['login'],
-            'password' => $hasher->make($data['password']),
-        ]);
+        return $this->createUser($data,$this->guard());
+
     }
 }

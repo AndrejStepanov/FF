@@ -1,17 +1,21 @@
 <template>
 	<c-dialog :dialogId="dialogId" :widthOrig="dialogConfigGet.width" :heightOrig="dialogConfigGet.height" :buttons='buttons' >
-		<v-expansion-panel class="overXAutoLi" v-model="panel" expand>
-			<v-expansion-panel-content >
-				<template slot="header">{{dialogParamsGet.msg.title}} : {{dialogParamsGet.msg.text}} <br> {{dialogParamsGet.msg.file}} ({{dialogParamsGet.msg.line}})</template>
-				<v-card>
-					<v-card-text>
-						<span v-for="obj in (JSON.parse(dialogParamsGet.msg.trace) )" class='traceLine' >
-							{{obj.file}}({{obj.line}}): {{obj.class}} {{obj.type}} {{obj.function}}
-						</span>
-					</v-card-text>
-				</v-card>
-			</v-expansion-panel-content>
-		</v-expansion-panel>
+		<v-expansion-panels class="overXAutoLi" v-model="panel" multiple >
+			<v-expansion-panel>
+				<v-expansion-panel-header>
+					{{dialogParamsGet.msg.title}} : {{dialogParamsGet.msg.text}} <br> {{dialogParamsGet.msg.file}} ({{dialogParamsGet.msg.line}})
+				</v-expansion-panel-header>
+				<v-expansion-panel-content>
+					<v-card>
+						<v-card-text>
+							<span v-for="obj in (JSON.parse(dialogParamsGet.msg.trace) )" class='traceLine' >
+								{{obj.file}}({{obj.line}}): {{obj.class}} {{obj.type}} {{obj.function}}
+							</span>
+						</v-card-text>
+					</v-card>
+				</v-expansion-panel-content>
+			</v-expansion-panel>
+		</v-expansion-panels>
 	</c-dialog>
 </template>
 
@@ -22,7 +26,7 @@
 		name:'m-error-desc',
 		data: () => ({
 			inputsValid:true,
-			panel: [true],
+			panel: [0],
 		}),
 		props:{
 			dialogId: {type: Number, required: true}, 

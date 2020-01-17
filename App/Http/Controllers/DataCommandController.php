@@ -11,6 +11,7 @@ class DataCommandController extends Controller{
 		$data=$request->all();
 		switch($data['type']){
 			case('object.tree.add'):{  throw new \App\Exceptions\KonsomException( 'Что-то пошло не так','Пошло не так все из-за корявых рук!');   };	
+			default:{ throw new \App\Exceptions\KonsomException( 'Ошибка доступа','Нет доступа!'); };
 		}
 		
 		return;

@@ -15,16 +15,14 @@
 		name:'m-input-fields',
 		data: () => ({
 			inputsValid: false,
+			loading: false,
 			dialogWidth:10,
 			dialogHeight:10,
 			paramsForm:'',
-			dialogButtons:  [
-				{id:1, title:'$vuetify.texts.simple.actions.save', icon:'done', allig:'left', click:'dialogSave' , needCheck:true}, 
-				{id:2, title:'$vuetify.texts.simple.actions.close', icon:'close', allig:'right', click:'dialogClose'}
-			],
+			dialogCloseButton: {id:getNewId(), title:'$vuetify.texts.simple.actions.close', icon:'close', allig:'right', click:'dialogClose', needCheck:false},
 		}),
 		props:{
-			dialogId: {type: Number, required: true}, 			
+			dialogId: {type: Number, required: true}, 
 		},
 		computed: {
 			dialogConfigGet(){
@@ -35,27 +33,38 @@
 				let vm=this
 				return vm.dialogParams(vm.dialogId)
 			},
+			saveButtonId(){
+				return getNewId()
+			},
+			dialogButtons(){  
+				let vm=this
+				if (vm.dialogParamsGet=== undefined )
+					return[]
+				return [ {
+					id:vm.saveButtonId, 
+					title:nvlo(vm.dialogParamsGet.saveButtonProp).title||'$vuetify.texts.simple.actions.save', 
+					icon:nvlo(vm.dialogParamsGet.saveButtonProp).icon||'save', 
+					allig:'left', 
+					click:'dialogSave', 
+					needCheck:nvlo(vm.dialogParamsGet.saveButtonProp).needCheck||true}, ]
+			},
 			inputs() {
 				let vm=this
 				let data= [
-					{id:1, form:'object-tree-add',	code:'obj_level', 	name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 		type:'LIST', 		nullable:0, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
-					{id:2, form:'object-tree-add',	code:'tree_group', 	name:'Тип', 					placeholder:'Тип объекта', 						type:'LIST', 		nullable:0, column_size:30, sort_seq:2, table_values:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
-					{id:3, form:'object-tree-add',	code:'tree_desc', 	name:'Название',				placeholder:'Описание объекта', 				type:'INPUT',		nullable:0, column_size:30, sort_seq:3, max_len:25 },
+					{id:getNewId(), form:'treeAdd',		code:'obj_level', 	name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 		type:'LIST', 		nullable:0, column_size:30, sort_seq:1, table_values:[{value:'cur',text:'На текущем уровне'},{value:'inside',text:'Вложенный'},]  },
+					{id:getNewId(), form:'treeAdd',		code:'tree_group', 	name:'Тип', 					placeholder:'Тип объекта', 						type:'LIST', 		nullable:0, column_size:30, sort_seq:2, table_values:[{value:'node',text:'Узел дерева'},{value:'ARM',text:'Рабочая область'},{value:'filter',text:'Фильтр'},{value:'input',text:'Поле ввода'},]  },
+					{id:getNewId(), form:'treeAdd',		code:'tree_desc', 	name:'Название',				placeholder:'Описание объекта', 				type:'INPUT',		nullable:0, column_size:30, sort_seq:3, max_len:25 },
 					
-					{id:4, form:'auth-login', 		code:'login', 		name:'Пользователь', 			placeholder:'Логин пользователя', 				type:'INPUT', 		nullable:0, column_size:30, sort_seq:1,  },
-					{id:5, form:'auth-login', 		code:'password',	name:'Пароль', 					placeholder:'Пароль пользователя', 				type:'PASSWORD', 	nullable:0, column_size:30, sort_seq:2,  },
-					{id:6, form:'auth-login', 		code:'remember',	name:'Запомнить мои данные', 	placeholder:'Запомнить данные пользователя', 	type:'BOOL',		nullable:1, column_size:30, sort_seq:3,  },
+					{id:getNewId(), form:'authLogin', 	code:'login', 		name:'Пользователь', 			placeholder:'Логин пользователя', 				type:'INPUT', 		nullable:0, column_size:30, sort_seq:1,  },
+					{id:getNewId(), form:'authLogin', 	code:'password',	name:'Пароль', 					placeholder:'Пароль пользователя', 				type:'PASSWORD', 	nullable:0, column_size:30, sort_seq:2,  },
+					{id:getNewId(), form:'authLogin', 	code:'remember',	name:'Запомнить мои данные', 	placeholder:'Запомнить данные пользователя', 	type:'BOOL',		nullable:1, column_size:30, sort_seq:3,  },
 				]
 				return data.filter(row =>  row.form == vm.paramsForm ).sort( (a, b) =>{return sort(a, b, 'sort_seq', 'sort_seq')})
 			},
 			buttons() {
-				let vm=this
-				let tmp = [], buttons=[]
-				if(vm.paramsForm=='auth-login')
-					buttons=authButtons
-				else 
-					buttons=vm.dialogButtons
-				buttons.forEach((row)=> { tmp.push({...row, disabled: ( row.needCheck==true && !vm.inputsValid ) }) })
+				let vm=this,
+					tmp = [];
+				(vm.dialogConfigGet.buttons||vm.dialogButtons).concat(vm.dialogCloseButton).forEach(row=> { tmp.push({...row, disabled: ( row.needCheck==true && !vm.inputsValid ), loading: ( row.click=='dialogSave' && vm.loading ) }) })
 				return tmp
 			},
 		},
@@ -77,20 +86,24 @@
 				if(vm.dialogParamsGet.saveFunc)
 					 vm.dialogParamsGet.saveFunc(todo)
 				else{
-					if(vm.paramsForm=='auth-login'){
+					if(vm.paramsForm=='authLogin'){
 						let tmp={}
 						for (name in todo)
 							tmp[name]= todo[name].value
 						todo=tmp
 					}
 					console.log(todo)
-					sendRequest({href:nvl(vm.dialogParamsGet.socetHref,'/data_command'), type:vm.dialogParamsGet.socetEvent, data:todo, hrefBack:vm.dialogParamsGet.hrefBack, handler:()=>vm.$refs.dialog.dialogClose() })
+					vm.loading =true
+					sendRequest({href:nvl(vm.dialogParamsGet.socetHref,'/data_command'), type:vm.dialogParamsGet.socetEvent, data:todo, hrefBack:vm.dialogParamsGet.hrefBack, 
+						handler:()=>{vm.$refs.dialog.dialogClose(); },
+						handlerErr:(()=>{vm.loading=false}), })
+						
 				}
 			},
 		},
 		created: function (){
 			let vm=this
-			let dialogTitle = vm.$vuetify.t(vm.dialogConfigGet.title)
+			let dialogTitle = vm.$vuetify.lang.t(vm.dialogConfigGet.title)
 			vm.paramsForm=vm.dialogConfigGet.name
 			vm.paramInit( {num: vm.paramsForm })
 			vm.$root.$on('dialog'+vm.dialogId+'InputsCols', (obj)=>{

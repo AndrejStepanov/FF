@@ -1,45 +1,41 @@
 <template>
-	<c-app :curentSystem="curentSystem" :panelLeft="{show:true}"  :panelRight="{show:true}"  :mainPanelConfig="mainPanelConfig" >
-		<template slot="panelLeft">
+	<c-app :curentSystem="curentSystem" :panelLeft="{show:true}"  :panelRight="{show:true}"  >
+		<template v-slot:panelLeft>
 			<v-list dense>
-				<v-list-tile v-for="item in systems" :key="item.name" @click="choose_sys(item.name);">
-					<v-list-tile-action>
+				<v-list-item v-for="item in systems" :key="item.name" @click="choose_sys(item.name);">
+					<v-list-item-action>
 						<v-icon>{{ item.icon }}</v-icon>
-					</v-list-tile-action>
-					<v-list-tile-content>
-						<v-list-tile-title>{{ $vuetify.t(item.name) }}</v-list-tile-title>
-					</v-list-tile-content>
-				</v-list-tile>
+					</v-list-item-action>
+					<v-list-item-content>
+						<v-list-item-title>{{ $vuetify.lang.t(item.name) }}</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
 			</v-list>
 		</template>
-		<template slot="panelRight">
+		<template v-slot:panelRight>
 			<v-list dense>
-				<v-list-tile v-for="item in Links" :key="item.id" v-bind:href="item.is_new_type==1?'':item.href" :title="item.is_new_type!=1?$vuetify.t(item.title):''" >                        
-					<v-list-tile-action v-if="item.is_new_type!=1 " >
+				<v-list-item v-for="item in Links" :key="item.id" v-bind:href="item.is_new_type==1?'':item.href" :title="item.is_new_type!=1?$vuetify.lang.t(item.title):''" >                        
+					<v-list-item-action v-if="item.is_new_type!=1 " >
 						<v-icon>{{ item.icon }}</v-icon>
-					</v-list-tile-action>
-					<v-list-tile-content >
-						<v-list-tile-title v-if="item.is_new_type==1 " >{{ $vuetify.t(item.type) }}</v-list-tile-title>
-						<v-list-tile-title  v-else>{{ $vuetify.t(item.name) }}</v-list-tile-title>
-					</v-list-tile-content>
-				</v-list-tile>
+					</v-list-item-action>
+					<v-list-item-content >
+						<v-list-item-title v-if="item.is_new_type==1 " >{{ $vuetify.lang.t(item.type) }}</v-list-item-title>
+						<v-list-item-title  v-else>{{ $vuetify.lang.t(item.name) }}</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
 			</v-list>
 		</template>
-		<template slot="fourth">
-			<H1>fourth</H1> fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif  ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y
-		</template>
-		<template slot="sixth">
-			<H1>sixth</H1> fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y
+
+			<H1>fourth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	
+	
+			<H1>sixth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 			
-		</template>
-		<template slot="fifth">
-			<H1>fifth</H1> fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y
+	
+		
+			<H1>fifth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 			
-		</template>
-		<template slot="seventh">
-			<H1>seventh</H1> fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y fkwsehf vbsjfy siof goaseif gwaoeifygewoiyfgaweoif ygwoaeiyvg weoiycg weaoiyg weaioy gweiv gweoivyu gweoivyg weaif gwoaeyfwfli uygweofuiwaegfpoweug fpowufag poewfugwoeafuihgwae of8y
-			
-		</template>
+
 	</c-app>
 </template>
 
@@ -51,7 +47,7 @@
 				{name:'$vuetify.texts.main.systems.objects.name' ,title:'$vuetify.texts.main.systems.objects.title', icon: 'dashboard'},
 			],
 			ALL_Links:[
-				{id:1, system:'$vuetify.texts.main.systems.objects.name',color:'',type:'$vuetify.texts.main.links.types.ARM',name:'$vuetify.texts.main.links.objWork.name',	icon: 'local_activity',	href:'/Работа_с_объектами',	title:'$vuetify.texts.main.links.objWork.title', },
+				{id:1, system:'$vuetify.texts.main.systems.objects.name',color:'',type:'$vuetify.texts.main.links.types.ARM',name:'$vuetify.texts.main.links.objWork.name',icon: 'local_activity',	href:'/Работа_с_объектами',	title:'$vuetify.texts.main.links.objWork.title', },
 				{id:2, system:'$vuetify.texts.main.systems.objects.name',color:'',type:'$vuetify.texts.main.links.types.ARM',name:'$vuetify.texts.main.links.obgView.name', icon: 'dvr', 			href:'/Просмотр_объектов',	title:'$vuetify.texts.main.links.obgView.title', },
 			],
 			Links:[
@@ -76,7 +72,7 @@
 				let vm=this,
 					cur_type=''
 				vm.Links=[]
-				vm.curentSystem=vm.$vuetify.t(name);
+				vm.curentSystem=vm.$vuetify.lang.t(name);
 				vm.ALL_Links.forEach(link => {
 					if (link.system!=name )
 						return;

@@ -55,11 +55,6 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 */
 	public $id;
 	/**
-	 * Идентификатор внешнего пользователя
-	 * @var string
-	 */
-	public $userId;
-	/**
 	 * хеш пароля, под которым зашел пользователь
 	 * @var string
 	 */
@@ -77,6 +72,7 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	public $dateFn;
 	public $oldTicket;
 	public $systemLanguage;
+	public $avatar;
 
 	/**
 	 * Поиск по параметрам авторизации
@@ -85,20 +81,24 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 */
 	public function findByCredentials($credentials){
 		$this->isRoot='N';
-		$data = $this->createModel()->newQuery()->where('login', $credentials['login'])->first();
+		$data = $this->createModel()->newQuery()->where('login', $credentials['login'])->where('user_system', nvl($credentials['user_system'],config('app.name')) )->first();
 		if( isset($data) &&  $this->hasher-> check ($credentials['password'], $data ['password'])){
 			$this->id=$data['id'];
 			$this->storage='home';
 			$this->isRoot=$data['is_root'];
 			$this->name=$data['name'];
 			$this->email=$data['email1'];
-			$this->password=$this->hasher->make($credentials['password']);
-			$this->dateSt  = time();
-			$this->dateFn  = time()+ ( 8 * 60 * 60);
-			$this->systemLanguage  = 'ru';
+			$this->avatar=$data['avatar'];
+			$this->systemLanguage=$data['systemLanguage'];
+			$this->password=$this->hasher->make($credentials['password']);		
 			return $this;
 		}
 		throw new \App\Exceptions\KonsomException('Ошибка при авторизации', 'Указанные логин и пароль не найдены!');
+	}
+
+	public function initForLogin(){
+		$this->dateSt  = time();
+		$this->dateFn  = time()+ ( 8 * 60 * 60);
 	}
 
 	/**
@@ -109,12 +109,12 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	public function save(){
         session()->push('authStorage',$this->storage);
         session()->push('authId',$this->id);
-        session()->push('authUserId',$this->userId);
         session()->push('authPassword',$this->password);
         session()->push('authTimestamps',$this->timestamps);
         session()->push('authRememberToken',$this->remember_token);
         session()->push('authEmail',$this->email);
         session()->push('authName',$this->name);
+        session()->push('authAvatar',$this->avatar);
         session()->push('authIsRoot',$this->isRoot);
         session()->push('authDateSt', $this->dateSt);
         session()->push('authDateFn', $this->dateFn);
@@ -129,12 +129,12 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	public function findById($identifier){
 		$this->storage= session()->get('authStorage')[0];
 		$this->id= session()->get('authId')[0];
-		$this->userId= session()->get('authUserId')[0];
 		$this->password= session()->get('authPassword')[0];
 		$this->timestamps= session()->get('authTimestamps')[0];
 		$this->remember_token= session()->get('authRememberToken')[0];
 		$this->email= session()->get('authEmail')[0];
 		$this->name= session()->get('authName')[0];
+		$this->avatar= session()->get('authAvatar')[0];
 		$this->isRoot= session()->get('authIsRoot')[0];
 		$this->dateSt= session()->get('authDateSt')[0];
 		$this->dateFn= session()->get('authDateFn')[0];

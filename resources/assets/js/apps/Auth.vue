@@ -1,5 +1,5 @@
 <template>
-	<c-app curentSystem="Авторизация" >
+	<c-app :curentSystem="$vuetify.lang.t('$vuetify.texts.simple.labels.auth')" :panelLeft="{drawer:false}"   >
 
 	</c-app>
 </template>

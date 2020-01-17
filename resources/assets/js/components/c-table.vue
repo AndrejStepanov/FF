@@ -1,52 +1,47 @@
 <template>
-	<v-card  >
-		<v-card-title v-if="tableTitle!='' || searchNeed" ref="title">
-			<h3 class="headline mb-0">{{$vuetify.t(tableTitle)}}</h3> 
+	<v-card height="100%" >
+		<v-card-title v-if="tableTitle!='' || searchNeed" ref="title" class='noPadding'>
+			<h3 class="headline ml-2">{{$vuetify.lang.t(tableTitle)}}</h3> 
 			<template v-if="searchNeed">
 				<v-spacer/>
-				<v-text-field	v-model="search"	append-icon="search"	:label="$vuetify.t('$vuetify.texts.simple.labels.searchInFields')"	single-line	hide-details clearable  	/>				
+				<v-text-field v-model="search"	append-icon="search" :label="$vuetify.lang.t('$vuetify.texts.simple.labels.searchInFields')"	single-line	hide-details clearable />				
+			</template>
+			<template v-if="fiterButtonhNeed">
+				<v-spacer/>
+				<v-btn  class="mr-2" color="accent" @click="$emit('fiterButtonClick')"  > {{$vuetify.lang.t('$vuetify.texts.simple.labels.filter')}} <v-icon right>filter_list</v-icon>   </v-btn>			
 			</template>
 		</v-card-title>
-		<v-data-table	:value="selectedValues" :headers ="tabHeads" :items ="tabRows" :headersLength ="headersLength" :headerText ="headerText" :headerKey ="headerKey" :hideHeaders ="hideHeaders" :rowsPerPageText ="rowsPerPageText" :expand ="expand" 
-				:hideActions ="hideActions"  :noResultsText ="noResultsText" :nextIcon ="nextIcon" :prevIcon ="prevIcon" :rowsPerPageItems ="rowsPerPageItems" 
-				:selectAll ="selectAll" :search ="search"   :itemKey ="itemKey" ref="table"	 :customFilter="searchInTable" 
-				:class="getMainTableClass" :style="getMainTableStyle"
-				@update:pagination='updateTabFirstNum'>
-			<template slot="headers" slot-scope="props">
-				<template v-if="manHead" >
-					<slot name="headers" :headers="props.headers" :indeterminate="props.indeterminate" :all="props.all"/>
+		<v-data-table :dense="dense" :fixed-header="fixedHeader"	:value="selectedValues" :headers ="tabHeadsVisible" :items ="tabRows" v-bind="vDataTableProp" :headersLength="headersLength" :headerText="headerText" 
+				:headerKey="headerKey"  :loading="loading" :search="search"   :itemKey="itemKey" ref="table"	:class="getMainTableClass" :style="getMainTableStyle" height="calc(100% - 60px)"  > <!--:pagination="pagination"	@update:pagination='updateTabFirstNum'-->
+			<template v-if="noVuetifyHead && manHead" v-slot:header="props"  >
+				<slot name="header" :props="props"/>
+			</template>
+			<template v-slot:item="props">
+				<template v-if="manBody" >
+					<slot name="item" :item="props.item" :index="props.index" :selected="props.selected" :expanded="props.expanded"/>
 				</template>
 				<template v-else >			
-					<tr>
-						<th v-if="!noRowNum" class='column active width-one-percent'>
-							<v-checkbox v-if="selecttableTypes.indexOf(typeSelect)!=-1 && selectAll"	:input-value="typeSelect=='one'?selectedValues.length: props.all"	:indeterminate="typeSelect=='one'?false:props.indeterminate"	 
-								:color="checkBoxColor"	hide-details	@click.native="toggleAll"  />
-							<template v-else>
-								№<br>п/п
-							</template>
-						</th>
-						<th	v-for="header in tabHeads"	:key="header.code" 	 v-if="header.visible" class='column active'		>
-							{{ header.text }}
-						</th>
+					<tr :active="props.selected" @click="selectRow(props)" :class="{'v-data-table__selected':props.isSelected}">
+						<td	v-if="vDataTableProp.showSelect" 														>	<v-simple-checkbox	:value="props.isSelected"  />		</td><!--<v-checkbox	:input-value="props.selected" :color="checkBoxColor"	hide-details /> убрал из-за того что синхронизация не хило так тормозит -->
+						<td	v-for="header in tabHeadsVisible"	:key="header.value" 	:class="header.clsssCell"	>	{{props.item[header.value]}}			</td>
 					</tr>
 				</template>
 			</template>
-			<template slot="items" slot-scope="props">
-				<template v-if="manBody" >
-					<slot name="items" :item="props.item" :index="props.index" :selected="props.selected" :expanded="props.expanded"/>
-				</template>
-				<template v-else >			
-					<tr :active="props.selected" @click="selectRow(props)">
-						<td	v-if="!noRowNum" class='width-one-percent'																>	{{props.item._id+1}}				</td><!--<v-checkbox	:input-value="props.selected" :color="checkBoxColor"	hide-details /> убрал из-за того что синхронизация не хило так тормозит -->
-						<td	v-for="header in tabHeads"	:key="header.code" 	v-if="header.visible"	:class="header.clsssCell"		>	{{props.item[header.code]}}			</td>
-					</tr>
-				</template>
+			<template v-slot:progress>
+				<c-loading slot="progress" />
+			</template>
+			<template v-slot:no-data>
+				<tr>
+					<td colspan="99" class="text-xs-center">{{loading? $vuetify.lang.t(dataLoadingText) : $vuetify.lang.t(noResultsText) }}</td>
+				</tr>
 			</template>
 		</v-data-table>
 	</v-card>
 </template>
 
 <script>
+	import CLoading from '../components/c-loading'
+	import {Ripple,} from 'vuetify/lib/directives'
 	export default {
 		name:'c-table',
 		data: () => ({
@@ -56,37 +51,43 @@
 			selectedValues:[],
 			selecttableTypes:['one','multy'],
 			search:'',
+			blocksSize:{},
 		}),
-		props:{
-			typeSelect: {type: String,	default: ''	},
-			manHead:false,
-			manBody:false,
-			searchNeed:false,
-			tableTitle:'',
-			noRowNum:false,
-			height:{type: Number	},
+		props:{			
+			manHead:{type:Boolean,	default: false	},
+			dense:{type:Boolean,	default: true	},
+			manBody:{type:Boolean,	default: false	},
+			manProgress:{type:Boolean,	default: false	},
+			noVuetifyHead: {type:Boolean,	default: true	},
+			searchNeed:{type:Boolean,	default: false	},
+			fiterButtonhNeed:{type:Boolean,	default: false	},
+			loading:{type:Boolean,	default: false	},
+			tableTitle: {type:String,	default: ''	},
+			withRowNum:{type:Boolean,	default: false	},
+			height:{type: Number},
+			layoutSize: {type: Object, default: () => {} },
 			//взято из v-data-table
+			//pagination: {type: Object,  default: () => {} },
+			vDataTableProp: {type: Object },
 			headers: {type: Array,	default: () => []	},
 			items: {type: Array,		default: () => []	},
-			headersLength: {type: Number	},
+			headersLength: {type: Number, default:0	},
 			headerText: {type: String,	default: 'text'	},
-			headerKey: {type: String,	default: null	},
-			hideHeaders: {type:Boolean,	default: false	},
-			rowsPerPageText: {type: String,	default: '$vuetify.dataTable.rowsPerPageText'	},
-			expand: Boolean,
-			hideActions: {type:Boolean,	default: false	},
-			noResultsText: {type: String,	default: '$vuetify.dataIterator.noResultsText'	},
-			nextIcon: {type: String,	default: '$vuetify.icons.next'	},
-			prevIcon: {	type: String,	default: '$vuetify.icons.prev'	},
-			rowsPerPageItems: {type: Array,	default: ()=>{return [500, 250, 100, 50, 25, 2, { text: '$vuetify.dataIterator.rowsPerPageAll',   value: -1 }]}	},
-			selectAll: [Boolean, String],
+			headerKey: {type: String,	default: 'value'	},
+			dataLoadingText: {type: String,	default: 'dataLoadingText'	},
+			noResultsText: {type: String,	default: 'dataLoadingText'	},
 			value: {type: Array,	default: () => []	},
 			itemKey: {type: String,	default: '_id'	},
+			fixedHeader:{type:Boolean,	default: true	},
 		},	
 		computed: {
+			typeSelect(){return  this.vDataTableProp.singleSelect?'one': this.vDataTableProp.singleSelect===false?'multy':''	},			
 			tabHeads(){
-				let  vm = this
-				return  vm.headers.map((head,i) => {
+				let  vm = this,
+					tmp = [vm.withRowNum?{value:'_id', text:vm.$vuetify.lang.t('$vuetify.texts.simple.labels.numInOrder'), type:'int', clsssCell:'width-one-percent'}:{}]
+				if(vm.headers.find((head,i) => head.type==undefined )!=undefined)
+					throw new Error('Всем элементам заголовка необходимо указывать поле type!')
+				return  tmp.concat( vm.headers).map((head,i) => {
 					let _isNumeric = !(head.type.match(/^numeric/i)==null),
 						_isDate=!(head.type.match(/^date/i)==null),
 						_isInt = !(head.type.match(/^int/i)==null)
@@ -96,48 +97,45 @@
 					}
 				})
 			},
+			tabHeadsVisible(){
+				return this.tabHeads.filter((row)=>row.visible)
+			},
 			tabRows(){
 				let  vm = this,
 					isNumeric=[],
 					isDate=[]
-				if(vm.manBody)
-					return vm.items
-				let e =  vm.items.map((element,i) => {
+				return vm.items.map((element,i) => {
 					let tmp={}
-					vm.tabHeads.forEach((head,j) =>{
-						if(!head.visible)
-							return
-						tmp[head.code] = vm.valFormat(element[head.code],head.type, head.replace, head._isNumeric, head.mask, head._isDate,)
-					})
-					return {...tmp, _id:i}
+					if(vm.manBody)
+						tmp = element
+					else
+						vm.tabHeads.forEach((head,j) =>{
+							tmp[head.value] = vm.valFormat(element[head.value],head.type, head.replace, head._isNumeric, head.mask, head._isDate,)
+						})
+					return {...tmp, _id:i+1}
 				})
-				return e
 			},
 			getMainTableStyle(){
 				let vm=this
 				return {
-					height: (vm.isMounted && vm.height>0 ? vm.height-vm.$refs.title.clientHeight+ 'px' : -1)  ,
-					overflowY: 'auto',
+					height:'calc(100% - 81px)'  ,
 				}
 			},
 			getMainTableClass(){
 				let vm=this
 				return {
 					"c-table":true,
-					"tabFullHeight": vm.hideActions,					  
-					"tabWithPagination": !vm.hideActions,				  
+					"tabFullHeight": vm.hideActions,					  		  
 				}
 			},
 		},
-		mixins: [
-		],
+		components: {
+			CLoading,
+		},
+		directives:{
+			Ripple,
+		},
 		methods: {
-			searchInTable (items, search, filter, headers) {
-				search = search.toString().toLowerCase()
-				if (search.trim() === '') return items
-				const props = headers.map(h => h.code)
-				return items.filter(item => props.some(prop => filter(item[prop], search)))
-			},
 			valFormat(val, type,replace, isNumeric=false, mask, isDate=false){//вполне себе может быть использована и извне
 				let vm=this
 				if(val==undefined || val=='' || ( isNumeric && val==0) )
@@ -147,10 +145,6 @@
 				if(isNumeric)
 					val=numberFormat(val,mask)
 				return val
-			},
-			updateTabFirstNum(obj){
-				let vm = this
-				vm.tabFirstNum= (!vm.isMounted ||  vm.$refs.table==undefined || obj.page==1?0:(obj.page-1)*obj.rowsPerPage) +1
 			},
 			selectRow (props) {
 				let vm = this,
@@ -198,8 +192,15 @@
 	}
 </script>
 <style> 
-	/* https://tallent.us/vue-scrolling-table/ */
-
+	.c-table	{overflow-Y: auto}
 	.c-table.tabFullHeight>div {height: 100%; width: 100%; overflow: auto; }
-	.c-table.tabWithPagination>div.v-table__overflow {height: calc(100% - 59px); width: 100%; overflow: auto; }
+	.c-table.v-data-table__wrapper>div {height: 100%; width: 100%; overflow: auto; }
+	table.v-table tbody td:first-child, 
+	table.v-table tbody td:not(:first-child),
+	table.v-table tbody th:first-child, 
+	table.v-table tbody th:not(:first-child), 
+	table.v-table thead td:first-child, 
+	table.v-table thead td:not(:first-child), 
+	table.v-table thead th:first-child, 
+	table.v-table thead th:not(:first-child)	{padding: 2px !important;}
 </style>

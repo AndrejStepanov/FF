@@ -5,7 +5,13 @@
 			dialogModule:'',	
 			dialogsConfig: {
 				/* оставил для примера, в результирующей компоненте должна быть описана эта структура
-				trace:{id: getNewId(),  module:'m-input-fields',  name:"object-tree-add", title:"$vuetify.texts.modals.treeAdd.title", width:1024, height:600, params:{socetHref:"/data_command", socetEvent:"object.tree.add"},kyes:{treeId:0}, }
+				authLogin:{
+					id: getNewId(),  
+					module:'m-input-fields',  
+					title:"$vuetify.texts.modals.auth.title", 
+					buttons:[{id:1, title:'$vuetify.texts.simple.actions.logIn', icon:'input', allig:'right', click:'dialogSave' , needCheck:true}],
+					params:{ socetHref:"/login", socetEvent:"auth.login"}, 
+				},
 				*/
 			},	
 		}),
@@ -22,7 +28,7 @@
 				for (name in vm.dialogsConfig)
 					if(vm.dialogsConfig[name].id==dialogId ){
 						res=1
-						vm.dialogModule=vm.dialogsConfig[name].module
+						vm.dialogModule=vm.dialogsConfig[name].module||'m-input-fields'
 						break
 					}
 				if(res==0)
@@ -33,8 +39,9 @@
 			let vm=this
 			for (let dialog in vm.dialogsConfig)
 				vm.dialogInit({
-					config:{id:vm.dialogsConfig[dialog].id, name:vm.dialogsConfig[dialog].name, title:vm.dialogsConfig[dialog].title, width:vm.dialogsConfig[dialog].width, height:vm.dialogsConfig[dialog].height}, 
-					params:vm.dialogsConfig[dialog].params })
+					config:{id:vm.dialogsConfig[dialog].id, name:dialog, title:vm.dialogsConfig[dialog].title, width:vm.dialogsConfig[dialog].width, height:vm.dialogsConfig[dialog].height, buttons:vm.dialogsConfig[dialog].buttons, }, 
+					params:vm.dialogsConfig[dialog].params 
+				})
 		},
 	}
 </script>

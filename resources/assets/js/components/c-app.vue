@@ -1,28 +1,33 @@
 <template>
-    <v-app dark >
-		<c-head ref="head" :curentSystem='curentSystem' :showLeft="panelLeftDrawer" :showRight="panelRightDrawer"/>
-		<v-content ref='content' :style="getContentStyles">
-			<v-navigation-drawer v-if="panelLeftDrawer" fixed v-model="panelLeftShowen" left :clipped="$vuetify.breakpoint.width > 1264"  app :class="panelLeft.class" :width="panelLeftWidth">
-				<slot name="panelLeft"/>
-			</v-navigation-drawer>
-			<v-navigation-drawer v-if="panelRightDrawer" fixed v-model="panelRightShowen" right :clipped="$vuetify.breakpoint.width > 1264"  app :class="panelRight.class" :width="panelRightWidth">
-				<slot name="panelRight"/>
-			</v-navigation-drawer>
-			<slot v-if="!mainPanelReq" />
-			<c-layouts v-else :config="mainPanelConfig">
-				<div  v-for="(slotName, index) in slotNames" :key="index"   :slot="slotName" >
-					<slot :name="slotName" />
-				</div>
+    <v-app  >
+		<c-head app ref="head" v-if="needHeader" :curentSystem='curentSystem' :dark="isPerefThemeDark" :light="isPerefThemeLight" :showLeft="panelLeftDrawer" :showRight="panelRightDrawer" :needLabel="needLabel" 
+			:fixed="headFixed" :headHideOnScroll="headHideOnScroll" :headElevateOnScroll="headElevateOnScroll"/>
+		<v-navigation-drawer app v-if="panelLeftDrawer" :dark="isPerefThemeDark" :light="isPerefThemeLight" v-model="panelLeftShowen" left  touchless :class="panelLeft.class" :width="panelLeftWidth">
+			<slot name="panelLeft"/>
+		</v-navigation-drawer>
+		<v-navigation-drawer app v-if="panelRightDrawer" :dark="isPerefThemeDark" :light="isPerefThemeLight"  v-model="panelRightShowen" right  touchless :class="panelRight.class" :width="panelRightWidth">
+			<slot name="panelRight"/>
+		</v-navigation-drawer>
+		<v-content ref='content' :style="getContentStyles" >
+			<div ref='scrollArea'/>
+			<slot v-if="!mainLayoutConfig" />
+			<c-layouts v-else :name="layoutName" :size="$vuetify.breakpoint">
+				<template  v-for="(slotName, index) in slotNames"    v-slot:[slotName] >
+					<div :key="index">
+						<slot  :name="slotName" />
+					</div>
+				</template>
 			</c-layouts>
 		</v-content>
-		<c-footer :fixed="mainPanelReq"/>
-		<c-msg-list />
+		<c-footer v-if="needFooter" :dark="isPerefThemeDark" :light="isPerefThemeLight" />
+		<c-msg-list   />
 		<slot name="dialogs" />
-		<component v-bind:is="dialogModule" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened"/>
+		<component v-bind:is="dialogModule" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened" />
     </v-app>
 </template>
 
 <script>	
+	import XAuth from '../mixins/x-auth'
 	import XStore from '../mixins/x-store'
 	import XDialog from '../mixins/x-dialog'
     import CHead from '../components/c-head'
@@ -31,44 +36,64 @@
     export default {
 		name:'c-app',
 		data:() => ({
-			dialogsConfig: {
-				auth:{id: getNewId(),  module:'m-input-fields',  name:"auth-login", title:"$vuetify.texts.modals.auth.title", 	params:{ socetHref:"/login", socetEvent:"auth.login"}, }
-			},
 			panelLeftShowen: false,
 			panelRightShowen: false,
-			slotNamesCalc:[],
+			needLabel: true,
 		}),
 		props:{
-			curentSystem: {type:  String, required: true},	
-			panelLeft:{type: Object,  default: () => {return{ drawer:false, show:false, class:'', width:300, filter:false,} }}	,
+			curentSystem: {type:  String, default: ''},	
+			layoutName : {type:  String, default: 'main'},	
+			needFooter: {type:  Boolean, default: true},	
+			needHeader: {type:  Boolean, default: true},	
+			headFixed: {type:  Boolean, default: true},	
+			needBgIm: {type:  Boolean, default: true},	
+			dark: {type:  Boolean, default: false},	
+			light: {type:  Boolean, default: false},	
+			headHideOnScroll: {type:  Boolean, default: false},	
+			headElevateOnScroll: {type:  Boolean, default: false},	
+			panelLeft:{type: Object,  default: () => {return{ drawer:true, show:false, class:'', width:270, filter:false,} }}	,
 			panelRight:{type: Object,  default: () => {return{ drawer:false, show:false, class:'', width:300, filter:false,} }}	,
-			mainPanelConfig: {type: Object,  default: () => {return null/*{ //'horizontal' - внутри будут строки,  'vertical' - внутри будут столбики;  Последнему слою выставлять размер бессмысленно
-				name: 'first',   width:'100%',	height:'100%',  layout: 'vertical', resizable:false , data:[
-					{  name: 'second',   width:'50%',	height:'100%',  layout: 'horizontal'},
-					{  name: 'third',   width:'100%',	height:'100%',  layout: 'horizontal'},
-				]}*/}
-			}, 
 		},
 		computed:{
+			isPerefThemeDark(){
+				return this.dark && !this.light ? true : this.$vuetify.theme.dark? true: false
+			},
+			isPerefThemeLight(){
+				return this.light && !this.dark ? true : this.$vuetify.theme.light? true: false
+			},
+			mainLayoutConfig(){
+				return this.layoutByName(this.layoutName)
+			},
 			slotNames(){
 				let vm=this
-				if(vm.mainPanelConfig==null)
+				if(vm.mainLayoutConfig==null)
 					return[]
-				vm.calcSlotNames(vm.mainPanelConfig)
-				return vm.slotNamesCalc
+				return Object.keys(vm.layoutDescByHead(this.layoutName))
+			},
+			currentAvatar(){
+				let vm=this
+				return nvl(vm.profileAvatar(),"https://randomuser.me/api/portraits/men/85.jpg")
 			},
 			getContentStyles(){
-				let vm=this
-				if(vm.oneScreen)//финт ушами, что бы основная область не прокручивалась
-					return {height: '100px' ,}
-				else	
-					return {  }
+				let vm=this//финт ушами, что бы основная область не прокручивалась
+				return {
+					height: vm.oneScreen?'100px':null, 
+					background:vm.needBgIm?"url('storage/bg.jpg')":null , 
+					backgroundAttachment: 'fixed',
+				}
 			},
 			panelLeftDrawer(){ return this.panelLeft.drawer || this.panelLeft.show || this.panelLeft.filter	},
 			panelRightDrawer(){ return this.panelRight.drawer || this.panelRight.show || this.panelLeft.filter	},
-			panelLeftWidth(){ return this.panelLeft.filter? 358 : this.panelLeft.width  },
-			panelRightWidth(){ return this.panelRight.filter? 358 : this.panelRight.width  },
-			mainPanelReq(){ return this.mainPanelConfig==null}
+			panelLeftWidth(){ return this.panelLeft.filter? 358 : nvl(this.panelLeft.width,270)  },
+			panelRightWidth(){ return this.panelRight.filter? 358 : nvl(this.panelRight.width,300)  },
+			mainPanelReq(){ return this.mainLayoutConfig!=null},
+			authAva () {return this.profileUserName()==''?'account_circle':'launch'},
+			authItems(){
+					return this.profileUserName()==''?null: [
+					{ link: '$vuetify.texts.main.links.mainPage', 			icon: 'home', 					href:'\\user' },
+					{ link: '$vuetify.texts.main.links.prodList', 			icon: 'library_books', 			href:'\\prodList'  },
+				]
+			},
 		},
         components: {
 			CHead, CFooter,CMsgList, 
@@ -76,22 +101,21 @@
 			CLayouts: (resolve) => require(['./c-layouts.vue'], resolve),
 		},
 		mixins: [
-			XStore,XDialog,
+			XStore,XDialog,XAuth,
 		],
 		methods: {
-			calcSlotNames(obj){
+			authChange(){
 				let vm=this
-				vm.slotNamesCalc.push(obj.name)
-				if(obj.data!=undefined && obj.data.length )
-					obj.data.forEach(row => {
-						vm.calcSlotNames(row)
-					});
+				if (vm.profileUserName()=='')
+					vm.$root.$emit('systemLogin')
+				else
+					vm.$root.$emit('systemLogout')
 			},
 		},
 		created: function (){
 			let vm=this
-			vm.panelLeftShowen=vm.panelLeft.show
-			vm.panelRightShowen=vm.panelRight.show
+			vm.panelLeftShowen= ['xs','sm'].indexOf(vm.$vuetify.breakpoint.name)!=-1? false: nvl(vm.panelLeft.show,false)
+			vm.panelRightShowen=['xs','sm'].indexOf(vm.$vuetify.breakpoint.name)!=-1? false: nvl(vm.panelRight.show,false)
 			vm.$root.$on('headDrawerLeftClick', (obj)=>{
 				vm.panelLeftShowen=!vm.panelLeftShowen
 			}); 
@@ -99,10 +123,14 @@
 				vm.panelRightShowen=!vm.panelRightShowen
 			});
 			vm.$root.$on('openAuthDialog', (obj)=>{
-				vm.dialogSelect(vm.dialogsConfig.auth.id)
-				vm.dialogShowChange({name:"auth-login", isShow:true})
-			});	
-			
+				vm.dialogSelect(vm.dialogsConfig.authLogin.id)
+				vm.dialogShowChange({name:"authLogin", isShow:true})
+			});
+		},
+		mounted() {
+			let vm=this
+			vm.observer =  new IntersectionObserver(entries=>vm.needLabel= entries[0].intersectionRatio > 0);
+			vm.observer.observe(vm.$refs.scrollArea);
 		},
     }
 </script>

@@ -12,6 +12,7 @@ class SocetCommandController extends Controller{
 		
 		switch($data['type']){
 			case('object.tree.by.root'):{  $tree = new Tree(); $tree->sentTreeData(nvl($data['parent_id'],'null')); };	
+			default:{ throw new \App\Exceptions\KonsomException( 'Ошибка доступа','Нет доступа!'); };
 		}
 		return;
 	}

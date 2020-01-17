@@ -1,49 +1,48 @@
 <script>
 	import CLayout from './c-layout'
+	import XStore from '../mixins/x-store'
     export default {
 		name:'c-layouts',
 		data:() => ({
 			rendersObjects:{},
-			configPars:{},
 			isResizing: false,
+			sizes:{}
 		}),
 		props:{
-			config: {type:  Object,  default: () =>{return {  name: 'first',   width:'50%',	height:'100%',  layout: 'horizontal' , data:[]}}},
+			size: {type:  Object,  default: () =>{return {  width: 100,	height:100 } } },
+			name:{type:  String, default: 'main'},	
+		},
+		watch:{
+			size:function (newVal, oldVal){	this.layoutSizePxRecalc({head:this.name ,parentSizePx:newVal, }	)}
 		},
 		computed:{
 			resizable(){return nvl(this.config.resizable,false)	},
+			config(){return this.layoutByName(this.name)	},
+			configPars(){return this.layoutDescByHead(this.name)	},
+			configSizes(){return this.layoutSizePxByHead(this.name)	},
 		},
         components: {
 			CLayout,
 		},
+		mixins: [
+			XStore,
+		],
 		methods: {
-			recurPars({config,parent='',isLast=false}){
-				let vm= this
-				vm.$set(vm.configPars, config.name, {...config, parent,isLast})
-				if(config.data!=undefined && config.data.length){
-					config.data.forEach((element,idx) => {
-						vm.recurPars({config:element, parent:config.name, isLast: idx< config.data.length-1?false:true } )
-					});
-					config.data.forEach( (row)=>{
-						vm.configPars[row.name].last = config.data[config.data.length - 1].name
-					})
-				}
-			},
-			recurRend({config}){
+			recurRend({config,idx,cnt, layoutParent}){
 				let vm= this, tmp=[]
 				if(config.data!=undefined && config.data.length){
 					config.data.forEach((element,idx) => {
-						vm.recurRend({config:element} )
+						vm.recurRend({config:element, idx, cnt:config.data.length, layoutParent:config.data.layout} )
 					});
 					config.data.forEach((row,idx)=>{
 						tmp.push(vm.rendersObjects[row.name])
 						if(idx< config.data.length-1)
 							tmp.push(vm.$createElement('div', { class: { 'multipane-resizer': true}, attrs:{ block:row.name}, on: {mousedown: this.onMouseDown,},  }))
 					})
-					vm.rendersObjects[config.name]= vm.$createElement('c-layout', {	props:{ config:vm.configPars[config.name]} }, tmp)
+					vm.rendersObjects[config.name]= vm.$createElement('c-layout', {	props:{ config:vm.configPars[config.name], sizes:vm.configSizes[config.name]} }, tmp)
 				}
 				else 
-					vm.rendersObjects[config.name]= vm.$createElement('c-layout', {	props:{ config:vm.configPars[config.name] } }, [vm.$slots[config.name], ] )
+					vm.rendersObjects[config.name]= vm.$createElement('c-layout', {	props:{ config:vm.configPars[config.name], sizes:vm.configSizes[config.name]} }, [vm.$slots[config.name], ] )
 			},
 			onMouseDown({ target: resizer, pageX: initialPageX, pageY: initialPageY }) {
 				let vm = this,
@@ -51,62 +50,37 @@
 				if ( !vm.resizable || !resizer.className || !resizer.className.match('multipane-resizer'))
 					return
 				let parentName = vm.configPars[blockName].parent,
-					lastName=vm.configPars[blockName].last,
 					{ $el: container } =  vm,
-					 pane = resizer.previousElementSibling,
-					initialPaneWidth=parseFloat(vm.configPars[blockName].width.replace("%","").replace("px","")),
-					initialPaneHeight=parseFloat(vm.configPars[blockName].height.replace("%","").replace("px",""))
-				let curLayout = vm.configPars[parentName].layout
-				//let { offsetWidth: initialPaneWidth,    offsetHeight: initialPaneHeight,   } = pane
-				let usePercentage = !!(pane.style.width + '').match('%')
+					pane = resizer.previousElementSibling,
+					paneLast = resizer.parentElement.lastChild,
+					initialPaneWidth=parseFloat(pane.style.width),
+					initialPaneHeight=parseFloat(pane.style.height),
+					curLayout = vm.configPars[parentName].layout
+				let curAttr = curLayout == 'vertical'?'width':'height',
+					initialSizeLast = parseFloat( paneLast.style[curAttr])
 				const { addEventListener, removeEventListener } = window
 
 				const resize = (initialSize, offset = 0) => {
-					if(initialSize==undefined )
-						return
-					if (curLayout == 'vertical') 
-						return pane.style.width = usePercentage ? initialSize + offset / container.clientWidth * 100 + '%' : initialSize + offset + 'px'
-					if (curLayout == 'horizontal') 
-						return pane.style.height = usePercentage ?initialSize + offset / container.clientHeight * 100 + '%'   : initialSize + offset + 'px'
+					paneLast.style[curAttr] = initialSizeLast- offset + 'px'
+					return pane.style[curAttr] = initialSize + offset + 'px'
 				}
 				// This adds is-resizing class to container
 				vm.isResizing = true
 				// Resize once to get current computed size
-				let size = resize()
-				// Trigger paneResizeStart event
-				vm.$emit('paneResizeStart', pane, resizer, size)
+				let size =  curLayout == 'vertical' ? resize( initialPaneWidth, 0) : resize(initialPaneHeight, 0)
 				const onMouseMove = function({ pageX, pageY }) {
 					size =  curLayout == 'vertical' ? resize( initialPaneWidth, pageX - initialPageX) : resize(initialPaneHeight, pageY - initialPageY)
-					vm.$emit('paneResize', pane, resizer, size)
 				}
 
 				const onMouseUp = function({ pageX, pageY }) {
 					// Run resize one more time to set computed width/height.
-					let changeSize =0, sizeLast=0, 
-					size =  parseFloat( resize(curLayout == 'vertical' ? initialPaneWidth : initialPaneHeight, curLayout == 'vertical' ? pageX - initialPageX : pageY - initialPageY).replace("%","").replace("px",""))
-					size=size>100?100:size 
-					changeSize = (curLayout == 'vertical' ? initialPaneWidth:initialPaneHeight) - size
-					sizeLast = parseFloat((curLayout== 'vertical' ? vm.configPars[lastName].width : vm.configPars[lastName].height ).replace("%","").replace("px","")) 
-					if(sizeLast+changeSize-(usePercentage ? 5 : 100) <=0){
-						changeSize=(usePercentage ? 5 : 100)-sizeLast
-						size = (curLayout == 'vertical' ? initialPaneWidth : initialPaneHeight)-changeSize
-						sizeLast=(usePercentage ? 5 : 100)
-					}
-					else 
-						sizeLast+=changeSize
-					if(vm.configPars[parentName].layout == 'vertical'){
-						vm.configPars[blockName].width=size+(usePercentage ? '%' : 'px')
-						vm.configPars[lastName].width=sizeLast+(usePercentage ? '%' : 'px')
-					}
-					else{
-						vm.configPars[blockName].height=size+(usePercentage ? '%' : 'px')
-						vm.configPars[lastName].height=sizeLast+(usePercentage ? '%' : 'px')
-					}
-					// This removes is-resizing class to container
+					let changeSize =0, sizeLast=0
+					size =  parseInt(  parseFloat( size) / (curLayout == 'vertical'?container.clientWidth : container.clientHeight  )*100 )||1
+					vm.layoutSizeSet({head:vm.name, name:blockName, size:{[curAttr]:size}, } )
+					vm.layoutSizePxRecalc({head:vm.name ,name:parentName, }	)	
 					vm.isResizing = false
 					removeEventListener('mousemove', onMouseMove)
 					removeEventListener('mouseup', onMouseUp)
-					vm.$emit('paneResizeStop', pane, resizer, size)
 				}
 				addEventListener('mousemove', onMouseMove)
 				addEventListener('mouseup', onMouseUp)
@@ -114,12 +88,9 @@
 		},
 		created: function (){
 			let vm = this
-			vm.recurPars({config:vm.config})
 		},
 		render: function (h) {
 			let vm = this
-			if(vm.config.data==undefined || !vm.config.data.length)
-				return null
 			vm.recurRend({config:vm.config})
 			return vm.rendersObjects[vm.config.name]
 		},
@@ -128,9 +99,10 @@
 
 <style lang="scss">
 .custom-resizer {  width: 100%;  height: 100%;}
+.multipane .c-table.tabFullHeight>div {overflow: initial;}
 
 .custom-resizer > .pane {  text-align: center;  margin: 10px;  overflow: auto;}
 
-.custom-resizer.layout-v > .multipane-resizer {  margin: 0; left: 0;  position: relative;  border-style: solid; border-width: 0 thin 0 0; border-image: repeating-linear-gradient(0deg,hsla(0,0%,100%,.5) 0,hsla(0,0%,100%,.5) 2px,transparent 0,transparent 4px) 1 repeat;}
-.custom-resizer.layout-h > .multipane-resizer {  margin: 0; left: 0;  position: relative;  border-style: solid; border-width: thin 0 0; border-image: repeating-linear-gradient(90deg,hsla(0,0%,100%,.5) 0,hsla(0,0%,100%,.5) 2px,transparent 0,transparent 4px) 1 repeat;}
+.custom-resizer.layout-v > .multipane-resizer {  margin: 0; left: 0;  position: relative;  border-style: solid; border-width: 0 thin 0 0; border-image: repeating-linear-gradient(0deg,rgb(80, 80, 80) 0, rgba(255, 255, 255, 0.5) 2px,transparent 0,transparent 4px) 1 repeat;}
+.custom-resizer.layout-h > .multipane-resizer {  margin: 0; left: 0;  position: relative;  border-style: solid; border-width: thin 0 0; border-image: repeating-linear-gradient(90deg,rgb(80, 80, 80) 0, rgba(255, 255, 255, 0.5) 2px,transparent 0,transparent 4px) 1 repeat;}
 </style>
