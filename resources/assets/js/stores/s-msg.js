@@ -45,4 +45,5 @@ export default {
 			state.msgs.splice(id,1);
 		},
 	},
+	strict: process.env.NODE_ENV !== 'production',
 }

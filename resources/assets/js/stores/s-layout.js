@@ -4,7 +4,6 @@ export default {
 		struct:{},
 		structDesc:{},
 		structSizePx:{},
-		_structSizePx:{},
 	},
 	getters: { // computed properties
 		getByName: state => name => {
@@ -108,4 +107,5 @@ export default {
 			state.structSizePx[head][name] ={ ...state.structSizePx[head][name],  ...size,}
 		},
 	},
+	strict: process.env.NODE_ENV !== 'production',
 }

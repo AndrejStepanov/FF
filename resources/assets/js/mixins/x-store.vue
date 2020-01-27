@@ -1,7 +1,10 @@
 <script>
-	import {mapActions, mapGetters} from 'vuex'
+	import {mapActions, mapGetters, mapState} from 'vuex'
 	export default {
 		computed: {
+			... mapState({
+				stateParams:'param/params'
+			}),
 			... mapGetters( {//перечень функций из стандартных vuex
 				dialogById: "dialog/getById",
 				dialogByName: "dialog/getByName",

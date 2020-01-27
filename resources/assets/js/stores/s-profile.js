@@ -43,4 +43,5 @@ export default {
 			state.language='ru'
 		},
 	},
+	strict: process.env.NODE_ENV !== 'production',
 }

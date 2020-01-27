@@ -137,15 +137,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuetify_lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuetify/lib */ "./node_modules/vuetify/lib/index.js");
 
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+var _computed;
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
 //
@@ -318,98 +316,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   name: 'c-input',
   data: function data() {
     return {
-      callBackEval: '',
       checkBoxColor: 'false',
       //переопределяется в created
-      checked: false,
-      code: 'code',
-      columnSize: 0,
-      columnType: '',
-      classCss: [],
-      //[ "class1","class2",]
-      currentInput: 'v-text-field',
       dialog: false,
-      dialogWithDate: false,
-      dialogWithTime: false,
-      dialogWithRange: false,
-      editable: true,
-      error: '$vuetify.texts.msgs.incorrectValue.title',
       hasError: false,
-      hasInput: false,
       dataPickerHeight: 392,
-      id: 0,
       inputErrorState: false,
       inputErrorText: '',
-      isBirthDate: false,
-      isDateTimeLike: false,
       isMounted: false,
-      isMultiLine: false,
-      isNeed: false,
-      isNeedTab: false,
-      isNumeric: true,
-      isSliderLike: false,
       listItemLenght: 18,
       lastTimeSend: 0,
-      vMask: null,
-      maskFin: '',
-      max: null,
-      maxLen: 0,
       maxLenTypes: ['INPUT', 'NUMBER', 'PASSWORD'],
-      min: null,
-      multy: false,
-      name: '',
-      nullable: false,
-      placeholder: '',
-      readonly: false,
-      rangeSeparator: ' до ',
-      rules: [],
-      rulesChildInput: [],
       show: false,
       sign: 0,
-      signList: [{
-        code: '=',
-        icon: 'pause'
-      }, {
-        code: '!=',
-        icon: 'code'
-      }, {
-        code: '>',
-        icon: 'chevron_right'
-      }, {
-        code: '>=',
-        icon: 'last_page'
-      }, {
-        code: '<',
-        icon: 'chevron_left'
-      }, {
-        code: '<=',
-        icon: 'first_page'
-      }],
-      sortSeq: 0,
-      step: "1",
-      tabGroup: "",
-      tabHeader: [],
-      tabValues: [],
       tabSelectedRows: [],
-      tableValues: [],
-      //для листов [{value:'cur',text:'На текущем уровне'}], для TAB [{param1:1, param2:2, }]
-      tableHeader: [],
-      //для TAB [{value:'param1',text:'Параметра1',visible:true},{value:'param2',text:'Параметра2',visible:true}]
-      thumbLabelNeed: false,
       thumbSize: 10,
-      tickLabels: [],
-      tickSize: 0,
-      ticksNeed: false,
-      tip: '',
-      type: 'type',
-      value: '',
-      // предпологаю число
-      valueView: '',
-      valueArr: [],
-      //['Петя','Вася','Катя',]
-      valueArrPairs: [],
-      //[ [1,0], [1, 2] ] для дат [ ['2018-10-03', '12:52'],  ]
-      valueArrView: []
+      //value:'',// предпологаю число
+      //valueViewTmp:'',
+      valueArrPairsTmp: [] //[ [1,0], [1, 2] ] для дат [ ['2018-10-03', '12:52'],  ]
+      //valueArrView:[],
+
     };
   },
   props: {
@@ -445,7 +371,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       "default": false
     }
   },
-  computed: {
+  computed: (_computed = {
     getComponentType: function getComponentType() {
       return this.type != 'PASSWORD' ? this.type : this.type == 'PASSWORD' ? this.show ? 'text' : 'password' : 'text';
     },
@@ -595,9 +521,354 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var vm = this;
       if (!vm.isMounted) return [];
       return vm.$parent.$refs[vm.tabGroup] ? vm.$parent.$refs[vm.tabGroup][0].tabValues : [];
-    } //переход на вьюэкс
+    },
+    //переход на вьюэкс																										
+    checked: {
+      set: function set(val) {
+        if (this.needCheckBox && this.checked != val) this.paramSet({
+          num: this.paramsForm,
+          code: this.code,
+          data: {
+            checked: val
+          }
+        });
+      },
+      get: function get() {
+        return nvlo(this.paramData).checked == undefined ? false : !!this.paramData.checked;
+      }
+    },
+    code: function code() {
+      return nvlo(this.data).code || 'code';
+    },
+    paramData: function paramData() {
+      return this.paramByCode(this.paramsForm, this.code);
+    },
+    callBackEval: function callBackEval() {
+      return nvlo(this.paramData).after_edit_script || '';
+    },
+    id: function id() {
+      return nvlo(this.paramData).id || 0;
+    },
+    tip: function tip() {
+      return nvlo(this.paramData).tip || '';
+    },
+    placeholder: function placeholder() {
+      return nvlo(this.paramData).placeholder || '';
+    },
+    type: function type() {
+      return nvlo(this.paramData).type || 'type';
+    },
+    nullable: function nullable() {
+      return nvlo(this.paramData).nullable == undefined ? false : !!this.paramData.nullable;
+    },
+    columnType: function columnType() {
+      return nvlo(this.paramData).columnType || '';
+    },
+    columnSize: function columnSize() {
+      return nvlo(this.paramData).columnSize || 0;
+    },
+    sortSeq: function sortSeq() {
+      return nvlo(this.paramData).sort_seq || 0;
+    },
+    vMask: function vMask() {
+      return nvlo(this.paramData).vMask || null;
+    },
+    maskFin: function maskFin() {
+      return nvlo(this.paramData).mask_fin || '';
+    },
+    maskFinRegExp: function maskFinRegExp() {
+      return new RegExp(this.maskFin) || '';
+    },
+    error: function error() {
+      return nvlo(this.paramData).error || '$vuetify.texts.msgs.incorrectValue.title';
+    },
+    editable: function editable() {
+      return nvlo(this.paramData).editable == undefined ? true : !!this.paramData.editable;
+    },
+    multy: function multy() {
+      return nvlo(this.paramData).multy == undefined ? false : !!this.paramData.multy;
+    },
+    isDateTimeLike: function isDateTimeLike() {
+      return ['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(this.type) != -1;
+    },
+    dialogWithDate: function dialogWithDate() {
+      return ['DATE', 'DATETIME', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(this.type) != -1;
+    },
+    dialogWithTime: function dialogWithTime() {
+      return ['TIME', 'DATETIME', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(this.type) != -1;
+    },
+    dialogWithRange: function dialogWithRange() {
+      return ['DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(this.type) != -1;
+    },
+    hasInput: function hasInput() {
+      return ['HIDDEN', 'INFO', 'NBSP', 'LINE'].indexOf(this.type) == -1;
+    },
+    isSliderLike: function isSliderLike() {
+      return ['SLIDER', 'RANGE'].indexOf(this.type) != -1;
+    },
+    maxLen: function maxLen() {
+      return nvlo(this.paramData).maxLen || 0;
+    },
+    tabGroup: function tabGroup() {
+      return nvlo(this.paramData).tab_group || "";
+    },
+    isNeedTab: function isNeedTab() {
+      return this.tabGroup != '';
+    },
+    tickSize: function tickSize() {
+      return nvlo(this.paramData).tickSize || 0;
+    },
+    thumbLabelNeed: function thumbLabelNeed() {
+      return nvlo(this.paramData).thumb_label_need == undefined ? '' : !!this.paramData.thumb_label_need && this.isSliderLike ? 'always' : '';
+    },
+    isBirthDate: function isBirthDate() {
+      return nvlo(this.paramData).isBirthDate == undefined ? false : !!this.paramData.isBirthDate;
+    },
+    isMultiLine: function isMultiLine() {
+      return this.columnSize > 50;
+    },
+    rangeSeparator: function rangeSeparator() {
+      return this.$vuetify.lang.t('$vuetify.texts.simple.labels.dateRangeSeparator');
+    },
+    tabHeader: function tabHeader() {
+      //для TAB [{value:'param1',text:'Параметра1',visible:true},{value:'param2',text:'Параметра2',visible:true}]
+      var vm = this;
+      return nvlo(vm.paramData).tab_header != undefined && vm.paramData.tab_header.length > 0 ? vm.paramData.tab_header.slice() : [];
+    },
+    tabValues: function tabValues() {
+      var vm = this;
+      return nvlo(vm.paramData).tab_values != undefined && vm.paramData.tab_values.length > 0 ? vm.paramData.tab_values.slice() : [];
+    },
+    signList: function signList() {
+      var vm = this;
+      return nvlo(vm.paramData).sign_list != undefined && vm.paramData.sign_list.length > 0 ? vm.paramData.sign_list.slice() : [{
+        code: '=',
+        icon: 'pause'
+      }, {
+        code: '!=',
+        icon: 'code'
+      }, {
+        code: '>',
+        icon: 'chevron_right'
+      }, {
+        code: '>=',
+        icon: 'last_page'
+      }, {
+        code: '<',
+        icon: 'chevron_left'
+      }, {
+        code: '<=',
+        icon: 'first_page'
+      }];
+    },
+    classCss: function classCss() {
+      //[ "class1","class2",]
+      var vm = this;
+      return nvlo(vm.paramData)["class"] != undefined && vm.paramData["class"].length > 0 ? vm.paramData["class"].slice() : [];
+    },
+    currentInput: function currentInput() {
+      var vm = this;
+      return vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : vm.type == 'SLIDER' ? 'v-slider' : vm.type == 'RANGE' ? 'v-range-slider' : vm.type == 'DATE' ? 'v-date-picker' : vm.type == 'TIME' ? 'v-time-picker' : vm.type == 'TEXT' ? 'v-textarea' : vm.type == 'INPUT' && vm.isMultiLine ? 'v-textarea' : 'v-text-field';
+    },
+    tableValues: function tableValues() {
+      //для листов [{value:'cur',text:'На текущем уровне'}], для TAB [{param1:1, param2:2, }]
+      var vm = this;
+      if (nvlo(vm.paramData).table_values == undefined || vm.data.table_values == [] || vm.data.table_values.length == 0) return [];
+      return vm.data.table_values.map(function (row) {
+        var text = nvl(row.text, row.value);
+        return {
+          value: row.value,
+          textFull: text,
+          text: ['LIST'].indexOf(vm.type) == -1 ? text : text.length > vm.listItemLenght ? text.substring(0, vm.listItemLenght) + '...' : text
+        };
+      });
+    },
+    tickLabels: function tickLabels() {
+      return this.tableValues.map(function (row) {
+        return row.text;
+      });
+    },
+    isNumeric: function isNumeric() {
+      return this.tableValues == [] ? ['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(this.type) != -1 : nvl(this.tableValues.find(function (row) {
+        return !isNaN(row.value);
+      }), true);
+    },
+    min: function min() {
+      var vm = this,
+          tmp = nvlo(vm.paramData).min || null;
+      return vm.isDateTimeLike ? isNaN(tmp) ? tmp : null : vm.isSliderLike && vm.tableValues.length > 0 ? 0 : tmp;
+    },
+    max: function max() {
+      var vm = this,
+          tmp = nvlo(vm.paramData).max || null;
+      return vm.isDateTimeLike ? isNaN(tmp) ? tmp : null : vm.isSliderLike && vm.tableValues.length > 0 ? vm.tableValues.length - 1 : tmp;
+    },
+    isSliderString: function isSliderString() {
+      return this.isSliderLike && this.tableValues.length > 0 && !this.isNumeric;
+    },
+    step: function step() {
+      return this.isSliderString ? 1 : nvlo(this.paramData).step || 1;
+    },
+    ticksNeed: function ticksNeed() {
+      return this.isSliderString ? true : nvlo(this.paramData).ticksNeed == undefined ? false : !!this.paramData.ticksNeed;
+    }
+  }, _defineProperty(_computed, "tickSize", function tickSize() {
+    return nvlo(this.paramData).tickSize || this.isSliderString ? 2 : 0;
+  }), _defineProperty(_computed, "rules", function rules() {
+    var vm = this,
+        rules = [];
+    if (vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type != 'RANGE' && vm.min != null) //Границы должны быть цифрой!
+      rules.push(function (v) {
+        var _vm$$vuetify$lang;
 
-  },
+        return v >= vm.min || !vm.checked || (_vm$$vuetify$lang = vm.$vuetify.lang).t.apply(_vm$$vuetify$lang, ['$vuetify.texts.simple.msgs.valMoreOrEq'].concat([vm.min]));
+      });
+    if (vm.hasInput && vm.isNumeric && !isNaN(vm.max) && vm.type != 'RANGE' && vm.max != null) rules.push(function (v) {
+      return v <= vm.max || !vm.checked || 'Значение не должно превышать ' + vm.max + '!';
+    });
+    if (vm.hasInput && vm.maxLenTypes.indexOf(vm.type) != -1 && vm.maxLen > 0) rules.push(function (v) {
+      var _vm$$vuetify$lang2;
+
+      return v.length <= vm.maxLen || !vm.checked || (_vm$$vuetify$lang2 = vm.$vuetify.lang).t.apply(_vm$$vuetify$lang2, ['$vuetify.texts.simple.msgs.valLessOrEq'].concat([vm.maxLen]));
+    });
+    if (vm.hasInput && vm.maskFinRegExp != '') //надо помнить про экранирование
+      rules.push(function (v) {
+        return vm.maskFinRegExp.test(v) || vm.$vuetify.lang.t(vm.error);
+      });
+    if (vm.hasInput && !vm.nullable) rules.push(function (v) {
+      return v != undefined && (v != '' || v === 0) || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.fieldIsNecessary');
+    });
+    if (vm.hasInput && vm.needCheckBox && !vm.nullable) rules.push(function (v) {
+      return !!vm.checked || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.fieldMustUsed');
+    });
+    return rules;
+  }), _defineProperty(_computed, "isNeed", function isNeed() {
+    return this.hasInput && !this.nullable;
+  }), _defineProperty(_computed, "name", function name() {
+    return (this.isNeed ? '⭐ ' : '') + nvlo(this.paramData).name || '';
+    /*❗*/
+  }), _defineProperty(_computed, "valueArrPairs", {
+    set: function set(val) {
+      var vm = this;
+      if (vm.valueArrPairs.equals(val) || vm.valueArrPairs == null && val == null) return;
+      vm.paramSet({
+        num: vm.paramsForm,
+        code: vm.code,
+        data: {
+          valueArrPairs: val
+        }
+      });
+    },
+    get: function get() {
+      var vm = this,
+          tmp = nvlo(this.paramData).valueArrPairs || [[null, null], [null, null]];
+      if (!tmp.equals([[null, null], [null, null]])) return tmp;
+      if (vm.isDateTimeLike) tmp = [[null, null], [null, null]];
+      if (vm.isSliderLike) if (vm.valueArr != undefined && vm.valueArr.length > 0) vm.valueArr.forEach(function (element, i) {
+        element[0] = nvl(element[0], vm.min);
+        element[1] = nvl(element[1], vm.max);
+        if (element[0] > vm.max) element[0] = vm.max;
+        if (element[0] < vm.min) element[0] = vm.min;
+        if (element[1] > vm.max) element[1] = vm.max;
+        if (element[1] < vm.min) element[1] = vm.min;
+
+        if (element[1] < element[0]) {
+          var _ref = [element[1], element[0]];
+          element[0] = _ref[0];
+          element[1] = _ref[1];
+        }
+
+        tmp = [[element[0], element[1]]];
+      });else tmp = [[vm.min, vm.min]];
+      vm.paramSet({
+        num: vm.paramsForm,
+        code: vm.code,
+        data: {
+          valueArrPairs: tmp
+        }
+      });
+      return tmp;
+    }
+  }), _defineProperty(_computed, "value", {
+    set: function set(val) {
+      var vm = this;
+      if (vm.value === val) return;
+      vm.paramSet({
+        num: vm.paramsForm,
+        code: vm.code,
+        data: {
+          value: val,
+          valueView: vm.getValueViewFromValue(val)
+        }
+      });
+    },
+    get: function get() {
+      var vm = this,
+          tmp = nvlo(vm.paramData).value || null;
+      if (tmp != null || nvlo(vm.paramData).value === null) return tmp;
+      if (vm.type == 'LIST' && !vm.multy && vm.valueArr.length > 0) tmp = vm.valueArr[0];
+      if (vm.isDateTimeLike && !vm.multy && vm.valueArr.length > 0) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) tmp = vm.valueArr[0];else if (vm.valueArr[0].length > 1 && nvl(vm.valueArr[0][0], '') != '' && nvl(vm.valueArr[0][1], '') != '') {
+        if (['DATETIME_RANGE'].indexOf(vm.type) != -1) tmp = vm.valueArr[0][0] + vm.rangeSeparator + vm.valueArr[0][1];else if (['DATE_RANGE'].indexOf(vm.type) != -1) tmp = nvl(vm.valueArr[0][0].match(/^\d\d\d\d-\d\d-\d\d/), ['--'])[0] + vm.rangeSeparator + nvl(vm.valueArr[0][1].match(/^\d\d\d\d-\d\d-\d\d/), ['--'])[0];else if (['TIME_RANGE'].indexOf(vm.type) != -1) tmp = nvl(vm.valueArr[0][0].match(/(^\s)?\d\d:\d\d$|(^\s)?\d\d:\d\d:\d\d$/), ['--'])[0] + vm.rangeSeparator + nvl(vm.valueArr[0][1].match(/(^\s)?\d\d:\d\d$|(^\s)?\d\d:\d\d:\d\d$/), ['--'])[0];else console.log('Обнаружена коллизия исходных данных в ' + vm.code);
+      } else console.log('Обнаружен некорректно заданый диапазон исходных данных в ' + vm.code);
+      if (vm.isSliderLike) tmp = nvl(tmp, vm.min);
+      vm.paramSet({
+        num: vm.paramsForm,
+        code: vm.code,
+        data: {
+          value: tmp,
+          valueView: vm.getValueViewFromValue(tmp)
+        }
+      });
+      return tmp;
+    }
+  }), _defineProperty(_computed, "valueView", {
+    set: function set(val) {
+      var vm = this,
+          res = val;
+
+      if (vm.type != 'RANGE' && !vm.multy && !vm.dialogWithRange && !vm.isDateTimeLike && vm.hasInput) {
+        // работа просто с value
+        if (vm.isSliderLike && !vm.isNumeric || vm.type == 'LIST') res = nvlo(vm.tableValues.find(function (row) {
+          return row.textFull == val;
+        }), {
+          value: null
+        }).value;else res = val;
+      } else res = vm.isDateTimeLike ? dateFormatRevert(val) : val;
+
+      vm.value = res;
+    },
+    get: function get() {
+      return nvlo(this.paramData).valueView || this.getValueViewFromValue(this.value);
+    }
+  }), _defineProperty(_computed, "valueArr", {
+    set: function set(val) {
+      var vm = this;
+      if (this.valueArr.equals(val) || nvlo(this.paramData).value_arr === null && val == null) return;
+      this.paramSet({
+        num: this.paramsForm,
+        code: this.code,
+        data: {
+          value_arr: val,
+          valueArrView: vm.getValueArrViewFromValueArr(val)
+        }
+      });
+    },
+    get: function get() {
+      return nvlo(this.paramData).value_arr || [];
+    }
+  }), _defineProperty(_computed, "valueArrView", {
+    set: function set(val) {
+      var vm = this,
+          res = val;
+      if (vm.multy && vm.type == 'DATE') res = res.map(function (row) {
+        return dateFormatRevert(row);
+      });
+      vm.valueArr = res;
+    },
+    get: function get() {
+      return nvlo(this.paramData).valueArrView || this.getValueArrViewFromValueArr(this.valueArr);
+    }
+  }), _computed),
   watch: {
     dialog: function dialog(val) {
       var _this = this;
@@ -618,11 +889,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mixins: [_mixins_x_store__WEBPACK_IMPORTED_MODULE_1__["default"]],
   methods: {
-    getValueDatetimeFromArr: function getValueDatetimeFromArr(_ref) {
-      var check = _ref.check,
-          num = _ref.num,
-          _ref$stage = _ref.stage,
-          stage = _ref$stage === void 0 ? 0 : _ref$stage;
+    getValueViewFromValue: function getValueViewFromValue(val) {
+      var vm = this,
+          res = val;
+
+      if (vm.type != 'RANGE' && !vm.multy && vm.hasInput) {
+        // работа просто с value
+        if (!vm.dialogWithRange && !vm.isDateTimeLike && (vm.isSliderLike && !vm.isNumeric || vm.type == 'LIST')) res = nvlo(vm.tableValues.find(function (row) {
+          return row.value == val;
+        }), {
+          textFull: null
+        }).textFull;
+      } else res = vm.isDateTimeLike ? dateFormat(val) : val;
+
+      return res;
+    },
+    getValueArrViewFromValueArr: function getValueArrViewFromValueArr(val) {
+      var vm = this,
+          res = val;
+      if (vm.multy && vm.type == 'DATE') res = res.map(function (row) {
+        return dateFormat(row);
+      });else if (vm.type == 'RANGE' && !vm.multy && !vm.isNumeric) res = vm.valueArrPairs.map(function (row) {
+        return [nvlo(vm.tableValues[row[0]]).textFull, nvlo(vm.tableValues[row[1]]).textFull];
+      });else if (vm.dialogWithRange && !vm.multy) //считается что у нас есть только строки со значением и его отображением
+        res = vm.valueView.split(vm.rangeSeparator);else if (vm.hasInput && vm.multy && vm.type == 'LIST') res = vm.valueArr.map(function (row) {
+        return nvlo(vm.tableValues.find(function (row2) {
+          return row2.value == row;
+        }), {
+          textFull: null
+        }).textFull;
+      });
+      return res;
+    },
+    getValueDatetimeFromArr: function getValueDatetimeFromArr(_ref2) {
+      var check = _ref2.check,
+          num = _ref2.num,
+          _ref2$stage = _ref2.stage,
+          stage = _ref2$stage === void 0 ? 0 : _ref2$stage;
       var vm = this,
           fstPart = null,
           scndPart = null;
@@ -649,12 +952,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return fstPart + (fstPart != '' && scndPart != '' ? ['TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1 && stage == 0 ? vm.rangeSeparator : ' ' : '') + scndPart;
     },
-    parseToDateArr: function parseToDateArr(_ref2) {
-      var str = _ref2.str,
-          _ref2$stage = _ref2.stage,
-          stage = _ref2$stage === void 0 ? 1 : _ref2$stage,
-          _ref2$needReturnVal = _ref2.needReturnVal,
-          needReturnVal = _ref2$needReturnVal === void 0 ? false : _ref2$needReturnVal;
+    parseToDateArr: function parseToDateArr(_ref3) {
+      var str = _ref3.str,
+          _ref3$stage = _ref3.stage,
+          stage = _ref3$stage === void 0 ? 1 : _ref3$stage,
+          _ref3$needReturnVal = _ref3.needReturnVal,
+          needReturnVal = _ref3$needReturnVal === void 0 ? false : _ref3$needReturnVal;
       //needReturnVal- служебная, никто кроме самой функции его использовать не должен
       var vm = this,
           e = null,
@@ -675,19 +978,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
 
         if (e[0][0] > e[1][0]) {
-          var _ref3 = [e[1], e[0]];
-          e[0] = _ref3[0];
-          e[1] = _ref3[1];
-        }
-
-        if (e[0][0] == e[1][0] && e[0][1] > e[1][1]) {
           var _ref4 = [e[1], e[0]];
           e[0] = _ref4[0];
           e[1] = _ref4[1];
         }
 
-        vm.valueArrPairs.push(e[0]);
-        vm.valueArrPairs.push(e[1]);
+        if (e[0][0] == e[1][0] && e[0][1] > e[1][1]) {
+          var _ref5 = [e[1], e[0]];
+          e[0] = _ref5[0];
+          e[1] = _ref5[1];
+        }
+
+        vm.valueArrPairs = e;
         return;
       } else if (!vm.dialogWithRange || vm.type == 'DATETIME_RANGE' && stage == 2) {
         e = str.split(' ');
@@ -707,9 +1009,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         e[1] = e.length > 1 && nvl(e[1]) != '' && e[1].match(mask) == null ? null : e[1];
 
         if (e[0] > e[1]) {
-          var _ref5 = [e[1], e[0]];
-          e[0] = _ref5[0];
-          e[1] = _ref5[1];
+          var _ref6 = [e[1], e[0]];
+          e[0] = _ref6[0];
+          e[1] = _ref6[1];
         }
       }
 
@@ -726,21 +1028,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         if (vm.type == 'DATE') {
           vm.valueArrPairs = [];
-          vm.valueArr = [];
-          vm.valueArrView = [];
-          tmp.forEach(function (row, i) {
+          vm.valueArr = tmp.map(function (row, i) {
             vm.parseToDateArr({
               str: row
             });
-            vm.valueArr.push(vm.getValueDatetimeFromArr({
+            return vm.getValueDatetimeFromArr({
               num: i
-            }));
-            vm.valueArrView.push(dateFormat(vm.valueArr[i]));
+            });
           });
         } else if (vm.type == 'LIST') vm.valueArr = tmp;
       } else if (vm.type == 'RANGE') {
-        vm.valueArrPairs[0][0] = value[0];
-        vm.valueArrPairs[0][1] = value[1];
+        vm.valueArrPairs[0] = value;
       } else {
         if (['DATE', 'TIME'].indexOf(vm.type) != -1) {
           vm.valueArrPairs = [];
@@ -752,20 +1050,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           });
         } else vm.value = value;
 
-        if (['DATE', 'TIME', 'DATETIME', 'TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
+        if (vm.isDateTimeLike) {
           vm.valueArrPairs = [];
           vm.parseToDateArr({
             str: vm.value
           });
 
           if (['TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
-            vm.valueArr = [];
-            vm.valueArr.push(vm.getValueDatetimeFromArr({}));
+            vm.valueArr = [vm.getValueDatetimeFromArr({})];
             vm.value = vm.valueArr[0];
           }
-
-          vm.valueView = dateFormat(vm.value);
-        } else vm.valueView = value;
+        }
       }
 
       vm.checkRefresh({
@@ -812,6 +1107,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     changeSign: function changeSign() {
       var vm = this;
       if (vm.checked) vm.sign = (vm.sign + 1) % vm.signList.length;
+      vm.paramSet({
+        num: vm.paramsForm,
+        code: vm.code,
+        data: {
+          sign: vm.signList[vm.sign].code
+        }
+      });
       vm.checkRefresh({});
     },
     changeShow: function changeShow() {
@@ -843,9 +1145,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return;
       vm.lastTimeSend = curTime;
       vm.checked = true;
-      if (!tmp) vm.checkRefresh({
-        checkedFx: true
-      });
+
+      if (!tmp) {
+        vm.checkRefresh({
+          checkedFx: true
+        });
+        if (vm.isNeedTab) vm.dialog = true;
+      }
+
       setTimeout(function () {
         vm.$refs.input.onClick(e);
       }, 100);
@@ -857,59 +1164,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     checkRefresh: function () {
       var _checkRefresh = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref6) {
-        var _ref6$checkedFx, checkedFx, _ref6$initRun, initRun, vm, tmp1, tmp2, value, valueView, valueArr, valueArrView;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref7) {
+        var _ref7$checkedFx, checkedFx, _ref7$initRun, initRun, vm, tmp1, tmp2, value, valueArr;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _ref6$checkedFx = _ref6.checkedFx, checkedFx = _ref6$checkedFx === void 0 ? false : _ref6$checkedFx, _ref6$initRun = _ref6.initRun, initRun = _ref6$initRun === void 0 ? false : _ref6$initRun;
-                vm = this, value = vm.value, valueView = vm.value, valueArr = [], valueArrView = [];
+                _ref7$checkedFx = _ref7.checkedFx, checkedFx = _ref7$checkedFx === void 0 ? false : _ref7$checkedFx, _ref7$initRun = _ref7.initRun, initRun = _ref7$initRun === void 0 ? false : _ref7$initRun;
+                vm = this, value = vm.value, valueArr = [];
 
                 if (vm.type == 'RANGE' && !vm.multy) {
-                  value = valueView = null;
-
-                  if (vm.isNumeric) {
-                    valueArr = vm.valueArrPairs.slice();
-                    valueArrView = valueArr.slice();
-                  } else vm.valueArrPairs.forEach(function (row) {
-                    valueArrView.push([nvlo(vm.tableValues[row[0]]).textFull, nvlo(vm.tableValues[row[1]]).textFull]);
-                    valueArr.push([nvlo(vm.tableValues[row[0]]).value, nvlo(vm.tableValues[row[1]]).value]);
+                  value = null;
+                  if (vm.isNumeric) valueArr = vm.valueArrPairs.slice();else valueArr = vm.valueArrPairs.map(function (row) {
+                    return [nvlo(vm.tableValues[row[0]]).value, nvlo(vm.tableValues[row[1]]).value];
                   });
-
                   if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
                 } else if (vm.dialogWithRange && !vm.multy) {
                   //считается что у нас есть только строки со значением и его отображением
-                  valueView = vm.valueView;
                   valueArr.push(value.split(vm.rangeSeparator));
-                  valueArrView.push(valueView.split(vm.rangeSeparator));
                   if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
                 } else if (vm.hasInput && vm.multy) {
-                  value = valueView = null;
+                  value = null;
                   valueArr = vm.valueArr.slice();
-                  if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
-                    valueArr.forEach(function (rowVal) {
-                      if (row.value == rowVal) valueArrView.push(row.textFull);
-                    });
-                  });else if (vm.type == 'DATE') valueArrView = vm.valueArrView.slice();else valueArrView = valueArr.slice();
                   if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
                 } else if (vm.hasInput) {
                   // работа просто с value
-                  valueArr = valueArrView = null;
-
-                  if (vm.isSliderLike && !vm.isNumeric) {
-                    valueView = nvlo(vm.tableValues[value]).textFull;
-                    value = nvlo(vm.tableValues[value]).value;
-                  } else if (vm.type == 'LIST') vm.tableValues.forEach(function (row) {
-                    if (row.value == value) valueView = row.textFull;
-                  });else if (vm.dialogWithDate) valueView = vm.valueView;
-
+                  valueArr = null;
+                  if (vm.isSliderLike && !vm.isNumeric) value = nvlo(vm.tableValues[value]).value;
                   if (!checkedFx) vm.checked = value === '' || value == null ? false : true;
                 }
 
-                vm.setVal(value, valueView, valueArr, valueArrView, initRun);
-                if (['DATE', 'TIME', 'DATETIME', 'DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1 && !vm.multy && value == '') vm.valueArrPairs[0][0] = vm.valueArrPairs[0][1] = null;
+                vm.setVal(value, valueArr, initRun);
+                if (vm.isDateTimeLike && !vm.multy && value == '') vm.valueArrPairs[0][0] = vm.valueArrPairs[0][1] = null;
                 if (['DATETIME_RANGE'].indexOf(vm.type) != -1 && !vm.multy && value == '') vm.valueArrPairs[1][0] = vm.valueArrPairs[1][1] = null;
 
               case 6:
@@ -929,7 +1216,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     setVal: function () {
       var _setVal = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(value, value_view, value_arr, value_arr_view) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(value, valueArr) {
         var initRun,
             vm,
             _args2 = arguments;
@@ -937,27 +1224,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                initRun = _args2.length > 4 && _args2[4] !== undefined ? _args2[4] : false;
+                initRun = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : false;
                 vm = this;
+                vm.value = value;
+                vm.valueArr = valueArr;
 
                 if (vm.hasInput && vm.needCheckBox && !initRun) {
                   vm.hasError = !vm.$refs.input.validate();
                   vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
                 }
-
-                _context2.next = 5;
-                return vm.paramSet({
-                  num: vm.paramsForm,
-                  code: vm.code,
-                  data: {
-                    value: value,
-                    value_view: value_view,
-                    value_arr: value_arr,
-                    value_arr_view: value_arr_view,
-                    checked: vm.checked,
-                    sign: vm.signList[vm.sign].code
-                  }
-                });
 
               case 5:
               case "end":
@@ -967,7 +1242,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2, this);
       }));
 
-      function setVal(_x2, _x3, _x4, _x5) {
+      function setVal(_x2, _x3) {
         return _setVal.apply(this, arguments);
       }
 
@@ -978,151 +1253,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   created: function created() {
-    var vm = this,
-        regexp = '';
-    vm.callBackEval = vm.data.after_edit_script || vm.callBackEval;
-    vm.checkBoxColor = appTheme.checkBox || vm.checkBoxColor;
-    vm.id = vm.data.id || vm.id;
-    vm.value = nvl(vm.data.value, vm.value);
-    vm.code = vm.data.code || vm.code;
-    vm.name = vm.data.name || vm.name;
-    vm.tip = vm.data.tip || vm.tip;
-    vm.placeholder = vm.data.placeholder || vm.placeholder;
-    vm.type = vm.data.type || vm.type;
-    vm.nullable = vm.data.nullable || vm.nullable;
-    vm.columnType = vm.data.column_type || vm.columnType;
-    vm.columnSize = vm.data.column_size || vm.columnSize;
-    vm.sortSeq = vm.data.sort_seq || vm.sortSeq;
-    vm.vMask = vm.data.vMask || vm.vMask;
-    vm.maskFin = vm.data.mask_fin || vm.maskFin;
-    vm.error = vm.data.error || vm.error;
-    vm.checked = vm.data.checked == undefined ? vm.checked : !!vm.data.checked;
-    vm.editable = vm.data.editable == undefined ? vm.editable : !!vm.data.editable;
-    vm.multy = vm.data.multy == undefined ? vm.multy : !!vm.data.multy;
-    vm.min = nvl(vm.data.min, vm.min);
-    vm.max = vm.data.max || vm.max;
-    vm.maxLen = vm.data.max_len || vm.maxLen;
-    vm.step = vm.data.step || vm.step;
-    vm.tabGroup = vm.data.tab_group || vm.tabGroup;
-    vm.ticksNeed = vm.data.ticks_need == undefined ? vm.ticksNeed : !!vm.data.ticks_need;
-    vm.tickSize = vm.data.tick_size || vm.tickSize;
-    vm.thumbLabelNeed = vm.data.thumb_label_need || vm.thumbLabelNeed;
-    vm.isBirthDate = vm.data.isBirthDate || vm.isBirthDate;
-    vm.isMultiLine = vm.columnSize > 50;
-    if (vm.data.table_values != undefined && vm.data.table_values.length > 0) vm.data.table_values.forEach(function (element) {
-      var text = nvl(element.text, element.value);
-      vm.tableValues.push({
-        value: element.value,
-        textFull: text,
-        text: ['LIST'].indexOf(vm.type) == -1 ? text : text.length > vm.listItemLenght ? text.substring(0, vm.listItemLenght) + '...' : text
-      });
-      if (isNaN(element.value)) vm.isNumeric = false;
-    });
-    if (vm.data.tab_header != undefined && vm.data.tab_header.length > 0) vm.tabHeader = vm.data.tab_header.slice();
-    if (vm.data.tab_values != undefined && vm.data.tab_values.length > 0) vm.tabValues = vm.data.tab_values.slice();
-    if (vm.data.value_arr != undefined && vm.data.value_arr.length > 0) vm.valueArr = vm.data.value_arr.slice();
-    if (vm.data.sign_list != undefined && vm.data.sign_list.length > 0) vm.signList = vm.data.sign_list.slice();
-    if (vm.data.table_header != undefined && vm.data.table_header.length > 0) vm.tableHeader = vm.data.table_header.slice();
-    if (vm.data["class"] != undefined && vm.data["class"].length > 0) vm.classCss = vm.data["class"].slice();
-    vm.currentInput = vm.type == 'LIST' ? 'v-select' : vm.type == 'BOOL' ? 'v-checkbox' : vm.type == 'SLIDER' ? 'v-slider' : vm.type == 'RANGE' ? 'v-range-slider' : vm.type == 'DATE' ? 'v-date-picker' : vm.type == 'TIME' ? 'v-time-picker' : vm.type == 'TEXT' ? 'v-textarea' : vm.type == 'INPUT' && vm.isMultiLine ? 'v-textarea' : 'v-text-field';
-    if (vm.type == 'LIST' && !vm.multy && vm.valueArr.length > 0) vm.value = vm.valueArr[0];
+    var vm = this;
+    vm.checkBoxColor = appTheme.checkBox || vm.checkBoxColor; //-----------------------------------------------------------------------------	
 
-    if (['DATE', 'TIME', 'DATETIME', 'DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
-      vm.max = isNaN(vm.max) ? vm.max : '';
-      vm.min = isNaN(vm.min) ? vm.min : '';
-      if (!vm.multy && vm.valueArr.length > 0) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) vm.value = vm.valueArr[0];else if (vm.valueArr[0].length > 1 && nvl(vm.valueArr[0][0], '') != '' && nvl(vm.valueArr[0][1], '') != '') {
-        if (['DATETIME_RANGE'].indexOf(vm.type) != -1) vm.value = vm.valueArr[0][0] + vm.rangeSeparator + vm.valueArr[0][1];else if (['DATE_RANGE'].indexOf(vm.type) != -1) vm.value = nvl(vm.valueArr[0][0].match(/^\d\d\d\d-\d\d-\d\d/), ['--'])[0] + vm.rangeSeparator + nvl(vm.valueArr[0][1].match(/^\d\d\d\d-\d\d-\d\d/), ['--'])[0];else if (['TIME_RANGE'].indexOf(vm.type) != -1) vm.value = nvl(vm.valueArr[0][0].match(/\s\d\d:\d\d$|\s\d\d:\d\d:\d\d$/), ['--'])[0] + vm.rangeSeparator + nvl(vm.valueArr[0][1].match(/\s\d\d:\d\d$|\s\d\d:\d\d:\d\d$/), ['--'])[0];else console.log('Обнаружена коллизия исходных данных в ' + vm.code);
-      } else console.log('Обнаружен некорректно заданый диапазон исходных данных в ' + vm.code);
-      vm.valueArrPairs.push([null, null]);
-      vm.valueArrPairs.push([null, null]);
-      if (['DATE', 'DATETIME', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.dialogWithDate = true;
-      if (['TIME', 'DATETIME', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.dialogWithTime = true;
-      if (['DATE_RANGE', 'TIME_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) vm.dialogWithRange = true;
-    }
-
-    vm.isSliderLike = ['SLIDER', 'RANGE'].indexOf(vm.type) != -1;
-    vm.thumbLabelNeed = vm.isSliderLike && vm.thumbLabelNeed ? 'always' : '';
-
-    if (vm.isSliderLike) {
-      if (vm.tableValues.length > 0) {
-        vm.tableValues.forEach(function (item) {
-          vm.tickLabels.push(item.text);
-        });
-        vm.max = vm.tableValues.length - 1;
-        vm.min = 0;
-
-        if (!vm.isNumeric) {
-          vm.step = 1;
-          vm.ticksNeed = true;
-          vm.tickSize = vm.data.tick_size || 2;
-        }
-      }
-
-      vm.value = nvl(vm.value, vm.min);
-      if (vm.valueArr != undefined && vm.valueArr.length > 0) vm.valueArr.forEach(function (element, i) {
-        element[0] = nvl(element[0], vm.min);
-        element[1] = nvl(element[1], vm.max);
-        if (element[0] > vm.max) element[0] = vm.max;
-        if (element[0] < vm.min) element[0] = vm.min;
-        if (element[1] > vm.max) element[1] = vm.max;
-        if (element[1] < vm.min) element[1] = vm.min;
-
-        if (element[1] < element[0]) {
-          var _ref7 = [element[1], element[0]];
-          element[0] = _ref7[0];
-          element[1] = _ref7[1];
-        }
-
-        vm.valueArrPairs.push([element[0], element[1]]);
-      });else vm.valueArrPairs.push([vm.min, vm.min]);
-    }
-
-    if (['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(vm.type) == -1) vm.isNumeric = false;
-    if (['HIDDEN', 'INFO', 'NBSP', 'LINE'].indexOf(vm.type) == -1) vm.hasInput = true;
-    if (['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(vm.type) != -1) vm.isDateTimeLike = true;
-    if (vm.tabGroup != '') vm.isNeedTab = true;
-    if (vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type != 'RANGE' && vm.min != null) //Границы должны быть цифрой!
-      vm.rules.push(function (v) {
-        var _vm$$vuetify$lang;
-
-        return v >= vm.min || !vm.checked || (_vm$$vuetify$lang = vm.$vuetify.lang).t.apply(_vm$$vuetify$lang, ['$vuetify.texts.simple.msgs.valMoreOrEq'].concat([vm.min]));
-      });
-    if (vm.hasInput && vm.isNumeric && !isNaN(vm.max) && vm.type != 'RANGE' && vm.max != null) vm.rules.push(function (v) {
-      return v <= vm.max || !vm.checked || 'Значение не должно превышать ' + vm.max + '!';
-    });
-    if (vm.hasInput && vm.maxLenTypes.indexOf(vm.type) != -1 && vm.maxLen > 0) vm.rules.push(function (v) {
-      var _vm$$vuetify$lang2;
-
-      return v.length <= vm.maxLen || !vm.checked || (_vm$$vuetify$lang2 = vm.$vuetify.lang).t.apply(_vm$$vuetify$lang2, ['$vuetify.texts.simple.msgs.valLessOrEq'].concat([vm.maxLen]));
-    });
-    regexp = new RegExp(vm.maskFin);
-    if (vm.hasInput && regexp != '') //надо помнить про экранирование
-      vm.rules.push(function (v) {
-        return regexp.test(v) || vm.$vuetify.lang.t(vm.error);
-      });
-    vm.rulesChildInput = vm.rules.slice();
-
-    if (vm.hasInput && !vm.nullable) {
-      vm.isNeed = true;
-      vm.rules.push(function (v) {
-        return v != undefined && (v != '' || v === 0) || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.fieldIsNecessary');
-      });
-      vm.name = '⭐ ' + vm.name; //❗
-    }
-
-    if (vm.hasInput && vm.needCheckBox && !vm.nullable) vm.rules.push(function (v) {
-      return !!vm.checked || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.fieldMustUsed');
-    });
-    vm.paramSetData({
-      num: vm.paramsForm,
-      data: _objectSpread({}, vm.data, {
-        value: null,
-        value_view: null,
-        value_arr: null,
-        value_arr_view: null,
-        table_values: null
-      })
-    });
     if (vm.multy && ['DATE', 'LIST'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArr, true, true);else if (!vm.multy && ['RANGE'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArrPairs[0], true, true);else vm.setNewVal(vm.value, true, true);
   },
   mounted: function mounted() {
@@ -1359,7 +1492,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var dialogTitle = vm.$vuetify.lang.t(vm.dialogConfigGet.title);
     vm.paramsForm = vm.dialogConfigGet.name;
     vm.paramInit({
-      num: vm.paramsForm
+      num: vm.paramsForm,
+      params: vm.inputs
     });
     vm.$root.$on('dialog' + vm.dialogId + 'InputsCols', function (obj) {
       vm.dialogHeight = vm.dialogConfigGet.height > 0 ? vm.dialogConfigGet.height : obj.rowInColA * 74 + 140;

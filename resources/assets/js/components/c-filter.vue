@@ -51,7 +51,7 @@
 					]
 				return [
 					{id:1, form:'object-tree-add',	code:'m_tree_info',					name:'Объекты', 										 					type:'INFO', 																															sort_seq:1, },
-					{id:2, form:'object-tree-add',	code:'obj_param',					name:'Параметр', 				placeholder:'Ввод параметров', 				type:'INPUT', 				value:null,													multy:false,	nullable:false, column_size:30, sort_seq:2, tab_header, tab_values, tab_group:'obj_param' },
+					{id:2, form:'object-tree-add',	code:'obj_param',					name:'Параметр', 				placeholder:'Ввод параметров', 				type:'TAB', 				value:null,													multy:false,	nullable:false, column_size:30, sort_seq:2, tab_header, tab_values, tab_group:'obj_param' },
 					{id:3, form:'object-tree-add',	code:'m_tree_line1',				name:'Информация', 										 					type:'LINE', 																															sort_seq:3, },
 					{id:4, form:'object-tree-add',	code:'tree_input',					name:'Ввод', 					placeholder:'Ввод объекта', 				type:'INPUT', 				value:"ыва",												multy:false,	nullable:false, column_size:30, sort_seq:4, },
 					{id:5, form:'object-tree-add',	code:'tree_text',					name:'Текст', 					placeholder:'Ввод текста', 					type:'TEXT', 				value:"ыва",												multy:false,	nullable:false, column_size:30, sort_seq:5, },
@@ -96,7 +96,7 @@
 		},
 		created: function (){
 			let vm= this
-			vm.paramInit( {num: vm.filterName })
+			vm.paramInit( {num: vm.filterName, params:vm.inputs })
 		},
     }
 </script>

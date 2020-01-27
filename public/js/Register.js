@@ -988,7 +988,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    stateParams: 'param/params'
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     //перечень функций из стандартных vuex
     dialogById: "dialog/getById",
     dialogByName: "dialog/getByName",
@@ -15130,7 +15132,8 @@ __webpack_require__.r(__webpack_exports__);
           },
           searchInFields: 'Искать по полям',
           personalAccount: 'Личный кабинет',
-          numInOrder: '№ п/п'
+          numInOrder: '№ п/п',
+          dateRangeSeparator: ' до '
         },
         msgs: {
           valMoreOrEq: 'Значение должно быть не меньше {0}!',
@@ -15783,9 +15786,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var dialog = _ref17.dialog,
           paramsName = _ref17.paramsName,
           paramsVal = _ref17.paramsVal;
-      dialog.params[paramsName] = paramsVal;
+      Vue.set(dialog.params, paramsName, paramsVal);
     }
-  }
+  },
+  strict: "development" !== 'production'
 });
 
 /***/ }),
@@ -15819,8 +15823,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     //= data
     struct: {},
     structDesc: {},
-    structSizePx: {},
-    _structSizePx: {}
+    structSizePx: {}
   },
   getters: {
     // computed properties
@@ -16099,7 +16102,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (!state.structSizePx[head][name]) Vue.set(state.structSizePx[head], name, {});
       state.structSizePx[head][name] = _objectSpread({}, state.structSizePx[head][name], {}, size);
     }
-  }
+  },
+  strict: "development" !== 'production'
 });
 
 /***/ }),
@@ -16223,7 +16227,8 @@ __webpack_require__.r(__webpack_exports__);
     deleting: function deleting(state, id) {
       state.msgs.splice(id, 1);
     }
-  }
+  },
+  strict: "development" !== 'production'
 });
 
 /***/ }),
@@ -16293,15 +16298,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _doInit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref, _ref2) {
-        var commit, getters, state, num;
+        var dispatch, commit, getters, state, num, _ref2$params, params;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                commit = _ref.commit, getters = _ref.getters, state = _ref.state;
-                num = _ref2.num;
-                commit("allParamsClearing", {
-                  num: num
+                dispatch = _ref.dispatch, commit = _ref.commit, getters = _ref.getters, state = _ref.state;
+                num = _ref2.num, _ref2$params = _ref2.params, params = _ref2$params === void 0 ? {} : _ref2$params;
+                //commit("allParamsClearing",{ num, })		
+                commit("allParamsSet", {
+                  num: num,
+                  params: params.reduce(function (res, row) {
+                    return _objectSpread({}, res, _defineProperty({}, row.code, _objectSpread({
+                      sign: '='
+                    }, row)));
+                  }, {})
                 });
 
               case 3:
@@ -16417,69 +16429,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return doSetSeveral;
-    }(),
-    doSetAll: function () {
-      var _doSetAll = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(_ref9, _ref10) {
-        var commit, getters, state, num, _ref10$params, params;
-
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                commit = _ref9.commit, getters = _ref9.getters, state = _ref9.state;
-                num = _ref10.num, _ref10$params = _ref10.params, params = _ref10$params === void 0 ? {} : _ref10$params;
-                _context5.next = 4;
-                return dispatch("doInit", {
-                  num: num
-                });
-
-              case 4:
-                Object.keys(params).forEach(function (code) {
-                  dispatch("doSet", {
-                    num: num,
-                    code: code,
-                    value: params[code].value,
-                    view: params[code].view,
-                    checked: params[code].checked,
-                    sign: params[code].sign
-                  });
-                });
-
-              case 5:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5);
-      }));
-
-      function doSetAll(_x9, _x10) {
-        return _doSetAll.apply(this, arguments);
-      }
-
-      return doSetAll;
     }()
   },
   mutations: {
-    allParamsClearing: function allParamsClearing(state, _ref11) {
-      var num = _ref11.num;
-      state.params[num] = {};
+    allParamsClearing: function allParamsClearing(state, _ref9) {
+      var num = _ref9.num;
+      Vue.set(state.params, num, {});
     },
-    paramSettingData: function paramSettingData(state, _ref12) {
+    allParamsSet: function allParamsSet(state, _ref10) {
+      var num = _ref10.num,
+          params = _ref10.params;
+      Vue.set(state.params, num, params);
+    },
+    paramSettingData: function paramSettingData(state, _ref11) {
+      var num = _ref11.num,
+          code = _ref11.code,
+          data = _ref11.data;
+      Vue.set(state.params[num], code, data);
+    },
+    paramSetting: function paramSetting(state, _ref12) {
       var num = _ref12.num,
           code = _ref12.code,
           data = _ref12.data;
-      state.params[num][code] = data;
-    },
-    paramSetting: function paramSetting(state, _ref13) {
-      var num = _ref13.num,
-          code = _ref13.code,
-          data = _ref13.data;
       state.params[num][code] = _objectSpread({}, state.params[num][code], {}, data);
     }
-  }
+  },
+  strict: "development" !== 'production'
 });
 
 /***/ }),
@@ -16578,7 +16553,8 @@ __webpack_require__.r(__webpack_exports__);
       state.avatar = '';
       state.language = 'ru';
     }
-  }
+  },
+  strict: "development" !== 'production'
 });
 
 /***/ }),

@@ -73,7 +73,8 @@ export default {
 			dialog.params =params
 		},
 		paramSetting(state, {dialog, paramsName, paramsVal}){
-			dialog.params[paramsName] =paramsVal
+			Vue.set(dialog.params, paramsName, paramsVal)
 		},
 	},
+	strict: process.env.NODE_ENV !== 'production',
 }
