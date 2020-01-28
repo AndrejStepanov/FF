@@ -75,6 +75,7 @@ export default {
 				},
 				labels:{
 					filter:'Фильтр',
+					filters:'Фильтры',
 					loading:'Загрузка...',
 					guest:'Гость',
 					auth:'Авторизация',

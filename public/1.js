@@ -309,6 +309,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
  //из-за хитрого загрузчика, который анализирует только шаблон, динамические окмпоененты приходится импортировать руками. иначе они не подгрузятся
 
@@ -330,12 +333,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       show: false,
       sign: 0,
       tabSelectedRows: [],
-      thumbSize: 10,
-      //value:'',// предпологаю число
-      //valueViewTmp:'',
-      valueArrPairsTmp: [] //[ [1,0], [1, 2] ] для дат [ ['2018-10-03', '12:52'],  ]
-      //valueArrView:[],
-
+      thumbSize: 10
     };
   },
   props: {
@@ -522,10 +520,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (!vm.isMounted) return [];
       return vm.$parent.$refs[vm.tabGroup] ? vm.$parent.$refs[vm.tabGroup][0].tabValues : [];
     },
-    //переход на вьюэкс																										
+    //переход на вьюэкс
     checked: {
       set: function set(val) {
-        if (this.needCheckBox && this.checked != val) this.paramSet({
+        if (this.isMounted && this.needCheckBox && this.checked != val) this.paramSet({
           num: this.paramsForm,
           code: this.code,
           data: {
@@ -534,7 +532,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       },
       get: function get() {
-        return nvlo(this.paramData).checked == undefined ? false : !!this.paramData.checked;
+        return nvlo(this.paramData).checked == undefined ? false : !!this.paramData.checked && this.isMounted;
       }
     },
     code: function code() {
@@ -547,7 +545,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return nvlo(this.paramData).after_edit_script || '';
     },
     id: function id() {
-      return nvlo(this.paramData).id || 0;
+      return '' + (nvlo(this.paramData).id || this.paramsForm + '_' + this.code);
     },
     tip: function tip() {
       return nvlo(this.paramData).tip || '';
@@ -585,9 +583,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     editable: function editable() {
       return nvlo(this.paramData).editable == undefined ? true : !!this.paramData.editable;
     },
-    multy: function multy() {
-      return nvlo(this.paramData).multy == undefined ? false : !!this.paramData.multy;
-    },
     isDateTimeLike: function isDateTimeLike() {
       return ['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(this.type) != -1;
     },
@@ -605,6 +600,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     isSliderLike: function isSliderLike() {
       return ['SLIDER', 'RANGE'].indexOf(this.type) != -1;
+    },
+    multy: function multy() {
+      return !this.isSliderLike && (nvlo(this.paramData).multy == undefined ? false : !!this.paramData.multy);
     },
     maxLen: function maxLen() {
       return nvlo(this.paramData).maxLen || 0;
@@ -633,15 +631,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     tabHeader: function tabHeader() {
       //для TAB [{value:'param1',text:'Параметра1',visible:true},{value:'param2',text:'Параметра2',visible:true}]
       var vm = this;
-      return nvlo(vm.paramData).tab_header != undefined && vm.paramData.tab_header.length > 0 ? vm.paramData.tab_header.slice() : [];
+      return 'tab_header' in vm.paramData && vm.paramData.tab_header.length > 0 ? vm.paramData.tab_header.slice() : [];
     },
     tabValues: function tabValues() {
       var vm = this;
-      return nvlo(vm.paramData).tab_values != undefined && vm.paramData.tab_values.length > 0 ? vm.paramData.tab_values.slice() : [];
+      return 'tab_values' in vm.paramData && vm.paramData.tab_values.length > 0 ? vm.paramData.tab_values.slice() : [];
     },
     signList: function signList() {
       var vm = this;
-      return nvlo(vm.paramData).sign_list != undefined && vm.paramData.sign_list.length > 0 ? vm.paramData.sign_list.slice() : [{
+      return 'sign_list' in vm.paramData && vm.paramData.sign_list.length > 0 ? vm.paramData.sign_list.slice() : [{
         code: '=',
         icon: 'pause'
       }, {
@@ -664,7 +662,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     classCss: function classCss() {
       //[ "class1","class2",]
       var vm = this;
-      return nvlo(vm.paramData)["class"] != undefined && vm.paramData["class"].length > 0 ? vm.paramData["class"].slice() : [];
+      return 'class' in vm.paramData && vm.paramData["class"].length > 0 ? vm.paramData["class"].slice() : [];
     },
     currentInput: function currentInput() {
       var vm = this;
@@ -673,8 +671,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     tableValues: function tableValues() {
       //для листов [{value:'cur',text:'На текущем уровне'}], для TAB [{param1:1, param2:2, }]
       var vm = this;
-      if (nvlo(vm.paramData).table_values == undefined || vm.data.table_values == [] || vm.data.table_values.length == 0) return [];
-      return vm.data.table_values.map(function (row) {
+      if (!('table_values' in vm.paramData) || vm.paramData.table_values.length == 0) return [];
+      return vm.paramData.table_values.map(function (row) {
         var text = nvl(row.text, row.value);
         return {
           value: row.value,
@@ -688,20 +686,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return row.text;
       });
     },
-    isNumeric: function isNumeric() {
-      return this.tableValues == [] ? ['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(this.type) != -1 : nvl(this.tableValues.find(function (row) {
-        return !isNaN(row.value);
-      }), true);
-    },
+    isNumeric: function (_isNumeric) {
+      function isNumeric() {
+        return _isNumeric.apply(this, arguments);
+      }
+
+      isNumeric.toString = function () {
+        return _isNumeric.toString();
+      };
+
+      return isNumeric;
+    }(function () {
+      return this.tableValues.equals([]) ? ['SLIDER', 'RANGE', 'LIST', 'NUMBER'].indexOf(this.type) != -1 : this.tableValues.findIndex(function (row) {
+        return !isNumeric(row.value);
+      }) == -1;
+    }),
     min: function min() {
       var vm = this,
           tmp = nvlo(vm.paramData).min || null;
-      return vm.isDateTimeLike ? isNaN(tmp) ? tmp : null : vm.isSliderLike && vm.tableValues.length > 0 ? 0 : tmp;
+      return vm.isDateTimeLike ? !isNumeric(tmp) ? tmp : null : vm.isSliderLike && vm.tableValues.length > 0 ? 0 : tmp;
     },
     max: function max() {
       var vm = this,
           tmp = nvlo(vm.paramData).max || null;
-      return vm.isDateTimeLike ? isNaN(tmp) ? tmp : null : vm.isSliderLike && vm.tableValues.length > 0 ? vm.tableValues.length - 1 : tmp;
+      return vm.isDateTimeLike ? !isNumeric(tmp) ? tmp : null : vm.isSliderLike && vm.tableValues.length > 0 ? vm.tableValues.length - 1 : tmp;
     },
     isSliderString: function isSliderString() {
       return this.isSliderLike && this.tableValues.length > 0 && !this.isNumeric;
@@ -717,13 +725,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), _defineProperty(_computed, "rules", function rules() {
     var vm = this,
         rules = [];
-    if (vm.hasInput && vm.isNumeric && !isNaN(vm.min) && vm.type != 'RANGE' && vm.min != null) //Границы должны быть цифрой!
+    if (vm.hasInput && vm.isNumeric && isNumeric(vm.min) && vm.type != 'RANGE' && vm.min != null) //Границы должны быть цифрой!
       rules.push(function (v) {
         var _vm$$vuetify$lang;
 
         return v >= vm.min || !vm.checked || (_vm$$vuetify$lang = vm.$vuetify.lang).t.apply(_vm$$vuetify$lang, ['$vuetify.texts.simple.msgs.valMoreOrEq'].concat([vm.min]));
       });
-    if (vm.hasInput && vm.isNumeric && !isNaN(vm.max) && vm.type != 'RANGE' && vm.max != null) rules.push(function (v) {
+    if (vm.hasInput && vm.isNumeric && isNumeric(vm.max) && vm.type != 'RANGE' && vm.max != null) rules.push(function (v) {
       return v <= vm.max || !vm.checked || 'Значение не должно превышать ' + vm.max + '!';
     });
     if (vm.hasInput && vm.maxLenTypes.indexOf(vm.type) != -1 && vm.maxLen > 0) rules.push(function (v) {
@@ -747,114 +755,46 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), _defineProperty(_computed, "name", function name() {
     return (this.isNeed ? '⭐ ' : '') + nvlo(this.paramData).name || '';
     /*❗*/
-  }), _defineProperty(_computed, "valueArrPairs", {
-    set: function set(val) {
-      var vm = this;
-      if (vm.valueArrPairs.equals(val) || vm.valueArrPairs == null && val == null) return;
-      vm.paramSet({
-        num: vm.paramsForm,
-        code: vm.code,
-        data: {
-          valueArrPairs: val
-        }
-      });
-    },
-    get: function get() {
-      var vm = this,
-          tmp = nvlo(this.paramData).valueArrPairs || [[null, null], [null, null]];
-      if (!tmp.equals([[null, null], [null, null]])) return tmp;
-      if (vm.isDateTimeLike) tmp = [[null, null], [null, null]];
-      if (vm.isSliderLike) if (vm.valueArr != undefined && vm.valueArr.length > 0) vm.valueArr.forEach(function (element, i) {
-        element[0] = nvl(element[0], vm.min);
-        element[1] = nvl(element[1], vm.max);
-        if (element[0] > vm.max) element[0] = vm.max;
-        if (element[0] < vm.min) element[0] = vm.min;
-        if (element[1] > vm.max) element[1] = vm.max;
-        if (element[1] < vm.min) element[1] = vm.min;
-
-        if (element[1] < element[0]) {
-          var _ref = [element[1], element[0]];
-          element[0] = _ref[0];
-          element[1] = _ref[1];
-        }
-
-        tmp = [[element[0], element[1]]];
-      });else tmp = [[vm.min, vm.min]];
-      vm.paramSet({
-        num: vm.paramsForm,
-        code: vm.code,
-        data: {
-          valueArrPairs: tmp
-        }
-      });
-      return tmp;
-    }
   }), _defineProperty(_computed, "value", {
     set: function set(val) {
-      var vm = this;
-      if (vm.value === val) return;
-      vm.paramSet({
-        num: vm.paramsForm,
-        code: vm.code,
-        data: {
-          value: val,
-          valueView: vm.getValueViewFromValue(val)
-        }
-      });
+      this.setValue(val);
     },
     get: function get() {
       var vm = this,
-          tmp = nvlo(vm.paramData).value || null;
-      if (tmp != null || nvlo(vm.paramData).value === null) return tmp;
-      if (vm.type == 'LIST' && !vm.multy && vm.valueArr.length > 0) tmp = vm.valueArr[0];
-      if (vm.isDateTimeLike && !vm.multy && vm.valueArr.length > 0) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) tmp = vm.valueArr[0];else if (vm.valueArr[0].length > 1 && nvl(vm.valueArr[0][0], '') != '' && nvl(vm.valueArr[0][1], '') != '') {
-        if (['DATETIME_RANGE'].indexOf(vm.type) != -1) tmp = vm.valueArr[0][0] + vm.rangeSeparator + vm.valueArr[0][1];else if (['DATE_RANGE'].indexOf(vm.type) != -1) tmp = nvl(vm.valueArr[0][0].match(/^\d\d\d\d-\d\d-\d\d/), ['--'])[0] + vm.rangeSeparator + nvl(vm.valueArr[0][1].match(/^\d\d\d\d-\d\d-\d\d/), ['--'])[0];else if (['TIME_RANGE'].indexOf(vm.type) != -1) tmp = nvl(vm.valueArr[0][0].match(/(^\s)?\d\d:\d\d$|(^\s)?\d\d:\d\d:\d\d$/), ['--'])[0] + vm.rangeSeparator + nvl(vm.valueArr[0][1].match(/(^\s)?\d\d:\d\d$|(^\s)?\d\d:\d\d:\d\d$/), ['--'])[0];else console.log('Обнаружена коллизия исходных данных в ' + vm.code);
-      } else console.log('Обнаружен некорректно заданый диапазон исходных данных в ' + vm.code);
-      if (vm.isSliderLike) tmp = nvl(tmp, vm.min);
-      vm.paramSet({
-        num: vm.paramsForm,
-        code: vm.code,
-        data: {
-          value: tmp,
-          valueView: vm.getValueViewFromValue(tmp)
-        }
-      });
+          tmp = 'value' in vm.paramData ? vm.paramData.value : null;
+      if ('value' in vm.paramData && 'valueView' in vm.paramData) return tmp;
+      if (vm.type == 'LIST' && !vm.multy && vm.valueArr.length > 0) tmp = vm.valueArr[0];else if (vm.isDateTimeLike && !vm.multy && vm.valueArr.length > 0) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) tmp = vm.valueArr[0];
+      vm.setValue(tmp, false);
       return tmp;
     }
   }), _defineProperty(_computed, "valueView", {
     set: function set(val) {
       var vm = this,
           res = val;
-
-      if (vm.type != 'RANGE' && !vm.multy && !vm.dialogWithRange && !vm.isDateTimeLike && vm.hasInput) {
-        // работа просто с value
-        if (vm.isSliderLike && !vm.isNumeric || vm.type == 'LIST') res = nvlo(vm.tableValues.find(function (row) {
-          return row.textFull == val;
-        }), {
-          value: null
-        }).value;else res = val;
-      } else res = vm.isDateTimeLike ? dateFormatRevert(val) : val;
-
-      vm.value = res;
+      if (vm.type == 'SLIDER' && !vm.isNumeric) res = vm.tableValues[val].value;else if (vm.type == 'LIST' && !vm.multy) res = nvlo(vm.tableValues.find(function (row) {
+        return row.textFull == val;
+      }), {
+        value: null
+      }).value;else if (vm.isDateTimeLike) res = dateFormatRevert(val);
+      vm.setValue(res);
     },
     get: function get() {
-      return nvlo(this.paramData).valueView || this.getValueViewFromValue(this.value);
+      return 'valueView' in this.paramData ? this.paramData.valueView : this.getValueViewFromValue(this.value);
     }
   }), _defineProperty(_computed, "valueArr", {
     set: function set(val) {
-      var vm = this;
-      if (this.valueArr.equals(val) || nvlo(this.paramData).value_arr === null && val == null) return;
-      this.paramSet({
-        num: this.paramsForm,
-        code: this.code,
-        data: {
-          value_arr: val,
-          valueArrView: vm.getValueArrViewFromValueArr(val)
-        }
-      });
+      this.setValueArr(val);
     },
     get: function get() {
-      return nvlo(this.paramData).value_arr || [];
+      var vm = this,
+          res = 'value_arr' in vm.paramData ? vm.paramData.value_arr : [];
+      var tmp = res;
+
+      if (res.equals([]) && vm.type == 'RANGE') {
+        if (vm.isNumeric) res = [vm.min, vm.max];else res = [vm.tableValues[vm.min].value, vm.tableValues[vm.max].value];
+      } else if (vm.dialogWithRange) if (!tmp.equals(res) || !('valueArrView' in vm.paramData) || !('value_arr' in vm.paramData)) vm.setValueArr(res, false);
+
+      return res;
     }
   }), _defineProperty(_computed, "valueArrView", {
     set: function set(val) {
@@ -862,17 +802,76 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           res = val;
       if (vm.multy && vm.type == 'DATE') res = res.map(function (row) {
         return dateFormatRevert(row);
-      });
-      vm.valueArr = res;
+      });else if (vm.type == 'RANGE') {
+        if (!vm.isNumeric) res = [vm.tableValues[res[0]].value, vm.tableValues[res[1]].value];
+      }
+      vm.setValueArr(res);
     },
     get: function get() {
-      return nvlo(this.paramData).valueArrView || this.getValueArrViewFromValueArr(this.valueArr);
+      return 'valueArrView' in this.paramData ? this.paramData.valueArrView : this.getValueArrViewFromValueArr(this.valueArr);
+    }
+  }), _defineProperty(_computed, "valueArrFst", {
+    //хз почему но дебагер вьюэкса не дает править массив по элементно
+    set: function set(val) {
+      this.valueArr = [val, this.valueArr[1]];
+    },
+    get: function get() {
+      return this.valueArr[0];
+    }
+  }), _defineProperty(_computed, "valueArrFstFst", {
+    set: function set(val) {
+      if (this.dialogWithDate) this.valueArrFst = val + (this.dialogWithTime ? 'T' + this.valueArrFstScnd : '');
+    },
+    get: function get() {
+      return this.dialogWithDate ? this.valueArrFst.split('T')[0] : '';
+    }
+  }), _defineProperty(_computed, "valueArrFstScnd", {
+    set: function set(val) {
+      if (!this.dialogWithTime) return;
+      if (this.dialogWithDate) this.valueArrFst = this.valueArrFstFst + 'T' + val;else this.valueArrFst = val;
+    },
+    get: function get() {
+      return !this.dialogWithTime ? '00:00' : this.dialogWithDate ? nvl(this.valueArrFst.split('T')[1], '00:00') : this.valueArrFst;
+    }
+  }), _defineProperty(_computed, "valueArrScnd", {
+    set: function set(val) {
+      this.valueArr = [this.valueArr[0], val];
+    },
+    get: function get() {
+      return this.valueArr[1];
+    }
+  }), _defineProperty(_computed, "valueArrScndFst", {
+    set: function set(val) {
+      this.valueArrScnd = val + (this.type == 'DATETIME_RANGE' ? 'T' + this.valueArrScndScnd : '');
+    },
+    get: function get() {
+      return ['DATE_RANGE', 'DATETIME_RANGE'].indexOf(this.type) != -1 ? this.valueArrScnd.split('T')[0] : '';
+    }
+  }), _defineProperty(_computed, "valueArrScndScnd", {
+    set: function set(val) {
+      if (['DATETIME_RANGE', 'TIME_RANGE'].indexOf(this.type) == -1) return;
+      if (this.type == 'DATETIME_RANGE') this.valueArrScnd = this.valueArrScndFst + 'T' + val;else this.valueArrScnd = val;
+    },
+    get: function get() {
+      return ['DATETIME_RANGE', 'TIME_RANGE'].indexOf(this.type) == -1 ? '00:00' : this.type == 'DATETIME_RANGE' ? nvl(this.valueArrScnd.split('T')[1], '00:00') : this.valueArrScnd;
+    }
+  }), _defineProperty(_computed, "valueArrViewFst", {
+    //хз почему но дебагер вьюэкса не дает править массив по элементно
+    set: function set(val) {
+      if (val === undefined && !this.multy && this.isDateTimeLike) this.valueArr = ['', ''];
+    },
+    get: function get() {
+      return this.valueArrView[0];
     }
   }), _computed),
   watch: {
     dialog: function dialog(val) {
       var _this = this;
 
+      val && this.$nextTick(function () {
+        nvlo(_this.$refs.timer1).selecting = 1;
+        nvlo(_this.$refs.timer2).selecting = 1;
+      });
       val && this.isBirthDate && this.$nextTick(function () {
         return _this.$refs.date1.activePicker = 'YEAR';
       });
@@ -889,30 +888,73 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mixins: [_mixins_x_store__WEBPACK_IMPORTED_MODULE_1__["default"]],
   methods: {
+    setValue: function setValue(val) {
+      var needCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      var vm = this;
+      if (needCheck && vm.value == val && nvlo(vm.paramData).valueArrView != undefined) return;
+      console.log({
+        value: val,
+        valueView: vm.getValueViewFromValue(val)
+      });
+      vm.paramSet({
+        num: vm.paramsForm,
+        code: vm.code,
+        data: {
+          value: val,
+          valueView: vm.getValueViewFromValue(val)
+        }
+      });
+      vm.checked = val != undefined && val != null;
+    },
     getValueViewFromValue: function getValueViewFromValue(val) {
       var vm = this,
           res = val;
-
-      if (vm.type != 'RANGE' && !vm.multy && vm.hasInput) {
-        // работа просто с value
-        if (!vm.dialogWithRange && !vm.isDateTimeLike && (vm.isSliderLike && !vm.isNumeric || vm.type == 'LIST')) res = nvlo(vm.tableValues.find(function (row) {
-          return row.value == val;
-        }), {
-          textFull: null
-        }).textFull;
-      } else res = vm.isDateTimeLike ? dateFormat(val) : val;
-
+      if (vm.type == 'LIST' && !vm.multy) res = nvlo(vm.tableValues.find(function (row) {
+        return row.value == val;
+      }), {
+        textFull: null
+      }).textFull;else if (vm.type == 'SLIDER' && !vm.isNumeric) res = vm.tableValues.findIndex(function (row) {
+        return row.value == val;
+      });else if (vm.isDateTimeLike) res = dateFormat(val);
       return res;
+    },
+    setValueArr: function setValueArr(val) {
+      var needCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      var vm = this;
+
+      if (['DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1
+      /*&& !vm.dialog*/
+      && val[0] > val[1] && nvl(val[0]) != '' && nvl(val[1]) != '') {
+        var _ref = [val[1], val[0]];
+        val[0] = _ref[0];
+        val[1] = _ref[1];
+      }
+
+      if (needCheck && (vm.valueArr.equals(val) || nvlo(vm.paramData).value_arr === null && val == null)) return;
+      console.log({
+        value_arr: val,
+        valueArrView: vm.getValueArrViewFromValueArr(val)
+      });
+      vm.paramSet({
+        num: vm.paramsForm,
+        code: vm.code,
+        data: {
+          value_arr: val,
+          valueArrView: vm.getValueArrViewFromValueArr(val)
+        }
+      });
+      vm.checked = val != undefined && (!vm.multy && vm.isDateTimeLike && vm.isNeedTab ? !val.equals([[], []]) : !val.equals([]));
     },
     getValueArrViewFromValueArr: function getValueArrViewFromValueArr(val) {
       var vm = this,
           res = val;
-      if (vm.multy && vm.type == 'DATE') res = res.map(function (row) {
-        return dateFormat(row);
-      });else if (vm.type == 'RANGE' && !vm.multy && !vm.isNumeric) res = vm.valueArrPairs.map(function (row) {
-        return [nvlo(vm.tableValues[row[0]]).textFull, nvlo(vm.tableValues[row[1]]).textFull];
-      });else if (vm.dialogWithRange && !vm.multy) //считается что у нас есть только строки со значением и его отображением
-        res = vm.valueView.split(vm.rangeSeparator);else if (vm.hasInput && vm.multy && vm.type == 'LIST') res = vm.valueArr.map(function (row) {
+      if (['DATE', 'DATETIME'].indexOf(vm.type) != -1) res = res.map(function (row) {
+        return dateFormat(row).replace('T', ' ');
+      });else if (vm.type == 'RANGE' && !vm.isNumeric) res = [vm.tableValues.findIndex(function (row1) {
+        return row1.value == val[0];
+      }), vm.tableValues.findIndex(function (row1) {
+        return row1.value == val[1];
+      })];else if (vm.dialogWithRange && !vm.multy && res.length > 0) res = [dateFormat(res[0]).replace('T', ' ') + (vm.dialogWithRange ? vm.rangeSeparator + dateFormat(res[1]).replace('T', ' ') : '')];else if (vm.type == 'LIST' && vm.multy) res = val.map(function (row) {
         return nvlo(vm.tableValues.find(function (row2) {
           return row2.value == row;
         }), {
@@ -921,161 +963,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return res;
     },
-    getValueDatetimeFromArr: function getValueDatetimeFromArr(_ref2) {
-      var check = _ref2.check,
-          num = _ref2.num,
-          _ref2$stage = _ref2.stage,
-          stage = _ref2$stage === void 0 ? 0 : _ref2$stage;
-      var vm = this,
-          fstPart = null,
-          scndPart = null;
-      check = check || false;
-      num = num || 0;
-
-      if (vm.type != 'DATETIME_RANGE' || stage == 1) {
-        fstPart = vm.type == 'TIME' ? '' : vm.valueArrPairs[num][0] != null ? vm.valueArrPairs[num][0] : '';
-        scndPart = vm.type == 'DATE' ? '' : vm.valueArrPairs[num][1] != null ? vm.valueArrPairs[num][1] : '';
-        if (check && ((vm.dialogWithDate || vm.dialogWithRange) && fstPart == '' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart == '')) showMsg(getErrDesc('notFullValue'));
-      } else {
-        fstPart = vm.getValueDatetimeFromArr({
-          check: check,
-          num: num,
-          stage: 1
-        });
-        scndPart = vm.getValueDatetimeFromArr({
-          check: check,
-          num: num + 1,
-          stage: 1
-        });
-        if (check && ((vm.dialogWithDate || vm.dialogWithRange) && fstPart == '' || (vm.dialogWithTime || vm.dialogWithRange) && scndPart == '')) showMsg(getErrDesc('notFullValue'));
-      }
-
-      return fstPart + (fstPart != '' && scndPart != '' ? ['TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1 && stage == 0 ? vm.rangeSeparator : ' ' : '') + scndPart;
-    },
-    parseToDateArr: function parseToDateArr(_ref3) {
-      var str = _ref3.str,
-          _ref3$stage = _ref3.stage,
-          stage = _ref3$stage === void 0 ? 1 : _ref3$stage,
-          _ref3$needReturnVal = _ref3.needReturnVal,
-          needReturnVal = _ref3$needReturnVal === void 0 ? false : _ref3$needReturnVal;
-      //needReturnVal- служебная, никто кроме самой функции его использовать не должен
-      var vm = this,
-          e = null,
-          mask = null;
-      str = str || '';
-
-      if (vm.type == 'DATETIME_RANGE' && stage == 1) {
-        e = str.split(vm.rangeSeparator);
-        e[0] = vm.parseToDateArr({
-          str: e[0],
-          stage: 2,
-          needReturnVal: true
-        });
-        e[1] = vm.parseToDateArr({
-          str: e[1],
-          stage: 2,
-          needReturnVal: true
-        });
-
-        if (e[0][0] > e[1][0]) {
-          var _ref4 = [e[1], e[0]];
-          e[0] = _ref4[0];
-          e[1] = _ref4[1];
-        }
-
-        if (e[0][0] == e[1][0] && e[0][1] > e[1][1]) {
-          var _ref5 = [e[1], e[0]];
-          e[0] = _ref5[0];
-          e[1] = _ref5[1];
-        }
-
-        vm.valueArrPairs = e;
-        return;
-      } else if (!vm.dialogWithRange || vm.type == 'DATETIME_RANGE' && stage == 2) {
-        e = str.split(' ');
-
-        if (e.length > 0 && e[0] != '' && e[0].match(/^\d\d:\d\d$|^\d\d:\d\d:\d\d$/) != null) {
-          e[1] = e[0];
-          e[0] = null;
-        }
-
-        e[0] = e.length > 0 && nvl(e[0]) != '' && e[0].match(/^\d\d\d\d-\d\d-\d\d$/) == null ? null : e[0];
-        e[1] = e.length > 1 && nvl(e[1]) != '' && e[1].match(/^\d\d:\d\d$|^\d\d:\d\d:\d\d$/) == null ? null : e[1];
-      } else {
-        e = str.split(vm.rangeSeparator);
-        mask = /^\d\d\d\d-\d\d-\d\d$/;
-        if (vm.type == 'TIME_RANGE') mask = /^\d\d:\d\d$|^\d\d:\d\d:\d\d$/;
-        e[0] = e.length > 0 && nvl(e[0]) != '' && e[0].match(mask) == null ? null : e[0];
-        e[1] = e.length > 1 && nvl(e[1]) != '' && e[1].match(mask) == null ? null : e[1];
-
-        if (e[0] > e[1]) {
-          var _ref6 = [e[1], e[0]];
-          e[0] = _ref6[0];
-          e[1] = _ref6[1];
-        }
-      }
-
-      if (needReturnVal) return [e[0], e[1]];else vm.valueArrPairs.push([e[0], e[1]]);
-    },
     setNewVal: function setNewVal(value) {
       var checkedFx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var initRun = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var vm = this,
           tmp = [];
-
-      if (vm.multy) {
-        tmp = value.slice();
-
-        if (vm.type == 'DATE') {
-          vm.valueArrPairs = [];
-          vm.valueArr = tmp.map(function (row, i) {
-            vm.parseToDateArr({
-              str: row
-            });
-            return vm.getValueDatetimeFromArr({
-              num: i
-            });
-          });
-        } else if (vm.type == 'LIST') vm.valueArr = tmp;
-      } else if (vm.type == 'RANGE') {
-        vm.valueArrPairs[0] = value;
-      } else {
-        if (['DATE', 'TIME'].indexOf(vm.type) != -1) {
-          vm.valueArrPairs = [];
-          vm.parseToDateArr({
-            str: value
-          });
-          vm.value = vm.getValueDatetimeFromArr({
-            num: 0
-          });
-        } else vm.value = value;
-
-        if (vm.isDateTimeLike) {
-          vm.valueArrPairs = [];
-          vm.parseToDateArr({
-            str: vm.value
-          });
-
-          if (['TIME_RANGE', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type) != -1) {
-            vm.valueArr = [vm.getValueDatetimeFromArr({})];
-            vm.value = vm.valueArr[0];
-          }
-        }
-      }
-
       vm.checkRefresh({
         checkedFx: checkedFx,
         initRun: initRun
       });
       if (vm.callBackEval != '') eval(vm.callBackEval);
-    },
-    setNewValPairFst: function setNewValPairFst(value) {
-      var vm = this;
-      vm.setNewVal([value, vm.valueArrPairs[0][1]]);
-    },
-    setNewValPairScnd: function setNewValPairScnd(value) {
-      var vm = this;
-      vm.setNewVal([vm.valueArrPairs[0][0], value]);
     },
     saveDialog: function saveDialog(value) {
       var vm = this;
@@ -1097,16 +994,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         });
         vm.tabSelectedRows = [];
-      } else if (!vm.multy && vm.isDateTimeLike) vm.$refs.dialog.save(vm.getValueDatetimeFromArr({
-        check: true
-      }));else if (vm.multy && vm.type == 'DATE') {
+      } else if (vm.multy && vm.type == 'DATE') {
         if (vm.dialogWithDate && vm.valueArr.length == 0) showMsg(getErrDesc('saveNoDate'));
         vm.$refs.dialog.save(vm.valueArr);
       }
     },
     changeSign: function changeSign() {
       var vm = this;
-      if (vm.checked) vm.sign = (vm.sign + 1) % vm.signList.length;
+      vm.sign = (vm.sign + 1) % vm.signList.length;
       vm.paramSet({
         num: vm.paramsForm,
         code: vm.code,
@@ -1114,7 +1009,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           sign: vm.signList[vm.sign].code
         }
       });
-      vm.checkRefresh({});
+      vm.checked = true;
     },
     changeShow: function changeShow() {
       var vm = this;
@@ -1164,42 +1059,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     checkRefresh: function () {
       var _checkRefresh = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref7) {
-        var _ref7$checkedFx, checkedFx, _ref7$initRun, initRun, vm, tmp1, tmp2, value, valueArr;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref2) {
+        var _ref2$checkedFx, checkedFx, _ref2$initRun, initRun, vm, tmp1, tmp2, value, valueArr;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _ref7$checkedFx = _ref7.checkedFx, checkedFx = _ref7$checkedFx === void 0 ? false : _ref7$checkedFx, _ref7$initRun = _ref7.initRun, initRun = _ref7$initRun === void 0 ? false : _ref7$initRun;
-                vm = this, value = vm.value, valueArr = [];
-
-                if (vm.type == 'RANGE' && !vm.multy) {
-                  value = null;
-                  if (vm.isNumeric) valueArr = vm.valueArrPairs.slice();else valueArr = vm.valueArrPairs.map(function (row) {
-                    return [nvlo(vm.tableValues[row[0]]).value, nvlo(vm.tableValues[row[1]]).value];
-                  });
-                  if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
-                } else if (vm.dialogWithRange && !vm.multy) {
-                  //считается что у нас есть только строки со значением и его отображением
-                  valueArr.push(value.split(vm.rangeSeparator));
-                  if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
-                } else if (vm.hasInput && vm.multy) {
-                  value = null;
-                  valueArr = vm.valueArr.slice();
-                  if (!checkedFx) vm.checked = valueArr.length > 0 ? true : false;
-                } else if (vm.hasInput) {
-                  // работа просто с value
-                  valueArr = null;
-                  if (vm.isSliderLike && !vm.isNumeric) value = nvlo(vm.tableValues[value]).value;
-                  if (!checkedFx) vm.checked = value === '' || value == null ? false : true;
-                }
-
+                _ref2$checkedFx = _ref2.checkedFx, checkedFx = _ref2$checkedFx === void 0 ? false : _ref2$checkedFx, _ref2$initRun = _ref2.initRun, initRun = _ref2$initRun === void 0 ? false : _ref2$initRun;
+                vm = this, value = vm.value, valueArr = vm.valueArr;
                 vm.setVal(value, valueArr, initRun);
-                if (vm.isDateTimeLike && !vm.multy && value == '') vm.valueArrPairs[0][0] = vm.valueArrPairs[0][1] = null;
-                if (['DATETIME_RANGE'].indexOf(vm.type) != -1 && !vm.multy && value == '') vm.valueArrPairs[1][0] = vm.valueArrPairs[1][1] = null;
 
-              case 6:
+              case 3:
               case "end":
                 return _context.stop();
             }
@@ -1226,15 +1097,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 0:
                 initRun = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : false;
                 vm = this;
-                vm.value = value;
-                vm.valueArr = valueArr;
 
                 if (vm.hasInput && vm.needCheckBox && !initRun) {
                   vm.hasError = !vm.$refs.input.validate();
                   vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
                 }
 
-              case 5:
+              case 3:
               case "end":
                 return _context2.stop();
             }
@@ -1256,7 +1125,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var vm = this;
     vm.checkBoxColor = appTheme.checkBox || vm.checkBoxColor; //-----------------------------------------------------------------------------	
 
-    if (vm.multy && ['DATE', 'LIST'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArr, true, true);else if (!vm.multy && ['RANGE'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArrPairs[0], true, true);else vm.setNewVal(vm.value, true, true);
+    if (vm.multy && ['DATE', 'LIST'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArr, true, true);else if (!vm.multy && ['RANGE'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArr, true, true);else vm.setNewVal(vm.value, true, true);
   },
   mounted: function mounted() {
     var vm = this;
@@ -1793,26 +1662,16 @@ var render = function() {
                                                           id:
                                                             _vm.id + "_sub_left"
                                                         },
-                                                        on: {
-                                                          change:
-                                                            _vm.setNewValPairFst
-                                                        },
                                                         model: {
                                                           value:
-                                                            _vm
-                                                              .valueArrPairs[0][0],
+                                                            _vm.valueArrFst,
                                                           callback: function(
                                                             $$v
                                                           ) {
-                                                            _vm.$set(
-                                                              _vm
-                                                                .valueArrPairs[0],
-                                                              0,
-                                                              $$v
-                                                            )
+                                                            _vm.valueArrFst = $$v
                                                           },
                                                           expression:
-                                                            "valueArrPairs[0][0]"
+                                                            "valueArrFst"
                                                         }
                                                       })
                                                     ],
@@ -1840,7 +1699,7 @@ var render = function() {
                                                             _vm.getComponentType,
                                                           color:
                                                             _vm.checkBoxColor,
-                                                          id: "",
+                                                          id: _vm.id,
                                                           "always-dirty":
                                                             _vm.isSliderLike,
                                                           "persistent-hint":
@@ -1867,7 +1726,6 @@ var render = function() {
                                                           dense: ""
                                                         },
                                                         on: {
-                                                          change: _vm.setNewVal,
                                                           keyup: function(
                                                             $event
                                                           ) {
@@ -1914,19 +1772,14 @@ var render = function() {
                                                         ),
                                                         model: {
                                                           value:
-                                                            _vm
-                                                              .valueArrPairs[0],
+                                                            _vm.valueArrView,
                                                           callback: function(
                                                             $$v
                                                           ) {
-                                                            _vm.$set(
-                                                              _vm.valueArrPairs,
-                                                              0,
-                                                              $$v
-                                                            )
+                                                            _vm.valueArrView = $$v
                                                           },
                                                           expression:
-                                                            "valueArrPairs[0]"
+                                                            "valueArrView"
                                                         }
                                                       })
                                                     : _c(_vm.currentInput, {
@@ -1945,7 +1798,7 @@ var render = function() {
                                                             _vm.getComponentType,
                                                           color:
                                                             _vm.checkBoxColor,
-                                                          id: "",
+                                                          id: _vm.id,
                                                           "always-dirty":
                                                             _vm.isSliderLike,
                                                           "persistent-hint":
@@ -1972,7 +1825,6 @@ var render = function() {
                                                           dense: ""
                                                         },
                                                         on: {
-                                                          change: _vm.setNewVal,
                                                           keyup: function(
                                                             $event
                                                           ) {
@@ -2018,13 +1870,14 @@ var render = function() {
                                                           true
                                                         ),
                                                         model: {
-                                                          value: _vm.value,
+                                                          value: _vm.valueView,
                                                           callback: function(
                                                             $$v
                                                           ) {
-                                                            _vm.value = $$v
+                                                            _vm.valueView = $$v
                                                           },
-                                                          expression: "value"
+                                                          expression:
+                                                            "valueView"
                                                         }
                                                       })
                                                 ],
@@ -2059,26 +1912,16 @@ var render = function() {
                                                                 _vm.id +
                                                                 "_sub_right"
                                                             },
-                                                            on: {
-                                                              change:
-                                                                _vm.setNewValPairScnd
-                                                            },
                                                             model: {
                                                               value:
-                                                                _vm
-                                                                  .valueArrPairs[0][1],
+                                                                _vm.valueArrScnd,
                                                               callback: function(
                                                                 $$v
                                                               ) {
-                                                                _vm.$set(
-                                                                  _vm
-                                                                    .valueArrPairs[0],
-                                                                  1,
-                                                                  $$v
-                                                                )
+                                                                _vm.valueArrScnd = $$v
                                                               },
                                                               expression:
-                                                                "valueArrPairs[0][1]"
+                                                                "valueArrScnd"
                                                             }
                                                           })
                                                         : _c("v-text-field", {
@@ -2098,19 +1941,16 @@ var render = function() {
                                                                 _vm.id +
                                                                 "_sub_right"
                                                             },
-                                                            on: {
-                                                              change:
-                                                                _vm.setNewVal
-                                                            },
                                                             model: {
-                                                              value: _vm.value,
+                                                              value:
+                                                                _vm.valueView,
                                                               callback: function(
                                                                 $$v
                                                               ) {
-                                                                _vm.value = $$v
+                                                                _vm.valueView = $$v
                                                               },
                                                               expression:
-                                                                "value"
+                                                                "valueView"
                                                             }
                                                           })
                                                     ],
@@ -2146,7 +1986,7 @@ var render = function() {
                                                         _vm.inputErrorState,
                                                       "error-messages":
                                                         _vm.inputErrorText,
-                                                      id: "",
+                                                      id: _vm.id,
                                                       "append-icon":
                                                         _vm.getAppendIcon,
                                                       clearable:
@@ -2159,7 +1999,6 @@ var render = function() {
                                                       rows: "1"
                                                     },
                                                     on: {
-                                                      change: _vm.setNewVal,
                                                       keyup: function($event) {
                                                         if (
                                                           !$event.type.indexOf(
@@ -2179,9 +2018,7 @@ var render = function() {
                                                           $event
                                                         )
                                                       },
-                                                      blur: _vm.onBlur,
-                                                      "click:append":
-                                                        _vm.changeShow
+                                                      blur: _vm.onBlur
                                                     },
                                                     model: {
                                                       value: _vm.value,
@@ -2212,7 +2049,7 @@ var render = function() {
                                                         _vm.getComponentType,
                                                       items: _vm.getListItems,
                                                       dense: "",
-                                                      id: "",
+                                                      id: _vm.id,
                                                       "append-icon":
                                                         _vm.getAppendIcon,
                                                       clearable:
@@ -2227,7 +2064,6 @@ var render = function() {
                                                       "small-chips": ""
                                                     },
                                                     on: {
-                                                      change: _vm.setNewVal,
                                                       keyup: function($event) {
                                                         if (
                                                           !$event.type.indexOf(
@@ -2247,9 +2083,7 @@ var render = function() {
                                                           $event
                                                         )
                                                       },
-                                                      blur: _vm.onBlur,
-                                                      "click:append":
-                                                        _vm.changeShow
+                                                      blur: _vm.onBlur
                                                     },
                                                     model: {
                                                       value: _vm.valueArr,
@@ -2268,7 +2102,7 @@ var render = function() {
                                                       staticClass: "max-width",
                                                       attrs: {
                                                         "return-value":
-                                                          _vm.value,
+                                                          _vm.valueArr,
                                                         persistent: "",
                                                         width:
                                                           _vm.getDialogWidth,
@@ -2279,14 +2113,13 @@ var render = function() {
                                                         "update:returnValue": function(
                                                           $event
                                                         ) {
-                                                          _vm.value = $event
+                                                          _vm.valueArr = $event
                                                         },
-                                                        "update:return-value": [
-                                                          function($event) {
-                                                            _vm.value = $event
-                                                          },
-                                                          _vm.setNewVal
-                                                        ],
+                                                        "update:return-value": function(
+                                                          $event
+                                                        ) {
+                                                          _vm.valueArr = $event
+                                                        },
                                                         show: _vm.changeChecked
                                                       },
                                                       scopedSlots: _vm._u(
@@ -2352,14 +2185,14 @@ var render = function() {
                                                                       },
                                                                       model: {
                                                                         value:
-                                                                          _vm.valueView,
+                                                                          _vm.valueArrViewFst,
                                                                         callback: function(
                                                                           $$v
                                                                         ) {
-                                                                          _vm.valueView = $$v
+                                                                          _vm.valueArrViewFst = $$v
                                                                         },
                                                                         expression:
-                                                                          "valueView"
+                                                                          "valueArrViewFst"
                                                                       }
                                                                     },
                                                                     on
@@ -2392,9 +2225,7 @@ var render = function() {
                                                               _vm.getDialogMainDivStyle
                                                           },
                                                           [
-                                                            _vm.dialogWithDate &&
-                                                            _vm.type !=
-                                                              "TIME_RANGE"
+                                                            _vm.dialogWithDate
                                                               ? _c(
                                                                   "v-date-picker",
                                                                   {
@@ -2419,61 +2250,14 @@ var render = function() {
                                                                     },
                                                                     model: {
                                                                       value:
-                                                                        _vm
-                                                                          .valueArrPairs[0][0],
+                                                                        _vm.valueArrFstFst,
                                                                       callback: function(
                                                                         $$v
                                                                       ) {
-                                                                        _vm.$set(
-                                                                          _vm
-                                                                            .valueArrPairs[0],
-                                                                          0,
-                                                                          $$v
-                                                                        )
+                                                                        _vm.valueArrFstFst = $$v
                                                                       },
                                                                       expression:
-                                                                        "valueArrPairs[0][0]"
-                                                                    }
-                                                                  }
-                                                                )
-                                                              : _vm.type ==
-                                                                "TIME_RANGE"
-                                                              ? _c(
-                                                                  "v-time-picker",
-                                                                  {
-                                                                    ref:
-                                                                      "time1",
-                                                                    class: [
-                                                                      _vm.dialogDatePanelCnt >
-                                                                      1
-                                                                        ? "with-append-on-right"
-                                                                        : "",
-                                                                      "higher-z-index",
-                                                                      "time-head-norm"
-                                                                    ],
-                                                                    attrs: {
-                                                                      scrollable:
-                                                                        "",
-                                                                      locale: _vm.profileLanguage(),
-                                                                      format:
-                                                                        "24hr"
-                                                                    },
-                                                                    model: {
-                                                                      value:
-                                                                        _vm
-                                                                          .valueArrPairs[0][0],
-                                                                      callback: function(
-                                                                        $$v
-                                                                      ) {
-                                                                        _vm.$set(
-                                                                          _vm
-                                                                            .valueArrPairs[0],
-                                                                          0,
-                                                                          $$v
-                                                                        )
-                                                                      },
-                                                                      expression:
-                                                                        "valueArrPairs[0][0]"
+                                                                        "valueArrFstFst"
                                                                     }
                                                                   }
                                                                 )
@@ -2483,8 +2267,6 @@ var render = function() {
                                                               1 &&
                                                             [
                                                               "DATETIME",
-                                                              "TIME_RANGE",
-                                                              "DATE_RANGE",
                                                               "DATETIME_RANGE"
                                                             ].indexOf(
                                                               _vm.type
@@ -2539,27 +2321,26 @@ var render = function() {
                                                                 )
                                                               : _vm._e(),
                                                             _vm._v(" "),
-                                                            _vm.dialogWithTime &&
-                                                            _vm.type !=
-                                                              "DATE_RANGE"
+                                                            _vm.dialogWithTime
                                                               ? _c(
                                                                   "v-time-picker",
                                                                   {
                                                                     ref:
-                                                                      "date2",
+                                                                      "timer1",
                                                                     class: [
-                                                                      [
-                                                                        "DATETIME",
-                                                                        "TIME_RANGE",
-                                                                        "DATE_RANGE",
-                                                                        "DATETIME_RANGE"
-                                                                      ].indexOf(
-                                                                        _vm.type
-                                                                      ) != -1 &&
-                                                                      _vm.dialogDatePanelCnt >
-                                                                        1
+                                                                      _vm.dialogDatePanelCnt ==
+                                                                      1
+                                                                        ? ""
+                                                                        : [
+                                                                            "DATETIME",
+                                                                            "DATE_RANGE",
+                                                                            "DATETIME_RANGE"
+                                                                          ].indexOf(
+                                                                            _vm.type
+                                                                          ) !=
+                                                                          -1
                                                                         ? "is-append-on-right"
-                                                                        : "",
+                                                                        : "with-append-on-right",
                                                                       "higher-z-index",
                                                                       "time-head-norm"
                                                                     ],
@@ -2572,158 +2353,135 @@ var render = function() {
                                                                     },
                                                                     model: {
                                                                       value:
-                                                                        _vm
-                                                                          .valueArrPairs[0][1],
+                                                                        _vm.valueArrFstScnd,
                                                                       callback: function(
                                                                         $$v
                                                                       ) {
-                                                                        _vm.$set(
-                                                                          _vm
-                                                                            .valueArrPairs[0],
-                                                                          1,
-                                                                          $$v
-                                                                        )
+                                                                        _vm.valueArrFstScnd = $$v
                                                                       },
                                                                       expression:
-                                                                        "valueArrPairs[0][1]"
-                                                                    }
-                                                                  }
-                                                                )
-                                                              : _vm.type ==
-                                                                "DATE_RANGE"
-                                                              ? _c(
-                                                                  "v-date-picker",
-                                                                  {
-                                                                    ref:
-                                                                      "time2",
-                                                                    class: [
-                                                                      _vm.dialogDatePanelCnt >
-                                                                      1
-                                                                        ? "is-append-on-right"
-                                                                        : "",
-                                                                      "v-date-picker-more-height",
-                                                                      "higher-z-index"
-                                                                    ],
-                                                                    attrs: {
-                                                                      scrollable:
-                                                                        "",
-                                                                      locale: _vm.profileLanguage()
-                                                                    },
-                                                                    model: {
-                                                                      value:
-                                                                        _vm
-                                                                          .valueArrPairs[0][1],
-                                                                      callback: function(
-                                                                        $$v
-                                                                      ) {
-                                                                        _vm.$set(
-                                                                          _vm
-                                                                            .valueArrPairs[0],
-                                                                          1,
-                                                                          $$v
-                                                                        )
-                                                                      },
-                                                                      expression:
-                                                                        "valueArrPairs[0][1]"
+                                                                        "valueArrFstScnd"
                                                                     }
                                                                   }
                                                                 )
                                                               : _vm._e(),
                                                             _vm._v(" "),
-                                                            _vm.type ==
-                                                            "DATETIME_RANGE"
+                                                            _vm.dialogWithRange
                                                               ? [
-                                                                  _c(
-                                                                    "div",
-                                                                    {
-                                                                      class:
-                                                                        _vm.getDialogSeparatorClassDateRange
-                                                                    },
-                                                                    [
-                                                                      _c(
-                                                                        "v-icon",
+                                                                  _vm.dialogDatePanelCnt ==
+                                                                    1 ||
+                                                                  [
+                                                                    "DATETIME_RANGE"
+                                                                  ].indexOf(
+                                                                    _vm.type
+                                                                  ) != -1
+                                                                    ? _c(
+                                                                        "div",
                                                                         {
                                                                           class:
-                                                                            _vm.getDialogSeparatorDateRangeArrowClass
+                                                                            _vm.getDialogSeparatorClassDateRange
                                                                         },
                                                                         [
+                                                                          _c(
+                                                                            "v-icon",
+                                                                            {
+                                                                              class:
+                                                                                _vm.getDialogSeparatorDateRangeArrowClass
+                                                                            },
+                                                                            [
+                                                                              _vm._v(
+                                                                                "fast_forward"
+                                                                              )
+                                                                            ]
+                                                                          ),
                                                                           _vm._v(
-                                                                            "fast_forward"
-                                                                          )
-                                                                        ]
-                                                                      ),
-                                                                      _vm._v(
-                                                                        " "
-                                                                      ),
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          class:
-                                                                            _vm.getDialogSeparatorDateRangeArrowClass
-                                                                        },
-                                                                        [
+                                                                            " "
+                                                                          ),
+                                                                          _c(
+                                                                            "v-icon",
+                                                                            {
+                                                                              class:
+                                                                                _vm.getDialogSeparatorDateRangeArrowClass
+                                                                            },
+                                                                            [
+                                                                              _vm._v(
+                                                                                "fast_forward"
+                                                                              )
+                                                                            ]
+                                                                          ),
                                                                           _vm._v(
-                                                                            "fast_forward"
+                                                                            " "
+                                                                          ),
+                                                                          _c(
+                                                                            "v-icon",
+                                                                            {
+                                                                              class:
+                                                                                _vm.getDialogSeparatorDateRangeArrowClass
+                                                                            },
+                                                                            [
+                                                                              _vm._v(
+                                                                                "fast_forward"
+                                                                              )
+                                                                            ]
                                                                           )
-                                                                        ]
-                                                                      ),
-                                                                      _vm._v(
-                                                                        " "
-                                                                      ),
-                                                                      _c(
-                                                                        "v-icon",
-                                                                        {
-                                                                          class:
-                                                                            _vm.getDialogSeparatorDateRangeArrowClass
-                                                                        },
-                                                                        [
-                                                                          _vm._v(
-                                                                            "fast_forward"
-                                                                          )
-                                                                        ]
-                                                                      )
-                                                                    ],
-                                                                    1
-                                                                  ),
-                                                                  _vm._v(" "),
-                                                                  _c(
-                                                                    "v-date-picker",
-                                                                    {
-                                                                      class: [
-                                                                        _vm.dialogDatePanelCnt >
+                                                                        ],
                                                                         1
-                                                                          ? "with-append-on-right"
-                                                                          : "",
-                                                                        "v-date-picker-more-height",
-                                                                        "higher-z-index"
-                                                                      ],
-                                                                      attrs: {
-                                                                        scrollable:
-                                                                          "",
-                                                                        locale: _vm.profileLanguage()
-                                                                      },
-                                                                      model: {
-                                                                        value:
-                                                                          _vm
-                                                                            .valueArrPairs[1][0],
-                                                                        callback: function(
-                                                                          $$v
-                                                                        ) {
-                                                                          _vm.$set(
-                                                                            _vm
-                                                                              .valueArrPairs[1],
-                                                                            0,
-                                                                            $$v
-                                                                          )
-                                                                        },
-                                                                        expression:
-                                                                          "valueArrPairs[1][0]"
-                                                                      }
-                                                                    }
-                                                                  ),
+                                                                      )
+                                                                    : _vm._e(),
+                                                                  _vm._v(" "),
+                                                                  [
+                                                                    "DATE_RANGE",
+                                                                    "DATETIME_RANGE"
+                                                                  ].indexOf(
+                                                                    _vm.type
+                                                                  ) != -1
+                                                                    ? _c(
+                                                                        "v-date-picker",
+                                                                        {
+                                                                          ref:
+                                                                            "date2",
+                                                                          class: [
+                                                                            _vm.dialogDatePanelCnt ==
+                                                                            1
+                                                                              ? ""
+                                                                              : [
+                                                                                  "DATE_RANGE"
+                                                                                ].indexOf(
+                                                                                  _vm.type
+                                                                                ) !=
+                                                                                -1
+                                                                              ? "is-append-on-right"
+                                                                              : "with-append-on-right",
+                                                                            "v-date-picker-more-height",
+                                                                            "higher-z-index"
+                                                                          ],
+                                                                          attrs: {
+                                                                            scrollable:
+                                                                              "",
+                                                                            locale: _vm.profileLanguage()
+                                                                          },
+                                                                          model: {
+                                                                            value:
+                                                                              _vm.valueArrScndFst,
+                                                                            callback: function(
+                                                                              $$v
+                                                                            ) {
+                                                                              _vm.valueArrScndFst = $$v
+                                                                            },
+                                                                            expression:
+                                                                              "valueArrScndFst"
+                                                                          }
+                                                                        }
+                                                                      )
+                                                                    : _vm._e(),
                                                                   _vm._v(" "),
                                                                   _vm.dialogDatePanelCnt ==
-                                                                  1
+                                                                    1 &&
+                                                                  [
+                                                                    "DATETIME_RANGE"
+                                                                  ].indexOf(
+                                                                    _vm.type
+                                                                  ) != -1
                                                                     ? _c(
                                                                         "div",
                                                                         {
@@ -2778,43 +2536,54 @@ var render = function() {
                                                                       )
                                                                     : _vm._e(),
                                                                   _vm._v(" "),
-                                                                  _c(
-                                                                    "v-time-picker",
-                                                                    {
-                                                                      class: [
-                                                                        _vm.dialogDatePanelCnt >
-                                                                        1
-                                                                          ? "is-append-on-right"
-                                                                          : "",
-                                                                        "higher-z-index",
-                                                                        "time-head-norm"
-                                                                      ],
-                                                                      attrs: {
-                                                                        scrollable:
-                                                                          "",
-                                                                        locale: _vm.profileLanguage(),
-                                                                        format:
-                                                                          "24hr"
-                                                                      },
-                                                                      model: {
-                                                                        value:
-                                                                          _vm
-                                                                            .valueArrPairs[1][1],
-                                                                        callback: function(
-                                                                          $$v
-                                                                        ) {
-                                                                          _vm.$set(
-                                                                            _vm
-                                                                              .valueArrPairs[1],
-                                                                            1,
-                                                                            $$v
-                                                                          )
-                                                                        },
-                                                                        expression:
-                                                                          "valueArrPairs[1][1]"
-                                                                      }
-                                                                    }
-                                                                  )
+                                                                  [
+                                                                    "TIME_RANGE",
+                                                                    "DATETIME_RANGE"
+                                                                  ].indexOf(
+                                                                    _vm.type
+                                                                  ) != -1
+                                                                    ? _c(
+                                                                        "v-time-picker",
+                                                                        {
+                                                                          ref:
+                                                                            "timer2",
+                                                                          class: [
+                                                                            _vm.dialogDatePanelCnt ==
+                                                                            1
+                                                                              ? ""
+                                                                              : [
+                                                                                  "TIME_RANGE",
+                                                                                  "DATETIME_RANGE"
+                                                                                ].indexOf(
+                                                                                  _vm.type
+                                                                                ) !=
+                                                                                -1
+                                                                              ? "is-append-on-right"
+                                                                              : "",
+                                                                            "higher-z-index",
+                                                                            "time-head-norm"
+                                                                          ],
+                                                                          attrs: {
+                                                                            scrollable:
+                                                                              "",
+                                                                            locale: _vm.profileLanguage(),
+                                                                            format:
+                                                                              "24hr"
+                                                                          },
+                                                                          model: {
+                                                                            value:
+                                                                              _vm.valueArrScndScnd,
+                                                                            callback: function(
+                                                                              $$v
+                                                                            ) {
+                                                                              _vm.valueArrScndScnd = $$v
+                                                                            },
+                                                                            expression:
+                                                                              "valueArrScndScnd"
+                                                                          }
+                                                                        }
+                                                                      )
+                                                                    : _vm._e()
                                                                 ]
                                                               : _vm._e()
                                                           ],
@@ -2841,8 +2610,8 @@ var render = function() {
                                                                   click: function(
                                                                     $event
                                                                   ) {
-                                                                    return _vm.saveDialog(
-                                                                      _vm.value
+                                                                    return _vm.$refs.dialog.save(
+                                                                      _vm.valueArr
                                                                     )
                                                                   }
                                                                 }
@@ -2927,12 +2696,11 @@ var render = function() {
                                                         ) {
                                                           _vm.valueArr = $event
                                                         },
-                                                        "update:return-value": [
-                                                          function($event) {
-                                                            _vm.valueArr = $event
-                                                          },
-                                                          _vm.setNewVal
-                                                        ],
+                                                        "update:return-value": function(
+                                                          $event
+                                                        ) {
+                                                          _vm.valueArr = $event
+                                                        },
                                                         show: _vm.changeChecked
                                                       },
                                                       scopedSlots: _vm._u(
@@ -2978,8 +2746,6 @@ var render = function() {
                                                                           ""
                                                                       },
                                                                       on: {
-                                                                        change:
-                                                                          _vm.setNewVal,
                                                                         keyup: function(
                                                                           $event
                                                                         ) {
@@ -3099,8 +2865,8 @@ var render = function() {
                                                                   click: function(
                                                                     $event
                                                                   ) {
-                                                                    return _vm.saveDialog(
-                                                                      _vm.value
+                                                                    return _vm.$refs.dialog.save(
+                                                                      _vm.valueArr
                                                                     )
                                                                   }
                                                                 }
@@ -3439,7 +3205,7 @@ var render = function() {
                     ],
                     null,
                     false,
-                    601326735
+                    4016863069
                   )
                 },
                 [

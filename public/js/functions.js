@@ -191,8 +191,7 @@ function isInteger(num){
 }
 
 function isNumeric(n) {
-    
-	return !isNaN(parseFloat(n)) && isFinite(n);
+	return !isNaN(+n)
 	 
 	// Метод isNaN пытается преобразовать переданный параметр в число. 
 	// Если параметр не может быть преобразован, возвращает true, иначе возвращает false.
