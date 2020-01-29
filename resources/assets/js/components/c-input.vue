@@ -75,7 +75,7 @@
 									<template v-slot:activator="{ on }">
 										<v-combobox  v-on="on" v-model="valueArrViewFst" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
 											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" 
-											@keyup.enter="submit"   class=" body-1" /><!-- //@click:append="changeShow" @blur="onBlur" --> 
+											@keyup.enter="submit"  class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
@@ -109,7 +109,7 @@
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
-											<v-btn small class="accent"  @click="$refs.dialog.save(valueArr)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
+											<v-btn small class="accent"  @click="saveDialog(valueArr)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
 											<v-btn small class="accent"  @click="dialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
@@ -120,7 +120,7 @@
 									<template v-slot:activator="{ on }">
 										<v-combobox  v-on="on"  v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"   ref="input"  append-icon=""
 											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" multiple chips  small-chips 
-											@keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class=" body-1" />
+											@keyup.enter="submit"  class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
@@ -128,18 +128,18 @@
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
-											<v-btn small class="accent"  @click="$refs.dialog.save(valueArr)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
+											<v-btn small class="accent"  @click="saveDialog(valueArr)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
 											<v-btn small class="accent"  @click="dialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
 								<v-dialog v-else-if="isNeedTab"	ref="dialog" v-model="dialog" :return-value.sync="value" persistent :width="getDialogWidth" @show='changeChecked' 
-										@update:return-value="setNewVal" class="max-width" :content-class="getDialogClass" overlay-color="white" overlay-opacity="1">
+										class="max-width" :content-class="getDialogClass" overlay-color="white" overlay-opacity="1">
 									<template v-slot:activator="{ on }">
 										<v-combobox v-on="on" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
 											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max"
-											@change="setNewVal"  @keyup.enter="submit" @blur="onBlur" @click:append="changeShow" class=" body-1" />
+											@keyup.enter="submit"  class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
@@ -148,7 +148,7 @@
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
-											<v-btn small class="accent"  @click="saveDialog(value)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
+											<v-btn small class="accent"  @click="saveDialog(tabSelectedRows)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
 											<v-btn small class="accent"  @click="dialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
@@ -185,6 +185,7 @@
 			sign:0,
 			tabSelectedRows:[],
 			thumbSize:10,
+
 		}),
 		props:{
 			data:{type: Object, required: true, default:()=>{return {}}},
@@ -393,7 +394,8 @@
 			tickSize()			{	return nvlo(this.paramData).tickSize||0																							},
 			thumbLabelNeed()	{	return nvlo(this.paramData).thumb_label_need==undefined?'':!!this.paramData.thumb_label_need && this.isSliderLike?'always':''	},
 			isBirthDate()		{	return nvlo(this.paramData).isBirthDate==undefined? false:!!this.paramData.isBirthDate											},
-			isMultiLine()		{	return this.columnSize>50																											},
+			isMultiLine()		{	return this.columnSize>50																										},
+			isWithArray()		{	return this.isDateTimeLike || this.type=='LIST' && this.multy																	},
 			rangeSeparator()	{	return this.$vuetify.lang.t('$vuetify.texts.simple.labels.dateRangeSeparator' )													},
 			tabHeader()			{	//для TAB [{value:'param1',text:'Параметра1',visible:true},{value:'param2',text:'Параметра2',visible:true}]
 				let vm = this
@@ -480,18 +482,18 @@
  				get:function()	{
 					let vm=this,
 						tmp = 'value' in vm.paramData? vm.paramData.value: null
-					if ('value' in vm.paramData && 'valueView' in vm.paramData)
+					if ('value' in vm.paramData && 'valueView' in vm.paramData && nvl(nvlo(vm.paramData).need_reset, false)==false)
 						return tmp
-					if(vm.type=='LIST' && !vm.multy  && vm.valueArr.length>0)
+					if(vm.type=='LIST' && !vm.multy  && vm.valueArr.length>0 && tmp==null)
 						tmp= vm.valueArr[0]
-					else if(vm.isDateTimeLike && !vm.multy && vm.valueArr.length>0)
+					else if(vm.isDateTimeLike && !vm.multy && vm.valueArr.length>0  && tmp==null)
 						if(['DATE', 'TIME', 'DATETIME'].indexOf(vm.type)!=-1)
 							tmp = vm.valueArr[0]
 					vm.setValue(tmp, false)
 					return tmp
 				},
 			},
-			valueView: {	
+			valueView: {
 				set:function (val)	{	
 					let vm = this,
 						res=val
@@ -503,7 +505,7 @@
 						res = dateFormatRevert(val)
 					vm.setValue(res)
 				},
-				get:function()	{	return 'valueView' in this.paramData? this.paramData.valueView : this.getValueViewFromValue(this.value)		},				
+				get:function()	{	return /*'valueView' in this.paramData? this.paramData.valueView :*/ this.getValueViewFromValue(this.value)		},				
 			},
 			valueArr: {
 				set:function (val)	{
@@ -520,8 +522,7 @@
 						else
 							res= [ vm.tableValues[vm.min].value ,  vm.tableValues[vm.max].value ]
 					}
-					else if(vm.dialogWithRange)
-					if(!tmp.equals(res) || !('valueArrView' in vm.paramData) || !('value_arr' in vm.paramData) )
+					if(nvlo(vm.paramData).need_reset ||  !tmp.equals(res) || !('valueArrView' in vm.paramData) || !('value_arr' in vm.paramData) )
 						vm.setValueArr(res, false)
 					return res
 				},
@@ -539,7 +540,7 @@
 					vm.setValueArr(res)
 				},
       			get:function() 		{
-					return 'valueArrView' in this.paramData? this.paramData.valueArrView : this.getValueArrViewFromValueArr(this.valueArr)
+					return /*'valueArrView' in this.paramData? this.paramData.valueArrView :*/ this.getValueArrViewFromValueArr(this.valueArr)
 				},
 			},
 			valueArrFst: {//хз почему но дебагер вьюэкса не дает править массив по элементно
@@ -564,7 +565,7 @@
 					else this.valueArrFst=val;			
 				},
 				get:function()		{
-					return !this.dialogWithTime?'00:00': this.dialogWithDate? nvl(this.valueArrFst.split('T')[1],'00:00'):this.valueArrFst
+					return !this.dialogWithTime?'00:00:00': this.dialogWithDate? nvl(this.valueArrFst.split('T')[1],'00:00:00'):this.valueArrFst
 				},
 			},
 			valueArrScnd: {	
@@ -589,7 +590,7 @@
 						this.valueArrScnd= val
 				},
 				get:function()		{
-					return ['DATETIME_RANGE','TIME_RANGE'].indexOf(this.type)==-1?'00:00': this.type=='DATETIME_RANGE'? nvl(this.valueArrScnd.split('T')[1],'00:00'):this.valueArrScnd
+					return ['DATETIME_RANGE','TIME_RANGE'].indexOf(this.type)==-1?'00:00:00': this.type=='DATETIME_RANGE'? nvl(this.valueArrScnd.split('T')[1],'00:00:00'):this.valueArrScnd
 				},
 			},
 			valueArrViewFst: {//хз почему но дебагер вьюэкса не дает править массив по элементно
@@ -598,9 +599,10 @@
 			},
 		},
 		watch: {
-			dialog (val) {
-				val && this.$nextTick(() => {nvlo(this.$refs.timer1).selecting =1;  nvlo(this.$refs.timer2).selecting =1; }) 
-				val && this.isBirthDate && this.$nextTick(() => (this.$refs.date1.activePicker = 'YEAR'))
+			dialog (val, valOld) {
+				val && this.$nextTick(() => {nvlo(this.$refs.timer1).selecting =1;  nvlo(this.$refs.timer2).selecting =1; }) &&
+					this.isBirthDate && this.$nextTick(() => (this.$refs.date1.activePicker = 'YEAR'))
+				!val && valOld && this.onBlur()
 			}
 		},
 		components: {
@@ -611,13 +613,19 @@
 			XStore,
 		],		
 		methods: {
+			postWork(){
+				let vm = this
+				if(vm.isWithArray)
+					vm.checked= vm.valueArr !=undefined && vm.isDateTimeLike && !vm.multy? !vm.valueArr.equals(['','']) : !vm.valueArr.equals([])
+				else
+					vm.checked= vm.value!=undefined && vm.value!=null
+			},
 			setValue(val, needCheck=true){
 				let vm = this
 				if(needCheck && vm.value==val &&  nvlo(vm.paramData).valueArrView!=undefined ) 
 					return
-				console.log({value:val, valueView: vm.getValueViewFromValue(val)});
 				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{value:val, valueView: vm.getValueViewFromValue(val)}  })
-				vm.checked= val!=undefined && val!=null
+				vm.postWork()				
 			},
 			getValueViewFromValue(val){
 				let vm = this,
@@ -638,7 +646,7 @@
 					return
 				console.log({value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)});
 				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)}  })
-				vm.checked= val!=undefined && ( !vm.multy && vm.isDateTimeLike && vm.isNeedTab? !val.equals([[],[]]) : !val.equals([]) ) 
+				vm.postWork()				
 			},
 			getValueArrViewFromValueArr(val){
 				let vm = this,
@@ -662,7 +670,10 @@
 			},
 			saveDialog(value){
 				let vm=this
-				if(vm.isNeedTab ){
+				console.log(value, vm.value);
+				if(vm.isDateTimeLike)
+					vm.$refs.dialog.save(value)
+				else if(vm.isNeedTab ){
 					value.forEach(row=>{
 						for (let code in row) {
 							if(vm.code == code )	
@@ -682,13 +693,8 @@
 							}
 						}
 					})
-					vm.tabSelectedRows=[]
 				}
-				else if(vm.multy && vm.type=='DATE'){
-					if(vm.dialogWithDate && vm.valueArr.length==0)
-						showMsg( getErrDesc('saveNoDate'));
-					vm.$refs.dialog.save(vm.valueArr)
-				}
+				vm.tabSelectedRows=[]
 			},
 			changeSign(){
 				let vm=this
@@ -714,7 +720,7 @@
 			},
 			changeChecked(){
 				let vm=this
-				vm.checkRefresh({checkedFx:true})
+				//vm.checkRefresh({checkedFx:true})
 			},	
 			onClick(e){
 				let vm=this,
@@ -724,15 +730,13 @@
 					return
 				vm.lastTimeSend=curTime
 				vm.checked=true
-				if(!tmp){
-					vm.checkRefresh({checkedFx:true})
-					if(vm.isNeedTab)
-						vm.dialog=true
-				}
-				setTimeout(()=>{vm.$refs.input.onClick(e)},100)					
+				/*if(!tmp && vm.isNeedTab)
+					vm.dialog=true	*/	
+				setTimeout(()=>{vm.$refs.input.onClick(e)},100)			
 			},
 			onBlur(){
 				let vm=this
+				console.log('onBlur');
 				vm.checkRefresh({})
 			},
 			async checkRefresh({checkedFx=false,initRun=false}){
@@ -740,16 +744,11 @@
 					value = vm.value,
 					valueArr = vm.valueArr
 
-				vm.setVal(value, valueArr, initRun)
-
-
-			},
-			async setVal(value, valueArr, initRun=false){
-				let vm=this
 				if(vm.hasInput && vm.needCheckBox && !initRun){
 					vm.hasError= !vm.$refs.input.validate()
 					vm.$root.$emit('dialog'+vm.paramsForm+'NeedCheck')
 				}
+
 			},
 			getTitleByNum(value){
 				return this.tickLabels[value]

@@ -333,7 +333,7 @@ __webpack_require__.r(__webpack_exports__);
 
       return {
         height: vm.oneScreen ? '100px' : null,
-        background: vm.needBgIm ? "url('storage/bg.jpg')" : null,
+        //background:vm.needBgIm?"url('storage/bg.jpg')":null , 
         backgroundAttachment: 'fixed'
       };
     },

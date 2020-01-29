@@ -625,6 +625,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isMultiLine: function isMultiLine() {
       return this.columnSize > 50;
     },
+    isWithArray: function isWithArray() {
+      return this.isDateTimeLike || this.type == 'LIST' && this.multy;
+    },
     rangeSeparator: function rangeSeparator() {
       return this.$vuetify.lang.t('$vuetify.texts.simple.labels.dateRangeSeparator');
     },
@@ -762,8 +765,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     get: function get() {
       var vm = this,
           tmp = 'value' in vm.paramData ? vm.paramData.value : null;
-      if ('value' in vm.paramData && 'valueView' in vm.paramData) return tmp;
-      if (vm.type == 'LIST' && !vm.multy && vm.valueArr.length > 0) tmp = vm.valueArr[0];else if (vm.isDateTimeLike && !vm.multy && vm.valueArr.length > 0) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) tmp = vm.valueArr[0];
+      if ('value' in vm.paramData && 'valueView' in vm.paramData && nvl(nvlo(vm.paramData).need_reset, false) == false) return tmp;
+      if (vm.type == 'LIST' && !vm.multy && vm.valueArr.length > 0 && tmp == null) tmp = vm.valueArr[0];else if (vm.isDateTimeLike && !vm.multy && vm.valueArr.length > 0 && tmp == null) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) tmp = vm.valueArr[0];
       vm.setValue(tmp, false);
       return tmp;
     }
@@ -779,7 +782,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       vm.setValue(res);
     },
     get: function get() {
-      return 'valueView' in this.paramData ? this.paramData.valueView : this.getValueViewFromValue(this.value);
+      return (
+        /*'valueView' in this.paramData? this.paramData.valueView :*/
+        this.getValueViewFromValue(this.value)
+      );
     }
   }), _defineProperty(_computed, "valueArr", {
     set: function set(val) {
@@ -792,8 +798,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (res.equals([]) && vm.type == 'RANGE') {
         if (vm.isNumeric) res = [vm.min, vm.max];else res = [vm.tableValues[vm.min].value, vm.tableValues[vm.max].value];
-      } else if (vm.dialogWithRange) if (!tmp.equals(res) || !('valueArrView' in vm.paramData) || !('value_arr' in vm.paramData)) vm.setValueArr(res, false);
+      }
 
+      if (nvlo(vm.paramData).need_reset || !tmp.equals(res) || !('valueArrView' in vm.paramData) || !('value_arr' in vm.paramData)) vm.setValueArr(res, false);
       return res;
     }
   }), _defineProperty(_computed, "valueArrView", {
@@ -808,7 +815,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       vm.setValueArr(res);
     },
     get: function get() {
-      return 'valueArrView' in this.paramData ? this.paramData.valueArrView : this.getValueArrViewFromValueArr(this.valueArr);
+      return (
+        /*'valueArrView' in this.paramData? this.paramData.valueArrView :*/
+        this.getValueArrViewFromValueArr(this.valueArr)
+      );
     }
   }), _defineProperty(_computed, "valueArrFst", {
     //хз почему но дебагер вьюэкса не дает править массив по элементно
@@ -831,7 +841,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.dialogWithDate) this.valueArrFst = this.valueArrFstFst + 'T' + val;else this.valueArrFst = val;
     },
     get: function get() {
-      return !this.dialogWithTime ? '00:00' : this.dialogWithDate ? nvl(this.valueArrFst.split('T')[1], '00:00') : this.valueArrFst;
+      return !this.dialogWithTime ? '00:00:00' : this.dialogWithDate ? nvl(this.valueArrFst.split('T')[1], '00:00:00') : this.valueArrFst;
     }
   }), _defineProperty(_computed, "valueArrScnd", {
     set: function set(val) {
@@ -853,7 +863,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.type == 'DATETIME_RANGE') this.valueArrScnd = this.valueArrScndFst + 'T' + val;else this.valueArrScnd = val;
     },
     get: function get() {
-      return ['DATETIME_RANGE', 'TIME_RANGE'].indexOf(this.type) == -1 ? '00:00' : this.type == 'DATETIME_RANGE' ? nvl(this.valueArrScnd.split('T')[1], '00:00') : this.valueArrScnd;
+      return ['DATETIME_RANGE', 'TIME_RANGE'].indexOf(this.type) == -1 ? '00:00:00' : this.type == 'DATETIME_RANGE' ? nvl(this.valueArrScnd.split('T')[1], '00:00:00') : this.valueArrScnd;
     }
   }), _defineProperty(_computed, "valueArrViewFst", {
     //хз почему но дебагер вьюэкса не дает править массив по элементно
@@ -865,16 +875,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }), _computed),
   watch: {
-    dialog: function dialog(val) {
+    dialog: function dialog(val, valOld) {
       var _this = this;
 
       val && this.$nextTick(function () {
         nvlo(_this.$refs.timer1).selecting = 1;
         nvlo(_this.$refs.timer2).selecting = 1;
-      });
-      val && this.isBirthDate && this.$nextTick(function () {
+      }) && this.isBirthDate && this.$nextTick(function () {
         return _this.$refs.date1.activePicker = 'YEAR';
       });
+      !val && valOld && this.onBlur();
     }
   },
   components: {
@@ -888,14 +898,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mixins: [_mixins_x_store__WEBPACK_IMPORTED_MODULE_1__["default"]],
   methods: {
+    postWork: function postWork() {
+      var vm = this;
+      if (vm.isWithArray) vm.checked = vm.valueArr != undefined && vm.isDateTimeLike && !vm.multy ? !vm.valueArr.equals(['', '']) : !vm.valueArr.equals([]);else vm.checked = vm.value != undefined && vm.value != null;
+    },
     setValue: function setValue(val) {
       var needCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var vm = this;
       if (needCheck && vm.value == val && nvlo(vm.paramData).valueArrView != undefined) return;
-      console.log({
-        value: val,
-        valueView: vm.getValueViewFromValue(val)
-      });
       vm.paramSet({
         num: vm.paramsForm,
         code: vm.code,
@@ -904,7 +914,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           valueView: vm.getValueViewFromValue(val)
         }
       });
-      vm.checked = val != undefined && val != null;
+      vm.postWork();
     },
     getValueViewFromValue: function getValueViewFromValue(val) {
       var vm = this,
@@ -943,7 +953,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           valueArrView: vm.getValueArrViewFromValueArr(val)
         }
       });
-      vm.checked = val != undefined && (!vm.multy && vm.isDateTimeLike && vm.isNeedTab ? !val.equals([[], []]) : !val.equals([]));
+      vm.postWork();
     },
     getValueArrViewFromValueArr: function getValueArrViewFromValueArr(val) {
       var vm = this,
@@ -976,8 +986,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     saveDialog: function saveDialog(value) {
       var vm = this;
-
-      if (vm.isNeedTab) {
+      console.log(value, vm.value);
+      if (vm.isDateTimeLike) vm.$refs.dialog.save(value);else if (vm.isNeedTab) {
         value.forEach(function (row) {
           var _loop = function _loop(code) {
             if (vm.code == code) vm.$refs.dialog.save(row[code]);else if (vm.$parent.$refs[code]) {
@@ -993,11 +1003,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             _loop(code);
           }
         });
-        vm.tabSelectedRows = [];
-      } else if (vm.multy && vm.type == 'DATE') {
-        if (vm.dialogWithDate && vm.valueArr.length == 0) showMsg(getErrDesc('saveNoDate'));
-        vm.$refs.dialog.save(vm.valueArr);
       }
+      vm.tabSelectedRows = [];
     },
     changeSign: function changeSign() {
       var vm = this;
@@ -1027,10 +1034,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     changeChecked: function changeChecked() {
-      var vm = this;
-      vm.checkRefresh({
-        checkedFx: true
-      });
+      var vm = this; //vm.checkRefresh({checkedFx:true})
     },
     onClick: function onClick(e) {
       var vm = this,
@@ -1040,13 +1044,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return;
       vm.lastTimeSend = curTime;
       vm.checked = true;
-
-      if (!tmp) {
-        vm.checkRefresh({
-          checkedFx: true
-        });
-        if (vm.isNeedTab) vm.dialog = true;
-      }
+      /*if(!tmp && vm.isNeedTab)
+      	vm.dialog=true	*/
 
       setTimeout(function () {
         vm.$refs.input.onClick(e);
@@ -1054,6 +1053,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     onBlur: function onBlur() {
       var vm = this;
+      console.log('onBlur');
       vm.checkRefresh({});
     },
     checkRefresh: function () {
@@ -1068,7 +1068,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 0:
                 _ref2$checkedFx = _ref2.checkedFx, checkedFx = _ref2$checkedFx === void 0 ? false : _ref2$checkedFx, _ref2$initRun = _ref2.initRun, initRun = _ref2$initRun === void 0 ? false : _ref2$initRun;
                 vm = this, value = vm.value, valueArr = vm.valueArr;
-                vm.setVal(value, valueArr, initRun);
+
+                if (vm.hasInput && vm.needCheckBox && !initRun) {
+                  vm.hasError = !vm.$refs.input.validate();
+                  vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
+                }
 
               case 3:
               case "end":
@@ -1083,39 +1087,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return checkRefresh;
-    }(),
-    setVal: function () {
-      var _setVal = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(value, valueArr) {
-        var initRun,
-            vm,
-            _args2 = arguments;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                initRun = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : false;
-                vm = this;
-
-                if (vm.hasInput && vm.needCheckBox && !initRun) {
-                  vm.hasError = !vm.$refs.input.validate();
-                  vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
-                }
-
-              case 3:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function setVal(_x2, _x3) {
-        return _setVal.apply(this, arguments);
-      }
-
-      return setVal;
     }(),
     getTitleByNum: function getTitleByNum(value) {
       return this.tickLabels[value];
@@ -2610,7 +2581,7 @@ var render = function() {
                                                                   click: function(
                                                                     $event
                                                                   ) {
-                                                                    return _vm.$refs.dialog.save(
+                                                                    return _vm.saveDialog(
                                                                       _vm.valueArr
                                                                     )
                                                                   }
@@ -2766,11 +2737,7 @@ var render = function() {
                                                                           return _vm.submit(
                                                                             $event
                                                                           )
-                                                                        },
-                                                                        blur:
-                                                                          _vm.onBlur,
-                                                                        "click:append":
-                                                                          _vm.changeShow
+                                                                        }
                                                                       },
                                                                       model: {
                                                                         value:
@@ -2865,7 +2832,7 @@ var render = function() {
                                                                   click: function(
                                                                     $event
                                                                   ) {
-                                                                    return _vm.$refs.dialog.save(
+                                                                    return _vm.saveDialog(
                                                                       _vm.valueArr
                                                                     )
                                                                   }
@@ -2953,12 +2920,11 @@ var render = function() {
                                                         ) {
                                                           _vm.value = $event
                                                         },
-                                                        "update:return-value": [
-                                                          function($event) {
-                                                            _vm.value = $event
-                                                          },
-                                                          _vm.setNewVal
-                                                        ],
+                                                        "update:return-value": function(
+                                                          $event
+                                                        ) {
+                                                          _vm.value = $event
+                                                        },
                                                         show: _vm.changeChecked
                                                       },
                                                       scopedSlots: _vm._u(
@@ -3000,8 +2966,6 @@ var render = function() {
                                                                           _vm.max
                                                                       },
                                                                       on: {
-                                                                        change:
-                                                                          _vm.setNewVal,
                                                                         keyup: function(
                                                                           $event
                                                                         ) {
@@ -3022,11 +2986,7 @@ var render = function() {
                                                                           return _vm.submit(
                                                                             $event
                                                                           )
-                                                                        },
-                                                                        blur:
-                                                                          _vm.onBlur,
-                                                                        "click:append":
-                                                                          _vm.changeShow
+                                                                        }
                                                                       },
                                                                       model: {
                                                                         value:
@@ -3126,7 +3086,7 @@ var render = function() {
                                                                     $event
                                                                   ) {
                                                                     return _vm.saveDialog(
-                                                                      _vm.value
+                                                                      _vm.tabSelectedRows
                                                                     )
                                                                   }
                                                                 }
@@ -3205,7 +3165,7 @@ var render = function() {
                     ],
                     null,
                     false,
-                    4016863069
+                    4107434219
                   )
                 },
                 [

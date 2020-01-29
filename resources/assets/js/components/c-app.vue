@@ -78,7 +78,7 @@
 				let vm=this//финт ушами, что бы основная область не прокручивалась
 				return {
 					height: vm.oneScreen?'100px':null, 
-					background:vm.needBgIm?"url('storage/bg.jpg')":null , 
+					//background:vm.needBgIm?"url('storage/bg.jpg')":null , 
 					backgroundAttachment: 'fixed',
 				}
 			},
@@ -95,7 +95,7 @@
 				]
 			},
 		},
-        components: {
+		components: {
 			CHead, CFooter,CMsgList, 
 			MInputFields: (resolve) => require(['../modules/m-input-fields.vue'], resolve),
 			CLayouts: (resolve) => require(['./c-layouts.vue'], resolve),
