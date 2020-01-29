@@ -395,7 +395,7 @@
 			thumbLabelNeed()	{	return nvlo(this.paramData).thumb_label_need==undefined?'':!!this.paramData.thumb_label_need && this.isSliderLike?'always':''	},
 			isBirthDate()		{	return nvlo(this.paramData).isBirthDate==undefined? false:!!this.paramData.isBirthDate											},
 			isMultiLine()		{	return this.columnSize>50																										},
-			isWithArray()		{	return this.isDateTimeLike || this.type=='LIST' && this.multy																	},
+			isWithArray()		{	return this.isDateTimeLike || ['RANGE'].indexOf(this.type)!=-1 || this.type=='LIST' && this.multy								},
 			rangeSeparator()	{	return this.$vuetify.lang.t('$vuetify.texts.simple.labels.dateRangeSeparator' )													},
 			tabHeader()			{	//для TAB [{value:'param1',text:'Параметра1',visible:true},{value:'param2',text:'Параметра2',visible:true}]
 				let vm = this
@@ -619,12 +619,14 @@
 					vm.checked= vm.valueArr !=undefined && vm.isDateTimeLike && !vm.multy? !vm.valueArr.equals(['','']) : !vm.valueArr.equals([])
 				else
 					vm.checked= vm.value!=undefined && vm.value!=null
+				
 			},
 			setValue(val, needCheck=true){
 				let vm = this
 				if(needCheck && vm.value==val &&  nvlo(vm.paramData).valueArrView!=undefined ) 
 					return
-				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{value:val, valueView: vm.getValueViewFromValue(val)}  })
+				console.log({ value:val, valueView: vm.getValueViewFromValue(val)});
+				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{need_reset:false, value:val, valueView: vm.getValueViewFromValue(val)}  })
 				vm.postWork()				
 			},
 			getValueViewFromValue(val){
@@ -645,7 +647,7 @@
 				if(needCheck && (vm.valueArr.equals(val) || nvlo(vm.paramData).value_arr ===null && val==null) )
 					return
 				console.log({value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)});
-				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)}  })
+				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{need_reset:false, value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)}  })
 				vm.postWork()				
 			},
 			getValueArrViewFromValueArr(val){
@@ -669,32 +671,27 @@
 					eval(vm.callBackEval)
 			},
 			saveDialog(value){
-				let vm=this
+				let vm=this,
+					tmp={}
 				console.log(value, vm.value);
 				if(vm.isDateTimeLike)
 					vm.$refs.dialog.save(value)
 				else if(vm.isNeedTab ){
 					value.forEach(row=>{
 						for (let code in row) {
-							if(vm.code == code )	
-								vm.$refs.dialog.save(row[code])
-							else if(vm.$parent.$refs[code]){
-								if(row[code+'_code']!=undefined)
-									vm.$parent.$refs[code][0].setNewVal( row[code+'_code'] )
-								else if(vm.$parent.$refs[code][0].type=='LIST')
-									vm.$parent.$refs[code][0].setNewVal( vm.$parent.$refs[code][0].tableValues.filter(item =>{
-										return item.textFull == row[code]
-									}).map( item =>{
-										return item.value
-									}).join()
-									)
+							if(code == vm.code)
+								continue
+							tmp =vm.paramByCode(vm.paramsForm, code)
+							if( tmp!= undefined )
+								if(['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE', 'RANGE'].indexOf(tmp.type)!=-1 || tmp.type=='LIST' && tmp.multy)
+									vm.paramSet( {num: vm.paramsForm, code, data:{need_reset:true, value_arr:[row[code]] }  })
 								else
-									vm.$parent.$refs[code][0].setNewVal(row[code])
-							}
+									vm.paramSet( {num: vm.paramsForm, code, data:{need_reset:true, value:row[code]}  })
 						}
 					})
+					vm.tabSelectedRows=[]
+					vm.$refs.dialog.save(value[0][vm.code])
 				}
-				vm.tabSelectedRows=[]
 			},
 			changeSign(){
 				let vm=this

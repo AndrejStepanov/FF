@@ -1760,7 +1760,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.columnSize > 50;
     },
     isWithArray: function isWithArray() {
-      return this.isDateTimeLike || this.type == 'LIST' && this.multy;
+      return this.isDateTimeLike || ['RANGE'].indexOf(this.type) != -1 || this.type == 'LIST' && this.multy;
     },
     rangeSeparator: function rangeSeparator() {
       return this.$vuetify.lang.t('$vuetify.texts.simple.labels.dateRangeSeparator');
@@ -2040,10 +2040,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var needCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var vm = this;
       if (needCheck && vm.value == val && nvlo(vm.paramData).valueArrView != undefined) return;
+      console.log({
+        value: val,
+        valueView: vm.getValueViewFromValue(val)
+      });
       vm.paramSet({
         num: vm.paramsForm,
         code: vm.code,
         data: {
+          need_reset: false,
           value: val,
           valueView: vm.getValueViewFromValue(val)
         }
@@ -2083,6 +2088,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         num: vm.paramsForm,
         code: vm.code,
         data: {
+          need_reset: false,
           value_arr: val,
           valueArrView: vm.getValueArrViewFromValueArr(val)
         }
@@ -2119,26 +2125,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (vm.callBackEval != '') eval(vm.callBackEval);
     },
     saveDialog: function saveDialog(value) {
-      var vm = this;
+      var vm = this,
+          tmp = {};
       console.log(value, vm.value);
       if (vm.isDateTimeLike) vm.$refs.dialog.save(value);else if (vm.isNeedTab) {
         value.forEach(function (row) {
-          var _loop = function _loop(code) {
-            if (vm.code == code) vm.$refs.dialog.save(row[code]);else if (vm.$parent.$refs[code]) {
-              if (row[code + '_code'] != undefined) vm.$parent.$refs[code][0].setNewVal(row[code + '_code']);else if (vm.$parent.$refs[code][0].type == 'LIST') vm.$parent.$refs[code][0].setNewVal(vm.$parent.$refs[code][0].tableValues.filter(function (item) {
-                return item.textFull == row[code];
-              }).map(function (item) {
-                return item.value;
-              }).join());else vm.$parent.$refs[code][0].setNewVal(row[code]);
-            }
-          };
-
           for (var code in row) {
-            _loop(code);
+            if (code == vm.code) continue;
+            tmp = vm.paramByCode(vm.paramsForm, code);
+            if (tmp != undefined) if (['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE', 'RANGE'].indexOf(tmp.type) != -1 || tmp.type == 'LIST' && tmp.multy) vm.paramSet({
+              num: vm.paramsForm,
+              code: code,
+              data: {
+                need_reset: true,
+                value_arr: [row[code]]
+              }
+            });else vm.paramSet({
+              num: vm.paramsForm,
+              code: code,
+              data: {
+                need_reset: true,
+                value: row[code]
+              }
+            });
           }
         });
+        vm.tabSelectedRows = [];
+        vm.$refs.dialog.save(value[0][vm.code]);
       }
-      vm.tabSelectedRows = [];
     },
     changeSign: function changeSign() {
       var vm = this;
