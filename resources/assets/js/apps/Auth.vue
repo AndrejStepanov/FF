@@ -10,7 +10,7 @@
         data: () => ({
         }),
 		mixins: [
-			XApp,XStore,
+			XApp,
 		],
 		created: function (){
 		},
