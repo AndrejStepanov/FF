@@ -7,7 +7,7 @@ export default {
 	},
 	getters: { // computed properties
 		getByName: state => name => {
-			return nvl(state.struct[name] )
+			return nvl(state.struct[name], null )
 		},
 		getDescByHead: state => name => {
 			return nvl(state.structDesc[name] )

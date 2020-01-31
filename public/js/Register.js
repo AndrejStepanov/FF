@@ -349,9 +349,6 @@ __webpack_require__.r(__webpack_exports__);
     panelRightWidth: function panelRightWidth() {
       return this.panelRight.filter ? 358 : nvl(this.panelRight.width, 300);
     },
-    mainPanelReq: function mainPanelReq() {
-      return this.mainLayoutConfig != null;
-    },
     authAva: function authAva() {
       return this.profileUserName() == '' ? 'account_circle' : 'launch';
     },
@@ -383,6 +380,30 @@ __webpack_require__.r(__webpack_exports__);
     authChange: function authChange() {
       var vm = this;
       if (vm.profileUserName() == '') vm.$root.$emit('systemLogin');else vm.$root.$emit('systemLogout');
+    },
+    onResize: function onResize() {
+      var vm = this,
+          dxWidth = 0,
+          dxHeight = 0;
+      if (vm.mainLayoutConfig == null) // елси режим полотенца, то выходим
+        return;
+      document.querySelectorAll('nav').forEach(function (el) {
+        if (!el.classList.contains('v-navigation-drawer--close')) dxWidth += el.offsetWidth;
+        /*dxHeight+=el.offsetHeight;*/
+      });
+      document.querySelectorAll('footer, header').forEach(function (el) {
+        dxHeight += el.offsetHeight;
+      });
+      document.querySelectorAll('html').forEach(function (el) {
+        if (getComputedStyle(el, null).overflowY == 'scroll') dxWidth += 17;
+      });
+      vm.layoutSizePxRecalc({
+        head: vm.layoutName,
+        parentSizePx: {
+          width: window.innerWidth - dxWidth,
+          height: window.innerHeight - dxHeight
+        }
+      });
     }
   },
   created: function created() {
@@ -409,6 +430,7 @@ __webpack_require__.r(__webpack_exports__);
       return vm.needLabel = entries[0].intersectionRatio > 0;
     });
     vm.observer.observe(vm.$refs.scrollArea);
+    this.onResize();
   }
 });
 
@@ -13476,6 +13498,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-app",
+    {
+      directives: [
+        {
+          name: "resize",
+          rawName: "v-resize",
+          value: _vm.onResize,
+          expression: "onResize"
+        }
+      ]
+    },
     [
       _vm.needHeader
         ? _c("c-head", {
@@ -14165,6 +14197,36 @@ module.exports = function installComponents (component, components) {
 
 /***/ }),
 
+/***/ "./node_modules/vuetify-loader/lib/runtime/installDirectives.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/vuetify-loader/lib/runtime/installDirectives.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function installDirectives (component, directives) {
+  var options = typeof component.exports === 'function'
+    ? component.exports.extendOptions
+    : component.options
+
+  if (typeof component.exports === 'function') {
+    options.directives = component.exports.options.directives
+  }
+
+  options.directives = options.directives || {}
+
+  for (var i in directives) {
+    options.directives[i] = options.directives[i] || directives[i]
+  }
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -14388,6 +14450,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuetify_lib_components_VApp__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuetify/lib/components/VApp */ "./node_modules/vuetify/lib/components/VApp/index.js");
 /* harmony import */ var vuetify_lib_components_VContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuetify/lib/components/VContent */ "./node_modules/vuetify/lib/components/VContent/index.js");
 /* harmony import */ var vuetify_lib_components_VNavigationDrawer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuetify/lib/components/VNavigationDrawer */ "./node_modules/vuetify/lib/components/VNavigationDrawer/index.js");
+/* harmony import */ var _node_modules_vuetify_loader_lib_runtime_installDirectives_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../node_modules/vuetify-loader/lib/runtime/installDirectives.js */ "./node_modules/vuetify-loader/lib/runtime/installDirectives.js");
+/* harmony import */ var _node_modules_vuetify_loader_lib_runtime_installDirectives_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vuetify_loader_lib_runtime_installDirectives_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var vuetify_lib_directives_resize__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuetify/lib/directives/resize */ "./node_modules/vuetify/lib/directives/resize/index.js");
 
 
 
@@ -14412,6 +14477,12 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 
 _node_modules_vuetify_loader_lib_runtime_installComponents_js__WEBPACK_IMPORTED_MODULE_3___default()(component, {VApp: vuetify_lib_components_VApp__WEBPACK_IMPORTED_MODULE_4__["VApp"],VContent: vuetify_lib_components_VContent__WEBPACK_IMPORTED_MODULE_5__["VContent"],VNavigationDrawer: vuetify_lib_components_VNavigationDrawer__WEBPACK_IMPORTED_MODULE_6__["VNavigationDrawer"]})
+
+
+/* vuetify-loader */
+
+
+_node_modules_vuetify_loader_lib_runtime_installDirectives_js__WEBPACK_IMPORTED_MODULE_7___default()(component, {Resize: vuetify_lib_directives_resize__WEBPACK_IMPORTED_MODULE_8__["default"]})
 
 
 /* hot reload */
@@ -15808,7 +15879,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     // computed properties
     getByName: function getByName(state) {
       return function (name) {
-        return nvl(state.struct[name]);
+        return nvl(state.struct[name], null);
       };
     },
     getDescByHead: function getDescByHead(state) {

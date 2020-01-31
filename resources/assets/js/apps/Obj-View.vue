@@ -1,5 +1,5 @@
 <template>
-	<c-app :curentSystem="$vuetify.lang.t('$vuetify.texts.main.links.obgView.name')" :panelRight="{show:true, class:'display--flex flex-direction--column', filter:true}" :mainPanelConfig="mainPanelConfig">
+	<c-app :curentSystem="$vuetify.lang.t('$vuetify.texts.main.links.obgView.name')" :panelRight="{show:true, class:'display--flex flex-direction--column', filter:true}">
 		<template v-slot:panelRight>
 			<div class='display--flex flex-direction--column max-height'>
 				<c-filter filterName="object-tree-add" />
@@ -10,11 +10,10 @@
 
 <script>
 	import XApp from '../mixins/x-app'
-	import XStore from '../mixins/x-store'
 	import CFilter from '../components/c-filter'
 	export default {
 		data: () => ({
-			mainPanelConfig: {  name: 'first',   width:'100%',	height:'100%',  layout: 'vertical' },
+			//layoutsConfigs: {  name: 'first',   width:'100%',	height:'100%',  layout: 'vertical' },
 		}),
 		computed: {
 		},
@@ -22,7 +21,7 @@
 			CFilter
 		},
 		mixins: [
-			XApp,XStore,
+			XApp,
 		],
 		methods: {
 

@@ -6,7 +6,6 @@
 
 <script>
 	import XApp from '../mixins/x-app'
-	import XStore from '../mixins/x-store'
     export default {
         data: () => ({
         }),

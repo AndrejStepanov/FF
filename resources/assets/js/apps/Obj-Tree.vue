@@ -1,5 +1,5 @@
 <template>
-	<c-app :curentSystem="$vuetify.lang.t('$vuetify.texts.main.links.objWork.name')" :panelLeft="{show:true}"  :mainPanelConfig="mainPanelConfig">
+	<c-app :curentSystem="$vuetify.lang.t('$vuetify.texts.main.links.objWork.name')" :panelLeft="{show:true}"  >
 		<template v-slot:panelLeft>
 			<div class='display--flex flex-direction--column max-height'>
 				<v-text-field id="treeSearch" name="treeSearch" class="check-size flex--inherit" append-icon="search" v-model="treeSearch"  single-line :label="$vuetify.lang.t('$vuetify.texts.simple.actions.search')" @keyup.enter="treeSearchSubmit"/>
@@ -18,8 +18,6 @@
 
 <script>
 	import XApp from '../mixins/x-app'
-	import XStore from '../mixins/x-store'
-	import XDialog from '../mixins/x-dialog'
 	import CTree from '../components/tree/c-tree'
 	export default {
 		data: () => ({
@@ -31,14 +29,14 @@
 					params:{ socetHref:"/data_command", socetEvent:"object.tree.add", treeId:{value:0}, }, 
 				},
 			},
-			mainPanelConfig: {  name: 'first',   width:'100%',	height:'100%',  layout: 'vertical' },
+			layoutsConfigs: {  name: 'first',   width:'100%',	height:'100%',  layout: 'vertical' },
 		}),
 		components: {
 			CTree,
 			MInputFields: (resolve) =>{ require(['../modules/m-input-fields.vue'], resolve) },
 		},
 		mixins: [
-			XApp,XStore,XDialog,
+			XApp,
 		],
 		methods: {
 			itemClick(node) {

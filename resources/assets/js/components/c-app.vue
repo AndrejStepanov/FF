@@ -1,5 +1,5 @@
 <template>
-    <v-app  >
+    <v-app  v-resize="onResize" >
 		<c-head app ref="head" v-if="needHeader" :curentSystem='curentSystem' :dark="isPerefThemeDark" :light="isPerefThemeLight" :showLeft="panelLeftDrawer" :showRight="panelRightDrawer" :needLabel="needLabel" 
 			:fixed="headFixed" :headHideOnScroll="headHideOnScroll" :headElevateOnScroll="headElevateOnScroll"/>
 		<v-navigation-drawer app v-if="panelLeftDrawer" :dark="isPerefThemeDark" :light="isPerefThemeLight" v-model="panelLeftShowen" left  touchless :class="panelLeft.class" :width="panelLeftWidth">
@@ -86,7 +86,6 @@
 			panelRightDrawer(){ return this.panelRight.drawer || this.panelRight.show || this.panelLeft.filter	},
 			panelLeftWidth(){ return this.panelLeft.filter? 358 : nvl(this.panelLeft.width,270)  },
 			panelRightWidth(){ return this.panelRight.filter? 358 : nvl(this.panelRight.width,300)  },
-			mainPanelReq(){ return this.mainLayoutConfig!=null},
 			authAva () {return this.profileUserName()==''?'account_circle':'launch'},
 			authItems(){
 					return this.profileUserName()==''?null: [
@@ -111,6 +110,17 @@
 				else
 					vm.$root.$emit('systemLogout')
 			},
+			onResize () {
+				let vm=this,
+					dxWidth = 0,
+					dxHeight=0
+				if(vm.mainLayoutConfig==null)// елси режим полотенца, то выходим
+					return
+				document.querySelectorAll('nav').forEach(el=> { if(!el.classList.contains('v-navigation-drawer--close') ) dxWidth+=el.offsetWidth; /*dxHeight+=el.offsetHeight;*/ } )
+				document.querySelectorAll('footer, header').forEach(el=> { dxHeight+=el.offsetHeight; } )
+				document.querySelectorAll('html').forEach(el=> { if (getComputedStyle( el, null ).overflowY=='scroll') dxWidth+=17; } )
+				vm.layoutSizePxRecalc( {head:vm.layoutName, parentSizePx:{width: window.innerWidth-dxWidth, height: window.innerHeight-dxHeight } } )
+			},
 		},
 		created: function (){
 			let vm=this
@@ -131,6 +141,7 @@
 			let vm=this
 			vm.observer =  new IntersectionObserver(entries=>vm.needLabel= entries[0].intersectionRatio > 0);
 			vm.observer.observe(vm.$refs.scrollArea);
+			this.onResize()
 		},
     }
 </script>

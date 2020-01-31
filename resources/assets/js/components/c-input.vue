@@ -71,11 +71,11 @@
 									@keyup.enter="submit"  @blur="onBlur" @focus="onFocus" multiple chips deletable-chips small-chips
 									:class="getComponentClass" />
 								<v-dialog v-else-if="!multy && isDateTimeLike " ref="dialog" v-model="isDialog" :return-value.sync="valueArr" persistent	:width="getDialogWidth"
-										class="max-width" :content-class="getDialogClass">
+										class="max-width" :content-class="getDialogClass" >
 									<template v-slot:activator="{ on }">
-										<v-combobox  v-on="on" v-model="valueArrViewFst" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
-											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" 
-											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" class=" body-1" />
+										<v-text-field  v-model="valueArrViewFst" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  :readonly="isAuto" ref="input" 
+											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" :append-icon="getAppendIcon" 
+											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="isAuto?{on}:{'click:append':on.click}" class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
@@ -118,9 +118,9 @@
 								<v-dialog v-else-if="multy && type=='DATE'"	ref="dialog" v-model="isDialog" :return-value.sync="valueArr" persistent :width="getDialogWidth"
 										class="max-width" :content-class="getDialogClass">
 									<template v-slot:activator="{ on }">
-										<v-combobox  v-on="on"  v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"   ref="input"  append-icon=""
-											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" multiple chips  small-chips 
-											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" class=" body-1" />
+										<v-combobox   v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"   ref="input" 
+											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" multiple chips  small-chips  :append-icon="getAppendIcon" 
+											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="isAuto?{on}:{'click:append':on.click}" class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
@@ -137,9 +137,9 @@
 								<v-dialog v-else-if="isNeedTab"	ref="dialog" v-model="isDialog" :return-value.sync="value" persistent :width="getDialogWidth"
 										class="max-width" :content-class="getDialogClass" overlay-color="white" overlay-opacity="1">
 									<template v-slot:activator="{ on }">
-										<v-combobox  v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"
+										<v-text-field  v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"
 											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" :append-icon="getAppendIcon"
-											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="{'click:append':on.click}" class=" body-1" />
+											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="isAuto?{on}:{'click:append':on.click}" class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
@@ -206,7 +206,7 @@
 				return !this.needSign?'':this.signList[this.sign].icon
 			},
 			getAppendIcon(){
-				return this.isNeedTab? 'more_vert':
+				return this.isWithDialog && !this.isAuto? 'more_vert':
 					this.type=='PASSWORD'? (this.show ? 'visibility_off' : 'visibility'):
 					this.type=='LIST'?'$vuetify.icons.dropdown':''
 			},
@@ -391,12 +391,13 @@
 			multy()				{	return !this.isSliderLike && (nvlo(this.paramData).multy==undefined? false:!!this.paramData.multy	)							},
 			maxLen()			{	return nvlo(this.paramData).maxLen||0																							},
 			tabGroup()			{	return nvlo(this.paramData).tab_group||""																						},
-			isNeedTab()			{	return this.tabGroup!=''																										},
+			isNeedTab()			{	return this.tabGroup!='' && !!nvlo(this.paramData).withTab																		},
 			tickSize()			{	return nvlo(this.paramData).tickSize||0																							},
 			thumbLabelNeed()	{	return nvlo(this.paramData).thumb_label_need==undefined?'':!!this.paramData.thumb_label_need && this.isSliderLike?'always':''	},
 			isBirthDate()		{	return nvlo(this.paramData).isBirthDate==undefined? false:!!this.paramData.isBirthDate											},
 			isMultiLine()		{	return this.columnSize>50																										},
 			isWithArray()		{	return this.isDateTimeLike || ['RANGE'].indexOf(this.type)!=-1 || this.type=='LIST' && this.multy								},
+			isWithDialog()		{	return this.isDateTimeLike || this.isNeedTab																					},
 			rangeSeparator()	{	return this.$vuetify.lang.t('$vuetify.texts.simple.labels.dateRangeSeparator' )													},
 			tabHeader()			{	//для TAB [{value:'param1',text:'Параметра1',visible:true},{value:'param2',text:'Параметра2',visible:true}]
 				let vm = this
@@ -665,9 +666,9 @@
 					return
 				if( nvlo(vm.paramData).need_reset || !needCheck  )
 					if( vm.type=='LIST' && vm.multy )
-						val = val.filter(row1 => vm.tableValues.findIndex( row=>  row.value==row1 || row.textFull==row1  ) ).map( row=>row.value )
+						val = val.filter(row1 => vm.tableValues.findIndex( row=> row.value==row1 || row.textFull==row1  )!=-1 )
 					else if( vm.isDateTimeLike )
-						val = val.map( row=> ['TIME_RANGE', 'TIME'].indexOf(vm.type)!=-1? timeNorm(row): dateTimeNorm(row) ).filter(row => row!='' )
+						val = val.map( row=> ['TIME_RANGE', 'TIME'].indexOf(vm.type)!=-1? timeNorm(row): vm.type=='DATE' && vm.multy? dateTimeNorm(row).split('T')[0]: dateTimeNorm(row) ).filter(row => row!='' )
 				console.log({value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)});
 				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{need_reset:false, value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)}  })
 				vm.postWork()				
@@ -678,7 +679,7 @@
 				if(['DATE', 'DATETIME'].indexOf(vm.type)!=-1)
 					res= res.map( row=> (dateFormat(row).replace('T',' ')) )
 				else if(vm.type=='RANGE' && (!vm.isNumeric) )
-					res = [ vm.tableValues.findIndex( row1=> ( row1.value==val[0] ) ) ,  vm.tableValues.findIndex( row1=> ( row1.value==val[1] ) )]
+					res = [ vm.tableValues.findIndex( row1=>  row1.value==val[0]  ) ,  vm.tableValues.findIndex( row1=>  row1.value==val[1] ) ]
 				else if(vm.dialogWithRange && !vm.multy && res.length>0)
 					res=[dateFormat(res[0]).replace('T',' ')+ (vm.dialogWithRange? vm.rangeSeparator+dateFormat(res[1]).replace('T',' '):'')]
 				else if(vm.type=='LIST'  && vm.multy)
@@ -736,10 +737,10 @@
 					curTime = new Date().getTime()
 				if ( curTime<vm.lastTimeSend+500 )//для автоматической активации полей над ними висит следилка. что бы она не работала лишний раз - глушим ее
 					return
-				console.log('onClick',vm.isNeedTab);
+				console.log('onClick',vm.isNeedTab, vm.isAuto);
 				vm.lastTimeSend=curTime
 				vm.checked=true
-				if(vm.isNeedTab && vm.isAuto){
+				if(vm.isWithDialog &&  vm.isAuto){
 					vm.isDialog=true
 					//vm.onFocus()
 				}

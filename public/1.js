@@ -370,7 +370,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return !this.needSign ? '' : this.signList[this.sign].icon;
     },
     getAppendIcon: function getAppendIcon() {
-      return this.isNeedTab ? 'more_vert' : this.type == 'PASSWORD' ? this.show ? 'visibility_off' : 'visibility' : this.type == 'LIST' ? '$vuetify.icons.dropdown' : '';
+      return this.isWithDialog && !this.isAuto ? 'more_vert' : this.type == 'PASSWORD' ? this.show ? 'visibility_off' : 'visibility' : this.type == 'LIST' ? '$vuetify.icons.dropdown' : '';
     },
     getClearable: function getClearable() {
       return this.type != 'PASSWORD';
@@ -607,7 +607,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return nvlo(this.paramData).tab_group || "";
     },
     isNeedTab: function isNeedTab() {
-      return this.tabGroup != '';
+      return this.tabGroup != '' && !!nvlo(this.paramData).withTab;
     },
     tickSize: function tickSize() {
       return nvlo(this.paramData).tickSize || 0;
@@ -623,6 +623,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     isWithArray: function isWithArray() {
       return this.isDateTimeLike || ['RANGE'].indexOf(this.type) != -1 || this.type == 'LIST' && this.multy;
+    },
+    isWithDialog: function isWithDialog() {
+      return this.isDateTimeLike || this.isNeedTab;
     },
     rangeSeparator: function rangeSeparator() {
       return this.$vuetify.lang.t('$vuetify.texts.simple.labels.dateRangeSeparator');
@@ -968,11 +971,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (nvlo(vm.paramData).need_reset || !needCheck) if (vm.type == 'LIST' && vm.multy) val = val.filter(function (row1) {
         return vm.tableValues.findIndex(function (row) {
           return row.value == row1 || row.textFull == row1;
-        });
-      }).map(function (row) {
-        return row.value;
+        }) != -1;
       });else if (vm.isDateTimeLike) val = val.map(function (row) {
-        return ['TIME_RANGE', 'TIME'].indexOf(vm.type) != -1 ? timeNorm(row) : dateTimeNorm(row);
+        return ['TIME_RANGE', 'TIME'].indexOf(vm.type) != -1 ? timeNorm(row) : vm.type == 'DATE' && vm.multy ? dateTimeNorm(row).split('T')[0] : dateTimeNorm(row);
       }).filter(function (row) {
         return row != '';
       });
@@ -1073,11 +1074,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           curTime = new Date().getTime();
       if (curTime < vm.lastTimeSend + 500) //для автоматической активации полей над ними висит следилка. что бы она не работала лишний раз - глушим ее
         return;
-      console.log('onClick', vm.isNeedTab);
+      console.log('onClick', vm.isNeedTab, vm.isAuto);
       vm.lastTimeSend = curTime;
       vm.checked = true;
 
-      if (vm.isNeedTab && vm.isAuto) {
+      if (vm.isWithDialog && vm.isAuto) {
         vm.isDialog = true; //vm.onFocus()
       } else setTimeout(function () {
         vm.$refs.input.onClick(e);
@@ -2112,7 +2113,7 @@ var render = function() {
                                                               var on = ref.on
                                                               return [
                                                                 _c(
-                                                                  "v-combobox",
+                                                                  "v-text-field",
                                                                   _vm._g(
                                                                     {
                                                                       ref:
@@ -2130,9 +2131,7 @@ var render = function() {
                                                                           _vm.getDisable,
                                                                         required: !!_vm.nullable,
                                                                         readonly:
-                                                                          "",
-                                                                        "append-icon":
-                                                                          "",
+                                                                          _vm.isAuto,
                                                                         tabindex:
                                                                           _vm.sortSeq,
                                                                         clearable:
@@ -2140,7 +2139,9 @@ var render = function() {
                                                                         min:
                                                                           _vm.min,
                                                                         max:
-                                                                          _vm.max
+                                                                          _vm.max,
+                                                                        "append-icon":
+                                                                          _vm.getAppendIcon
                                                                       },
                                                                       on: {
                                                                         keyup: function(
@@ -2181,7 +2182,14 @@ var render = function() {
                                                                           "valueArrViewFst"
                                                                       }
                                                                     },
-                                                                    on
+                                                                    _vm.isAuto
+                                                                      ? {
+                                                                          on: on
+                                                                        }
+                                                                      : {
+                                                                          "click:append":
+                                                                            on.click
+                                                                        }
                                                                   )
                                                                 )
                                                               ]
@@ -2713,8 +2721,6 @@ var render = function() {
                                                                         disabled:
                                                                           _vm.getDisable,
                                                                         required: !!_vm.nullable,
-                                                                        "append-icon":
-                                                                          "",
                                                                         tabindex:
                                                                           _vm.sortSeq,
                                                                         clearable:
@@ -2728,7 +2734,9 @@ var render = function() {
                                                                         chips:
                                                                           "",
                                                                         "small-chips":
-                                                                          ""
+                                                                          "",
+                                                                        "append-icon":
+                                                                          _vm.getAppendIcon
                                                                       },
                                                                       on: {
                                                                         keyup: function(
@@ -2769,7 +2777,14 @@ var render = function() {
                                                                           "valueArrView"
                                                                       }
                                                                     },
-                                                                    on
+                                                                    _vm.isAuto
+                                                                      ? {
+                                                                          on: on
+                                                                        }
+                                                                      : {
+                                                                          "click:append":
+                                                                            on.click
+                                                                        }
                                                                   )
                                                                 )
                                                               ]
@@ -2952,7 +2967,7 @@ var render = function() {
                                                               var on = ref.on
                                                               return [
                                                                 _c(
-                                                                  "v-combobox",
+                                                                  "v-text-field",
                                                                   _vm._g(
                                                                     {
                                                                       ref:
@@ -3021,10 +3036,14 @@ var render = function() {
                                                                           "valueView"
                                                                       }
                                                                     },
-                                                                    {
-                                                                      "click:append":
-                                                                        on.click
-                                                                    }
+                                                                    _vm.isAuto
+                                                                      ? {
+                                                                          on: on
+                                                                        }
+                                                                      : {
+                                                                          "click:append":
+                                                                            on.click
+                                                                        }
                                                                   )
                                                                 )
                                                               ]
@@ -3189,7 +3208,7 @@ var render = function() {
                     ],
                     null,
                     false,
-                    3111379910
+                    441069220
                   )
                 },
                 [

@@ -25,17 +25,23 @@
 				</v-list-item>
 			</v-list>
 		</template>
-
+		<template v-slot:fourth>
 			<H1>fourth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-	
-	
+		</template>
+		<template v-slot:sixth>
 			<H1>sixth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-			
+		</template>
 	
-		
+		<template v-slot:fifth>
 			<H1>fifth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-			
-
+		</template>
+		<template v-slot:seventh>
+			<H1>seventh</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		</template>
+		<H1>fourth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		<H1>sixth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		<H1>fifth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		<H1>seventh</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 	</c-app>
 </template>
 
@@ -52,13 +58,13 @@
 			],
 			Links:[
 			],
-			mainPanelConfig:  //'horizontal' - внутри будут строки,  'vertical' - внутри будут столбики;  Последнему слою выставлять размер бессмысленно
-				{  name: 'first',   width:'100%',	height:'100%',  layout: 'vertical',  data:[
-					{  name: 'second',   width:'70%',	height:'100%',  layout: 'horizontal', data:[
+			layoutsConfigs:  //'horizontal' - внутри будут строки,  'vertical' - внутри будут столбики;  Последнему слою выставлять размер бессмысленно
+				{  name: 'first',   width:'100%',	height:'100%',  layout: 'vertical', resizable:true,  data:[
+					{  name: 'second',   width:'50%',	height:'100%',  layout: 'horizontal', data:[
 						{name: 'fourth',   width:'100%',	height:'60%',  layout: 'vertical'},
 						{name: 'sixth',   width:'100%',	height:'40%',  layout: 'vertical'},
 					]},
-					{  name: 'third',   width:'30%',	height:'100%',  layout: 'horizontal', data:[
+					{  name: 'third',   width:'50%',	height:'100%',  layout: 'horizontal', data:[
 						{name: 'fifth',   width:'100%',	height:'40%',  layout: 'vertical'},
 						{name: 'seventh',   width:'100%',	height:'60%',  layout: 'vertical'}
 					]},
