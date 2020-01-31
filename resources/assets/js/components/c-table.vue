@@ -147,6 +147,7 @@
 				return val
 			},
 			selectRow (props) {
+				console.log(props);
 				let vm = this,
 					lastSel=!!props.selected
 				if(vm.selecttableTypes.indexOf(vm.typeSelect)==-1)
@@ -172,7 +173,7 @@
 			selectedValuesChanged(){
 				let vm=this
 				vm.$emit('input', vm.selectedValues.map(row => {
-					return vm.items[row._id]
+					return vm.items[row._id-1]
 				}))
 			},
 		},

@@ -31,7 +31,7 @@
 											:multi-line="isMultiLine"  :tabindex="sortSeq" :type="getComponentType" :color="checkBoxColor" :id="id"
 											:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
 											:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask" :min="min" :max="max" :step="step" 
-											@keyup.enter="submit"  @blur="onBlur"  dense >
+											@keyup.enter="submit"  @blur="onBlur"  @focus="onFocus" dense >
 										<template v-if="!isNumeric"	v-slot:thumb-label="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
 										</template>
@@ -44,7 +44,7 @@
 											:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType"  :color="checkBoxColor" :id="id"
 											:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
 											:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step" 
-											@keyup.enter="submit"  @blur="onBlur" dense >
+											@keyup.enter="submit"  @blur="onBlur" @focus="onFocus" dense >
 										<template v-if="!isNumeric"	v-slot:thumb-label="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
 										</template>
@@ -63,19 +63,19 @@
 									:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :counter="getCounter"
 									:error="inputErrorState"  :error-messages="inputErrorText" :id="id"
 									:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step" auto-grow rows="1"
-									@keyup.enter="submit"  @blur="onBlur" 
+									@keyup.enter="submit"  @blur="onBlur" @focus="onFocus" @click:append="appendClick"
 									:class="getComponentClass" />
 								<component v-else-if="multy && type=='LIST'" :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
 									:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :id="id"
 									:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step"
-									@keyup.enter="submit"  @blur="onBlur" multiple chips deletable-chips small-chips
+									@keyup.enter="submit"  @blur="onBlur" @focus="onFocus" multiple chips deletable-chips small-chips
 									:class="getComponentClass" />
-								<v-dialog v-else-if="!multy && isDateTimeLike " ref="dialog" v-model="dialog" :return-value.sync="valueArr" persistent	:width="getDialogWidth" @show='changeChecked' 
+								<v-dialog v-else-if="!multy && isDateTimeLike " ref="dialog" v-model="isDialog" :return-value.sync="valueArr" persistent	:width="getDialogWidth"
 										class="max-width" :content-class="getDialogClass">
 									<template v-slot:activator="{ on }">
 										<v-combobox  v-on="on" v-model="valueArrViewFst" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
 											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" 
-											@keyup.enter="submit"  class=" body-1" />
+											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
@@ -111,16 +111,16 @@
 										<v-toolbar dense >	
 											<v-btn small class="accent"  @click="saveDialog(valueArr)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
-											<v-btn small class="accent"  @click="dialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
+											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
-								<v-dialog v-else-if="multy && type=='DATE'"	ref="dialog" v-model="dialog" :return-value.sync="valueArr" persistent :width="getDialogWidth" @show='changeChecked' 
+								<v-dialog v-else-if="multy && type=='DATE'"	ref="dialog" v-model="isDialog" :return-value.sync="valueArr" persistent :width="getDialogWidth"
 										class="max-width" :content-class="getDialogClass">
 									<template v-slot:activator="{ on }">
 										<v-combobox  v-on="on"  v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"   ref="input"  append-icon=""
 											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" multiple chips  small-chips 
-											@keyup.enter="submit"  class=" body-1" />
+											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
@@ -130,16 +130,16 @@
 										<v-toolbar dense >	
 											<v-btn small class="accent"  @click="saveDialog(valueArr)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
-											<v-btn small class="accent"  @click="dialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
+											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
-								<v-dialog v-else-if="isNeedTab"	ref="dialog" v-model="dialog" :return-value.sync="value" persistent :width="getDialogWidth" @show='changeChecked' 
+								<v-dialog v-else-if="isNeedTab"	ref="dialog" v-model="isDialog" :return-value.sync="value" persistent :width="getDialogWidth"
 										class="max-width" :content-class="getDialogClass" overlay-color="white" overlay-opacity="1">
 									<template v-slot:activator="{ on }">
-										<v-combobox v-on="on" v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"  append-icon=""
-											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max"
-											@keyup.enter="submit"  class=" body-1" />
+										<v-combobox  v-model="valueView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input"
+											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" :append-icon="getAppendIcon"
+											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="{'click:append':on.click}" class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
@@ -150,7 +150,7 @@
 										<v-toolbar dense >	
 											<v-btn small class="accent"  @click="saveDialog(tabSelectedRows)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
-											<v-btn small class="accent"  @click="dialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
+											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -161,7 +161,7 @@
 			</template>
 			<span >{{ $vuetify.lang.t(tip)}}</span>
 		</v-tooltip>
-		<v-checkbox v-if="!!needCheckBox && hasInput" v-model="checked" hide-details class="shrink ml-2 mb-2" @change="changeChecked" :color="checkBoxColor"></v-checkbox>
+		<v-checkbox v-if="!!needCheckBox && hasInput" v-model="checked" hide-details class="shrink ml-2 mb-2" @change="postWork(true)" :color="checkBoxColor"></v-checkbox>
 	</v-row>
 </template>
 
@@ -172,7 +172,6 @@
 		name:'c-input',
 		data: () => ({
 			checkBoxColor:'false',//переопределяется в created
-			dialog:false,
 			hasError: false,
 			dataPickerHeight: 392,
 			inputErrorState:false,
@@ -182,10 +181,11 @@
 			lastTimeSend: 0,
 			maxLenTypes:['INPUT','NUMBER', 'PASSWORD'],
 			show:false,
+			isFocus:false,
+			isDialog:false,
 			sign:0,
 			tabSelectedRows:[],
 			thumbSize:10,
-
 		}),
 		props:{
 			data:{type: Object, required: true, default:()=>{return {}}},
@@ -206,9 +206,9 @@
 				return !this.needSign?'':this.signList[this.sign].icon
 			},
 			getAppendIcon(){
-				return this.type!='PASSWORD'?this.type=='LIST'?'$vuetify.icons.dropdown':'':
-					this.type!='PASSWORD'? this.show ? 'visibility_off' : 'visibility':
-					''
+				return this.isNeedTab? 'more_vert':
+					this.type=='PASSWORD'? (this.show ? 'visibility_off' : 'visibility'):
+					this.type=='LIST'?'$vuetify.icons.dropdown':''
 			},
 			getClearable(){
 				return this.type!='PASSWORD'
@@ -381,6 +381,7 @@
 			maskFinRegExp()		{	return new RegExp(this.maskFin)||''																								},
 			error()				{	return nvlo(this.paramData).error||'$vuetify.texts.msgs.incorrectValue.title'													},
 			editable()			{	return nvlo(this.paramData).editable==undefined? true:!!this.paramData.editable													},
+			isAuto()			{	return nvlo(this.paramData).isAuto==undefined? false:!!this.paramData.isAuto													},
 			isDateTimeLike()	{	return ['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(this.type)!=-1						},
 			dialogWithDate()	{	return ['DATE', 'DATETIME', 'DATE_RANGE', 'DATETIME_RANGE'].indexOf(this.type)!=-1												},
 			dialogWithTime()	{	return ['TIME', 'DATETIME','TIME_RANGE', 'DATETIME_RANGE'].indexOf(this.type)!=-1												},
@@ -444,8 +445,8 @@
 			},
 			tickLabels()		{ 	return this.tableValues.map(row=>{return row.text}) 																															},
 			isNumeric()			{ 	return this.tableValues.equals([])?['SLIDER','RANGE','LIST','NUMBER'].indexOf(this.type)!=-1 : this.tableValues.findIndex(row=>(!isNumeric(row.value)))==-1						},
-			min()				{ 	let vm=this, tmp = nvlo(vm.paramData).min||null; return vm.isDateTimeLike?( !isNumeric(tmp)?tmp:null ):vm.isSliderLike&&vm.tableValues.length>0?0 : tmp								},
-			max()				{ 	let vm=this, tmp = nvlo(vm.paramData).max||null; return vm.isDateTimeLike?( !isNumeric(tmp)?tmp:null ):vm.isSliderLike&&vm.tableValues.length>0?vm.tableValues.length-1:tmp			},
+			min()				{ 	let vm=this, tmp = nvlo(vm.paramData).min||null; return vm.isDateTimeLike?( !isNumeric(tmp)?tmp:null ):vm.isSliderLike&&vm.tableValues.length>0?0 : tmp							},
+			max()				{ 	let vm=this, tmp = nvlo(vm.paramData).max||null; return vm.isDateTimeLike?( !isNumeric(tmp)?tmp:null ):vm.isSliderLike&&vm.tableValues.length>0?vm.tableValues.length-1:tmp		},
 			isSliderString()	{	return this.isSliderLike && this.tableValues.length>0 && !this.isNumeric																										},
 			step()				{	return this.isSliderString? 1 : nvlo(this.paramData).step||1																													},
 			ticksNeed()			{	return this.isSliderString? true : nvlo(this.paramData).ticksNeed==undefined? false:!!this.paramData.ticksNeed																	},
@@ -484,8 +485,8 @@
 						tmp = 'value' in vm.paramData? vm.paramData.value: null
 					if ('value' in vm.paramData && 'valueView' in vm.paramData && nvl(nvlo(vm.paramData).need_reset, false)==false)
 						return tmp
-					if(vm.type=='LIST' && !vm.multy  && vm.valueArr.length>0 && tmp==null)
-						tmp= vm.valueArr[0]
+					/*if(vm.type=='LIST' && !vm.multy  && vm.valueArr.length>0 && tmp==null)
+						tmp= vm.valueArr[0]*/
 					else if(vm.isDateTimeLike && !vm.multy && vm.valueArr.length>0  && tmp==null)
 						if(['DATE', 'TIME', 'DATETIME'].indexOf(vm.type)!=-1)
 							tmp = vm.valueArr[0]
@@ -599,10 +600,10 @@
 			},
 		},
 		watch: {
-			dialog (val, valOld) {
+			isDialog (val, valOld) {
 				val && this.$nextTick(() => {nvlo(this.$refs.timer1).selecting =1;  nvlo(this.$refs.timer2).selecting =1; }) &&
 					this.isBirthDate && this.$nextTick(() => (this.$refs.date1.activePicker = 'YEAR'))
-				!val && valOld && this.onBlur()
+				!val && valOld && this.onBlur() && setTimeout(()=>{vm.$refs.input.onClick(e)},100)	
 			}
 		},
 		components: {
@@ -613,18 +614,34 @@
 			XStore,
 		],		
 		methods: {
-			postWork(){
+			preWork(checkedFixed=false){
 				let vm = this
-				if(vm.isWithArray)
-					vm.checked= vm.valueArr !=undefined && vm.isDateTimeLike && !vm.multy? !vm.valueArr.equals(['','']) : !vm.valueArr.equals([])
-				else
-					vm.checked= vm.value!=undefined && vm.value!=null
-				
+				if(vm.$refs.input!=undefined)
+					vm.hasError= !vm.$refs.input.validate()
+				vm.$root.$emit('dialog'+vm.paramsForm+'NeedCheck')
+			},
+			postWork(checkedFixed=false){
+				let vm = this
+				if(!checkedFixed && !vm.isFocus && !vm.isDialog)
+					if(vm.isWithArray)
+						vm.checked= vm.valueArr !=undefined && vm.isDateTimeLike && !vm.multy? !vm.valueArr.equals(['','']) : !vm.valueArr.equals([])
+					else
+						vm.checked= vm.value!=undefined && vm.value!=null
+				if(vm.$refs.input!=undefined)
+					vm.hasError= !vm.$refs.input.validate()
+				vm.$root.$emit('dialog'+vm.paramsForm+'NeedCheck')
+				if(vm.callBackEval!='')
+					eval(vm.callBackEval)
 			},
 			setValue(val, needCheck=true){
 				let vm = this
 				if(needCheck && vm.value==val &&  nvlo(vm.paramData).valueArrView!=undefined ) 
 					return
+				console.log({ value:val, valueView: vm.getValueViewFromValue(val)});
+				if( nvlo(vm.paramData).need_reset || !needCheck )
+					if( ['LIST', 'SLIDER'].indexOf(vm.type)!=-1 && !vm.multy  )
+						val=nvlo(vm.tableValues.find( row=>  row.value==val || row.textFull==val ) ,{value:null}).value		
+
 				console.log({ value:val, valueView: vm.getValueViewFromValue(val)});
 				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{need_reset:false, value:val, valueView: vm.getValueViewFromValue(val)}  })
 				vm.postWork()				
@@ -646,6 +663,11 @@
 					[val[0], val[1]]=[val[1], val[0]]
 				if(needCheck && (vm.valueArr.equals(val) || nvlo(vm.paramData).value_arr ===null && val==null) )
 					return
+				if( nvlo(vm.paramData).need_reset || !needCheck  )
+					if( vm.type=='LIST' && vm.multy )
+						val = val.filter(row1 => vm.tableValues.findIndex( row=>  row.value==row1 || row.textFull==row1  ) ).map( row=>row.value )
+					else if( vm.isDateTimeLike )
+						val = val.map( row=> ['TIME_RANGE', 'TIME'].indexOf(vm.type)!=-1? timeNorm(row): dateTimeNorm(row) ).filter(row => row!='' )
 				console.log({value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)});
 				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{need_reset:false, value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)}  })
 				vm.postWork()				
@@ -664,12 +686,6 @@
 				return res
 			},
 			
-			setNewVal(value, checkedFx=false, initRun=false){
-				let vm=this, tmp=[]
-				vm.checkRefresh({checkedFx,initRun})
-				if(vm.callBackEval!='')
-					eval(vm.callBackEval)
-			},
 			saveDialog(value){
 				let vm=this,
 					tmp={}
@@ -682,6 +698,7 @@
 							if(code == vm.code)
 								continue
 							tmp =vm.paramByCode(vm.paramsForm, code)
+							console.log(row[code]);
 							if( tmp!= undefined )
 								if(['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE', 'RANGE'].indexOf(tmp.type)!=-1 || tmp.type=='LIST' && tmp.multy)
 									vm.paramSet( {num: vm.paramsForm, code, data:{need_reset:true, value_arr:[row[code]] }  })
@@ -699,69 +716,58 @@
 				vm.paramSet( {num: vm.paramsForm, code: vm.code, data:{sign:vm.signList[vm.sign].code, } })
 				vm.checked=true
 			},
-			changeShow(){
-				let vm=this
-				if(vm.type=='PASSWORD')
-					vm.show = !vm.show
-				else if (vm.type=='LIST' || (!vm.multy && vm.isDateTimeLike))
-					vm.$refs.input.onClick()
-			},
 			hasErrorSet(){
 				this.hasError = true;
 			},
 			submit(){
 				let vm=this
-				vm.checkRefresh({})
+				vm.postWork()
 				if(vm.dialogId>0)
 					vm.$root.$emit('dialog'+vm.paramsForm+'Send',{param:vm.code,value:vm.value} )
 			},
-			changeChecked(){
-				let vm=this
-				//vm.checkRefresh({checkedFx:true})
-			},	
+			appendClick(){
+				let vm = this
+				if(vm.type=='PASSWORD' )
+					vm.show = !vm.show
+			},
 			onClick(e){
 				let vm=this,
 					tmp = vm.checked,
 					curTime = new Date().getTime()
 				if ( curTime<vm.lastTimeSend+500 )//для автоматической активации полей над ними висит следилка. что бы она не работала лишний раз - глушим ее
 					return
+				console.log('onClick',vm.isNeedTab);
 				vm.lastTimeSend=curTime
 				vm.checked=true
-				/*if(!tmp && vm.isNeedTab)
-					vm.dialog=true	*/	
-				setTimeout(()=>{vm.$refs.input.onClick(e)},100)			
+				if(vm.isNeedTab && vm.isAuto){
+					vm.isDialog=true
+					//vm.onFocus()
+				}
+				else
+					setTimeout(()=>{vm.$refs.input.onClick(e)},100)			
+			},
+			onFocus(){
+				let vm=this
+				console.log('onFocus');
+				vm.isFocus=true
+				vm.preWork()
 			},
 			onBlur(){
 				let vm=this
+				if( vm.isDialog )
+					return
 				console.log('onBlur');
-				vm.checkRefresh({})
-			},
-			async checkRefresh({checkedFx=false,initRun=false}){
-				let vm=this, tmp1, tmp2,
-					value = vm.value,
-					valueArr = vm.valueArr
-
-				if(vm.hasInput && vm.needCheckBox && !initRun){
-					vm.hasError= !vm.$refs.input.validate()
-					vm.$root.$emit('dialog'+vm.paramsForm+'NeedCheck')
-				}
-
+				vm.isFocus=false
+				vm.postWork()
 			},
 			getTitleByNum(value){
 				return this.tickLabels[value]
-			}			
+			}
 		},
 		created: function (){
 			let vm=this
 			vm.checkBoxColor=appTheme.checkBox||vm.checkBoxColor
 						
-			//-----------------------------------------------------------------------------	
-			if(vm.multy && ['DATE', 'LIST'].indexOf(vm.type)!=-1)
-				vm.setNewVal(vm.valueArr,true,true)
-			else if(!vm.multy && ['RANGE'].indexOf(vm.type)!=-1)
-				vm.setNewVal(vm.valueArr,true,true)
-			else
-				vm.setNewVal(vm.value,true,true)
 		},
 		mounted(){
 			let vm=this

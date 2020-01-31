@@ -495,7 +495,7 @@ __webpack_require__.r(__webpack_exports__);
         tree_input: '5',
         tree_text: '5',
         tree_desc: '5',
-        tree_date: '2018-12-03',
+        tree_date: '2018-12-11',
         obj_level: 'На текущем уровне'
       }, {
         value: false,
@@ -508,8 +508,8 @@ __webpack_require__.r(__webpack_exports__);
         tree_input: '6',
         tree_text: '6',
         tree_desc: '6',
-        tree_date: '2018-13-03',
-        obj_level: 'Вложенный'
+        tree_date: '2018-12-12',
+        obj_level: 'Странный'
       }, {
         value: false,
         r: 'asda',
@@ -521,7 +521,7 @@ __webpack_require__.r(__webpack_exports__);
         tree_input: '7',
         tree_text: '7',
         tree_desc: '7',
-        tree_date: '2018-14-03',
+        tree_date: '2018-12-13',
         obj_level: 'Вложенный'
       }, {
         value: false,
@@ -534,7 +534,7 @@ __webpack_require__.r(__webpack_exports__);
         tree_input: '18',
         tree_text: '8',
         tree_desc: '8',
-        tree_date: '2018-15-03',
+        tree_date: '2018-12-14',
         obj_level: 'Вложенный'
       }, {
         value: false,
@@ -547,7 +547,7 @@ __webpack_require__.r(__webpack_exports__);
         tree_input: '28',
         tree_text: '8',
         tree_desc: '8',
-        tree_date: '2018-15-03',
+        tree_date: '2018-12-15',
         obj_level: 'Вложенный'
       }, {
         value: false,
@@ -560,7 +560,7 @@ __webpack_require__.r(__webpack_exports__);
         tree_input: '38',
         tree_text: '8',
         tree_desc: '8',
-        tree_date: '2018-15-03',
+        tree_date: '2018-12-16',
         obj_level: 'Вложенный'
       }, {
         value: false,
@@ -573,7 +573,7 @@ __webpack_require__.r(__webpack_exports__);
         tree_input: '48',
         tree_text: '8',
         tree_desc: '8',
-        tree_date: '2018-15-03',
+        tree_date: '2018-12-17',
         obj_level: 'Вложенный'
       }, {
         value: false,
@@ -586,7 +586,7 @@ __webpack_require__.r(__webpack_exports__);
         tree_input: '58',
         tree_text: '8',
         tree_desc: '8',
-        tree_date: '2018-15-03',
+        tree_date: '2018-12-18',
         obj_level: 'Вложенный'
       }, {
         value: false,
@@ -599,7 +599,7 @@ __webpack_require__.r(__webpack_exports__);
         tree_input: '68',
         tree_text: '8',
         tree_desc: '8',
-        tree_date: '2018-15-03',
+        tree_date: '2018-12-19',
         obj_level: 'Вложенный'
       }];
       return [{
@@ -623,7 +623,8 @@ __webpack_require__.r(__webpack_exports__);
         sort_seq: 2,
         tab_header: tab_header,
         tab_values: tab_values,
-        tab_group: 'obj_param'
+        tab_group: 'obj_param',
+        isAuto: true
       }, {
         id: '3',
         form: 'object-tree-add',
@@ -687,7 +688,7 @@ __webpack_require__.r(__webpack_exports__);
         name: 'Вложенность',
         placeholder: 'Уровень вложенности объекта',
         type: 'LIST',
-        value_arr: ["cur"],
+        value: "strange",
         multy: false,
         nullable: false,
         column_size: 30,
@@ -716,7 +717,7 @@ __webpack_require__.r(__webpack_exports__);
         name: 'Тип',
         placeholder: 'Тип объекта',
         type: 'LIST',
-        value_arr: ["node"],
+        value: "node",
         multy: false,
         nullable: false,
         column_size: 30,
@@ -828,7 +829,7 @@ __webpack_require__.r(__webpack_exports__);
         name: 'Вложенность',
         placeholder: 'Уровень вложенности объекта',
         type: 'LIST',
-        value_arr: ["cur"],
+        value: "cur",
         multy: true,
         nullable: false,
         column_size: 30,
@@ -850,7 +851,7 @@ __webpack_require__.r(__webpack_exports__);
         name: 'Вложенность',
         placeholder: 'Уровень вложенности объекта',
         type: 'LIST',
-        value_arr: ["cur"],
+        value: "cur",
         multy: true,
         nullable: false,
         column_size: 30,
@@ -1265,17 +1266,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mixins_x_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/x-store */ "./resources/assets/js/mixins/x-store.vue");
-/* harmony import */ var vuetify_lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuetify/lib */ "./node_modules/vuetify/lib/index.js");
-
-
+/* harmony import */ var _mixins_x_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/x-store */ "./resources/assets/js/mixins/x-store.vue");
+/* harmony import */ var vuetify_lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuetify/lib */ "./node_modules/vuetify/lib/index.js");
 var _computed;
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -1455,7 +1448,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       checkBoxColor: 'false',
       //переопределяется в created
-      dialog: false,
       hasError: false,
       dataPickerHeight: 392,
       inputErrorState: false,
@@ -1465,6 +1457,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       lastTimeSend: 0,
       maxLenTypes: ['INPUT', 'NUMBER', 'PASSWORD'],
       show: false,
+      isFocus: false,
+      isDialog: false,
       sign: 0,
       tabSelectedRows: [],
       thumbSize: 10
@@ -1511,7 +1505,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return !this.needSign ? '' : this.signList[this.sign].icon;
     },
     getAppendIcon: function getAppendIcon() {
-      return this.type != 'PASSWORD' ? this.type == 'LIST' ? '$vuetify.icons.dropdown' : '' : this.type != 'PASSWORD' ? this.show ? 'visibility_off' : 'visibility' : '';
+      return this.isNeedTab ? 'more_vert' : this.type == 'PASSWORD' ? this.show ? 'visibility_off' : 'visibility' : this.type == 'LIST' ? '$vuetify.icons.dropdown' : '';
     },
     getClearable: function getClearable() {
       return this.type != 'PASSWORD';
@@ -1717,6 +1711,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     editable: function editable() {
       return nvlo(this.paramData).editable == undefined ? true : !!this.paramData.editable;
     },
+    isAuto: function isAuto() {
+      return nvlo(this.paramData).isAuto == undefined ? false : !!this.paramData.isAuto;
+    },
     isDateTimeLike: function isDateTimeLike() {
       return ['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE'].indexOf(this.type) != -1;
     },
@@ -1900,7 +1897,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var vm = this,
           tmp = 'value' in vm.paramData ? vm.paramData.value : null;
       if ('value' in vm.paramData && 'valueView' in vm.paramData && nvl(nvlo(vm.paramData).need_reset, false) == false) return tmp;
-      if (vm.type == 'LIST' && !vm.multy && vm.valueArr.length > 0 && tmp == null) tmp = vm.valueArr[0];else if (vm.isDateTimeLike && !vm.multy && vm.valueArr.length > 0 && tmp == null) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) tmp = vm.valueArr[0];
+      /*if(vm.type=='LIST' && !vm.multy  && vm.valueArr.length>0 && tmp==null)
+      	tmp= vm.valueArr[0]*/
+      else if (vm.isDateTimeLike && !vm.multy && vm.valueArr.length > 0 && tmp == null) if (['DATE', 'TIME', 'DATETIME'].indexOf(vm.type) != -1) tmp = vm.valueArr[0];
       vm.setValue(tmp, false);
       return tmp;
     }
@@ -2009,7 +2008,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }), _computed),
   watch: {
-    dialog: function dialog(val, valOld) {
+    isDialog: function isDialog(val, valOld) {
       var _this = this;
 
       val && this.$nextTick(function () {
@@ -2018,28 +2017,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }) && this.isBirthDate && this.$nextTick(function () {
         return _this.$refs.date1.activePicker = 'YEAR';
       });
-      !val && valOld && this.onBlur();
+      !val && valOld && this.onBlur() && setTimeout(function () {
+        vm.$refs.input.onClick(e);
+      }, 100);
     }
   },
   components: {
     CTable: function CTable(resolve) {
       __webpack_require__.e(/*! AMD require */ 3).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! ./c-table.vue */ "./resources/assets/js/components/c-table.vue")]; (resolve).apply(null, __WEBPACK_AMD_REQUIRE_ARRAY__);}.bind(this)).catch(__webpack_require__.oe);
     },
-    VSelect: vuetify_lib__WEBPACK_IMPORTED_MODULE_2__["VSelect"],
-    VSlider: vuetify_lib__WEBPACK_IMPORTED_MODULE_2__["VSlider"],
-    VRangeSlider: vuetify_lib__WEBPACK_IMPORTED_MODULE_2__["VRangeSlider"],
-    VTextarea: vuetify_lib__WEBPACK_IMPORTED_MODULE_2__["VTextarea"]
+    VSelect: vuetify_lib__WEBPACK_IMPORTED_MODULE_1__["VSelect"],
+    VSlider: vuetify_lib__WEBPACK_IMPORTED_MODULE_1__["VSlider"],
+    VRangeSlider: vuetify_lib__WEBPACK_IMPORTED_MODULE_1__["VRangeSlider"],
+    VTextarea: vuetify_lib__WEBPACK_IMPORTED_MODULE_1__["VTextarea"]
   },
-  mixins: [_mixins_x_store__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  mixins: [_mixins_x_store__WEBPACK_IMPORTED_MODULE_0__["default"]],
   methods: {
-    postWork: function postWork() {
+    preWork: function preWork() {
+      var checkedFixed = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var vm = this;
-      if (vm.isWithArray) vm.checked = vm.valueArr != undefined && vm.isDateTimeLike && !vm.multy ? !vm.valueArr.equals(['', '']) : !vm.valueArr.equals([]);else vm.checked = vm.value != undefined && vm.value != null;
+      if (vm.$refs.input != undefined) vm.hasError = !vm.$refs.input.validate();
+      vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
+    },
+    postWork: function postWork() {
+      var checkedFixed = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var vm = this;
+      if (!checkedFixed && !vm.isFocus && !vm.isDialog) if (vm.isWithArray) vm.checked = vm.valueArr != undefined && vm.isDateTimeLike && !vm.multy ? !vm.valueArr.equals(['', '']) : !vm.valueArr.equals([]);else vm.checked = vm.value != undefined && vm.value != null;
+      if (vm.$refs.input != undefined) vm.hasError = !vm.$refs.input.validate();
+      vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
+      if (vm.callBackEval != '') eval(vm.callBackEval);
     },
     setValue: function setValue(val) {
       var needCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var vm = this;
       if (needCheck && vm.value == val && nvlo(vm.paramData).valueArrView != undefined) return;
+      console.log({
+        value: val,
+        valueView: vm.getValueViewFromValue(val)
+      });
+      if (nvlo(vm.paramData).need_reset || !needCheck) if (['LIST', 'SLIDER'].indexOf(vm.type) != -1 && !vm.multy) val = nvlo(vm.tableValues.find(function (row) {
+        return row.value == val || row.textFull == val;
+      }), {
+        value: null
+      }).value;
       console.log({
         value: val,
         valueView: vm.getValueViewFromValue(val)
@@ -2080,6 +2100,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       if (needCheck && (vm.valueArr.equals(val) || nvlo(vm.paramData).value_arr === null && val == null)) return;
+      if (nvlo(vm.paramData).need_reset || !needCheck) if (vm.type == 'LIST' && vm.multy) val = val.filter(function (row1) {
+        return vm.tableValues.findIndex(function (row) {
+          return row.value == row1 || row.textFull == row1;
+        });
+      }).map(function (row) {
+        return row.value;
+      });else if (vm.isDateTimeLike) val = val.map(function (row) {
+        return ['TIME_RANGE', 'TIME'].indexOf(vm.type) != -1 ? timeNorm(row) : dateTimeNorm(row);
+      }).filter(function (row) {
+        return row != '';
+      });
       console.log({
         value_arr: val,
         valueArrView: vm.getValueArrViewFromValueArr(val)
@@ -2113,17 +2144,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return res;
     },
-    setNewVal: function setNewVal(value) {
-      var checkedFx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var initRun = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var vm = this,
-          tmp = [];
-      vm.checkRefresh({
-        checkedFx: checkedFx,
-        initRun: initRun
-      });
-      if (vm.callBackEval != '') eval(vm.callBackEval);
-    },
     saveDialog: function saveDialog(value) {
       var vm = this,
           tmp = {};
@@ -2133,6 +2153,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           for (var code in row) {
             if (code == vm.code) continue;
             tmp = vm.paramByCode(vm.paramsForm, code);
+            console.log(row[code]);
             if (tmp != undefined) if (['DATE', 'DATE_RANGE', 'DATETIME', 'DATETIME_RANGE', 'TIME', 'TIME_RANGE', 'RANGE'].indexOf(tmp.type) != -1 || tmp.type == 'LIST' && tmp.multy) vm.paramSet({
               num: vm.paramsForm,
               code: code,
@@ -2166,23 +2187,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       vm.checked = true;
     },
-    changeShow: function changeShow() {
-      var vm = this;
-      if (vm.type == 'PASSWORD') vm.show = !vm.show;else if (vm.type == 'LIST' || !vm.multy && vm.isDateTimeLike) vm.$refs.input.onClick();
-    },
     hasErrorSet: function hasErrorSet() {
       this.hasError = true;
     },
     submit: function submit() {
       var vm = this;
-      vm.checkRefresh({});
+      vm.postWork();
       if (vm.dialogId > 0) vm.$root.$emit('dialog' + vm.paramsForm + 'Send', {
         param: vm.code,
         value: vm.value
       });
     },
-    changeChecked: function changeChecked() {
-      var vm = this; //vm.checkRefresh({checkedFx:true})
+    appendClick: function appendClick() {
+      var vm = this;
+      if (vm.type == 'PASSWORD') vm.show = !vm.show;
     },
     onClick: function onClick(e) {
       var vm = this,
@@ -2190,61 +2208,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           curTime = new Date().getTime();
       if (curTime < vm.lastTimeSend + 500) //для автоматической активации полей над ними висит следилка. что бы она не работала лишний раз - глушим ее
         return;
+      console.log('onClick', vm.isNeedTab);
       vm.lastTimeSend = curTime;
       vm.checked = true;
-      /*if(!tmp && vm.isNeedTab)
-      	vm.dialog=true	*/
 
-      setTimeout(function () {
+      if (vm.isNeedTab && vm.isAuto) {
+        vm.isDialog = true; //vm.onFocus()
+      } else setTimeout(function () {
         vm.$refs.input.onClick(e);
       }, 100);
     },
+    onFocus: function onFocus() {
+      var vm = this;
+      console.log('onFocus');
+      vm.isFocus = true;
+      vm.preWork();
+    },
     onBlur: function onBlur() {
       var vm = this;
+      if (vm.isDialog) return;
       console.log('onBlur');
-      vm.checkRefresh({});
+      vm.isFocus = false;
+      vm.postWork();
     },
-    checkRefresh: function () {
-      var _checkRefresh = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref2) {
-        var _ref2$checkedFx, checkedFx, _ref2$initRun, initRun, vm, tmp1, tmp2, value, valueArr;
-
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _ref2$checkedFx = _ref2.checkedFx, checkedFx = _ref2$checkedFx === void 0 ? false : _ref2$checkedFx, _ref2$initRun = _ref2.initRun, initRun = _ref2$initRun === void 0 ? false : _ref2$initRun;
-                vm = this, value = vm.value, valueArr = vm.valueArr;
-
-                if (vm.hasInput && vm.needCheckBox && !initRun) {
-                  vm.hasError = !vm.$refs.input.validate();
-                  vm.$root.$emit('dialog' + vm.paramsForm + 'NeedCheck');
-                }
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function checkRefresh(_x) {
-        return _checkRefresh.apply(this, arguments);
-      }
-
-      return checkRefresh;
-    }(),
     getTitleByNum: function getTitleByNum(value) {
       return this.tickLabels[value];
     }
   },
   created: function created() {
     var vm = this;
-    vm.checkBoxColor = appTheme.checkBox || vm.checkBoxColor; //-----------------------------------------------------------------------------	
-
-    if (vm.multy && ['DATE', 'LIST'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArr, true, true);else if (!vm.multy && ['RANGE'].indexOf(vm.type) != -1) vm.setNewVal(vm.valueArr, true, true);else vm.setNewVal(vm.value, true, true);
+    vm.checkBoxColor = appTheme.checkBox || vm.checkBoxColor;
   },
   mounted: function mounted() {
     var vm = this;
@@ -16791,7 +16784,8 @@ var render = function() {
                                                               $event
                                                             )
                                                           },
-                                                          blur: _vm.onBlur
+                                                          blur: _vm.onBlur,
+                                                          focus: _vm.onFocus
                                                         },
                                                         scopedSlots: _vm._u(
                                                           [
@@ -16890,7 +16884,8 @@ var render = function() {
                                                               $event
                                                             )
                                                           },
-                                                          blur: _vm.onBlur
+                                                          blur: _vm.onBlur,
+                                                          focus: _vm.onFocus
                                                         },
                                                         scopedSlots: _vm._u(
                                                           [
@@ -17062,7 +17057,10 @@ var render = function() {
                                                           $event
                                                         )
                                                       },
-                                                      blur: _vm.onBlur
+                                                      blur: _vm.onBlur,
+                                                      focus: _vm.onFocus,
+                                                      "click:append":
+                                                        _vm.appendClick
                                                     },
                                                     model: {
                                                       value: _vm.value,
@@ -17127,7 +17125,8 @@ var render = function() {
                                                           $event
                                                         )
                                                       },
-                                                      blur: _vm.onBlur
+                                                      blur: _vm.onBlur,
+                                                      focus: _vm.onFocus
                                                     },
                                                     model: {
                                                       value: _vm.valueArr,
@@ -17163,8 +17162,7 @@ var render = function() {
                                                           $event
                                                         ) {
                                                           _vm.valueArr = $event
-                                                        },
-                                                        show: _vm.changeChecked
+                                                        }
                                                       },
                                                       scopedSlots: _vm._u(
                                                         [
@@ -17225,7 +17223,11 @@ var render = function() {
                                                                           return _vm.submit(
                                                                             $event
                                                                           )
-                                                                        }
+                                                                        },
+                                                                        blur:
+                                                                          _vm.onBlur,
+                                                                        focus:
+                                                                          _vm.onFocus
                                                                       },
                                                                       model: {
                                                                         value:
@@ -17250,13 +17252,13 @@ var render = function() {
                                                         true
                                                       ),
                                                       model: {
-                                                        value: _vm.dialog,
+                                                        value: _vm.isDialog,
                                                         callback: function(
                                                           $$v
                                                         ) {
-                                                          _vm.dialog = $$v
+                                                          _vm.isDialog = $$v
                                                         },
-                                                        expression: "dialog"
+                                                        expression: "isDialog"
                                                       }
                                                     },
                                                     [
@@ -17691,7 +17693,7 @@ var render = function() {
                                                                   click: function(
                                                                     $event
                                                                   ) {
-                                                                    _vm.dialog = false
+                                                                    _vm.isDialog = false
                                                                   }
                                                                 }
                                                               },
@@ -17744,8 +17746,7 @@ var render = function() {
                                                           $event
                                                         ) {
                                                           _vm.valueArr = $event
-                                                        },
-                                                        show: _vm.changeChecked
+                                                        }
                                                       },
                                                       scopedSlots: _vm._u(
                                                         [
@@ -17810,7 +17811,11 @@ var render = function() {
                                                                           return _vm.submit(
                                                                             $event
                                                                           )
-                                                                        }
+                                                                        },
+                                                                        blur:
+                                                                          _vm.onBlur,
+                                                                        focus:
+                                                                          _vm.onFocus
                                                                       },
                                                                       model: {
                                                                         value:
@@ -17835,13 +17840,13 @@ var render = function() {
                                                         true
                                                       ),
                                                       model: {
-                                                        value: _vm.dialog,
+                                                        value: _vm.isDialog,
                                                         callback: function(
                                                           $$v
                                                         ) {
-                                                          _vm.dialog = $$v
+                                                          _vm.isDialog = $$v
                                                         },
-                                                        expression: "dialog"
+                                                        expression: "isDialog"
                                                       }
                                                     },
                                                     [
@@ -17942,7 +17947,7 @@ var render = function() {
                                                                   click: function(
                                                                     $event
                                                                   ) {
-                                                                    _vm.dialog = false
+                                                                    _vm.isDialog = false
                                                                   }
                                                                 }
                                                               },
@@ -17997,8 +18002,7 @@ var render = function() {
                                                           $event
                                                         ) {
                                                           _vm.value = $event
-                                                        },
-                                                        show: _vm.changeChecked
+                                                        }
                                                       },
                                                       scopedSlots: _vm._u(
                                                         [
@@ -18027,8 +18031,6 @@ var render = function() {
                                                                         required: !!_vm.nullable,
                                                                         readonly:
                                                                           "",
-                                                                        "append-icon":
-                                                                          "",
                                                                         tabindex:
                                                                           _vm.sortSeq,
                                                                         clearable:
@@ -18036,7 +18038,9 @@ var render = function() {
                                                                         min:
                                                                           _vm.min,
                                                                         max:
-                                                                          _vm.max
+                                                                          _vm.max,
+                                                                        "append-icon":
+                                                                          _vm.getAppendIcon
                                                                       },
                                                                       on: {
                                                                         keyup: function(
@@ -18059,7 +18063,11 @@ var render = function() {
                                                                           return _vm.submit(
                                                                             $event
                                                                           )
-                                                                        }
+                                                                        },
+                                                                        blur:
+                                                                          _vm.onBlur,
+                                                                        focus:
+                                                                          _vm.onFocus
                                                                       },
                                                                       model: {
                                                                         value:
@@ -18073,7 +18081,10 @@ var render = function() {
                                                                           "valueView"
                                                                       }
                                                                     },
-                                                                    on
+                                                                    {
+                                                                      "click:append":
+                                                                        on.click
+                                                                    }
                                                                   )
                                                                 )
                                                               ]
@@ -18084,13 +18095,13 @@ var render = function() {
                                                         true
                                                       ),
                                                       model: {
-                                                        value: _vm.dialog,
+                                                        value: _vm.isDialog,
                                                         callback: function(
                                                           $$v
                                                         ) {
-                                                          _vm.dialog = $$v
+                                                          _vm.isDialog = $$v
                                                         },
-                                                        expression: "dialog"
+                                                        expression: "isDialog"
                                                       }
                                                     },
                                                     [
@@ -18195,7 +18206,7 @@ var render = function() {
                                                                   click: function(
                                                                     $event
                                                                   ) {
-                                                                    _vm.dialog = false
+                                                                    _vm.isDialog = false
                                                                   }
                                                                 }
                                                               },
@@ -18238,7 +18249,7 @@ var render = function() {
                     ],
                     null,
                     false,
-                    4107434219
+                    3111379910
                   )
                 },
                 [
@@ -18251,7 +18262,11 @@ var render = function() {
             ? _c("v-checkbox", {
                 staticClass: "shrink ml-2 mb-2",
                 attrs: { "hide-details": "", color: _vm.checkBoxColor },
-                on: { change: _vm.changeChecked },
+                on: {
+                  change: function($event) {
+                    return _vm.postWork(true)
+                  }
+                },
                 model: {
                   value: _vm.checked,
                   callback: function($$v) {

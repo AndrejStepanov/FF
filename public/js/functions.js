@@ -127,10 +127,34 @@ function createDictionary(obj, keyVal, keyText, needSort=false){
 function dateFormat(str){//2018-10-03 12:52 в 03.10.2018 12:52
 	return nvl(str,'').replace(/(\d\d\d\d)-(\d\d)-(\d\d)/g, dateFormatStr )
 }
-function dateFormatRevert(str, revert=false ){//03.10.2018 12:52  в  2018-10-03 12:52
+function dateFormatRevert(str ){//03.10.2018 12:52  в  2018-10-03 12:52
 	return nvl(str,'').replace(/(\d\d).(\d\d).(\d\d\d\d)/g, dateFormatStrRevert )
 }
-
+function dateTimeNorm(str){
+	if(typeof str != "string" )
+		return ''
+	let res = str.trim().replace(' ','T').
+	match(/(\d\d\d\d-(0\d|1[0-2])-([0-2]\d|3[0-1])|([0-2]\d|3[0-1]).(0\d|1[0-2]).\d\d\d\d)(T([0-1]\d|2[0-3])(:([0-4]\d|5[0-9]))?(:([0-4]\d|5[0-9]))?)?/g)
+	res =nvl(res,[''])[0]
+	if(res=='')
+		return ''
+	if(res.substring(4,5)!='-')
+		res = dateFormatRevert(res)
+	if(res.length==10)
+		res+='T00'
+	return (res +':00:00').substring(0, 19) // на выходе или 2018-10-03T12:52:15 или ''
+}
+function timeNorm(str){
+	if(typeof str != "string" )
+		return ''
+	let res = str.trim().replace(' ','T').match(/(\d\d\d\d-(0\d|1[0-2])-([0-2]\d|3[0-1])T|([0-2]\d|3[0-1]).(0\d|1[0-2]).\d\d\d\dT)?([0-1]\d|2[0-3])(:([0-4]\d|5[0-9]))?(:([0-4]\d|5[0-9]))?/g)
+	res =nvl(res,[''])[0]
+	if(res=='')
+		return ''
+	if(res.substring(10,11)=='T')
+		res = res.substring(11,19)
+	return (res +':00:00').substring(0, 8) // на выходе или 2018-10-03T12:52:15 или ''
+}
 function getNewId(){
 	return Math.floor(Math.random() * MAX_ID)
 }

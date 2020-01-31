@@ -284,6 +284,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return val;
     },
     selectRow: function selectRow(props) {
+      console.log(props);
       var vm = this,
           lastSel = !!props.selected;
       if (vm.selecttableTypes.indexOf(vm.typeSelect) == -1) return;
@@ -301,7 +302,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     selectedValuesChanged: function selectedValuesChanged() {
       var vm = this;
       vm.$emit('input', vm.selectedValues.map(function (row) {
-        return vm.items[row._id];
+        return vm.items[row._id - 1];
       }));
     }
   },
