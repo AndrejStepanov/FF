@@ -650,7 +650,7 @@
 						this.valueArrDateScnd= val
 				},
 				get:function()		{
-					return ['DATETIME_RANGE','TIME_RANGE'].indexOf(this.type)==-1?'00:00:00': this.type=='DATETIME_RANGE'? nvl(this.valueArrScnd.split('T')[1],'00:00:00'):this.valueArrScnd
+					return ['DATETIME_RANGE','TIME_RANGE'].indexOf(this.type)==-1?'00:00:00': this.type=='DATETIME_RANGE'? nvl(this.valueArrDateScnd.split('T')[1],'00:00:00'):this.valueArrDateScnd
 				},
 			},
 		},
@@ -661,7 +661,7 @@
 					if( vm.isDateTimeLike ){
 						vm.dialogWithTime && !vm.multy && setTimeout(()=> {nvlo(vm.$refs.timer1,'')!='' && vm.$refs.timer1.scrollToSelected();  nvlo(vm.$refs.timer2,'')!='' && vm.$refs.timer2.scrollToSelected() } , 100) 
 						vm.isBirthDate&& !vm.multy && vm.$nextTick(() => (vm.$refs.date1.activePicker = 'YEAR')) 
-						vm.valueArrDate = vm.valueArr
+						vm.valueArrDate = vm.valueArr.slice(0)
 					}
 				}
 				else if( valOld )
