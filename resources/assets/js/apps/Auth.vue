@@ -6,9 +6,9 @@
 
 <script>
 	import XApp from '../mixins/x-app'
-    export default {
-        data: () => ({
-        }),
+	export default {
+		data: () => ({
+		}),
 		mixins: [
 			XApp,
 		],
@@ -18,5 +18,5 @@
 			let vm=this 
 			setTimeout(()=>vm.$root.$emit('openAuthDialog') )
 		}
-    }
+	}
 </script>

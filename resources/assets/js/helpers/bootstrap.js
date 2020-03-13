@@ -7,8 +7,8 @@ import axios from 'axios'
 window.Vue.use(vueAxios, axios)
 window._bus={axios, bus: new window.Vue()}
 
-import VueTheMask from 'vue-the-mask'
-window.Vue.use(VueTheMask)
+import  VueTheMask    from 'vue-the-mask'
+window.Vue.use(VueTheMask )
 
 window.io = require('socket.io-client')
 import echo from "laravel-echo"

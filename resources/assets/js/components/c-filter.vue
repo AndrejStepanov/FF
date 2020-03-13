@@ -53,7 +53,7 @@
 					{id:'1', 	form:'object-tree-add',	code:'m_tree_info',					name:'Объекты', 										 					type:'INFO', 																															sort_seq:1, },
 					{id:'2', 	form:'object-tree-add',	code:'obj_param',					name:'Параметр', 				placeholder:'Ввод параметров', 				type:'INPUT', 				value:null,													multy:false,	nullable:false, column_size:30, sort_seq:2, tab_header, tab_values, tab_group:'obj_param', withTab:true , isAuto:true},
 					{id:'3', 	form:'object-tree-add',	code:'m_tree_line1',				name:'Информация', 										 					type:'LINE', 																															sort_seq:3, },
-					{id:'4', 	form:'object-tree-add',	code:'tree_input',					name:'Ввод', 					placeholder:'Ввод объекта', 				type:'INPUT', 				value:"ыва",												multy:false,	nullable:false, column_size:30, sort_seq:4, },
+					{id:'4', 	form:'object-tree-add',	code:'tree_input',					name:'Ввод', 					placeholder:'Ввод объекта', 				type:'INPUT', 				value:"ыва",			vMask:"## ## ##",					multy:false,	nullable:false, column_size:30, sort_seq:4, },
 					{id:'5', 	form:'object-tree-add',	code:'tree_text',					name:'Текст', 					placeholder:'Ввод текста', 					type:'TEXT', 				value:"ыва",												multy:false,	nullable:false, column_size:30, sort_seq:5, },
 					{id:'6', 	form:'object-tree-add',	code:'tree_desc', 					name:'Название',				placeholder:'Описание объекта', 			type:'NUMBER',				value:"10",													multy:false,	nullable:true, 	column_size:30, sort_seq:6, min:0,},
 					{id:'7', 	form:'object-tree-add',	code:'tree_date',					name:'Дата', 					placeholder:'Дата объекта', 				type:'DATE', 				value_arr:["2018-10-03"],									multy:false,	nullable:false, column_size:30, sort_seq:7, },
@@ -73,9 +73,9 @@
 					{id:'21', 	form:'object-tree-add',	code:'m_tree_date',					name:'Дата', 					placeholder:'Дата объекта', 				type:'DATE', 				value_arr:["2018-10-03"],									multy:false,	nullable:false, column_size:30, sort_seq:21, },
 					{id:'22', 	form:'object-tree-add',	code:'m_tree_time',					name:'Время', 					placeholder:'Время объекта', 				type:'TIME', 				value_arr:["12:52"],										multy:false,	nullable:false, column_size:30, sort_seq:22, },
 					{id:'23', 	form:'object-tree-add',	code:'m_tree_datetime',				name:'Дата Время', 				placeholder:'Дата Время объекта', 			type:'DATETIME', 			value_arr:["2018-10-03T12:52"],								multy:false,	nullable:false, column_size:30, sort_seq:23, },
-					{id:'24', 	form:'object-tree-add',	code:'m_tree_date_range',			name:'Дата диапазон', 			placeholder:'Дата объекта диапазон', 		type:'DATE_RANGE', 			value_arr:["2018-10-03","2018-10-04"],					multy:false,	nullable:false, column_size:30, sort_seq:24, },
+					{id:'24', 	form:'object-tree-add',	code:'m_tree_date_range',			name:'Дата диапазон', 			placeholder:'Дата объекта диапазон', 		type:'DATE_RANGE', 			value_arr:["2018-10-03","2018-10-04"],						multy:false,	nullable:false, column_size:30, sort_seq:24, },
 					{id:'25', 	form:'object-tree-add',	code:'m_tree_time_range',			name:'Время диапазон', 			placeholder:'Время объекта диапазон', 		type:'TIME_RANGE', 			value_arr:["12:52","12:53"],								multy:false,	nullable:false, column_size:30, sort_seq:25, },
-					{id:'26', 	form:'object-tree-add',	code:'m_tree_datetime_range',		name:'Дата Время диапазон', 	placeholder:'Дата Время объекта', 			type:'DATETIME_RANGE', 		value_arr:["2018-10-03T12:52","2018-10-04T12:53"],		multy:false,	nullable:false, column_size:30, sort_seq:26, },
+					{id:'26', 	form:'object-tree-add',	code:'m_tree_datetime_range',		name:'Дата Время диапазон', 	placeholder:'Дата Время объекта', 			type:'DATETIME_RANGE', 		value_arr:["2018-10-03T12:52","2018-10-04T12:53"],			multy:false,	nullable:false, column_size:30, sort_seq:26, },
 				/**/	
 				]
 			},

@@ -12,8 +12,8 @@
 			<hr>
 		</div>
 		<v-tooltip v-else  class='input-contaner' :disabled="tip==''" bottom>
-			<template v-slot:activator="{ on }">
-				<div class='input-contaner flex-grow--99' v-on="on">
+			<template v-slot:activator="{ on:onEnable }">
+				<div class='input-contaner flex-grow--99' v-on="onEnable">
 					<v-btn  icon v-if="needSign" @click="changeSign" small class="sign-box cursor-pointer" >
 						<v-icon small :disabled="getDisable" :class="getSignClass">{{getSign}}</v-icon>
 					</v-btn>
@@ -61,34 +61,39 @@
 							<template v-else>
 								<component v-if="!multy && !isDateTimeLike && !isNeedTab" :is="currentInput" v-model="value" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
 									:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :counter="getCounter"
-									:error="inputErrorState"  :error-messages="inputErrorText" :id="id"
-									:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step" auto-grow rows="1"
+									:error="inputErrorState"  :error-messages="inputErrorText" :id="id" v-bind="vInputProp"
+									:append-icon="getAppendIcon" :clearable="getClearable"    :min="min" :max="max" :step="step" auto-grow rows="1"
 									@keyup.enter="submit"  @blur="onBlur" @focus="onFocus" @click:append="appendClick"
 									:class="getComponentClass" />
 								<component v-else-if="multy && type=='LIST'" :is="currentInput" v-model="valueArr" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable"  :required="!!nullable" ref="input"
-									:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :id="id"
-									:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step"
+									:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType" :items="getListItems" dense :id="id" v-bind="vInputProp"
+									:append-icon="getAppendIcon" :clearable="getClearable"  :min="min" :max="max" :step="step"
 									@keyup.enter="submit"  @blur="onBlur" @focus="onFocus" multiple chips deletable-chips small-chips
 									:class="getComponentClass" />
 								<v-dialog v-else-if="!multy && isDateTimeLike " ref="dialog" v-model="isDialog" :return-value.sync="valueArr" persistent	:width="getDialogWidth"
 										class="max-width" :content-class="getDialogClass" >
-									<template v-slot:activator="{ on }">
-										<v-text-field  v-model="valueArrViewFst" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  :readonly="isAuto" ref="input" 
-											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" :append-icon="getAppendIcon" 
-											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="isAuto?{on}:{'click:append':on.click}" class=" body-1" />
-									</template>
+									<template v-slot:activator="{ on:onDialog }">
+										<v-text-field  v-model="valueArrViewFst" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input" 
+											:tabindex="sortSeq"  :clearable="getClearable"  :min="min" :max="max" :append-icon="getAppendIcon"  :id="id+'_activator'"
+											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="onDialog" :class="['body-1', ['DATETIME_RANGE'].indexOf(type)!=-1?'smallFont':'' ]" />
+									</template> <!-- v-mask="vMaskDate"  --> 
 									<template>
 										<div  :style="getDialogMainDivStyle">
-											<v-date-picker v-if="dialogWithDate"  v-model="valueArrFstFst" scrollable :locale="profileLanguage()" :max="max" :min="min" ref="date1" 
+											<v-toolbar dense class="fixedDiv" >	
+												<v-text-field  :value="valueArrDateView" :label="name" :hint="placeholder"  :required="!!nullable"  ref="inputDate" 
+													clearable  :min="min" :max="max" v-mask="vMaskDateTime" :error="valueArrDateViewError!=''"  :error-messages="valueArrDateViewError"
+													@input="valueArrDateViewChange" />
+											</v-toolbar>
+											<v-date-picker v-if="dialogWithDate"  v-model="valueArrDateFstFst" scrollable :locale="profileLanguage()" :max="max" :min="min" ref="date1"  no-title
 												:class="[dialogDatePanelCnt>1?'with-append-on-right':'',  'v-date-picker-more-height','higher-z-index']" />
 											<div v-if="dialogDatePanelCnt==1 &&  ['DATETIME','DATETIME_RANGE'].indexOf(type)!=-1" :class="getDialogSeparatorClass" >
 												<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>							
 												<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>																		
 												<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
 											</div>
-											<v-time-picker v-if="dialogWithTime" v-model="valueArrFstScnd" scrollable :locale="profileLanguage()" format="24hr" ref="timer1"
+											<c-time-picker v-if="dialogWithTime" v-model="valueArrDateFstScnd"  ref="timer1" :useSeconds="timeWithSeconds"
 												:class="[dialogDatePanelCnt==1?'': ['DATETIME','DATE_RANGE','DATETIME_RANGE'].indexOf(type)!=-1?'is-append-on-right':'with-append-on-right',
-													 'higher-z-index', 'time-head-norm']"  />
+													 'higher-z-index', 'time-head-norm', 'v-date-picker-more-height']"  />
 
 											<template v-if="dialogWithRange ">
 												<div v-if="dialogDatePanelCnt==1 ||['DATETIME_RANGE'].indexOf(type)!=-1 " :class="getDialogSeparatorClassDateRange" >
@@ -96,20 +101,20 @@
 													<v-icon :class="getDialogSeparatorDateRangeArrowClass">fast_forward</v-icon>										
 													<v-icon :class="getDialogSeparatorDateRangeArrowClass">fast_forward</v-icon>										
 												</div>
-												<v-date-picker v-if="['DATE_RANGE','DATETIME_RANGE'].indexOf(type)!=-1" v-model="valueArrScndFst" scrollable :locale="profileLanguage()" ref="date2"
+												<v-date-picker v-if="['DATE_RANGE','DATETIME_RANGE'].indexOf(type)!=-1" v-model="valueArrDateScndFst" scrollable :locale="profileLanguage()" ref="date2" no-title
 													:class="[dialogDatePanelCnt==1?'':['DATE_RANGE'].indexOf(type)!=-1?'is-append-on-right':'with-append-on-right',  'v-date-picker-more-height','higher-z-index']"/>
 												<div v-if="dialogDatePanelCnt==1 &&  ['DATETIME_RANGE'].indexOf(type)!=-1" :class="getDialogSeparatorClass" >
 													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>							
 													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>																		
 													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
 												</div>
-												<v-time-picker v-if="['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1" v-model="valueArrScndScnd"  scrollable :locale="profileLanguage()" format="24hr" ref="timer2"
-													:class="[dialogDatePanelCnt==1?'':['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1?'is-append-on-right':'','higher-z-index', 'time-head-norm']" />
+												<c-time-picker v-if="['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1" v-model="valueArrDateScndScnd"   ref="timer2" :useSeconds="timeWithSeconds"
+													:class="[dialogDatePanelCnt==1?'':['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1?'is-append-on-right':'','higher-z-index', 'time-head-norm', 'v-date-picker-more-height']" />
 											</template>
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
-											<v-btn small class="accent"  @click="saveDialog(valueArr)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
+											<v-btn small class="accent"  @click="saveDialog(valueArrDate)" :disabled="valueArrDateViewError!=''"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
 											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
@@ -117,18 +122,18 @@
 								</v-dialog>
 								<v-dialog v-else-if="multy && type=='DATE'"	ref="dialog" v-model="isDialog" :return-value.sync="valueArr" persistent :width="getDialogWidth"
 										class="max-width" :content-class="getDialogClass">
-									<template v-slot:activator="{ on }">
-										<v-combobox   v-model="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"   ref="input" 
+									<template v-slot:activator="{ on:onDialog }">
+										<v-combobox   :value="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"   ref="input" 
 											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" multiple chips  small-chips  :append-icon="getAppendIcon" 
-											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="isAuto?{on}:{'click:append':on.click}" class=" body-1" />
+											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="onDialog" class=" body-1" />
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
-											<v-date-picker v-if="dialogWithDate"  v-model="valueArr" multiple  scrollable :locale="profileLanguage()" class='v-date-picker-more-height' />
+											<v-date-picker v-if="dialogWithDate"  v-model="valueArrDate" multiple  scrollable :locale="profileLanguage()" class='v-date-picker-more-height' />
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
-											<v-btn small class="accent"  @click="saveDialog(valueArr)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
+											<v-btn small class="accent"  @click="saveDialog(valueArrDate)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.texts.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
 											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.texts.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
@@ -167,6 +172,7 @@
 
 <script>
 	import XStore from '../mixins/x-store'
+	import CTimePicker from './c-time-picker'
 	import {VSelect,VSlider,VRangeSlider,VTextarea } from 'vuetify/lib' //из-за хитрого загрузчика, который анализирует только шаблон, динамические окмпоененты приходится импортировать руками. иначе они не подгрузятся
 	export default {
 		name:'c-input',
@@ -186,6 +192,11 @@
 			sign:0,
 			tabSelectedRows:[],
 			thumbSize:10,
+			valueArrDate:['',''],
+			valueArrDateView:'',
+			valueArrDateViewError:'',
+			valueArrDateViewChangeLastTime:0,
+			valueArrDateViewChanging:false,
 		}),
 		props:{
 			data:{type: Object, required: true, default:()=>{return {}}},
@@ -376,9 +387,9 @@
 			columnType()		{	return nvlo(this.paramData).columnType||''																						},
 			columnSize()		{	return nvlo(this.paramData).columnSize||0																						},
 			sortSeq()			{	return nvlo(this.paramData).sort_seq||0																							},
-			vMask()				{	return nvlo(this.paramData).vMask||null																							},
+			vMask()				{	return nvlo(this.paramData).vMask||''																							},
 			maskFin()			{	return nvlo(this.paramData).mask_fin||''																						},
-			maskFinRegExp()		{	return new RegExp(this.maskFin)||''																								},
+			maskFinRegExp()		{	return this.maskFin==''?'':new RegExp(this.maskFin)																				},
 			error()				{	return nvlo(this.paramData).error||'$vuetify.texts.msgs.incorrectValue.title'													},
 			editable()			{	return nvlo(this.paramData).editable==undefined? true:!!this.paramData.editable													},
 			isAuto()			{	return nvlo(this.paramData).isAuto==undefined? false:!!this.paramData.isAuto													},
@@ -389,6 +400,7 @@
 			hasInput()			{	return ['HIDDEN','INFO','NBSP','LINE'].indexOf(this.type)==-1																	},
 			isSliderLike()		{	return ['SLIDER', 'RANGE'].indexOf(this.type)!=-1																				},
 			multy()				{	return !this.isSliderLike && (nvlo(this.paramData).multy==undefined? false:!!this.paramData.multy	)							},
+			timeWithSeconds()	{	return nvlo(this.paramData).seconds==undefined? true:!!this.paramData.seconds													},
 			maxLen()			{	return nvlo(this.paramData).maxLen||0																							},
 			tabGroup()			{	return nvlo(this.paramData).tab_group||""																						},
 			isNeedTab()			{	return this.tabGroup!='' && !!nvlo(this.paramData).withTab																		},
@@ -399,11 +411,32 @@
 			isWithArray()		{	return this.isDateTimeLike || ['RANGE'].indexOf(this.type)!=-1 || this.type=='LIST' && this.multy								},
 			isWithDialog()		{	return this.isDateTimeLike || this.isNeedTab																					},
 			rangeSeparator()	{	return this.$vuetify.lang.t('$vuetify.texts.simple.labels.dateRangeSeparator' )													},
+			maskDateTime()		{	return new RegExp(!this.isDateTimeLike || this.multy?'': [
+					this.dialogWithDate?'\d\d.\d\d.\d\d\d\d':'', this.dialogWithTime?'\d\d:\d\d'+(this.timeWithSeconds?':\d\d':''):'', 
+					this.dialogWithRange?this.rangeSeparator.trim():'',  
+					this.dialogWithRange&&this.dialogWithDate?'\d\d.\d\d.\d\d\d\d':'', this.dialogWithRange&&this.dialogWithTime?'\d\d:\d\d'+(this.timeWithSeconds?':\d\d':''):'', 
+				].filter(row=>row!='').join(' ') )
+			},
+			vMaskDateTime()		{	return !this.isDateTimeLike || this.multy?'': [
+					this.dialogWithDate?'##.##.####':'', this.dialogWithTime?'##:##'+(this.timeWithSeconds?':##':''):'', 
+					this.dialogWithRange?this.rangeSeparator.trim():'',  
+					this.dialogWithRange&&this.dialogWithDate?'##.##.####':'', this.dialogWithRange&&this.dialogWithTime?'##:##'+(this.timeWithSeconds?':##':''):'', 
+				].filter(row=>row!='').join(' ')
+			},
+			vInputProp()		{
+				let vm = this
+				return {
+					//...(!vm.dialogWithRange&&vm.dialogWithTime ?{ "type":'time'}:{}) 
+					//,...(!vm.dialogWithRange&&vm.dialogWithDate ?{ "type":'date'}:{}) 
+					//,...(!vm.dialogWithRange&&vm.dialogWithTime&&vm.dialogWithDate ?{ "type":'datetime-local'}:{})
+					/*, ...(['TEXT', 'INPUT', 'NUMBER'].indexOf(vm.type)!=-1?{ "v-mask":vm.vMask}:{})*/
+				}
+			},
 			tabHeader()			{	//для TAB [{value:'param1',text:'Параметра1',visible:true},{value:'param2',text:'Параметра2',visible:true}]
 				let vm = this
 				return 'tab_header' in vm.paramData && vm.paramData.tab_header.length>0	? vm.paramData.tab_header.slice() : [] 
 			},
-			tabValues()			{	
+			tabValues()			{
 				let vm = this
 				return 'tab_values' in vm.paramData  && vm.paramData.tab_values.length>0 ? vm.paramData.tab_values.slice() : [] 
 			},
@@ -463,9 +496,13 @@
 
 				if(vm.hasInput && vm.maxLenTypes.indexOf(vm.type)!=-1 && vm.maxLen>0)
 					rules.push(v => v.length <= vm.maxLen  || !vm.checked || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.valLessOrEq', ...([vm.maxLen]) ) )
-		
+
 				if(vm.hasInput && vm.maskFinRegExp!='')//надо помнить про экранирование
 					rules.push(v => vm.maskFinRegExp.test(v) || vm.$vuetify.lang.t( vm.error ))
+
+				/*if(vm.hasInput && vm.maskDate!='')
+					rules.push(v => vm.maskDate.test(v) || vm.$vuetify.lang.t( '$vuetify.texts.simple.msgs.dateForamatWrong' ))*/
+				
 
 				if(vm.hasInput && !vm.nullable)
 					rules.push(v => v!=undefined && (v!='' || v===0) || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.fieldIsNecessary' ) )
@@ -473,6 +510,14 @@
 				if(vm.hasInput && vm.needCheckBox && !vm.nullable)
 					rules.push(v => !!vm.checked || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.fieldMustUsed' ) )
 
+				return rules
+			},
+			dateTimeRules(){
+				let vm=this,
+					rules=[]
+				if(vm.hasInput && vm.maskDate!='')
+					rules.push(v => vm.maskDate.test(v) || vm.$vuetify.lang.t( '$vuetify.texts.simple.msgs.dateForamatWrong' ))
+				rules.push(v => v!=undefined && (v!='' || v===0) || vm.$vuetify.lang.t('$vuetify.texts.simple.msgs.fieldIsNecessary' ) )
 				return rules
 			},
 			isNeed()			{	return this.hasInput && !this.nullable																												},
@@ -507,7 +552,7 @@
 						res = dateFormatRevert(val)
 					vm.setValue(res)
 				},
-				get:function()	{	return /*'valueView' in this.paramData? this.paramData.valueView :*/ this.getValueViewFromValue(this.value)		},				
+				get:function()	{	return  this.getValueViewFromValue(this.value)		},				
 			},
 			valueArr: {
 				set:function (val)	{
@@ -542,79 +587,157 @@
 					vm.setValueArr(res)
 				},
       			get:function() 		{
-					return /*'valueArrView' in this.paramData? this.paramData.valueArrView :*/ this.getValueArrViewFromValueArr(this.valueArr)
+					return  this.getValueArrViewFromValueArr(this.valueArr)
 				},
 			},
-			valueArrFst: {//хз почему но дебагер вьюэкса не дает править массив по элементно
-				set:function (val)	{this.valueArr=[val, this.valueArr[1]]																								},
+			valueArrFst: {
+				set:function (val)	{this.$set(this.valueArr, 0, val) 																									},
 				get:function() 		{return this.valueArr[0]																											},
 			},
-			valueArrFstFst: {
+			valueArrScnd: {	
+				set:function (val)	{this.$set(this.valueArr, 1, val) 																									},
+				get:function()		{return this.valueArr[1]																				},
+			},
+			valueArrViewFst: {
+				set:function (val)	{if (!this.multy && this.isDateTimeLike && val == undefined) this.valueArr= this.getDateTimeArrFromString(val) },
+				get:function() 		{return this.valueArrView[0]																										},
+			},
+
+			valueArrDateFst: {
+				set:function (val)	{this.$set(this.valueArrDate, 0, val) 																								},
+				get:function() 		{return this.valueArrDate[0]																										},
+			},
+			valueArrDateScnd: {	
+				set:function (val)	{this.$set(this.valueArrDate, 1, val)																							},
+				get:function()		{return this.valueArrDate[1]																										},
+			},
+			valueArrDateFstFst: {
 				set:function (val)	{
 					if(this.dialogWithDate)
-						this.valueArrFst=val+ (this.dialogWithTime ?'T'+this.valueArrFstScnd:'')
+						this.valueArrDateFst=val+ (this.dialogWithTime ?'T'+this.valueArrDateFstScnd:'')
 				},
 				get:function()		{
-					return this.dialogWithDate? this.valueArrFst.split('T')[0]:''	
+					return this.dialogWithDate? this.valueArrDateFst.split('T')[0]:''	
 				},
 			},
-			valueArrFstScnd: {
-				set:function (val)	{
+			valueArrDateFstScnd: {
+				set:function (val)	{					
 					if (!this.dialogWithTime)
 						return
 					if(this.dialogWithDate)
-						this.valueArrFst=this.valueArrFstFst+'T'+val; 
-					else this.valueArrFst=val;			
+						this.valueArrDateFst=this.valueArrDateFstFst+'T'+val; 
+					else this.valueArrDateFst=val;			
 				},
 				get:function()		{
-					return !this.dialogWithTime?'00:00:00': this.dialogWithDate? nvl(this.valueArrFst.split('T')[1],'00:00:00'):this.valueArrFst
+					return !this.dialogWithTime?'00:00:00': this.dialogWithDate? nvl(this.valueArrDateFst.split('T')[1],'00:00:00'):this.valueArrDateFst
 				},
 			},
-			valueArrScnd: {	
-				set:function (val)	{this.valueArr=[this.valueArr[0], val]																								},
-				get:function()		{return this.valueArr[1]																											},
-			},
-			valueArrScndFst: {
+			valueArrDateScndFst: {
 				set:function (val)	{
-					this.valueArrScnd=val+( this.type=='DATETIME_RANGE'? 'T'+this.valueArrScndScnd:'')
+					this.valueArrDateScnd=val+( this.type=='DATETIME_RANGE'? 'T'+this.valueArrDateScndScnd:'')
 				},
 				get:function()		{
-					return ['DATE_RANGE','DATETIME_RANGE'].indexOf(this.type)!=-1? this.valueArrScnd.split('T')[0]:''
+					return ['DATE_RANGE','DATETIME_RANGE'].indexOf(this.type)!=-1? this.valueArrDateScnd.split('T')[0]:''
 				},
 			},
-			valueArrScndScnd: {
+			valueArrDateScndScnd: {
 				set:function (val)	{
 					if(['DATETIME_RANGE','TIME_RANGE'].indexOf(this.type)==-1)
 						return
 					if(this.type=='DATETIME_RANGE')
-						this.valueArrScnd=this.valueArrScndFst +'T'+ val
+						this.valueArrDateScnd=this.valueArrDateScndFst +'T'+ val
 					else
-						this.valueArrScnd= val
+						this.valueArrDateScnd= val
 				},
 				get:function()		{
 					return ['DATETIME_RANGE','TIME_RANGE'].indexOf(this.type)==-1?'00:00:00': this.type=='DATETIME_RANGE'? nvl(this.valueArrScnd.split('T')[1],'00:00:00'):this.valueArrScnd
 				},
 			},
-			valueArrViewFst: {//хз почему но дебагер вьюэкса не дает править массив по элементно
-				set:function (val)	{if (val===undefined && !this.multy && this.isDateTimeLike) this.valueArr=['','']													},
-				get:function() 		{return this.valueArrView[0]																										},
-			},
 		},
 		watch: {
 			isDialog (val, valOld) {
-				val && this.$nextTick(() => {nvlo(this.$refs.timer1).selecting =1;  nvlo(this.$refs.timer2).selecting =1; }) &&
-					this.isBirthDate && this.$nextTick(() => (this.$refs.date1.activePicker = 'YEAR'))
-				!val && valOld && this.onBlur() && setTimeout(()=>{vm.$refs.input.onClick(e)},100)	
-			}
+				let vm = this
+				if(val){
+					if( vm.isDateTimeLike ){
+						vm.dialogWithTime && !vm.multy && setTimeout(()=> {nvlo(vm.$refs.timer1,'')!='' && vm.$refs.timer1.scrollToSelected();  nvlo(vm.$refs.timer2,'')!='' && vm.$refs.timer2.scrollToSelected() } , 100) 
+						vm.isBirthDate&& !vm.multy && vm.$nextTick(() => (vm.$refs.date1.activePicker = 'YEAR')) 
+						vm.valueArrDate = vm.valueArr
+					}
+				}
+				else if( valOld )
+					vm.onBlur() 
+			},
+			valueArrDate(val, valOld){
+				if(!this.valueArrDateViewChanging){
+					this.valueArrDateView=this.getValueArrViewFromValueArr (this.valueArrDate)	
+				}
+			},
 		},
 		components: {
 			CTable: (resolve) =>{ require(['./c-table.vue'], resolve) },
-			VSelect,VSlider,VRangeSlider,VTextarea,
+			VSelect,VSlider,VRangeSlider,VTextarea,CTimePicker
 		},
 		mixins: [
 			XStore,
 		],		
 		methods: {
+			valueArrDateViewChange(val){
+				let vm = this,
+					res = ['','','',''],
+					curTime = new Date().getTime()
+				if ( curTime>vm.valueArrDateViewChangeLastTime+100 ){//маска работает коряво, сперва присылается голое число и только потом отрабатывает замена
+					vm.valueArrDateViewChangeLastTime=curTime
+					return
+				}
+
+				val.split( vm.rangeSeparator ).forEach( (part, i)=>{
+					part.split(' ').forEach( (piece,j)=>{
+						res[i*2+j+(vm.dialogWithTime && !vm.dialogWithDate ? 1:0)]=piece
+					})
+				})
+
+				if( vm.dialogWithDate ){
+					if( !validateDate(res[0]) ){
+						vm.$nextTick(() => vm.valueArrDateViewError = vm.$vuetify.lang.t('$vuetify.texts.errors.wrongDate.text', [res[0] ]  ) ) // $nextTick ->косяк в маске,2 быстрых нажатия смещают курсор в конец инпута
+						return
+					}
+					if( vm.dialogWithRange && !validateDate(res[2]) ){
+						vm.$nextTick(() => vm.valueArrDateViewError = vm.$vuetify.lang.t('$vuetify.texts.errors.wrongDate.text', [res[2] ]  ) )
+						return
+					}
+				}
+				if( vm.dialogWithTime ){
+					if( !validateTime(res[1], vm.timeWithSeconds) ){
+						vm.$nextTick(() => vm.valueArrDateViewError = vm.$vuetify.lang.t('$vuetify.texts.errors.wrongTime.text', [res[1] ] ) )
+						return
+					}
+					if( vm.dialogWithRange && !validateTime(res[3], vm.timeWithSeconds) ){
+						vm.$nextTick(() =>  vm.valueArrDateViewError = vm.$vuetify.lang.t('$vuetify.texts.errors.wrongTime.text', [res[3] ] ) )
+						return
+					}
+				}
+				vm.valueArrDateViewError=''
+				vm.valueArrDateViewChanging=true
+				vm.$set(vm.valueArrDate, 0, (vm.dialogWithDate? nvl(dateFormatRevert(res[0]),vm.valueArrDateFstFst) +'T':'') +nvl(res[1], vm.valueArrDateFstScnd))
+				vm.$set(vm.valueArrDate, 1, (vm.dialogWithDate? nvl(dateFormatRevert(res[2]),vm.valueArrDateScndFst) +'T':'') +nvl(res[3], vm.valueArrDateScndScnd) )
+				vm.$nextTick(() => vm.valueArrDateViewChanging=false) 
+				console.log('valueArrDateViewChange', val, vm.valueArrDate);
+			},
+			getDateTimeArrFromString(val){
+				let vm=this,
+					res=['','']
+				if(nvl(val) == '' )
+					return ['','']
+				
+				let mask =  [
+					vm.dialogWithDate?'99.99.9999':'', vm.dialogWithTime?'99:99'+(vm.timeWithSeconds?':99':''):'', 
+					vm.rangeSeparator,
+					vm.dialogWithRange&&vm.dialogWithDate?'99.99.9999':'', vm.dialogWithRange&&vm.dialogWithTime?'99:99'+(vm.timeWithSeconds?':99':''):'', 
+				].filter(row=>row!='').join('')
+				console.log('getDateTimeArrFromString', val,mask)
+				res = VMasker.toPattern(val, mask).split(vm.rangeSeparator).map(row=>dateTimeNorm(row))
+				return [nvl(res[0],''), nvl(res[1],'')]
+			},
 			preWork(checkedFixed=false){
 				let vm = this
 				if(vm.$refs.input!=undefined)
@@ -638,12 +761,11 @@
 				let vm = this
 				if(needCheck && vm.value==val &&  nvlo(vm.paramData).valueArrView!=undefined ) 
 					return
-				console.log({ value:val, valueView: vm.getValueViewFromValue(val)});
 				if( nvlo(vm.paramData).need_reset || !needCheck )
 					if( ['LIST', 'SLIDER'].indexOf(vm.type)!=-1 && !vm.multy  )
 						val=nvlo(vm.tableValues.find( row=>  row.value==val || row.textFull==val ) ,{value:null}).value		
 
-				console.log({ value:val, valueView: vm.getValueViewFromValue(val)});
+				console.log('setValue', vm.code,'value',val, 'valueView', vm.getValueViewFromValue(val));
 				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{need_reset:false, value:val, valueView: vm.getValueViewFromValue(val)}  })
 				vm.postWork()				
 			},
@@ -660,8 +782,6 @@
 			},
 			setValueArr(val, needCheck=true){
 				let vm = this
-				if (['DATE_RANGE', 'DATETIME_RANGE'].indexOf(vm.type)!=-1 /*&& !vm.dialog*/ && val[0]>val[1] && nvl(val[0])!='' && nvl(val[1]) !='')
-					[val[0], val[1]]=[val[1], val[0]]
 				if(needCheck && (vm.valueArr.equals(val) || nvlo(vm.paramData).value_arr ===null && val==null) )
 					return
 				if( nvlo(vm.paramData).need_reset || !needCheck  )
@@ -669,30 +789,40 @@
 						val = val.filter(row1 => vm.tableValues.findIndex( row=> row.value==row1 || row.textFull==row1  )!=-1 )
 					else if( vm.isDateTimeLike )
 						val = val.map( row=> ['TIME_RANGE', 'TIME'].indexOf(vm.type)!=-1? timeNorm(row): vm.type=='DATE' && vm.multy? dateTimeNorm(row).split('T')[0]: dateTimeNorm(row) ).filter(row => row!='' )
-				console.log({value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)});
+				console.log( 'setValueArr', vm.code, 'value_arr',val, 'valueArrView' ,vm.getValueArrViewFromValueArr(val));
 				vm.paramSet( {num: vm.paramsForm, code:vm.code, data:{need_reset:false, value_arr:val, valueArrView: vm.getValueArrViewFromValueArr(val)}  })
 				vm.postWork()				
 			},
 			getValueArrViewFromValueArr(val){
 				let vm = this,
 					res = val
-				if(['DATE', 'DATETIME'].indexOf(vm.type)!=-1)
-					res= res.map( row=> (dateFormat(row).replace('T',' ')) )
-				else if(vm.type=='RANGE' && (!vm.isNumeric) )
+				
+				 if(vm.type=='RANGE' && (!vm.isNumeric) )
 					res = [ vm.tableValues.findIndex( row1=>  row1.value==val[0]  ) ,  vm.tableValues.findIndex( row1=>  row1.value==val[1] ) ]
-				else if(vm.dialogWithRange && !vm.multy && res.length>0)
-					res=[dateFormat(res[0]).replace('T',' ')+ (vm.dialogWithRange? vm.rangeSeparator+dateFormat(res[1]).replace('T',' '):'')]
+				else if(['DATE', 'DATETIME'].indexOf(vm.type)!=-1 && vm.multy)
+					res= res.map( row=> (dateFormat(row).replace('T',' ')) )
+				else if(vm.isDateTimeLike  && res.length>0){
+					res=['']
+					val.forEach((row,i)=>{
+						if(i>0 && vm.dialogWithRange)
+							res[0]+=vm.rangeSeparator
+						res[0]+=dateFormat(row).replace('T',' ').replace(!vm.dialogWithTime?' 00:00:00':'','').replace(!vm.timeWithSeconds?':00':'','')
+					})
+				}
 				else if(vm.type=='LIST'  && vm.multy)
 					res = val.map(row=> ( nvlo( vm.tableValues.find(row2 => row2.value==row) ,{textFull:null}).textFull  ) )
+				console.log('getValueArrViewFromValueArr', val, res);
 				return res
 			},
 			
 			saveDialog(value){
 				let vm=this,
 					tmp={}
-				console.log(value, vm.value);
-				if(vm.isDateTimeLike)
+				if(vm.isDateTimeLike){
+					if (['DATE_RANGE', 'DATETIME_RANGE', 'TIME_RANGE'].indexOf(vm.type)!=-1 /*&& !vm.dialog*/ && value[0]>value[1] && nvl(value[0])!='' && nvl(value[1]) !='')
+						[value[0], value[1]]=[value[1], value[0]]
 					vm.$refs.dialog.save(value)
+				}
 				else if(vm.isNeedTab ){
 					value.forEach(row=>{
 						for (let code in row) {
@@ -740,7 +870,7 @@
 				console.log('onClick',vm.isNeedTab, vm.isAuto);
 				vm.lastTimeSend=curTime
 				vm.checked=true
-				if(vm.isWithDialog &&  vm.isAuto){
+				if(vm.isWithDialog && (vm.isDateTimeLike || vm.isAuto)){
 					vm.isDialog=true
 					//vm.onFocus()
 				}
@@ -768,6 +898,7 @@
 		created: function (){
 			let vm=this
 			vm.checkBoxColor=appTheme.checkBox||vm.checkBoxColor
+			vm.valueArrDateViewChangeLastTime= new Date().getTime()
 						
 		},
 		mounted(){
@@ -797,7 +928,7 @@
 	.theme--dark.v-chip.v-chip--disabled					{background: #737373;}
 	.separator-dark-bc										{background: #737373;}
 	.separator-light-bc										{background: #e0e0e0;}
-	.v-date-picker-more-height								{height: 392px;}
+	.v-date-picker-more-height								{height: 290px;}
 	.higher-z-index											{z-index: 2;}
 	.dialog-display-inline-grid								{display: inline-grid;}
 	.dialog-narrow-display-div-arrow						{clear: right; display: inherit; width: 100%; height: 28px;}
@@ -805,8 +936,9 @@
 	.dialog-narrow-display-arrow-width-min					{width: 85px;}
 	.theme--dark.v-table tbody tr[active]>td:first-child	{background: #7d7979;}		
 	.v-slider__tick-label									{font-size: 11px;}
-	.text-xs-center>.v-chip									{text-align: center;
-}
+	.text-xs-center>.v-chip									{text-align: center;}
+	.smallFont input										{font-size: 13px;}
+	.fixedDiv												{position: sticky;   top: 0px;    z-index: 3;}
 	/*i    border-bottom-color: #2c353f;
 	border-bottom-style: groove;
 	border-bottom-width: 0.5px;*/

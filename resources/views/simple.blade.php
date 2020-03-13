@@ -25,6 +25,7 @@
         <script src="{{asset('js/manifest.js')}}"></script>
         <script src="{{asset('js/vendor.js')}}"></script>
         <script src="{{asset('js/functions.js')}}"></script>
+		<script src="{{asset('js/vanilla-masker.min.js')}}"></script>
         <script src="{{asset('js/'.$app_js.'.js')}}"></script>
     </body>
 </html>
