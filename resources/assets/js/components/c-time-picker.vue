@@ -1,5 +1,5 @@
 <template>
-	<div :class="getClassesMain" :style="'width: '+width+'; display: inline-flex;'">
+	<div :class="getClassesMain" :style="'width: '+width+'; display: inline-flex; '">
 		<div class="time-picker__list time-picker__list--hours" ref="hourList">
 			<div class='time-picker__items-head'> {{ formatHour(hour) }}   </div>
 			<div class="time-picker__item" v-for="hour in hours" @click="selectHour(hour)" 
@@ -130,7 +130,6 @@
 		},
 		watch: {
 			value(val, valOld){
-				console.log(val);
 				if(!this.changing)
 					this.scrollToSelected()
 			},
@@ -190,10 +189,13 @@
 				setTimeout(()=>{
 					let selectedHour = vm.$refs.hourList.querySelector('.time-picker__item--selected'),
 						selectedMinute = vm.$refs.minuteList.querySelector('.time-picker__item--selected'),
+						selectedSecond = null
+					if(vm.useSeconds)
 						selectedSecond = vm.$refs.secondList.querySelector('.time-picker__item--selected')
 					vm.$refs.hourList.scrollTop = selectedHour ? selectedHour.offsetTop - 250 : 0
 					vm.$refs.minuteList.scrollTop = selectedMinute ? selectedMinute.offsetTop - 250 : 0
-					vm.$refs.secondList.scrollTop = selectedSecond ? selectedSecond.offsetTop - 250 : 0
+					if(vm.useSeconds)
+						vm.$refs.secondList.scrollTop = selectedSecond ? selectedSecond.offsetTop - 250 : 0
 				},100)
 
 			},

@@ -76,12 +76,12 @@
 										<v-text-field  v-model="valueArrViewFst" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input" 
 											:tabindex="sortSeq"  :clearable="getClearable"  :min="min" :max="max" :append-icon="getAppendIcon"  :id="id+'_activator'"
 											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="onDialog" :class="['body-1', ['DATETIME_RANGE'].indexOf(type)!=-1?'smallFont':'' ]" />
-									</template> <!-- v-mask="vMaskDate"  --> 
+									</template> <!-- v-mask="vMaskDateTime"  --> 
 									<template>
-										<div  :style="getDialogMainDivStyle">
-											<v-toolbar dense class="fixedDiv" >	
-												<v-text-field  :value="valueArrDateView" :label="name" :hint="placeholder"  :required="!!nullable"  ref="inputDate" 
-													clearable  :min="min" :max="max" v-mask="vMaskDateTime" :error="valueArrDateViewError!=''"  :error-messages="valueArrDateViewError"
+										<div  :style="getDialogMainDivStyle" ref="dialogDiv">
+											<v-toolbar  class="fixedDiv dateDialogHeadInput" >	
+												<v-text-field  :value="valueArrDateView" :label="name" :hint="placeholder"  :required="!!nullable"  ref="inputDate" :id = "'inputDate_'+id"
+													clearable  :min="min" :max="max"  :error="valueArrDateViewError!=''" v-mask="vMaskDateTime" :error-messages="valueArrDateViewError"
 													@input="valueArrDateViewChange" />
 											</v-toolbar>
 											<v-date-picker v-if="dialogWithDate"  v-model="valueArrDateFstFst" scrollable :locale="profileLanguage()" :max="max" :min="min" ref="date1"  no-title
@@ -93,7 +93,8 @@
 											</div>
 											<c-time-picker v-if="dialogWithTime" v-model="valueArrDateFstScnd"  ref="timer1" :useSeconds="timeWithSeconds"
 												:class="[dialogDatePanelCnt==1?'': ['DATETIME','DATE_RANGE','DATETIME_RANGE'].indexOf(type)!=-1?'is-append-on-right':'with-append-on-right',
-													 'higher-z-index', 'time-head-norm', 'v-date-picker-more-height']"  />
+													 'higher-z-index', 'time-head-norm', 'v-date-picker-more-height', ['DATETIME','DATETIME_RANGE'].indexOf(type)!=-1?'dateDialogTimeLeftBorder':'',
+													 ['TIME_RANGE'].indexOf(type)!=-1?'dateDialogTimeRightBorder':'']"  />
 
 											<template v-if="dialogWithRange ">
 												<div v-if="dialogDatePanelCnt==1 ||['DATETIME_RANGE'].indexOf(type)!=-1 " :class="getDialogSeparatorClassDateRange" >
@@ -109,7 +110,8 @@
 													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
 												</div>
 												<c-time-picker v-if="['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1" v-model="valueArrDateScndScnd"   ref="timer2" :useSeconds="timeWithSeconds"
-													:class="[dialogDatePanelCnt==1?'':['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1?'is-append-on-right':'','higher-z-index', 'time-head-norm', 'v-date-picker-more-height']" />
+													:class="[dialogDatePanelCnt==1?'':['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1?'is-append-on-right':'','higher-z-index', 'time-head-norm', 'v-date-picker-more-height', 
+													['DATETIME','DATETIME_RANGE'].indexOf(type)!=-1?'dateDialogTimeLeftBorder':'']" />
 											</template>
 										</div>
 										<v-divider></v-divider>
@@ -179,7 +181,7 @@
 		data: () => ({
 			checkBoxColor:'false',//переопределяется в created
 			hasError: false,
-			dataPickerHeight: 392,
+			dataPickerHeight: 369,
 			inputErrorState:false,
 			inputErrorText:'',
 			isMounted:false,
@@ -187,6 +189,7 @@
 			lastTimeSend: 0,
 			maxLenTypes:['INPUT','NUMBER', 'PASSWORD'],
 			show:false,
+			inputDateInsertInit:false,
 			isFocus:false,
 			isDialog:false,
 			sign:0,
@@ -400,7 +403,7 @@
 			hasInput()			{	return ['HIDDEN','INFO','NBSP','LINE'].indexOf(this.type)==-1																	},
 			isSliderLike()		{	return ['SLIDER', 'RANGE'].indexOf(this.type)!=-1																				},
 			multy()				{	return !this.isSliderLike && (nvlo(this.paramData).multy==undefined? false:!!this.paramData.multy	)							},
-			timeWithSeconds()	{	return nvlo(this.paramData).seconds==undefined? true:!!this.paramData.seconds													},
+			timeWithSeconds()	{	return nvlo(this.paramData).seconds==undefined? false:!!this.paramData.seconds													},
 			maxLen()			{	return nvlo(this.paramData).maxLen||0																							},
 			tabGroup()			{	return nvlo(this.paramData).tab_group||""																						},
 			isNeedTab()			{	return this.tabGroup!='' && !!nvlo(this.paramData).withTab																		},
@@ -412,9 +415,9 @@
 			isWithDialog()		{	return this.isDateTimeLike || this.isNeedTab																					},
 			rangeSeparator()	{	return this.$vuetify.lang.t('$vuetify.texts.simple.labels.dateRangeSeparator' )													},
 			maskDateTime()		{	return new RegExp(!this.isDateTimeLike || this.multy?'': [
-					this.dialogWithDate?'\d\d.\d\d.\d\d\d\d':'', this.dialogWithTime?'\d\d:\d\d'+(this.timeWithSeconds?':\d\d':''):'', 
+					this.dialogWithDate?'\\d\\d.\\d\\d.\\d\\d\\d\\d':'', this.dialogWithTime?'\\d\\d:\\d\\d'+(this.timeWithSeconds?':\\d\\d':''):'', 
 					this.dialogWithRange?this.rangeSeparator.trim():'',  
-					this.dialogWithRange&&this.dialogWithDate?'\d\d.\d\d.\d\d\d\d':'', this.dialogWithRange&&this.dialogWithTime?'\d\d:\d\d'+(this.timeWithSeconds?':\d\d':''):'', 
+					this.dialogWithRange&&this.dialogWithDate?'\\d\\d.\\d\\d.\\d\\d\\d\\d':'', this.dialogWithRange&&this.dialogWithTime?'\\d\\d:\\d\\d'+(this.timeWithSeconds?':\\d\\d':''):'', 
 				].filter(row=>row!='').join(' ') )
 			},
 			vMaskDateTime()		{	return !this.isDateTimeLike || this.multy?'': [
@@ -500,8 +503,8 @@
 				if(vm.hasInput && vm.maskFinRegExp!='')//надо помнить про экранирование
 					rules.push(v => vm.maskFinRegExp.test(v) || vm.$vuetify.lang.t( vm.error ))
 
-				/*if(vm.hasInput && vm.maskDate!='')
-					rules.push(v => vm.maskDate.test(v) || vm.$vuetify.lang.t( '$vuetify.texts.simple.msgs.dateForamatWrong' ))*/
+				if(vm.hasInput && vm.maskDateTime!='')
+					rules.push(v => vm.maskDateTime.test(v) || vm.$vuetify.lang.t( '$vuetify.texts.simple.msgs.dateForamatWrong' ))
 				
 
 				if(vm.hasInput && !vm.nullable)
@@ -662,6 +665,22 @@
 						vm.dialogWithTime && !vm.multy && setTimeout(()=> {nvlo(vm.$refs.timer1,'')!='' && vm.$refs.timer1.scrollToSelected();  nvlo(vm.$refs.timer2,'')!='' && vm.$refs.timer2.scrollToSelected() } , 100) 
 						vm.isBirthDate&& !vm.multy && vm.$nextTick(() => (vm.$refs.date1.activePicker = 'YEAR')) 
 						vm.valueArrDate = vm.valueArr.slice(0)
+						vm.valueArrDateViewError=''
+						if(!vm.inputDateInsertInit){
+							vm.inputDateInsertInit=true
+							setTimeout(()=> {
+								let input = vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id )
+								input.addEventListener('keypress', function(e){
+									if(this.value.length<vm.vMaskDateTime.length)
+										return
+									let s = this.selectionStart
+									while( isNaN( parseFloat(this.value.substr(s , 1) ))  && s <= this.value.length)
+										s++
+									this.value =this.value.substr(0, s) + this.value.substr(s + 1) 
+									this.selectionEnd = s;
+								}, false)
+							},100)
+						}
 					}
 				}
 				else if( valOld )
@@ -670,6 +689,7 @@
 			valueArrDate(val, valOld){
 				if(!this.valueArrDateViewChanging){
 					this.valueArrDateView=this.getValueArrViewFromValueArr (this.valueArrDate)	
+					this.valueArrDateViewError=''
 				}
 			},
 		},
@@ -722,21 +742,6 @@
 				vm.$set(vm.valueArrDate, 1, (vm.dialogWithDate? nvl(dateFormatRevert(res[2]),vm.valueArrDateScndFst) +'T':'') +nvl(res[3], vm.valueArrDateScndScnd) )
 				vm.$nextTick(() => vm.valueArrDateViewChanging=false) 
 				console.log('valueArrDateViewChange', val, vm.valueArrDate);
-			},
-			getDateTimeArrFromString(val){
-				let vm=this,
-					res=['','']
-				if(nvl(val) == '' )
-					return ['','']
-				
-				let mask =  [
-					vm.dialogWithDate?'99.99.9999':'', vm.dialogWithTime?'99:99'+(vm.timeWithSeconds?':99':''):'', 
-					vm.rangeSeparator,
-					vm.dialogWithRange&&vm.dialogWithDate?'99.99.9999':'', vm.dialogWithRange&&vm.dialogWithTime?'99:99'+(vm.timeWithSeconds?':99':''):'', 
-				].filter(row=>row!='').join('')
-				console.log('getDateTimeArrFromString', val,mask)
-				res = VMasker.toPattern(val, mask).split(vm.rangeSeparator).map(row=>dateTimeNorm(row))
-				return [nvl(res[0],''), nvl(res[1],'')]
 			},
 			preWork(checkedFixed=false){
 				let vm = this
@@ -903,8 +908,8 @@
 		},
 		mounted(){
 			let vm=this
-        	vm.isMounted = true;
-    	},
+			vm.isMounted = true;
+		},
 	}
 </script>
 <style>
@@ -939,6 +944,13 @@
 	.text-xs-center>.v-chip									{text-align: center;}
 	.smallFont input										{font-size: 13px;}
 	.fixedDiv												{position: sticky;   top: 0px;    z-index: 3;}
+	.dateDialogHeadInput									{border-bottom: 1px #7f7f7f double !important; box-shadow: none !important;}
+	.dateDialogHeadInput,
+	.dateDialogHeadInput>div								{height: 80px !important;}
+	.dateDialogHeadInput>div								{padding-top: 13px;}
+	.dateDialogTimeLeftBorder								{border-left: 1px #7f7f7f double;}
+	.dateDialogTimeRightBorder								{border-right: 3px #949494 groove;}
+	
 	/*i    border-bottom-color: #2c353f;
 	border-bottom-style: groove;
 	border-bottom-width: 0.5px;*/
