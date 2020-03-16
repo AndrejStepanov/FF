@@ -82,36 +82,22 @@
 											<v-toolbar  class="fixedDiv dateDialogHeadInput" >	
 												<v-text-field  :value="valueArrDateView" :label="name" :hint="placeholder"  :required="!!nullable"  ref="inputDate" :id = "'inputDate_'+id"
 													clearable  :min="min" :max="max"  :error="valueArrDateViewError!=''" v-mask="vMaskDateTime" :error-messages="valueArrDateViewError"
-													@input="valueArrDateViewChange" />
+													@keydown.enter="saveDialog(valueArrDate)" @input="valueArrDateViewChange" />
 											</v-toolbar>
 											<v-date-picker v-if="dialogWithDate"  v-model="valueArrDateFstFst" scrollable :locale="profileLanguage()" :max="max" :min="min" ref="date1"  no-title
-												:class="[dialogDatePanelCnt>1?'with-append-on-right':'',  'v-date-picker-more-height','higher-z-index']" />
-											<div v-if="dialogDatePanelCnt==1 &&  ['DATETIME','DATETIME_RANGE'].indexOf(type)!=-1" :class="getDialogSeparatorClass" >
-												<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>							
-												<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>																		
-												<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
-											</div>
-											<c-time-picker v-if="dialogWithTime" v-model="valueArrDateFstScnd"  ref="timer1" :useSeconds="timeWithSeconds"
-												:class="[dialogDatePanelCnt==1?'': ['DATETIME','DATE_RANGE','DATETIME_RANGE'].indexOf(type)!=-1?'is-append-on-right':'with-append-on-right',
-													 'higher-z-index', 'time-head-norm', 'v-date-picker-more-height', ['DATETIME','DATETIME_RANGE'].indexOf(type)!=-1?'dateDialogTimeLeftBorder':'',
-													 ['TIME_RANGE'].indexOf(type)!=-1?'dateDialogTimeRightBorder':'']"  />
-
+												@dblclick:date="saveDialog(valueArrDate)" :class="['with-append-on-right',  'v-date-picker-more-height','higher-z-index']" />
+											<c-time-picker v-if="dialogWithTime" v-model="valueArrDateFstScnd"  ref="timer1" :useSeconds="timeWithSeconds" :width="dataPickerTimeWidth"
+												@dblclick:time="saveDialog(valueArrDate)" :class="[ 'higher-z-index', 'v-date-picker-more-height',  ['DATETIME','DATETIME_RANGE'].indexOf(type)!=-1?'dateDialogTimeLeftBorder':'' ]"  />
 											<template v-if="dialogWithRange ">
-												<div v-if="dialogDatePanelCnt==1 ||['DATETIME_RANGE'].indexOf(type)!=-1 " :class="getDialogSeparatorClassDateRange" >
+												<div :class="getDialogSeparatorClassDateRange" >
 													<v-icon :class="getDialogSeparatorDateRangeArrowClass">fast_forward</v-icon>										
 													<v-icon :class="getDialogSeparatorDateRangeArrowClass">fast_forward</v-icon>										
 													<v-icon :class="getDialogSeparatorDateRangeArrowClass">fast_forward</v-icon>										
 												</div>
 												<v-date-picker v-if="['DATE_RANGE','DATETIME_RANGE'].indexOf(type)!=-1" v-model="valueArrDateScndFst" scrollable :locale="profileLanguage()" ref="date2" no-title
-													:class="[dialogDatePanelCnt==1?'':['DATE_RANGE'].indexOf(type)!=-1?'is-append-on-right':'with-append-on-right',  'v-date-picker-more-height','higher-z-index']"/>
-												<div v-if="dialogDatePanelCnt==1 &&  ['DATETIME_RANGE'].indexOf(type)!=-1" :class="getDialogSeparatorClass" >
-													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>							
-													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>																		
-													<v-icon :class="getDialogSeparatorArrowClass">fast_forward</v-icon>										
-												</div>
-												<c-time-picker v-if="['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1" v-model="valueArrDateScndScnd"   ref="timer2" :useSeconds="timeWithSeconds"
-													:class="[dialogDatePanelCnt==1?'':['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1?'is-append-on-right':'','higher-z-index', 'time-head-norm', 'v-date-picker-more-height', 
-													['DATETIME','DATETIME_RANGE'].indexOf(type)!=-1?'dateDialogTimeLeftBorder':'']" />
+													@dblclick:date="saveDialog(valueArrDate)" :class="['with-append-on-right',  'v-date-picker-more-height','higher-z-index']"/>
+												<c-time-picker v-if="['TIME_RANGE','DATETIME_RANGE'].indexOf(type)!=-1" v-model="valueArrDateScndScnd"   ref="timer2" :useSeconds="timeWithSeconds" :width="dataPickerTimeWidth"
+													@dblclick:time="saveDialog(valueArrDate)" :class="['higher-z-index', 'v-date-picker-more-height',  ['DATETIME_RANGE'].indexOf(type)!=-1?'dateDialogTimeLeftBorder':'' ]" />
 											</template>
 										</div>
 										<v-divider></v-divider>
@@ -182,6 +168,8 @@
 			checkBoxColor:'false',//переопределяется в created
 			hasError: false,
 			dataPickerHeight: 369,
+			dataPickerWith: 290,
+			dataPickerTimeColumnWidth: 52,
 			inputErrorState:false,
 			inputErrorText:'',
 			isMounted:false,
@@ -263,7 +251,7 @@
 			},
 			getDialogScrollY(){
 				let vm=this
-				return ['DATETIME','TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1 && (vm.dialogDatePanelCnt==1 || vm.$vuetify.breakpoint.height<489) || 
+				return ['DATETIME','TIME_RANGE','DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1 && (vm.dialogDatePanelCnt==1 || vm.$vuetify.breakpoint.height<481) || 
 					vm.dialogDatePanelCnt==2 && ['DATETIME_RANGE'].indexOf(vm.type)!=-1 ||
 					vm.type=='DATETIME_RANGE' && vm.dialogDatePanelCnt<=2 || 
 					vm.dataPickerHeight+48>vm.$vuetify.breakpoint.height *0.9 ||  
@@ -272,17 +260,16 @@
 			},
 			getDialogWidth(){
 				let vm=this,
-					width= vm.type=='DATE'? 290 : 
-						vm.type=='TIME'? 290 : 
-						['TIME_RANGE','DATE_RANGE','DATETIME'].indexOf(vm.type)!=-1 && vm.dialogDatePanelCnt==1 ? 290 :
-						['TIME_RANGE','DATE_RANGE','DATETIME'].indexOf(vm.type)!=-1 ? 581: 
-						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.dialogDatePanelCnt==4? 1194 :
-						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.dialogDatePanelCnt==2? 581 :
-						['DATETIME_RANGE'].indexOf(vm.type)!=-1 && vm.dialogDatePanelCnt==1? 290 :
-						vm.isNeedTab?'max':
-						null
-				if( vm.getDialogScrollY && !vm.isNeedTab )//скрол плашка
-					width+=17
+					width= vm.isNeedTab?'max':
+						Math.ceil(
+							(vm.dataPickerWith*(vm.dialogWithDate?(['DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1?2:1):0)+  
+								vm.dataPickerTimeWidth*(vm.dialogWithTime ?(['TIME_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1?2:1):0)+
+								(['DATETIME'].indexOf(vm.type)!=-1?1:0)+
+								(['DATETIME_RANGE'].indexOf(vm.type)!=-1?1:0)
+							) / (vm.dialogDatePanelCnt==2&& ['TIME_RANGE','DATETIME','DATE','TIME'].indexOf(vm.type)==-1?2:1) +
+							(['TIME_RANGE'].indexOf(vm.type)!=-1 || vm.dialogDatePanelCnt==4 && ['DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1?24+9:0)
+						) + 
+						(vm.getDialogScrollY && !vm.isNeedTab? 17:0) //скрол плашка
 				return width+'px'
 			},
 			getDialogClass(){
@@ -291,7 +278,7 @@
 			},
 			getDialogMainDivHeight(){
 				let vm=this
-				return vm.getDialogScrollY  ?  vm.$vuetify.breakpoint.height *0.9 -48:	vm.dataPickerHeight /*стандартная высота одного элемента управления для дат*/
+				return vm.getDialogScrollY  ?  vm.$vuetify.breakpoint.height *0.9 -48-15:	vm.dataPickerHeight /*стандартная высота одного элемента управления для дат*/
 			},
 			getDialogMainDivStyle(){
 				let vm=this,
@@ -307,60 +294,35 @@
 					overflowX: 'hidden',
 				}
 			},
-			getDialogSeparatorClass(){
-				let vm=this
-				return {
-					"v-date-picker-more-height": vm.dialogDatePanelCnt>1,
-					"dialog-display-inline-grid": vm.dialogDatePanelCnt>1,
-					"dialog-narrow-display-div-arrow": vm.dialogDatePanelCnt==1,
-					"flex-direction--row":vm.dialogDatePanelCnt==1,
-					"flex-direction--column":vm.dialogDatePanelCnt>1,
-					"separator-dark-bc": vm.$vuetify.theme.dark && (vm.dialogDatePanelCnt>1 ||  ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1),
-					"separator-light-bc": !vm.$vuetify.theme.dark && (vm.dialogDatePanelCnt>1 ||  ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)!=-1),
-					"background-primary":vm.dialogDatePanelCnt==1 && ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)==-1,
-					"v-picker": true,
-					"v-card": true,					  
-				}
-			},
 			getDialogSeparatorClassDateRange(){
 				let vm=this
 				return {
-					"v-date-picker-more-height": vm.dialogDatePanelCnt>2,
-					"dialog-display-inline-grid": vm.dialogDatePanelCnt>2,
-					"dialog-narrow-display-div-arrow": vm.dialogDatePanelCnt<=2,	
-					"flex-direction--row":vm.dialogDatePanelCnt<=2,
-					"flex-direction--column":vm.dialogDatePanelCnt>2,				
+					"v-date-picker-more-height": vm.dialogDatePanelCnt>2 || ['TIME_RANGE','DATETIME'].indexOf(vm.type)!=-1,
+					"dialog-display-inline-grid": vm.dialogDatePanelCnt>2 || ['TIME_RANGE','DATETIME'].indexOf(vm.type)!=-1 ,
+					"dialog-narrow-display-div-arrow": vm.dialogDatePanelCnt<=2  && ['TIME_RANGE','DATETIME'].indexOf(vm.type)==-1,	
+					"flex-direction--row":vm.dialogDatePanelCnt<=2 && ['TIME_RANGE','DATETIME'].indexOf(vm.type)==-1,
+					"flex-direction--column":vm.dialogDatePanelCnt>2 && ['TIME_RANGE','DATETIME'].indexOf(vm.type)!=-1,				
 					"separator-dark-bc": vm.$vuetify.theme.dark,
 					"separator-light-bc": !vm.$vuetify.theme.dark,
 					"v-picker": true,
-					"v-card": true,					  
+					"v-card": true,			
+					"v-card": true,			
+					"overflow-hidden":true,
 				}
 			},
-			getDialogSeparatorArrowClass(){
-				let vm=this
-				return {
-					"rotate-90": vm.dialogDatePanelCnt==1,					  
-					"dialog-narrow-display-arrow-width": vm.dialogDatePanelCnt==1 && ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)==-1,					  
-					"dialog-narrow-display-arrow-width-min": vm.dialogDatePanelCnt==1 &&	['TIME_RANGE','DATE_RANGE','DATETIME'].indexOf(vm.type)!=-1,		
-					'accent-color':true,	 
-					'flex--99 ':true, 
-				}
-			},	
 			getDialogSeparatorDateRangeArrowClass(){
 				let vm=this
 				return {
-					"rotate-90": vm.dialogDatePanelCnt<=2,					  
-					"dialog-narrow-display-arrow-width": vm.dialogDatePanelCnt<=2 && ['TIME_RANGE','DATE_RANGE'].indexOf(vm.type)==-1,					  
-					"dialog-narrow-display-arrow-width-min": vm.dialogDatePanelCnt<=2 &&	['TIME_RANGE','DATE_RANGE','DATETIME'].indexOf(vm.type)!=-1,		
+					"rotate-90": vm.dialogDatePanelCnt<=2 && ['TIME_RANGE','DATETIME'].indexOf(vm.type)==-1,					  
+					"dialog-narrow-display-arrow-width": vm.dialogDatePanelCnt<=2 && ['TIME_RANGE','DATE_RANGE','DATETIME'].indexOf(vm.type)==-1,					  
+					"dialog-narrow-display-arrow-width-min": vm.dialogDatePanelCnt<=2 &&	['DATE_RANGE'].indexOf(vm.type)!=-1,		
 					'accent-color':true,	
 					'flex--99 ':true,  
 				}
 			},
 			dialogDatePanelCnt(){
 				let vm = this
-				return vm.$vuetify.breakpoint.lgAndUp ? 4:
-					vm.$vuetify.breakpoint.width>650 ? 2:
-					1
+				return vm.$vuetify.breakpoint.lgAndUp ? 4: 2
 			},
 			getTabHeader(){
 				let vm = this
@@ -425,6 +387,13 @@
 					this.dialogWithRange?this.rangeSeparator.trim():'',  
 					this.dialogWithRange&&this.dialogWithDate?'##.##.####':'', this.dialogWithRange&&this.dialogWithTime?'##:##'+(this.timeWithSeconds?':##':''):'', 
 				].filter(row=>row!='').join(' ')
+			},
+			dataPickerTimeColumnCnt(){
+				return !this.dialogWithTime?0:this.timeWithSeconds?3:2
+			},
+			dataPickerTimeWidth(){
+				return ['DATETIME', 'DATETIME_RANGE'].indexOf(this.type)!=-1? this.dataPickerTimeColumnCnt * this.dataPickerTimeColumnWidth:
+					this.dataPickerWith / (this.type=='TIME_RANGE'?2:1)-(this.type=='TIME_RANGE'?17:0)+1
 			},
 			vInputProp()		{
 				let vm = this
@@ -666,21 +635,23 @@
 						vm.isBirthDate&& !vm.multy && vm.$nextTick(() => (vm.$refs.date1.activePicker = 'YEAR')) 
 						vm.valueArrDate = vm.valueArr.slice(0)
 						vm.valueArrDateViewError=''
-						if(!vm.inputDateInsertInit){
-							vm.inputDateInsertInit=true
-							setTimeout(()=> {
-								let input = vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id )
-								input.addEventListener('keypress', function(e){
-									if(this.value.length<vm.vMaskDateTime.length)
-										return
-									let s = this.selectionStart
-									while( isNaN( parseFloat(this.value.substr(s , 1) ))  && s <= this.value.length)
-										s++
-									this.value =this.value.substr(0, s) + this.value.substr(s + 1) 
-									this.selectionEnd = s;
-								}, false)
-							},100)
-						}
+						setTimeout(()=> {
+							vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id ).focus()
+							vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id ).selectionEnd=0
+							if(!vm.inputDateInsertInit){
+								vm.inputDateInsertInit=true							
+									let input = vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id )
+									input.addEventListener('keypress', function(e){
+										if(this.value.length<vm.vMaskDateTime.length || ['0','1','2','3','4','5','6','7','8','9'].indexOf(e.key)==-1 )
+											return
+										let s = this.selectionStart
+										while( isNaN( parseFloat(this.value.substr(s , 1) ))  && s <= this.value.length)
+											s++
+										this.value =this.value.substr(0, s) + this.value.substr(s + 1) 
+										this.selectionEnd = s;
+									}, false)
+							}
+						},100)
 					}
 				}
 				else if( valOld )
@@ -824,6 +795,8 @@
 				let vm=this,
 					tmp={}
 				if(vm.isDateTimeLike){
+					if(vm.valueArrDateViewError!='')
+						return
 					if (['DATE_RANGE', 'DATETIME_RANGE', 'TIME_RANGE'].indexOf(vm.type)!=-1 /*&& !vm.dialog*/ && value[0]>value[1] && nvl(value[0])!='' && nvl(value[1]) !='')
 						[value[0], value[1]]=[value[1], value[0]]
 					vm.$refs.dialog.save(value)
@@ -948,7 +921,7 @@
 	.dateDialogHeadInput,
 	.dateDialogHeadInput>div								{height: 80px !important;}
 	.dateDialogHeadInput>div								{padding-top: 13px;}
-	.dateDialogTimeLeftBorder								{border-left: 1px #7f7f7f double;}
+	.dateDialogTimeLeftBorder								{border-left: 1px #7f7f7f double; margin-left: -4px;}
 	.dateDialogTimeRightBorder								{border-right: 3px #949494 groove;}
 	
 	/*i    border-bottom-color: #2c353f;

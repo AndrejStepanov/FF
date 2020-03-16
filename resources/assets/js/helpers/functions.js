@@ -64,6 +64,7 @@ function appThemeInit({numeral}){
 		'.background-secondary						{background: '+appTheme.themes[curTheme].secondary+' !important;} '+ //салатовый
 		'.max-height 								{height: 100%;} '+
 		'.overflow-y-auto 							{overflow-y: auto;} '+
+		'.overflow-hidden 							{overflow: hidden;} '+
 		'.flex--99 									{flex: 99;} '+
 		'.flex-grow--99 							{flex-grow: 99 !important;} '+
 		'.display--grid 							{display: grid;} '+

@@ -1,18 +1,18 @@
 <template>
-	<div :class="getClassesMain" :style="'width: '+width+'; display: inline-flex; '">
+	<div :class="getClassesMain" :style="'width: '+width+'px; display: inline-flex; '">
 		<div class="time-picker__list time-picker__list--hours" ref="hourList">
 			<div class='time-picker__items-head'> {{ formatHour(hour) }}   </div>
-			<div class="time-picker__item" v-for="hour in hours" @click="selectHour(hour)" 
+			<div class="time-picker__item" v-for="hour in hours" @click="selectHour(hour)" @dblclick="$emit('dblclick:time', value)"
 				:class="{'time-picker__item--selected': hour.selected, 'time-picker__item--disabled': hour.disabled, ...(hour.selected?getClassesSelected:{}) }"> {{ formatHour(hour.number) }}</div>
 		</div>
 		<div class="time-picker__list time-picker__list--minutes" ref="minuteList">
 			<div class='time-picker__items-head'> {{minute}}   </div>
-			<div class="time-picker__item" v-for="minute in minutes" @click="selectMinute(minute)" 
+			<div class="time-picker__item" v-for="minute in minutes" @click="selectMinute(minute)" @dblclick="$emit('dblclick:time', value)"
 				:class="{'time-picker__item--selected': minute.selected, 'time-picker__item--disabled': minute.disabled, ...(minute.selected?getClassesSelected:{})}">{{ minute.number }}</div>
 		</div>
 		<div class="time-picker__list time-picker__list-seconds" ref="secondList" v-if="useSeconds">
 			<div class='time-picker__items-head'> {{second}}  </div>
-			<div class="time-picker__item" v-for="second in seconds" @click="selectSecond(second)"  
+			<div class="time-picker__item" v-for="second in seconds" @click="selectSecond(second) "   @dblclick="$emit('dblclick:time', value)"
 				:class="{'time-picker__item--selected': second.selected, 'time-picker__item--disabled': second.disabled, ...(second.selected?getClassesSelected:{})}">{{ second.number }}</div>
 		</div>
 		<div class="time-picker__list time-picker__list--suffix" ref="suffixList" v-if="use12Hour">
@@ -43,7 +43,7 @@
 			secondStep:	{	type: Number,	default: 1		},
 			minTime:	{	type: String,	default: null	},
 			maxTime:	{	type: String,	default: null	},
-			width:		{	type: String,	default: '290px'},
+			width:		{	type: Number,	default: 290},
 		},
 
 		computed: {
