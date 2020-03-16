@@ -117,7 +117,7 @@
 									</template>
 									<template>
 										<div  :style="getDialogMainDivStyle">
-											<v-date-picker v-if="dialogWithDate"  v-model="valueArrDate" multiple  scrollable :locale="profileLanguage()" class='v-date-picker-more-height' />
+											<v-date-picker v-if="dialogWithDate"  v-model="valueArrDate" multiple  scrollable :locale="profileLanguage()" class='v-date-picker-more-height'  />
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
@@ -137,7 +137,9 @@
 									<template>
 										<div  :style="getDialogMainDivStyle">
 											<c-table tableTitle="$vuetify.texts.modals.treeAdd.title" :searchNeed="true" :headers="getTabHeader"	:items="getTabValues" v-model="tabSelectedRows"  ref="table"  
-												:vDataTableProp="{showSelect:true, singleSelect:!multy}"  withRowNum	:hideDefaultFooter="false"  :height="getDialogMainDivHeight" />
+												:vDataTableProp="{showSelect:true, singleSelect:!multy}"  withRowNum	:hideDefaultFooter="false"  :height="getDialogMainDivHeight" 
+												@dblclick:row="saveDialog(tabSelectedRows)"
+												/>
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
@@ -630,28 +632,30 @@
 			isDialog (val, valOld) {
 				let vm = this
 				if(val){
-					if( vm.isDateTimeLike ){
-						vm.dialogWithTime && !vm.multy && setTimeout(()=> {nvlo(vm.$refs.timer1,'')!='' && vm.$refs.timer1.scrollToSelected();  nvlo(vm.$refs.timer2,'')!='' && vm.$refs.timer2.scrollToSelected() } , 100) 
-						vm.isBirthDate&& !vm.multy && vm.$nextTick(() => (vm.$refs.date1.activePicker = 'YEAR')) 
+					if( vm.isDateTimeLike  ){
 						vm.valueArrDate = vm.valueArr.slice(0)
-						vm.valueArrDateViewError=''
-						setTimeout(()=> {
-							vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id ).focus()
-							vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id ).selectionEnd=0
-							if(!vm.inputDateInsertInit){
-								vm.inputDateInsertInit=true							
-									let input = vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id )
-									input.addEventListener('keypress', function(e){
-										if(this.value.length<vm.vMaskDateTime.length || ['0','1','2','3','4','5','6','7','8','9'].indexOf(e.key)==-1 )
-											return
-										let s = this.selectionStart
-										while( isNaN( parseFloat(this.value.substr(s , 1) ))  && s <= this.value.length)
-											s++
-										this.value =this.value.substr(0, s) + this.value.substr(s + 1) 
-										this.selectionEnd = s;
-									}, false)
-							}
-						},100)
+						if(!vm.multy){
+							vm.valueArrDateViewError=''
+							vm.dialogWithTime  && setTimeout(()=> {nvlo(vm.$refs.timer1,'')!='' && vm.$refs.timer1.scrollToSelected();  nvlo(vm.$refs.timer2,'')!='' && vm.$refs.timer2.scrollToSelected() } , 100) 
+							vm.isBirthDate && vm.$nextTick(() => (vm.$refs.date1.activePicker = 'YEAR')) 
+							setTimeout(()=> {
+								vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id ).focus()
+								vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id ).selectionEnd=0
+								if(!vm.inputDateInsertInit){
+									vm.inputDateInsertInit=true							
+										let input = vm.$refs.dialogDiv.querySelector('#inputDate_'+vm.id )
+										input.addEventListener('keypress', function(e){
+											if(this.value.length<vm.vMaskDateTime.length || ['0','1','2','3','4','5','6','7','8','9'].indexOf(e.key)==-1 )
+												return
+											let s = this.selectionStart
+											while( isNaN( parseFloat(this.value.substr(s , 1) ))  && s <= this.value.length)
+												s++
+											this.value =this.value.substr(0, s) + this.value.substr(s + 1) 
+											this.selectionEnd = s;
+										}, false)
+								}
+							},100)
+						}
 					}
 				}
 				else if( valOld )
@@ -898,9 +902,6 @@
 	.slider-label 											{font-size: 11px;}
 	.slider-upper 											{margin-top: -12px;}
 	.with-append-on-right									{box-shadow : none !important; border-bottom-right-radius: inherit !important;   border-top-right-radius: inherit !important;}
-	.is-append-on-right										{margin-left: -4px; box-shadow : none !important; border-bottom-left-radius: inherit !important;   border-top-left-radius: inherit !important;}
-	.time-head-norm>div.v-picker__title						{height: 88px;}
-	.time-head-norm>div.v-picker__body						{height: 304px;}
 	.disabled-label 										{color: rgba(0,0,0,.38);}
 	.v-slider__ticks-container>.v-slider__ticks>span		{font-size: 12px;}
 	.theme--dark.v-chip.v-chip--disabled					{background: #737373;}

@@ -13,7 +13,7 @@ use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use App\Queues\Amqp;
 use App\Models\Ticket;
 
-class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,   CanResetPasswordContract{
+class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,   CanResetPasswordContract  {
 	use Authenticatable, Authorizable, CanResetPassword;
 	/**
 	 * The hasher implementation.
@@ -60,7 +60,8 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 */
 	public $password;
 	public $timestamps;
-	public $remember_token;
+	protected $remember_token;
+
 	/**
 	 * Для возможности оповещения
 	 * @var string
@@ -90,6 +91,7 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 			$this->email=$data['email1'];
 			$this->avatar=$data['avatar'];
 			$this->systemLanguage=$data['systemLanguage'];
+			$this->remember_token=$data['remember_token'];
 			$this->password=$this->hasher->make($credentials['password']);		
 			return $this;
 		}
@@ -107,38 +109,39 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 * @return \Illuminate\Contracts\Auth\Authenticatable
 	 */
 	public function save(){
-        session()->push('authStorage',$this->storage);
-        session()->push('authId',$this->id);
-        session()->push('authPassword',$this->password);
-        session()->push('authTimestamps',$this->timestamps);
-        session()->push('authRememberToken',$this->remember_token);
-        session()->push('authEmail',$this->email);
-        session()->push('authName',$this->name);
-        session()->push('authAvatar',$this->avatar);
-        session()->push('authIsRoot',$this->isRoot);
-        session()->push('authDateSt', $this->dateSt);
-        session()->push('authDateFn', $this->dateFn);
-        session()->push('authSystemLanguage', $this->systemLanguage);
+		session([
+        'authStorage' => $this->storage,
+        'authId' => $this->id,
+        'authPassword' => $this->password,
+        'authTimestamps' => $this->timestamps,
+        'authRememberToken' => $this->remember_token,
+        'authEmail' => $this->email,
+        'authName' => $this->name,
+        'authAvatar' =>$this->avatar,
+        'authIsRoot' => $this->isRoot,
+        'authDateSt' => $this->dateSt,
+        'authDateFn' => $this->dateFn,
+        'authSystemLanguage' => $this->systemLanguage
+		]);
 	}
-
 	/**
 	 * Поиск по идентификатору
 	 * @param  array  $credentials
 	 * @return \Illuminate\Contracts\Auth\Authenticatable
 	 */
 	public function findById($identifier){
-		$this->storage= session()->get('authStorage')[0];
-		$this->id= session()->get('authId')[0];
-		$this->password= session()->get('authPassword')[0];
-		$this->timestamps= session()->get('authTimestamps')[0];
-		$this->remember_token= session()->get('authRememberToken')[0];
-		$this->email= session()->get('authEmail')[0];
-		$this->name= session()->get('authName')[0];
-		$this->avatar= session()->get('authAvatar')[0];
-		$this->isRoot= session()->get('authIsRoot')[0];
-		$this->dateSt= session()->get('authDateSt')[0];
-		$this->dateFn= session()->get('authDateFn')[0];
-		$this->systemLanguage= session()->get('authSystemLanguage')[0];
+		$this->storage= session()->get('authStorage');
+		$this->id= session()->get('authId');
+		$this->password= session()->get('authPassword');
+		$this->timestamps= session()->get('authTimestamps');
+		$this->remember_token= session()->get('authRememberToken');
+		$this->email= session()->get('authEmail');
+		$this->name= session()->get('authName');
+		$this->avatar= session()->get('authAvatar');
+		$this->isRoot= session()->get('authIsRoot');
+		$this->dateSt= session()->get('authDateSt');
+		$this->dateFn= session()->get('authDateFn');
+		$this->systemLanguage= session()->get('authSystemLanguage');
 		if(  $this->dateFn > time())
 			return $this;
 		session()->invalidate();

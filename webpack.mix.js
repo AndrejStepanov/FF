@@ -26,7 +26,6 @@ mix.js('resources/assets/js/main/Main.js', 'public/js')
 		plugins: [
 			new CopyWebpackPlugin([
 				{ from: 'resources/assets/js/helpers/functions.js', to: 'js' },
-				{ from: 'node_modules/vanilla-masker/build/vanilla-masker.min.js', to: 'js' },
 			]),
 			new VuetifyLoaderPlugin(),
 		],

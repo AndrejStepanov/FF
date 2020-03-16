@@ -21,7 +21,7 @@
 					<slot name="item" :item="props.item" :index="props.index" :selected="props.selected" :expanded="props.expanded"/>
 				</template>
 				<template v-else >			
-					<tr :active="props.selected" @click="selectRow(props)" :class="{'v-data-table__selected':props.isSelected}">
+					<tr :active="props.selected" @click="selectRow(props)" @dblclick="dblClickRow" :class="{'v-data-table__selected':props.isSelected}">
 						<td	v-if="vDataTableProp.showSelect" 														>	<v-simple-checkbox	:value="props.isSelected"  />		</td><!--<v-checkbox	:input-value="props.selected" :color="checkBoxColor"	hide-details /> убрал из-за того что синхронизация не хило так тормозит -->
 						<td	v-for="header in tabHeadsVisible"	:key="header.value" 	:class="header.clsssCell"	>	{{props.item[header.value]}}			</td>
 					</tr>
@@ -136,6 +136,10 @@
 			Ripple,
 		},
 		methods: {
+			dblClickRow(e){
+				let vm = this
+				vm.$emit('dblclick:row', vm.value)
+			},
 			valFormat(val, type,replace, isNumeric=false, mask, isDate=false){//вполне себе может быть использована и извне
 				let vm=this
 				if(val==undefined || val=='' || ( isNumeric && val==0) )

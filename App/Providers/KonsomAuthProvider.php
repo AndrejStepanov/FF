@@ -86,7 +86,7 @@ class KonsomAuthProvider implements UserProvider{
 	public function updateRememberToken(UserContract $user, $token)    {
 		$user->setRememberToken($token);
 		$timestamps = $user->timestamps;
-		$user->timestamps = false;
+		$user->timestamps = false;		
 		$user->save();
 		$user->timestamps = $timestamps;
 	}
