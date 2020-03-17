@@ -3,24 +3,15 @@
 namespace App\Providers;
 
 use Illuminate\Support\Str;
-use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Contracts\Auth\UserProvider;
 use App\Providers\KonsomUser;
 
-class KonsomAuthProvider implements UserProvider{
-	/**
-	 * The hasher implementation.
-	 * @var \Illuminate\Contracts\Hashing\Hasher
-	 */
-	protected $hasher;
+class KonsomAuthProvider extends EloquentUserProvider implements UserProvider{
 
-	/**
-	 * The Eloquent user model.
-	 * @var string
-	 */
-	protected $model;
 	protected $queueConnect;
 	protected $queuePort;
 	protected $queueUser;
@@ -75,75 +66,5 @@ class KonsomAuthProvider implements UserProvider{
 	public function retrieveByToken($identifier, $token)    {
 		$user = new KonsomUser($this->hasher,$this->model, $this->queueConnect, $this->queuePort, $this->queueUser, $this->queuePassword);
 		return $user ->findByToken($identifier, $token);
-	}
-
-	/**
-	 * Update the "remember me" token for the given user in storage.
-	 * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-	 * @param  string  $token
-	 * @return void
-	 */
-	public function updateRememberToken(UserContract $user, $token)    {
-		$user->setRememberToken($token);
-		$timestamps = $user->timestamps;
-		$user->timestamps = false;		
-		$user->save();
-		$user->timestamps = $timestamps;
-	}
-
-
-	/**
-	 * Validate a user against the given credentials.
-	 * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-	 * @param  array  $credentials
-	 * @return bool
-	 */
-	public function validateCredentials(UserContract $user, array $credentials)    {
-		return $this->hasher->check( $credentials['password'], $user->getAuthPassword());
-	}
-
-	/**
-	 * Create a new instance of the model.
-	 * @return \Illuminate\Database\Eloquent\Model
-	 */
-	public function createModel()    {
-		$class = '\\'.ltrim($this->model, '\\');
-		return new $class;
-	}
-
-	/**
-	 * Gets the hasher implementation.
-	 * @return \Illuminate\Contracts\Hashing\Hasher
-	 */
-	public function getHasher()    {
-		return $this->hasher;
-	}
-
-	/**
-	 * Sets the hasher implementation.
-	 * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
-	 * @return $this
-	 */
-	public function setHasher(HasherContract $hasher)    {
-		$this->hasher = $hasher;
-		return $this;
-	}
-
-	/**
-	 * Gets the name of the Eloquent user model.
-	 * @return string
-	 */
-	public function getModel()    {
-		return $this->model;
-	}
-
-	/**
-	 * Sets the name of the Eloquent user model.
-	 * @param  string  $model
-	 * @return $this
-	 */
-	public function setModel($model)    {
-		$this->model = $model;
-		return $this;
 	}
 }
