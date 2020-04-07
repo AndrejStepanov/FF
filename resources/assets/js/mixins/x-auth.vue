@@ -23,7 +23,7 @@
 				window.location.href = "\\auth?auth_href_back="+_hrefBack
 			},			
 			logout () {
-				sendRequest({href:'/logout', type:'logout', needSucess:'Y', hrefBack:'/', default: getErrDesc('noLogOut') } )
+				sendRequest({href:'/logout', type:'logout', needSucess:'Y', hrefBack:'/' } )
 			},
 			subscribeTicket(newTicket){
 				let vm=this,

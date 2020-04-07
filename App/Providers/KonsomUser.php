@@ -75,32 +75,58 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	public $systemLanguage;
 	public $avatar;
 
+
 	/**
 	 * Поиск по параметрам авторизации
 	 * @param  array  $credentials
 	 * @return \Illuminate\Contracts\Auth\Authenticatable
 	 */
 	public function findByCredentials($credentials){
-		$this->isRoot='N';
 		$data = $this->createModel()->newQuery()->where('login', $credentials['login'])->where('user_system', nvl($credentials['user_system'],config('app.name')) )->first();
 		if( isset($data) &&  $this->hasher-> check ($credentials['password'], $data ['password'])){
-			$this->id=$data['id'];
-			$this->storage='home';
-			$this->isRoot=$data['is_root'];
-			$this->name=$data['name'];
-			$this->email=$data['email1'];
-			$this->avatar=$data['avatar'];
-			$this->systemLanguage=$data['systemLanguage'];
-			$this->remember_token=$data['remember_token'];
+			$this->initFromModel($data);
 			$this->password=$this->hasher->make($credentials['password']);		
 			return $this;
 		}
 		throw new \App\Exceptions\KonsomException('Ошибка при авторизации', 'Указанные логин и пароль не найдены!');
 	}
 
+	/**
+	 * Поиск по токену - запомнить меня
+	 * @param  array  $credentials
+	 * @return \Illuminate\Contracts\Auth\Authenticatable
+	 */
+	public function reFindByToken($identifier, $token){
+		$data = $this->createModel()->newQuery()->where($this->getKeyName(), $identifier)->first();
+		
+		if (!$data  )
+			return;
+		$rememberToken = $data->getRememberToken();
+		if (! $rememberToken ||  !hash_equals($rememberToken, $token) )
+			return;
+		$this->initFromModel($data);
+		$this->password='';	
+		return $this;
+	}
+
+	/**
+	 * Инициализация начальных данных изданных из модели
+	 * @param  App\Models\User  $data
+	 * @return 
+	 */
+	public function initFromModel($data){
+		$this->id=$data[ $this->getKeyName() ];
+		$this->storage='home';
+		$this->isRoot=$data['is_root'];
+		$this->name=$data['name'];
+		$this->email=$data['email1'];
+		$this->avatar=$data['avatar'];
+		$this->systemLanguage=$data['systemLanguage'];
+	}
+
 	public function initForLogin(){
 		$this->dateSt  = time();
-		$this->dateFn  = time()+ ( 8 * 60 * 60);
+		$this->dateFn  = time()+ (8 * 60 * 60);
 	}
 
 	/**
@@ -110,19 +136,21 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 */
 	public function save(){
 		session([
-        'authStorage' => $this->storage,
-        'authId' => $this->id,
-        'authPassword' => $this->password,
-        'authTimestamps' => $this->timestamps,
-        'authRememberToken' => $this->remember_token,
-        'authEmail' => $this->email,
-        'authName' => $this->name,
-        'authAvatar' =>$this->avatar,
-        'authIsRoot' => $this->isRoot,
-        'authDateSt' => $this->dateSt,
-        'authDateFn' => $this->dateFn,
-        'authSystemLanguage' => $this->systemLanguage
+			'authStorage' => $this->storage,
+			'authId' => $this->id,
+			'authPassword' => $this->password,
+			'authTimestamps' => $this->timestamps,
+			'authRememberToken' => $this->remember_token,
+			'authEmail' => $this->email,
+			'authName' => $this->name,
+			'authAvatar' =>$this->avatar,
+			'authIsRoot' => $this->isRoot,
+			'authDateSt' => $this->dateSt,
+			'authDateFn' => $this->dateFn,
+			'authSystemLanguage' => $this->systemLanguage
 		]);
+		if($this->remember_token!='')
+			$this->createModel()->newQuery()->where($this->getKeyName(), $this->id)->update([$this->rememberTokenName => $this->remember_token]);
 	}
 	/**
 	 * Поиск по идентификатору
@@ -130,21 +158,22 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 * @return \Illuminate\Contracts\Auth\Authenticatable
 	 */
 	public function findById($identifier){
-		$this->storage= session()->get('authStorage');
-		$this->id= session()->get('authId');
-		$this->password= session()->get('authPassword');
-		$this->timestamps= session()->get('authTimestamps');
-		$this->remember_token= session()->get('authRememberToken');
-		$this->email= session()->get('authEmail');
-		$this->name= session()->get('authName');
-		$this->avatar= session()->get('authAvatar');
-		$this->isRoot= session()->get('authIsRoot');
-		$this->dateSt= session()->get('authDateSt');
-		$this->dateFn= session()->get('authDateFn');
-		$this->systemLanguage= session()->get('authSystemLanguage');
+		
+		$this->storage= session('authStorage');
+		$this->id= session('authId');
+		$this->password= session('authPassword');
+		$this->timestamps= session('authTimestamps');
+		$this->remember_token= session('authRememberToken');
+		$this->email= session('authEmail');
+		$this->name= session('authName');
+		$this->avatar= session('authAvatar');
+		$this->isRoot= session('authIsRoot');
+		$this->dateSt= session('authDateSt');
+		$this->dateFn= session('authDateFn');
+		$this->systemLanguage= session('authSystemLanguage');
 		if(  $this->dateFn > time())
 			return $this;
-		session()->invalidate();
+		//session()->invalidate();
 	}
 	/**
 	 * Поиск по идентификатору
@@ -152,7 +181,9 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 * @return \Illuminate\Contracts\Auth\Authenticatable
 	 */
 	public function findByToken($identifier, $token){
-		return $this->findById($identifier);
+		$res = $this->reFindByToken($identifier,$token);
+		$this->initForLogin();
+		return $res;
 	}
 
 	
@@ -171,6 +202,5 @@ class KonsomUser implements   AuthenticatableContract,   AuthorizableContract,  
 	 */
 	public function getKeyName()    {
 		return 'id';
-	}  
-	
+	}	
 }

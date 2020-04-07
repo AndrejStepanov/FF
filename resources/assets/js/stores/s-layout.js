@@ -24,7 +24,7 @@ export default {
 	},
 	actions:{
 		async doInit({dispatch,commit,getters,state},structs){
-			commit("structSetting",{ structs, })
+			commit('structSetting',{ structs, })
 			var structParse = ({ config,parent='',last='', num=0})=>{
 				let tmp ={} 
 				last=last||config.name
@@ -36,9 +36,9 @@ export default {
 				return  { [config.name]:{...config, parent,last,isLast:last==config.name, num}, ...tmp}
 			}
 			for (let struct in structs){
-				commit("structDescSetting",{ struct:{[struct]: structParse({config:structs[struct]}), } }) 
-				commit("structSizePxInitting",{ head:struct }) 
-				dispatch("doSizePxRecalc",{head:struct, parentSizePx:structs[struct].sizePx})
+				commit('structDescSetting',{ struct:{[struct]: structParse({config:structs[struct]}), } }) 
+				commit('structSizePxInitting',{ head:struct }) 
+				dispatch('doSizePxRecalc',{head:struct, parentSizePx:structs[struct].sizePx})
 			}			
 		},
 		async doSizeSet({dispatch,commit,getters,state},{head, name, size}){
@@ -64,8 +64,8 @@ export default {
 				res[name][curAttr]=sizeCur+'%'
 				res[lastName][curAttr]=sizeLast+'%'
 			})
-			commit("structSizeSetting",{head, name, size:res[name], })		
-			commit("structSizeSetting",{head, name:lastName,  size:res[lastName], })		
+			commit('structSizeSetting',{head, name, size:res[name], })		
+			commit('structSizeSetting',{head, name:lastName,  size:res[lastName], })		
 		},
 		async doSizePxRecalc({commit,getters,state},{head, name, parentSizePx}){
 			var structSizer = ({cur, parentSize})=>{
@@ -73,7 +73,7 @@ export default {
 					width: parseFloat(cur.width)/100 *parentSize.width-(5*( cur.parent!='' && state.structDesc[head][cur.parent ].layout=='vertical'?cur.num:0 ) ) -Math.random() , 
 					height: parseFloat(cur.height)/100 *parentSize.height-(5*(cur.parent!='' &&  state.structDesc[head][cur.parent ].layout=='horizontal'?cur.num:0 ) )-Math.random(),	} 
 				// Math.random() - некоторая хитрость, что бы сделать значения в дочерних компонентах отличными, от значений после перерасчета
-				commit("structSizePxSetting",{ head, name:cur.name, size:tmp }) 
+				commit('structSizePxSetting',{ head, name:cur.name, size:tmp }) 
 				if(cur.data!=undefined && cur.data.length)
 					cur.data.forEach((element,idx) => {
 						structSizer({cur:state.structDesc[head][element.name], parentSize:tmp, num:idx} )
@@ -84,7 +84,7 @@ export default {
 			structSizer({cur:state.structDesc[head][name], parentSize:parentSizePx})		
 		},
 		async doSizePxChange({commit,getters,state},{head, names=[], attr}){
-			names.forEach(name=>commit("structSizePxSetting",{ head, name, size:{[attr]:state.structSizePx[head][name][attr]+1} }) )					
+			names.forEach(name=>commit('structSizePxSetting',{ head, name, size:{[attr]:state.structSizePx[head][name][attr]+1} }) )					
 		},
 
 	},

@@ -2,7 +2,7 @@
 	<c-dialog :dialogId="dialogId" :widthOrig="dialogConfigGet.width" :heightOrig="dialogConfigGet.height" :buttons='buttons' >
 		<v-expansion-panels class="overXAutoLi" v-model="panel" multiple >
 			<v-expansion-panel>
-				<v-expansion-panel-header>
+				<v-expansion-panel-header :style="'user-select: text;'">
 					{{dialogParamsGet.msg.title}} : {{dialogParamsGet.msg.text}} <br> {{dialogParamsGet.msg.file}} ({{dialogParamsGet.msg.line}})
 				</v-expansion-panel-header>
 				<v-expansion-panel-content>

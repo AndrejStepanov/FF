@@ -105,7 +105,7 @@
 			let vm=this
 			let dialogTitle = vm.$vuetify.lang.t(vm.dialogConfigGet.title)
 			vm.paramsForm=vm.dialogConfigGet.name
-			vm.paramInit( {num: vm.paramsForm, params:vm.inputs })
+			vm.paramInit( {form: vm.paramsForm, params:vm.inputs })
 			vm.$root.$on('dialog'+vm.dialogId+'InputsCols', (obj)=>{
 				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : 	obj.rowInColA *74 + 140 
 				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width : 	dialogTitle.length*20+110>obj.colsCnt*300	?	dialogTitle.length*20+110	:	obj.colsCnt*300

@@ -6,42 +6,44 @@ const MAX_ID= 9999999,
 		dark: curTheme=='dark', 
 		themes: {   
 			light: {primary: '#4caf50', secondary: '#4caf50', accent: '#5186de', tertiary: '#495057', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50'},
-			dark: {	primary: '#1868A5', secondary: '#939598', accent: '#2A91D8', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50', checkBox:"#FFFFFF"},
+			dark: {	primary: '#1868A5', secondary: '#939598', accent: '#2A91D8', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50', checkBox:'#FFFFFF'},
 		}
 	},
-	dateFormatStr = '$3.$2.$1' //2018-10-03 - 1, 2 и 3 цифры
-	dateFormatStrRevert = '$3-$2-$1' //2018-10-03 - 1, 2 и 3 цифры
+	dateFormatStr = '$3.$2.$1', //2018-10-03 - 1, 2 и 3 цифры
+	dateFormatStrRevert = '$3-$2-$1', //2018-10-03 - 1, 2 и 3 цифры
+ 	socetCommandHref = '/socet_command',
+ 	dataCommandHref = '/data_command'
 //primary: '#2c353f', secondary: '#452F41', accent: '#555C3E',
 var sysNumeral=null
 
 window.systemLanguage='ru'
 
- // Warn if overriding existing method
+// Warn if overriding existing method
 if(Array.prototype.equals)
-    console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+	console.warn('Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there\'s a framework conflict or you\'ve got double inclusions in your code.');
 // attach the .equals method to Array's prototype to call it on any array
 Array.prototype.equals = function (array) {
-    // if the other array is a falsy value, return
-    if (!array)
-        return false;
+	// if the other array is a falsy value, return
+	if (!array)
+		return false;
 
-    // compare lengths - can save a lot of time 
-    if (this.length != array.length)
-        return false;
-
-    for (var i = 0, l=this.length; i < l; i++) {
-        // Check if we have nested arrays
-        if (this[i] instanceof Array && array[i] instanceof Array) {
-            // recurse into the nested arrays
-            if (!this[i].equals(array[i]))
-                return false;       
-        }           
-        else if (this[i] != array[i]) { 
-            // Warning - two different object instances will never be equal: {x:20} != {x:20}
-            return false;   
-        }           
-    }       
-    return true;
+	// compare lengths - can save a lot of time 
+	if (this.length != array.length)
+		return false;
+	return value_equals(this, array)
+	/*for (var i = 0, l=this.length; i < l; i++) {
+		// Check if we have nested arrays
+		if (this[i] instanceof Array && array[i] instanceof Array) {
+			// recurse into the nested arrays
+			if (!this[i].equals(array[i]))
+				return false;
+		}
+		else if (this[i] != array[i]) { 
+			// Warning - two different object instances will never be equal: {x:20} != {x:20}
+			return false;
+		}
+	}
+	return true;*/
 }
 
 function appThemeInit({numeral}){
@@ -81,7 +83,7 @@ function appThemeInit({numeral}){
 		'td.text-right								{text-align: right;}'+
 		'td.text-left								{text-align: left;}'+
 		'td.text-center								{text-align: center;}'
-	window._bus.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.getElementsByTagName("META").namedItem("csrf-token").getAttribute('content') // for all requests
+	window._bus.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.getElementsByTagName('META').namedItem('csrf-token').getAttribute('content') // for all requests
 	if(numeral)
 		appNumeralInit(numeral)
 }
@@ -111,14 +113,26 @@ function appNumeralInit(numeral){
 	numeral.locale(window.systemLanguage)
 	sysNumeral=numeral
 }
-
+function typeOfObject(value) {
+	var matches = Object.prototype.toString.call(value).match(/^\[object (\S+?)\]$/) || []
+	return (matches[1] || 'undefined').toLowerCase();
+}
+function sleep(milliseconds) {
+	const date = Date.now();
+	let currentDate = null;
+	do {
+		currentDate = Date.now();
+	} while (currentDate - date < milliseconds);
+}
+ 
 function numberFormat(value,mask){
 	mask=mask||'0,0.000'
 	return sysNumeral(value).format(mask)
 }
-function createDictionary(obj, keyVal, keyText, needSort=false){
+function createDictionary(obj, keyVal, keyText, needSort){
 	let tmp = [];
-	for(row in obj)
+	needSort=needSort||false
+	for(let row in obj)
 		tmp.push({value: obj[row][keyVal], text: obj[row][keyText]})
 	if(needSort)
 		tmp.sort(  function (a, b) {return sort(a, b, 'text', 'text')} )
@@ -172,7 +186,7 @@ function getNewId(){
 
 function loadDialogs(dialogsConfig){
 	let tmp={}
-	for (name in dialogsConfig)
+	for (let name in dialogsConfig)
 		if(tmp[dialogsConfig[name].module]===undefined )
 			tmp[dialogsConfig[name].module]= dialogsConfig[name].load
 	return tmp
@@ -185,22 +199,16 @@ function genMap( stores ){
 }
 function storesParser(stores, field, prefix){
 	let tmp={}
-	for (let m_title in stores)
-		for (let title in stores[m_title][field])
-			tmp[m_title+title.replace(prefix,'')]= m_title+'/'+title
+	for (let titleM in stores)
+		for (let title in stores[titleM][field])
+			tmp[titleM+title.replace(prefix,'')]= titleM+'/'+title
 	return tmp
 }
 function getLocationParam(name){
-	if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-	   return decodeURIComponent(name[1]);
+	name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search)
+	if(name)
+	   return decodeURIComponent(name[1])
  }
-
- function sendReqToApp({args, callback}){
-	if(getLocationParam('debug')=='Y' )
-		sendRequest({href:"/ARM/PLAN/MONTH_GRAF/ajax_receiver.php?"+args, type:'type', data:{  }, default: getErrDesc('requestFaild'),  handler:(response) => {	window._vue.$children[0][callback](response.data)	} })
-	else
-		top.postMessage({args,callback},'*'); 
-}
 
 function sort(a, b, aFild, bFild){
 	let aVal = aFild!=''?a[aFild]:a,
@@ -212,11 +220,13 @@ function sort(a, b, aFild, bFild){
 	// a должно быть равным b
 	return 0
 }
-function list(arr=[], sep=','){
+function list(arr, sep){
+	arr=arr||[]
+	sep=sep||','
 	let tmp = ''
 	arr.forEach(row=>{
 		if(nvl(row)!='')
-			tmp+=', '+row
+			tmp+=sep+' '+row
 	})
 	return tmp.slice(2)
 }
@@ -233,59 +243,62 @@ function isNumeric(n) {
 	// isNaN("12") // false 
  }
 
-function nvl(val,replace=0){
-	if(val===false || val===undefined || val===null || val==='' ) return replace; else return val;
+function nvl(val,replace){
+	if(val===false || val===undefined || val===null || val==='' ) return arguments.length ==1? 0: replace; else return val;
 }
 
-function nvlo(val,replace={}){
-	if(!val || val==undefined || val=='' ) return replace; else return val;
+function nvlo(val,replace){
+	if(!val || val==undefined || val=='' ) return arguments.length ==1? {}: replace ; else return val;
 }
 
-function showMsg({title, text, type, params={}, msgParams=[]}){
+function showMsg({title, text, type, params, msgParams}){
 	type=type||'error'
+	params=params||{}
+	msgParams=msgParams||[]
 	title=window._vue.$vuetify.lang.t(title)||text
 	text=window._vue.$vuetify.lang.t(text,msgParams)||title
-	window._vue.$store.dispatch('msg/doAdd', {title,text,type, ...params, })
+	window._vue.$store.dispatch('msg/doAdd', {title,text,type, ...params, })  // jshint ignore:line
 	if(type=='error')
 		throw new Error(title+' - '+text)
 }
 
 function getErrDesc(errName){
-	return {title:'texts.errors.'+errName+'.title', text:'texts.errors.'+errName+'.text' }
+	return {title:'$vuetify.texts.errors.'+errName+'.title', text:'$vuetify.texts.errors.'+errName+'.text' }
 }
 function getMsgDesc(msgName, type='success'){
 	return {title:'$vuetify.texts.msgs.'+msgName+'.title', text:'$vuetify.texts.msgs.'+msgName+'.text' , type }
 }
 
-function sendRequest  (params){
+async function  sendRequest  (params){
 	let _hrefBackAuth=getLocationParam('auth_href_back')
 	if( this.nvl(params.type)==0 || this.nvl(params.href)==0  )
 		showMsg(getErrDesc('noSendAddress') );
-	window._bus.axios.post(params.href, {type:params.type, ...params.data,}
-		).then((response) => {
-			if(nvl(params.needSucess,'N')=='Y' && response.data!='sucsess')
-				return false;
-				//showMsg({ ...getErrDesc('requestRefused') ,params: params.default, });
-			if(nvl(params.hrefBack)!='')
-				window.location.href = decodeURIComponent( params.hrefBack);
-			if(['/login','/register'].indexOf(params.href)!=-1 && _hrefBackAuth!=null)
-				window.location.href = decodeURIComponent(_hrefBackAuth)
-			if(params.handler )
-				params.handler(response)
-			if(params.handlerMust )
-				params.handlerMust()
-		}).catch(
-			(error) =>{
-				console.log(error)
-				let r = nvlo(error.response)
-				if(params.handlerMust )
-					params.handlerMust()
-				if(params.handlerErr )
-					params.handlerErr()
-				showMsg({ title: nvlo(r.data).title||nvlo(params.default).title||'texts.errors.requestFaild.title'  , text:nvlo(r.data).message||nvlo(params.default).text||'texts.errors.requestFaild.text',
-					'params': {status:r.status, trace:nvlo(r.data).trace, file:nvlo(nvl(error.response).data).file, line:nvlo(r.data).line}, })
-				return false
-			}
-		);
-	return true
+	try {
+		let response = await window._bus.axios.post(params.href, {type:params.type, ...params.data,})  // jshint ignore:line
+		if(nvl(params.needSucess,'N')=='Y' && response.data!='sucsess')
+			showMsg( getErrDesc('requestRefused') )
+		if(nvl(params.hrefBack)!='')
+			window.location.href = decodeURIComponent( params.hrefBack)
+		if(['/login','/register'].indexOf(params.href)!=-1 && _hrefBackAuth!=null)
+			window.location.href = decodeURIComponent(_hrefBackAuth)
+		if(params.handler )
+			params.handler(response)
+		if(params.handlerMust )
+			params.handlerMust()
+		return response
+	} catch (error) {
+		console.log(error)
+		let r = nvlo(error.response)
+		if(params.handlerMust )
+			params.handlerMust()
+		if(params.handlerErr )
+			params.handlerErr()
+		if( nvlo(r.data).message=='Unauthenticated.'){
+			[r.data.title, r.data.message] = ['$vuetify.texts.errors.needAuth.title', '$vuetify.texts.errors.needAuth.text']
+			setTimeout(()=>{window.location.href ="\\auth?auth_href_back="+window.location.href }, 1000)
+		}
+		showMsg({ title: nvlo(r.data).title||nvlo(params.default).title||'$vuetify.texts.errors.requestFaild.title'  , text:nvlo(r.data).message||nvlo(params.default).text||'$vuetify.texts.errors.requestFaild.text',
+			'params': {status:r.status, trace:nvlo(r.data).trace, file:nvlo(nvl(error.response).data).file, line:nvlo(r.data).line}, })
+		return false
+	}
 }

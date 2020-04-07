@@ -6,5 +6,8 @@
   "quotmark": "single",
   "maxlen": 280,
   "trailing": true,
-  "curly": true
+  "curly": false,
+  "asi":true,
+  "browser": true,
+  "node": true
 }

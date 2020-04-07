@@ -25,6 +25,7 @@ mix.js('resources/assets/js/main/Main.js', 'public/js')
 		},
 		plugins: [
 			new CopyWebpackPlugin([
+				{ from: 'resources/assets/js/helpers/value_equals.js', to: 'js' },
 				{ from: 'resources/assets/js/helpers/functions.js', to: 'js' },
 			]),
 			new VuetifyLoaderPlugin(),

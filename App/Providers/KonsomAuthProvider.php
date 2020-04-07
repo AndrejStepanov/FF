@@ -67,4 +67,21 @@ class KonsomAuthProvider extends EloquentUserProvider implements UserProvider{
 		$user = new KonsomUser($this->hasher,$this->model, $this->queueConnect, $this->queuePort, $this->queueUser, $this->queuePassword);
 		return $user ->findByToken($identifier, $token);
 	}
+
+	/**
+	 * Update the "remember me" token for the given user in storage.
+	 *
+	 * @param  \Illuminate\Contracts\Auth\Authenticatable|\Illuminate\Database\Eloquent\Model  $user
+	 * @param  string  $token
+	 * @return void
+	 */
+	public function updateRememberToken(UserContract $user, $token){
+		
+		$user->setRememberToken($token);
+		//$timestamps = $user->timestamps;
+		//$user->timestamps = false;
+		$user->save();
+		//dd($user, $token);
+		//$user->timestamps = $timestamps;
+	}
 }

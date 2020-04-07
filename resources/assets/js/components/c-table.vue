@@ -125,8 +125,16 @@
 				let vm=this
 				return {
 					"c-table":true,
-					"tabFullHeight": vm.hideActions,					  		  
+					"tabFullHeight": vm.hideActions,
 				}
+			},
+		},
+		watch: {
+			value (val, valOld) {
+				let vm = this,
+					tmp = val
+				if( !(tmp.equals( vm.selectedValues) ) )
+					vm.selectedValues=tmp
 			},
 		},
 		components: {
@@ -151,48 +159,42 @@
 				return val
 			},
 			selectRow (props) {
-				console.log(props);
-				let vm = this,
+				let vm = this, 
+					values=vm.selectedValues,
 					lastSel=!!props.selected
 				if(vm.selecttableTypes.indexOf(vm.typeSelect)==-1)
 					return
 				if(vm.typeSelect=='one')
-					vm.selectedValues = []
+					values = []
 				if(!lastSel)
-					vm.selectedValues.push(props.item)
+					values.push(props.item)
 				else if(vm.typeSelect!='one')
-					vm.selectedValues=vm.selectedValues.filter(row => {
+					values=values.filter(row => {
 						return row._id != props.item._id
 					})
-				vm.selectedValuesChanged()
+				vm.selectedValuesChanged(values)
 			},
 			toggleAll () {
-				let vm=this
-				if (vm.selectedValues.length) 
-					vm.selectedValues = []
+				let vm=this, values=[]
+				if (vm.values.length) 
+					values = []
 				else if(vm.typeSelect=='multy')
-					vm.selectedValues = vm.items.slice()
-				vm.selectedValuesChanged()
+					values = vm.items.slice()
+				vm.selectedValuesChanged(values)
 			},
-			selectedValuesChanged(){
+			selectedValuesChanged(values){
 				let vm=this
-				vm.$emit('input', vm.selectedValues.map(row => {
-					return vm.items[row._id-1]
-				}))
+				vm.$emit('input', values.map(row => {return {...vm.items[row._id-1], _id:row._id} } ))
 			},
 		},
 		created: function (){
 			let vm=this
 			vm.checkBoxColor=appTheme.checkBox||vm.checkBoxColor
-			if(vm.value.length>0)
-				vm.value.forEach((element,i) => {
-					vm.selectedValues.push(element);
-				})
 		},
 		//
 	 	mounted: function (){	
 			let vm=this
-        	vm.isMounted = true;
+			vm.isMounted = true;
 		},
 	}
 </script>
