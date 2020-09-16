@@ -1,0 +1,11 @@
+Миграции
+php artisan make:migration _MIGRATION_NAME_ //добавление нового миграционного файла
+php artisan migrate //Запуск миграций
+php artisan migrate:rollback // откат последней партии миграций
+
+SHOW ENGINE INNODB STATUS; // мускул, прсомотр последних ошибок в базе, например при добавлении внешнего ключа
+
+Новые данные
+composer dumpautoload //при добавлении нового класса для сида
+php artisan db:seed //вызвать главную функцию сидов
+php artisan db:seed --class=CreateUsersTable //вызвать главную функцию сидов для конкретного сида
