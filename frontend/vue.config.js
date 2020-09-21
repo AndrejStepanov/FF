@@ -12,5 +12,5 @@ module.exports = {
 		}*/
 	},
 	outputDir: '../public',
-  indexPath: process.env.NODE_ENV === 'production' ? '../resources/views/index.blade.php' : 'index.html'
+  indexPath: process.env.NODE_ENV === 'production' ? '../resources/views/spa.blade.php' : 'index.html'
 }
