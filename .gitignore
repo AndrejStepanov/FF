@@ -5,7 +5,6 @@
 /vendor
 .env
 laravel-echo-server.json
-package-lock.json
 .env.backup
 .phpunit.result.cache
 Homestead.json
