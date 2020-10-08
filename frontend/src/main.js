@@ -40,10 +40,11 @@ import msg from './stores/s-msg'
 import profile from './stores/s-profile'
 import dialog from './stores/s-dialog'
 import param from './stores/s-param'
+import paramConfig from './stores/s-param-config'
 import layout from './stores/s-layout'
 
 Vue.use(vuex)
-let store = new vuex.Store({modules: {	profile,msg, dialog, param,layout} })
+let store = new vuex.Store({modules: {	profile,msg, dialog, param, paramConfig, layout} })
 
 import vueAxios from 'vue-axios'
 import axios from 'axios'

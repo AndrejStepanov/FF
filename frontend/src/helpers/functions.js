@@ -164,13 +164,6 @@ function getNewId (){
 	return Math.floor(Math.random() * MAX_ID)
 }
 
-function loadDialogs (dialogsConfig){
-	let tmp={}
-	for (let name in dialogsConfig)
-		if(tmp[dialogsConfig[name].module]===undefined )
-			tmp[dialogsConfig[name].module]= dialogsConfig[name].load
-	return tmp
-}
 
 function genMap ( stores ){
 	return { 
@@ -333,9 +326,7 @@ export default {
 	dateTimeNorm,
 	timeNorm,
 	getNewId,
-
-	loadDialogs,
-
+	
 	genMap,
 	storesParser,
 	getLocationParam,

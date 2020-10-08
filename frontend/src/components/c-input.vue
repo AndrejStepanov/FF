@@ -100,8 +100,8 @@
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
-											<v-btn small class="accent"  @click="saveDialog(valueArrDate)" :disabled="valueArrDateViewError!=''"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
+											<v-btn small class="accent ma-1"  @click="saveDialog(valueArrDate)" :disabled="valueArrDateViewError!=''"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.system.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
@@ -119,8 +119,8 @@
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
-											<v-btn small class="accent"  @click="saveDialog(valueArrDate)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
+											<v-btn small class="accent ma-1"  @click="saveDialog(valueArrDate)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.system.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
@@ -146,8 +146,8 @@
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
-											<v-btn small class="accent"  @click="saveDialog(tabSelectedRows)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 											<v-spacer/>
+											<v-btn small class="accent ma-1"  @click="saveDialog(tabSelectedRows)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.system.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
 										</v-toolbar>
 									</template>
@@ -175,7 +175,7 @@
 			checkBoxColor:'false',//переопределяется в created
 			hasError: false,
 			dataPickerHeight: 369,
-			dataPickerWith: 290,
+			dataPickerWidth: 290,
 			dataPickerTimeColumnWidth: 52,
 			inputErrorState:false,
 			inputErrorText:'',
@@ -269,12 +269,12 @@
 				let vm=this,
 					width= vm.isNeedTab?'max':
 						Math.ceil(
-							(vm.dataPickerWith*(vm.dialogWithDate?(['DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1?2:1):0)+  
+							(vm.dataPickerWidth*(vm.dialogWithDate?(['DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1?2:1):0)+  
 								vm.dataPickerTimeWidth*(vm.dialogWithTime ?(['TIME_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1?2:1):0)+
 								(['DATETIME'].indexOf(vm.type)!=-1?1:0)+
 								(['DATETIME_RANGE'].indexOf(vm.type)!=-1?1:0)
 							) / (vm.dialogDatePanelCnt==2&& ['TIME_RANGE','DATETIME','DATE','TIME'].indexOf(vm.type)==-1?2:1) +
-							(['TIME_RANGE'].indexOf(vm.type)!=-1 || vm.dialogDatePanelCnt==4 && ['DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1?24+9:0)
+							(['TIME_RANGE'].indexOf(vm.type)!=-1 || vm.dialogDatePanelCnt==4 && ['DATE_RANGE','DATETIME_RANGE'].indexOf(vm.type)!=-1?24:0)
 						) + 
 						(vm.getDialogScrollY && !vm.isNeedTab? 17:0) //скрол плашка
 				return width+'px'
@@ -327,7 +327,7 @@
 			},
 			dialogDatePanelCnt(){
 				let vm = this
-				return vm.$vuetify.breakpoint.lgAndUp ? 4: 2
+				return vm.$vuetify.breakpoint.lgAndUp  ? 4: 2
 			},
 			maskDateTime()		{
 				return new RegExp(!this.isDateTimeLike || this.multy?'': [
@@ -348,7 +348,7 @@
 			},
 			dataPickerTimeWidth(){
 				return ['DATETIME', 'DATETIME_RANGE'].indexOf(this.type)!=-1? this.dataPickerTimeColumnCnt * this.dataPickerTimeColumnWidth:
-					this.dataPickerWith / (this.type=='TIME_RANGE'?2:1)-(this.type=='TIME_RANGE'?17:0)+1
+					this.dataPickerWidth / (this.type=='TIME_RANGE'?2:1)-(this.type=='TIME_RANGE'?17:0)+1
 			},
 			//переход на вьюэкс
 			checked: {
@@ -460,13 +460,13 @@
 					return {value:row.value, textFull:text, text:['LIST'].indexOf(vm.type)==-1 || vm.listItemMin || vm.listItemLenght >text.length ? text : ( text.substring(0,vm.listItemLenght)+'...') ,}
 				})
 			},
-			tickLabels()		{ 	return this.serviceGiven.map(row=>{return row.text}) 																															},
+			tickLabels()		{ 	return this.serviceGiven.map(row=>{return row.text}) 																																},
 			min()				{ 	let vm=this, tmp = vm.paramData.min||null; return vm.isDateTimeLike?( !this.$h.isNumeric(tmp)?tmp:null ):vm.isSliderLike&&vm.serviceGiven.length>0?0 : tmp							},
 			max()				{ 	let vm=this, tmp = vm.paramData.max||null; return vm.isDateTimeLike?( !this.$h.isNumeric(tmp)?tmp:null ):vm.isSliderLike&&vm.serviceGiven.length>0?vm.serviceGiven.length-1:tmp		},
-			isSliderString()	{	return this.isSliderLike && this.serviceGiven.length>0 && !this.isNumeric																										},
-			step()				{	return this.isSliderString? 1 : this.paramData.step||1																													},
-			ticksNeed()			{	return this.isSliderString? true : this.paramData.ticksNeed==undefined? false:!!this.paramData.ticksNeed																	},
-			tickSize()			{	return this.paramData.tickSize|| this.isSliderString? 2 :0																												},
+			isSliderString()	{	return this.isSliderLike && this.serviceGiven.length>0 && !this.isNumeric																											},
+			step()				{	return this.isSliderString? 1 : this.paramData.step||1																																},
+			ticksNeed()			{	return this.isSliderString? true : this.paramData.ticksNeed==undefined? false:!!this.paramData.ticksNeed																			},
+			tickSize()			{	return this.paramData.tickSize|| this.isSliderString? 2 :0																															},
 			isNumeric()			{ 	
 				return !this.serviceGiven.equals([])?
 					this.serviceGiven.findIndex(row=>(!this.$h.isNumeric(row.value)))==-1:
@@ -515,8 +515,8 @@
 
 				return rules
 			},
-			isNeed()			{	return this.hasInput && !this.nullable																												},
-			name()				{	return (this.isNeed?'⭐ ':'')+ this.paramData.name||''/*❗*/																					},
+			isNeed()			{	return this.hasInput && !this.nullable																											},
+			name()				{	return (this.isNeed?'⭐ ':'')+ this.paramData.name||''/*❗*/																						},
 			value: {	
 				set:function (val)	{
 					this.setValue(val)
@@ -581,12 +581,12 @@
 				},
 			},
 			valueArrFst: {
-				set:function (val)	{this.valueArr=[val].concat(this.valueArr.slice(1))																														},
+				set:function (val)	{this.valueArr=[val].concat(this.valueArr.slice(1))																					},
 				get:function() 		{return this.valueArr[0]																											},
 			},
 			valueArrScnd: {	
 				set:function (val)	{this.$set(this.valueArr, 1, val) 																									},
-				get:function()		{return this.valueArr[1]																				},
+				get:function()		{return this.valueArr[1]																											},
 			},
 			valueArrViewFst: {
 				set:function (val)	{if (!this.multy && this.isDateTimeLike && val == undefined)  this.valueArr= ['',''] },
@@ -598,7 +598,7 @@
 				get:function() 		{return this.valueArrDate[0]																										},
 			},
 			valueArrDateScnd: {	
-				set:function (val)	{this.$set(this.valueArrDate, 1, val)																							},
+				set:function (val)	{this.$set(this.valueArrDate, 1, val)																								},
 				get:function()		{return this.valueArrDate[1]																										},
 			},
 			valueArrDateFstFst: {
@@ -1101,7 +1101,7 @@
 	.dateDialogHeadInput,
 	.dateDialogHeadInput>div								{height: 80px !important;}
 	.dateDialogHeadInput>div								{padding-top: 13px;}
-	.dateDialogTimeLeftBorder								{border-left: 1px #7f7f7f double; margin-left: -4px;}
+	.dateDialogTimeLeftBorder								{border-left: 1px #7f7f7f double;/* margin-left: -4px;*/}
 	.dateDialogTimeRightBorder								{border-right: 3px #949494 groove;}
 	.date-color-transparent	input					{color: transparent !important; }
 	

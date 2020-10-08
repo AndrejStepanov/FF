@@ -18,15 +18,11 @@
 
 </template>
 <script>
-/*
-		<template v-slot:dialogs>
-			
-		</template>
-		*/
 	import CLayoutsSlots from '../components/c-layouts-slots'
 	import XStore from '../mixins/x-store'
 	import XDialog from '../mixins/x-dialog'
 	import CTree from '../components/tree/c-tree'
+	import XPage from '../mixins/x-page'
 	export default {
 		name:'p-object-work',
 		data: () => ({
@@ -41,9 +37,16 @@
 			dialogsConfig: {
 				treeAdd:{
 					id:-1,  title:"$vuetify.system.modals.treeAdd.title", module:'m-input-fields', 
-					params:{ socetHref:"/data_command", socetEvent:"object.tree.add", treeId:{value:0}, }, 
+					params:{ socetHref:"/data_command", socetEvent:"object.tree.add", treeId:{value:0}, inputGroup:'pObjectWorkTreeAdd'}, 
 				},
 			},
+			inputsConfig:{
+				pObjectWorkTreeAdd:[
+					{code:'obj_level', 	name:'Вложенность', 	placeholder:'Уровень вложенности объекта', 		type:'LIST', 		nullable:0, column_size:30, sort_seq:1, services:{ given:{ name:'test.nsd.by.set', args:{set:'Уровень вложенности объекта' } } }  },
+					{code:'tree_group', name:'Тип', 			placeholder:'Тип объекта', 						type:'LIST', 		nullable:0, column_size:30, sort_seq:2, services:{ given:{ name:'test.nsd.by.set', args:{set:'Тип объекта' } } }  },
+					{code:'tree_desc', 	name:'Название',		placeholder:'Описание объекта', 				type:'INPUT',		nullable:0, column_size:30, sort_seq:3, max_len:25 },	
+				],
+			}
 		}),
 		props:{
 			parentLayoutName : {type:  String, default: 'main'},
@@ -54,11 +57,11 @@
 			},
 		},
 		components: {
-			CLayoutsSlots, 			CTree,
+			CLayoutsSlots, CTree,
 			MInputFields: (resolve) =>{ require(['../modules/m-input-fields.vue'], resolve) },
 		},
 		mixins: [
-			XStore, XDialog,
+			XStore, XDialog, XPage,
 		],
 		methods: {
 			itemClick(node) {
@@ -87,6 +90,7 @@
 		},
 		created: function (){
 			//let vm = this
+			console.log(this.$vuetify);
 		},
 	}
 </script>

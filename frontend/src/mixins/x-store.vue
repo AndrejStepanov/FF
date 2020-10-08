@@ -3,7 +3,6 @@
 	export default {
 		computed: {
 			... mapState({
-				stateParams:'param/params'
 			}),
 			... mapGetters( {//перечень функций из стандартных vuex
 				dialogById: "dialog/getById",
@@ -15,6 +14,7 @@
 				msgAllMsg: "msg/getAllMsg",
 				msgMsg: "msg/getMsg",
 				msgMsgIndex: "msg/getMsgIndex",
+				paramConfigGroup: "paramConfig/getGroup",
 				paramByCode: "param/getByCode",
 				paramValByCode: "param/getValByCode",
 				paramValFieldByData: "param/getValFieldByData",
@@ -54,6 +54,7 @@
 				dialogShowChange: "dialog/doShowChange",
 				msgAdd: "msg/doAdd",
 				msgDelete: "msg/doDelete",
+				paramConfigInit: "paramConfig/doInit",
 				paramInit: "param/doInit",
 				paramSetData: "param/doSetData",
 				paramSet: "param/doSet",

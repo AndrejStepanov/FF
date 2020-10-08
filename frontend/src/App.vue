@@ -16,7 +16,7 @@
 					</v-list-item-content>
 				</v-list-item>
 			
-				<v-list-group v-else color="white"	>
+				<v-list-group v-else :color="linkColor"	>
 					<template v-slot:activator>
 						<v-list-item-avatar	class="align-self-center"	contain	height="30"	>
 							<v-icon v-text="'account_circle'"	/>
@@ -72,8 +72,9 @@
 					</v-icon>				
 				</template>
 			</v-treeview>
-		</template>
-		<transition>
+		</template>		
+		<v-skeleton-loader v-if="profileUserName==''" class="pa-3" :width="sceletSize.width-12*2" :height="sceletSize.height-12*2"	type="button,  divider, list-item, table"/>
+		<transition v-else>
 			<keep-alive>
 				<router-view/>
 			</keep-alive>
@@ -99,6 +100,9 @@
 			},
 			linkColor(){
 				return this.$vuetify.theme.dark? 'black': 'white'
+			},
+			sceletSize(){
+				return this.layoutSizePxByName('main','main')
 			},
 			/*linkOpenPath(){
 				let vm =this, res = []

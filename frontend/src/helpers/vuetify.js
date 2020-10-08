@@ -15,7 +15,12 @@ import ru from 'vuetify/src/locale/ru.ts'
 import en from 'vuetify/src/locale/en.ts'
 window.i18nDic=window.i18nDic||{ru:{},en:{}}
 
-const i18n = new VueI18n({  locale:  localStorage.systemlanguage ||'ru',   messages:{ ru:merge(merge(merge(systemRu,commonRu),window.i18nDic.ru), {$vuetify:ru}),  en: {$vuetify:en} } })
+const i18n = new VueI18n({
+	locale:  localStorage.systemlanguage ||'ru',   
+	messages:{ 
+		ru:merge(merge(merge(systemRu,commonRu),window.i18nDic.ru), {$vuetify:ru}),  
+		en: {$vuetify:en} } 
+	})
 
 let curTheme ='light',
 	appTheme={
@@ -26,5 +31,5 @@ let curTheme ='light',
 			dark: {	primary: '#1868A5', secondary: '#939598', accent: '#2A91D8', tertiary: '#495057', error: '#f44336', warning: '#ffeb3b', info: '#2196f3', success: '#4caf50', checkBox:'#FFFFFF'},
 		}
 	}
-let vuetify = new Vuetify({ theme: appTheme, icons: { iconfont: 'md',},  lang: {  t: (key, ...params) => i18n.t(key, params) } })
+let vuetify = new Vuetify({ theme: appTheme, icons: { iconfont: 'md',},  lang: {  t: (key, ...params) => key.indexOf('$vuetify')==0? i18n.t(key, params):key  } })
 export { appTheme, curTheme, vuetify  }

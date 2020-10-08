@@ -2,18 +2,26 @@
 	import CApp from '../components/c-app';
 	import XStore from './x-store'
 	import XDialog from './x-dialog'
+	import XPage from './x-page'
 	export default {
 		data: () => ({
 			curentSystem: '',
 			layoutsConfigs:undefined,
 			layoutsCur:-1,
 			dialogsConfig: {},
+			inputsConfig:{
+				authLogin: [
+					{code:'username', 	name:'Пользователь', 			placeholder:'Логин пользователя', 				type:'INPUT', 		nullable:0, column_size:30, sort_seq:1,  },
+					{code:'password',	name:'Пароль', 					placeholder:'Пароль пользователя', 				type:'PASSWORD', 	nullable:0, column_size:30, sort_seq:2,  },
+					{code:'remember',	name:'Запомнить мои данные', 	placeholder:'Запомнить данные пользователя', 	type:'BOOL',		nullable:1, column_size:30, sort_seq:3,  },
+				],
+			},
 		}),
 		components: {
 			CApp,
 		},
 		mixins: [
-			XStore,XDialog
+			XStore,XDialog, XPage,
 		],
 		created: function (){
 			let vm=this

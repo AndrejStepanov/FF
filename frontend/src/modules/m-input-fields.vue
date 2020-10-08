@@ -44,22 +44,21 @@
 					id:vm.saveButtonId, 
 					title:vm.$h.nvlo(vm.dialogParamsGet.saveButtonProp).title||'$vuetify.system.simple.actions.save', 
 					icon:vm.$h.nvlo(vm.dialogParamsGet.saveButtonProp).icon||'save', 
-					allig:'left', 
+					allig:'right', 
 					click:'dialogSave', 
-					needCheck:vm.$h.nvlo(vm.dialogParamsGet.saveButtonProp).needCheck||true}, ]
+					needCheck:vm.$h.nvlo(vm.dialogParamsGet.saveButtonProp).needCheck||true}, 
+				]
 			},
 			inputs() {
 				let vm=this
+				/*
 				let data= [
-					{id:vm.$h.getNewId(), form:'treeAdd',		code:'obj_level', 	name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 		type:'LIST', 		nullable:0, column_size:30, sort_seq:1, services:{ given:{ name:'test.nsd.by.set', args:{set:'Уровень вложенности объекта' } } }  },
-					{id:vm.$h.getNewId(), form:'treeAdd',		code:'tree_group', 	name:'Тип', 					placeholder:'Тип объекта', 						type:'LIST', 		nullable:0, column_size:30, sort_seq:2, services:{ given:{ name:'test.nsd.by.set', args:{set:'Тип объекта' } } }  },
-					{id:vm.$h.getNewId(), form:'treeAdd',		code:'tree_desc', 	name:'Название',				placeholder:'Описание объекта', 				type:'INPUT',		nullable:0, column_size:30, sort_seq:3, max_len:25 },
-					
 					{id:vm.$h.getNewId(), form:'authLogin', 	code:'username', 	name:'Пользователь', 			placeholder:'Логин пользователя', 				type:'INPUT', 		nullable:0, column_size:30, sort_seq:1,  },
 					{id:vm.$h.getNewId(), form:'authLogin', 	code:'password',	name:'Пароль', 					placeholder:'Пароль пользователя', 				type:'PASSWORD', 	nullable:0, column_size:30, sort_seq:2,  },
 					{id:vm.$h.getNewId(), form:'authLogin', 	code:'remember',	name:'Запомнить мои данные', 	placeholder:'Запомнить данные пользователя', 	type:'BOOL',		nullable:1, column_size:30, sort_seq:3,  },
-				]
-				return data.filter(row =>  row.form == vm.paramsForm ).sort( (a, b) =>{return vm.$h.sort(a, b, 'sort_seq', 'sort_seq')})
+				]*/
+				console.log(vm.dialogParamsGet.inputGroup);
+				return Object.values( vm.paramConfigGroup( vm.dialogParamsGet.inputGroup ) ).sort( (a, b) =>{return vm.$h.sort(a, b, 'sort_seq', 'sort_seq')})
 			},
 			buttons() {
 				let vm=this,

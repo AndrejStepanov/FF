@@ -38,7 +38,7 @@
 		created: function (){
 			let vm=this
 			for (let dialog in vm.dialogsConfig){
-				if(vm.dialogsConfig[dialog].id==-1)
+				if(vm.$h.nvl(vm.dialogsConfig[dialog].id,-1)==-1)
 					vm.dialogsConfig[dialog].id= vm.$h.getNewId()
 				vm.dialogInit({
 					config:{id:vm.dialogsConfig[dialog].id, name:dialog, title:vm.dialogsConfig[dialog].title, width:vm.dialogsConfig[dialog].width, height:vm.dialogsConfig[dialog].height, buttons:vm.dialogsConfig[dialog].buttons, }, 

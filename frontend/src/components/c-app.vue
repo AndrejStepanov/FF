@@ -121,6 +121,7 @@
 				document.querySelectorAll('nav').forEach(el=> { if(!el.classList.contains('v-navigation-drawer--close') ) dxWidth+=el.offsetWidth; } )
 				document.querySelectorAll('footer, header').forEach(el=> { dxHeight+=el.offsetHeight; } )
 				document.querySelectorAll('html').forEach(el=> { if (getComputedStyle( el, null ).overflowY=='scroll') dxWidth+=17; } )
+				console.log(window.innerWidth-dxWidth, window.innerWidth,dxWidth);
 				vm.layoutSizePxRecalc( {head:vm.layoutName, parentSizePx:{width: window.innerWidth-dxWidth, height: window.innerHeight-dxHeight } } )
 			},
 		},

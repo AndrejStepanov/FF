@@ -10,6 +10,7 @@
 					params:{href:'oauth/token', headers:{Authorization:''},
 						todoExt:{grant_type: process.env.VUE_APP_API_GRANT_TYPE, client_id: process.env.VUE_APP_API_CLIENT_ID, client_secret: process.env.VUE_APP_API_CLIENT_SECRET},
 						saveButtonProp: {title:'$vuetify.system.simple.actions.logIn', icon:'input', }, 
+						inputGroup:'authLogin',
 					}, 
 				},
 			},
