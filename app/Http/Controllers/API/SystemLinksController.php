@@ -7,6 +7,15 @@ use App\Models\ObjLink;
 use App\Models\Tree;
 use Validator;
 class SystemLinksController extends BaseController{
+	public $Objects;
+	public $ObjLink;
+	public $Tree;
+	
+	public function __construct(){
+		$this->Objects=(new Objects())->getTable();
+		$this->ObjLink=(new ObjLink())->getTable();
+		$this->Tree=(new Tree())->getTable();
+	}
 	/**
 	 * Display a listing of the resource.
 	 *

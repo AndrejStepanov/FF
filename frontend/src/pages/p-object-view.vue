@@ -1,20 +1,20 @@
 <template>
 	<c-layouts-slots :layoutsConfigs="layoutsConfigsCur" :layoutName="$h.camelize($options.name)" :parentLayoutName="parentLayoutName"  >
-		<template v-slot:fourth >
+		<template #fourth >
 			<v-fab-transition>
-				<v-btn class="filter-button right-0 top-0"	color="accent"	fab	dark	small	absolute	top	right @click="showFilter=true"	>
+				<v-btn class="filter-button right-0 top-0"	color="accent"	fab	dark	small	absolute	top	right @click="filterShow=true"	>
 					<v-icon>filter_list</v-icon>
 				</v-btn>
 			</v-fab-transition>
 			<H1>Состояние слябов</H1> <br>
 			<v-data-table	:headers="dessertsHeaders"	:items="desserts"	class="elevation-1"	>
-				<template v-slot:item.fat="{ item }">
+				<template #item.fat="{ item }">
 					<v-chip :color="getDessertsColor(item.fat)" dark>{{ item.fat }}</v-chip>
 				</template>
 			</v-data-table>
-			<c-filter-dialog v-model="showFilter" paramForm :dialogConf="{fullscreen:true, hideOverlay:true, transition:'dialog-bottom-transition'}" />
+			<c-filter-dialog v-model="filterShow" :filterName="filterName" :dialogConf="{fullscreen:true, hideOverlay:true, transition:'dialog-bottom-transition'}" />
 		</template>
-		<template v-slot:sixth>
+		<template #sixth>
 			<H1>Температура сляба <b>2020600</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H1> <br>
 			<v-card				class="mx-auto"				color="grey lighten-4"				max-width="600"			>
 				<v-card-title>
@@ -41,13 +41,13 @@
 			
 		</template>
 	
-		<template v-slot:fifth>
+		<template #fifth>
 			<H1>График выполнения плавки 1200001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H1> <br>
 			<v-row>
 				<v-col>
 				<v-sheet height="500">
 					<v-calendar	:now="today"	:value="today"	color="primary"	>
-						<template v-slot:day="{ present, past, date }">
+						<template #day="{ present, past, date }">
 							<v-row		class="fill-height"		>
 								<template v-if="past && tracked[date]">
 									<v-sheet	v-for="(percent, i) in tracked[date]"	:key="i"	:title="category[i]"	:color="colors[i]"	:width="`${percent}%`"	height="100%"	tile />
@@ -59,7 +59,7 @@
 				</v-col>
 			</v-row>
 		</template>
-		<template v-slot:seventh>
+		<template #seventh>
 			<H1>Недавние события&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H1> <br>
 			<v-card style="display: inline-block;" max-width="270" >
 				<v-img src="https://www.primetals.com/fileadmin/_processed_/9/b/csm_2019091931_small_d38473b8cb.jpg" :aspect-ratio="16/9" />
@@ -114,12 +114,12 @@
 
 </template>
 <script>
-	import CLayoutsSlots from '../components/c-layouts-slots'
 	import CFilterDialog from '../components/c-filter-dialog'
-	import XStore from '../mixins/x-store'
+	import XPage from '../mixins/x-page'
 	export default {
 		name:'p-object-view',
 		data: () => ({
+			armName:'Просмотр объектов',
 			layoutsConfigs:{  //'horizontal' - внутри будут строки,  'vertical' - внутри будут столбики;  Последнему слою выставлять размер бессмысленно
 				name: 'first',   layout:'vertical',  data:[
 					{  name: 'second',   width:'45%', layout: 'horizontal', data:[
@@ -131,9 +131,6 @@
 						{name: 'seventh',   height:'454px', resizable:false}
 					]},
 				]}, 
-			showFilter:false,
-			paramForm:'searchForSlabState',
-			layoutsCur:-1,
 			checking: false,
 			heartbeats: [],
 			dessertsHeaders: [
@@ -151,10 +148,6 @@
 				{      name: '2020400',			calories: 'СТ3СП',            fat: 3.7,            carbs: 67,            protein: 4.3,            iron: '8%',          },
 				{      name: '2020500',			calories: '35',            fat: 16.0,            carbs: 49,            protein: 3.9,            iron: '16%',          },
 				{      name: '2020600',			calories: '09Г2С',            fat:4.0,            carbs: 94,            protein: 0.0,            iron: '40%',          },
-				/*{      name: 'Lollipop',            calories: 392,            fat: 0.2,            carbs: 98,            protein: 0,            iron: '2%',          },
-				{      name: 'Honeycomb',           calories: 408,            fat: 3.2,            carbs: 87,            protein: 6.5,            iron: '45%',          },
-				{      name: 'Donut',               calories: 452,            fat: 25.0,            carbs: 51,            protein: 4.9,            iron: '22%',          },
-				{      name: 'KitKat',              calories: 518,            fat: 26.0,            carbs: 65,            protein: 7,            iron: '6%',          },*/
 			],
 			today: '2019-01-10',
 			tracked: {
@@ -170,28 +163,53 @@
 			},
 			colors: ['#1867c0', '#fb8c00', '#000000'],
 			category: ['Development', 'Meetings', 'Slacking'],
-		}),
-		props:{
-			parentLayoutName : {type:  String, default: 'main'},
-		},
-		computed:{
-			layoutsConfigsCur(){
-				return 	this.layoutsCur>-1 && this.layoutsConfigs[this.layoutsCur]!=undefined? this.layoutsConfigs[this.layoutsCur]:this.layoutsConfigs
+			filterShow:false,
+			filterName:'searchForSlabState',
+			filtersConfig: {
+				searchForSlabState:[
+					{code:'m_tree_info',				name:'Объекты', 										 					type:'INFO', 											sort_seq:1, 																																																			},
+					{code:'obj_param',					name:'Параметр', 				placeholder:'Ввод параметров', 				type:'INPUT', 							nullable:false,	sort_seq:2, isAuto:false, 		services:{tab:{ name:'test.data.by.id', args:{} } },																																	},
+					{code:'m_tree_line1',				name:'Информация', 										 					type:'LINE', 											sort_seq:3, 																																																			},
+					{code:'tree_input',					name:'Ввод', 					placeholder:'Ввод объекта', 				type:'INPUT', 							nullable:false, sort_seq:4, maxLen:30,			services:{default:{ script:'return "ыва"'  } },																																			},
+					{code:'tree_num',					name:'Число', 					placeholder:'Ввод числа', 					type:'NUMBER', 							nullable:false, sort_seq:5, 					services:{default:{ script:'return "111"'  } },																																			},
+					{code:'tree_int', 					name:'Название',				placeholder:'Описание объекта', 			type:'NUMBER',											sort_seq:6, min:0, 				services:{default:{ name:'test.number.with.sleep', } }  																																},
+					{code:'tree_date',					name:'Дата', 					placeholder:'Дата объекта', 				type:'DATE', 							nullable:false, sort_seq:7, 					services:{default:{ script:'return ["2018-10-03"]'  } },																																},
+					{code:'obj_level', 					name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 	type:'LIST',							nullable:false, sort_seq:8, 					services:{default:{ script:'return ["strange"]'  }, given:{ name:'test.nsd.by.set', args:{set:'Уровень вложенности объекта', id:'{{tree_int}}' } } },									},
+					{code:'m_tree_line',				name:'Информация', 										 					type:'LINE', 											sort_seq:9, 																																																			},
+					{code:'tree_group',					name:'Тип', 					placeholder:'Тип объекта', 					type:'LIST', 							nullable:false, sort_seq:10, 					services:{default:{ script:'return {tree_group:"input"}'  },given:{ script:'listToArrObj', args:{list:'node::Узел дерева;ARM::Рабочая область;filter::Фильтр;input::Поле ввода'}, },}, 	},
+					{code:'tree_range', 				name:'Значение',				placeholder:'Описание диапазона',			type:'RANGE',							nullable:false, sort_seq:11, min:10, max:100,	services:{default:{ script:'return "52--30"'  } },  																																	},
+					{code:'tree_val', 					name:'Значение',				placeholder:'Описание значения',			type:'SLIDER',							nullable:false, sort_seq:12, min:10, max:100, 	services:{default:{ script:'return {tree_val:"15"}'  } }, 																																},
+					{code:'obj_level1', 				name:'Вложенность1', 			placeholder:'Уровень вложенности объекта', 	type:'RANGE',							nullable:false, sort_seq:13,					services:{default:{ script:'return "cur--inside"'  }, given:{ name:'test.nsd.by.set', args:{set:'Уровень вложенности объекта' } } },  													},
+					{code:'tree_desc2', 				name:'Название3',				placeholder:'Описание объекта', 			type:'HIDDEN',										 	sort_seq:14,					services:{default:{ script:'return {tree_desc2:10}'  }, }, 																																},
+					{code:'tree_group1',				name:'Тип1', 					placeholder:'Тип объекта', 					type:'SLIDER', 							nullable:false, sort_seq:15,					services:{default:{ script:'return "ARM"'  }, given:{ name:'test.nsd.by.set', args:{set:'Тип объекта' } } },  																			},
+					{code:'m_obj_level2', 				name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 	type:'LIST',			multy:true,		nullable:false, sort_seq:16,					services:{default:{ script:'return "inside,strange"'  }, given:{ name:'test.nsd.by.set', args:{set:'Уровень вложенности объекта' } } },  												},	
+					{code:'m_obj_level', 				name:'Вложенность', 			placeholder:'Уровень вложенности объекта', 	type:'LIST',			multy:true,		nullable:false, sort_seq:17,					services:{default:{ script:'return {m_obj_level:"inside,strange"}'  }, given:{ name:'test.nsd.by.set', args:{set:'Уровень вложенности объекта' } } },  									},
+					{code:'m_tree_group',				name:'Тип', 					placeholder:'Тип объекта', 					type:'LIST', 			multy:true,		nullable:false, sort_seq:18, 					services:{default:{ script:'return ["node","ARM"]'  }, given:{ name:'test.nsd.by.set', args:{set:'Тип объекта' } } },  																	},
+					{code:'m_tree_nbsp',				name:'Информация', 										 					type:'NBSP', 											sort_seq:19, 																																																			},
+					{code:'m_tree_dates',				name:'Даты', 					placeholder:'Даты объекта', 				type:'DATE', 			multy:true,		nullable:false, sort_seq:20, 					services:{default:{ script:'return "2018-10-03"' } }, 																														},
+					{code:'m_tree_date',				name:'Дата', 					placeholder:'Дата объекта', 				type:'DATE', 							nullable:false, sort_seq:21, 					services:{default:{ script:'return "2018-10-03"' } },																																	},
+					{code:'m_tree_time',				name:'Время', 					placeholder:'Время объекта', 				type:'TIME', 							nullable:false, sort_seq:22, 					services:{default:{ script:'return ["12:52"]' } },																																		},
+					{code:'m_tree_datetime',			name:'Дата Время', 				placeholder:'Дата Время объекта', 			type:'DATETIME', 						nullable:false, sort_seq:23, 					services:{default:{ script:'return {m_tree_datetime:"2018-10-03T12:52"}' } },																											},
+					{code:'m_tree_date_range',			name:'Дата диапазон', 			placeholder:'Дата объекта диапазон', 		type:'DATE_RANGE', 						nullable:false, sort_seq:24, 					services:{default:{ script:'return "2018-10-03--2018-10-04"' } },																														},
+					{code:'m_tree_time_range',			name:'Время диапазон', 			placeholder:'Время объекта диапазон', 		type:'TIME_RANGE', 						nullable:false, sort_seq:25, 					services:{default:{ script:'return ["12:52","12:53"]' } },																																},
+					{code:'m_tree_datetime_range',		name:'Дата Время диапазон', 	placeholder:'Дата Время объекта', 			type:'DATETIME_RANGE', 					nullable:false, sort_seq:26, 					services:{default:{ script:'return {value:"2018-10-03T12:52--2018-10-04T12:53"}' } },																									},
+				/**/	
+				]
 			},
+		}),
+		computed:{
 			avg () {
 				const sum = this.heartbeats.reduce((acc, cur) => acc + cur, 0)
 				const length = this.heartbeats.length
-
 				if (!sum && !length) return 0
-
 				return Math.ceil(sum / length)
 			},
 		},
 		components: {
-			CLayoutsSlots, CFilterDialog,
+			CFilterDialog,
 		},
 		mixins: [
-			XStore,
+			XPage,
 		],
 		methods: {
 			getDessertsColor (fat) {
@@ -214,7 +232,7 @@
 				noCheck=noCheck||false
 				if (!noCheck && !vm.$refs[vm.paramForm].validate())
 					return;
-				vm.showFilter = false;
+				vm.filterShow = false;
 				vm.dataSearchLoaded=false;
 				todo=vm.paramTodoChecked(vm.paramForm)
 				vm.sendingData=true

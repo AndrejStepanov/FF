@@ -1,6 +1,6 @@
 <template>
 	<v-app  v-resize.quiet="onResize" >
-		<c-head app ref="head" v-if="needHeader" :curentSystem='curentSystem' :dark="isPerefThemeDark" :light="isPerefThemeLight" :showLeft="panelLeftDrawer" :showRight="panelRightDrawer" :needLabel="needLabel" 
+		<c-head app ref="head" v-if="needHeader"  :dark="isPerefThemeDark" :light="isPerefThemeLight" :showLeft="panelLeftDrawer" :showRight="panelRightDrawer" :needLabel="needLabel" 
 			:fixed="headFixed" :headHideOnScroll="headHideOnScroll" :headElevateOnScroll="headElevateOnScroll"/>
 		<v-navigation-drawer app v-if="panelLeftDrawer" :dark="isPerefThemeDark" :light="isPerefThemeLight" v-model="panelLeftShowen" left  touchless :class="panelLeft.class" :width="panelLeftWidth" :color="panelLeft.color">
 			<slot name="panelLeft"/>
@@ -18,7 +18,7 @@
 			<div ref='scrollArea'/>
 			<c-layouts   :name="layoutName" :size="$vuetify.breakpoint">
 				<template  v-for="(slotName, index) in slotNames"    v-slot:[slotName] >
-					<v-container   v-if="slotNames.length==1 && slotNames[0]=='main' " fluid fill-height id = 'main_id' :key="index" class="overflow-auto   padding-0" >
+					<v-container   v-if="slotNames.length==1 && slotNames[0]=='mainLayout' " fluid fill-height id = 'mainLayoutId' :key="index" class="overflow-auto   padding-0" >
 						<slot  />
 					</v-container>
 					<div v-else :key="index">
@@ -41,6 +41,7 @@
 	import CHead from '../components/c-head'
 	import CFooter from '../components/c-footer'
 	import CMsgList from '../components/c-msg-list'
+	import CLayouts from '../components/c-layouts'
 	export default {
 		name:'c-app',
 		data:() => ({
@@ -49,8 +50,7 @@
 			needLabel: true,
 		}),
 		props:{
-			curentSystem: {type:  String, default: ''},
-			layoutName : {type:  String, default: 'main'},
+			layoutName : {type:  String, default: 'mainLayout'},
 			needFooter: {type:  Boolean, default: false},
 			needHeader: {type:  Boolean, default: true},
 			oneScreen: {type:  Boolean, default: true},
@@ -104,9 +104,8 @@
 			},
 		},
 		components: {
-			CHead, CFooter,CMsgList, 
+			CHead, CFooter,CMsgList, CLayouts,
 			MInputFields: (resolve) => require(['../modules/m-input-fields.vue'], resolve),
-			CLayouts: (resolve) => require(['./c-layouts.vue'], resolve),
 		},
 		mixins: [
 			XStore,XDialog,XAuth,
@@ -118,10 +117,9 @@
 					dxHeight=0
 				if(vm.mainLayoutConfig==null)// елси режим полотенца, то выходим
 					return
-				document.querySelectorAll('nav').forEach(el=> { if(!el.classList.contains('v-navigation-drawer--close') ) dxWidth+=el.offsetWidth; } )
-				document.querySelectorAll('footer, header').forEach(el=> { dxHeight+=el.offsetHeight; } )
+				document.querySelectorAll('div.v-application--wrap>nav').forEach(el=> { if(!el.classList.contains('v-navigation-drawer--close') ) dxWidth+=el.offsetWidth; } )
+				document.querySelectorAll('div.v-application--wrap>footer, div.v-application--wrap>header').forEach(el=> { dxHeight+=el.offsetHeight; } )
 				document.querySelectorAll('html').forEach(el=> { if (getComputedStyle( el, null ).overflowY=='scroll') dxWidth+=17; } )
-				console.log(window.innerWidth-dxWidth, window.innerWidth,dxWidth);
 				vm.layoutSizePxRecalc( {head:vm.layoutName, parentSizePx:{width: window.innerWidth-dxWidth, height: window.innerHeight-dxHeight } } )
 			},
 		},

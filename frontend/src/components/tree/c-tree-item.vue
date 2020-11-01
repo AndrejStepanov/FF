@@ -155,9 +155,9 @@ export default {
 		groupStyle () {
 			return {
 				'position': this.model.opened ? '' : 'relative',
-				'max-height': this.allowTransition ? this.maxHeight + 'px' : '',
+				'height--100pr': this.allowTransition ? this.maxHeight + 'px' : '',
 				'transition-duration': this.allowTransition ? Math.ceil(this.model[this.childrenFieldName].length / 100) * 300 + 'ms' : '',
-				'transition-property': this.allowTransition ? 'max-height' : '',
+				'transition-property': this.allowTransition ? 'height--100pr' : '',
 				'display': this.allowTransition ? 'block' : (this.model.opened ? 'block' : 'none')
 			}
 		}

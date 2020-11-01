@@ -12,7 +12,7 @@
 			<hr>
 		</div>
 		<v-tooltip v-else  class='input-contaner' :disabled="tip==''" bottom>
-			<template v-slot:activator="{ on:onEnable }">
+			<template #activator="{ on:onEnable }">
 				<div class='input-contaner flex-grow--99' v-on="onEnable">
 					<v-btn  icon v-if="needSign" @click="changeSign" small class="sign-box cursor-pointer" >
 						<v-icon small :disabled="getDisable" :class="getSignClass">{{getSign}}</v-icon>
@@ -33,10 +33,10 @@
 											:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
 											:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step" 
 											@keyup.enter="submit"  @blur="onBlur" @focus="onFocus" dense >
-										<template v-if="!isNumeric"	v-slot:thumb-label="props">
+										<template v-if="!isNumeric"	#thumb-label="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
 										</template>
-										<template v-if="isNumeric" v-slot:thumb-label>
+										<template v-if="isNumeric" #thumb-label>
 											<slot name="thumb-label" />
 										</template>
 									</component>
@@ -57,7 +57,7 @@
 									:append-icon="getAppendIcon" :clearable="getClearable" :min="min" :max="max" :step="step" auto-grow rows="1"
 									@keyup.enter="submit"  @blur="onBlur" @focus="onFocus" v-on="type=='LIST'?{}:{'click:append':appendClick}"
 									:class="getComponentClass" >
-									<template v-if="isLoading" v-slot:no-data >
+									<template v-if="isLoading" #no-data >
 										<div :style="'height: 55px; display: inline-flex;'"> 
 											<div :style="'width: 30%;'">
 												<c-loading :size=50 :width=3 :topKx=10 />
@@ -70,7 +70,7 @@
 								</component> <!-- надо будет перекидать даты и таблицы на модули  --> 
 								<v-dialog v-else-if="!isNeedTab && !multy && isDateTimeLike " ref="dialog" v-model="isDialog" :return-value.sync="valueArr" persistent	:width="getDialogWidth"
 										class="max-width" :content-class="getDialogClass" @keydown.escape ="isDialog = false" >
-									<template v-slot:activator="{ on:onDialog }">
+									<template #activator="{ on:onDialog }">
 										<v-text-field  v-model="valueArrViewFst" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"  readonly ref="input" 
 											:tabindex="sortSeq"  :clearable="getClearable"  :min="min" :max="max" :append-icon="getAppendIcon"  :id="id+'_activator'" :loading="isLoading"
 											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="onDialog" :class="['body-1', ['DATETIME_RANGE'].indexOf(type)!=-1?'smallFont':'' ]" />
@@ -101,14 +101,14 @@
 										<v-divider></v-divider>
 										<v-toolbar dense >	
 											<v-spacer/>
-											<v-btn small class="accent ma-1"  @click="saveDialog(valueArrDate)" :disabled="valueArrDateViewError!=''"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.system.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
+											<v-btn small class="accent ma-1"  @click="saveDialog(valueArrDate)" :disabled="valueArrDateViewError!=''"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
 								<v-dialog v-else-if="!isNeedTab && multy && type=='DATE'"	ref="dialog" v-model="isDialog" :return-value.sync="valueArr" persistent :width="getDialogWidth"
 										class="max-width" :content-class="getDialogClass" @keydown.escape ="isDialog = false">
-									<template v-slot:activator="{ on:onDialog }">
+									<template #activator="{ on:onDialog }">
 										<v-combobox   :value="valueArrView" :label="name" :hint="placeholder" :rules="rules" :disabled="getDisable"  :required="!!nullable"   ref="input" 
 											:tabindex="sortSeq"  :clearable="getClearable"   :min="min" :max="max" multiple chips  small-chips  :append-icon="getAppendIcon"  :loading="isLoading"
 											@keyup.enter="submit" @blur="onBlur" @focus="onFocus" v-on="onDialog" class=" body-1" />
@@ -120,14 +120,14 @@
 										<v-divider></v-divider>
 										<v-toolbar dense >	
 											<v-spacer/>
-											<v-btn small class="accent ma-1"  @click="saveDialog(valueArrDate)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.system.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
+											<v-btn small class="accent ma-1"  @click="saveDialog(valueArrDate)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
-								<v-dialog v-else-if="isNeedTab"	ref="dialog" v-model="isDialog" :return-value.sync="value" persistent :width="getDialogWidth"
-										class="max-width" :content-class="getDialogClass" overlay-color="white" overlay-opacity="1" @keydown.escape ="isDialog = false">
-									<template v-slot:activator="{ on }">
+								<v-dialog v-else-if="isNeedTab"	ref="dialog" v-model="isDialog" :return-value.sync="value" persistent :width="getDialogWidth" 
+										class="max-width " :content-class="getDialogClass" overlay-color="white" overlay-opacity="1" @keydown.escape ="isDialog = false">
+									<template #activator="{ on }">
 										<component :is="currentInput" :value="!multy && isDateTimeLike? valueArrViewFst : multy? valueArr:type=='LIST'?valueArrFst:value"  @input="onInput" 
 												:label="name" :hint="placeholder" :rules="rules" :disabled="getDisable" :readonly="!editable || isLoading || isAuto || isDateTimeLike"  :required="!!nullable" ref="input"
 												:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType" :items="serviceGiven" dense :counter="getCounter"
@@ -138,17 +138,17 @@
 												:class="getComponentClass" />
 									</template>
 									<template>
-										<div  :style="getDialogMainDivStyle">
-											<c-table tableTitle="$vuetify.system.modals.treeAdd.title" :searchNeed="true" :headers="tabHeader"	:items="tabValues" v-model="tabSelectedRows"  ref="table"  
-												:vDataTableProp="{showSelect:true, singleSelect:!multy}"  withRowNum	:hideDefaultFooter="false"  :height="getDialogMainDivHeight"  :loading="tabLoading"
+										<div  :style="getDialogMainDivStyle" class='position--relative' >
+											<c-table tableTitle="$vuetify.system.modals.valSelect.title" :searchNeed="true" :headers="tabHeader"	:items="tabValues" v-model="tabSelectedRows"  ref="table"  
+												:vDataTableProp="{showSelect:true, singleSelect:!multy}"  withRowNum	:height="getDialogMainDivHeight"  :loading="tabLoading"
 												@dblclick:row="saveDialog(tabSelectedRows)"
-												/>
+											/>
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
 											<v-spacer/>
-											<v-btn small class="accent ma-1"  @click="saveDialog(tabSelectedRows)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.system.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
+											<v-btn small class="accent ma-1"  @click="saveDialog(tabSelectedRows)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -847,6 +847,7 @@
 					vm.$refs.dialog.save(value)
 				}
 				else if(vm.isNeedTab ){
+					console.log(value);
 					value.forEach(row=>{
 						vm.paramSetSeveralValOutside({form: vm.paramsForm, value:row})
 					})
@@ -945,6 +946,7 @@
 				if (vm.servicesFinishParam== null ) 
 					return
 				response = await  vm.getDataFromservice(vm.servicesDefaultParam)
+				
 				if(vm.$h.typeOfObject(response) == 'object'  && vm.code in response)
 					vm.paramSetSeveralValOutside({form: vm.paramsForm, value:response, data:{defaultInit:true}})
 				else

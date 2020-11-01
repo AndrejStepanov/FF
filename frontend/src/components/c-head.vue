@@ -1,7 +1,7 @@
 <template>
 	<v-app-bar class=' transparent  elevation-0 mt-0 no-clcik'   :app="fixed" :fixed="fixed"  :absolute="!fixed" dense :hideOnScroll="headHideOnScroll" :elevateOnScroll="headElevateOnScroll" >
 		<v-app-bar-nav-icon @click="toolbarClicked('Left')"  v-if="showLeft" color='accent' class='get-clcik'  />
-		<v-toolbar-title v-if="$vuetify.breakpoint.name!='xs' && needLabel" >{{curentSystem}}</v-toolbar-title>
+		<v-toolbar-title v-if="$vuetify.breakpoint.name!='xs' && needLabel" >{{systemCurArmName}}</v-toolbar-title>
 		<v-spacer/>
 		<v-icon v-if="profileUserName!='' && withSearch" color='accent' class='get-clcik' @click="searchClick">search</v-icon>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -19,7 +19,6 @@
 		data: () => ({            
 		}),
 		props: {
-			curentSystem:{type: String,  default: '' },
 			showLeft:{type: Boolean,  default: false },
 			showRight:{type: Boolean,  default: false },
 			needLabel:{type: Boolean,  default: true },

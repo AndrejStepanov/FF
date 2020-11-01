@@ -98,7 +98,7 @@
 		created: async function (){
 			let vm=this
 			vm.$root.$on('systemLogin', ()=>{
-				vm.dialogShow(vm.dialogsConfig.authLogin.id)
+				vm.openDialog({name:'authLogin'})
 			})
 			vm.$root.$on('systemLogout', async ()=>{
 				if(vm.logoutDoing)

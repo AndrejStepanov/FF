@@ -1,5 +1,26 @@
 export default {
 	name: 'c-drag-resize',
+	data: function () {
+		return {
+			active: this.isActive,
+			rawWidth: this.w,
+			rawHeight: this.h,
+			rawLeft: this.x,
+			rawTop: this.y,
+			rawRight: null,
+			rawBottom: null,
+			zIndex: this.z,
+			aspectFactor: this.w / this.h,
+			parentWidth: null,
+			parentHeight: null,
+			left: this.x,
+			top: this.y,
+			right: null,
+			bottom: null,
+			minWidth: this.minw,
+			minHeight: this.minh
+		}
+	},
 	props: {
 		isActive: {type: Boolean, default: false },
 		noLineStyle: {type: Boolean, default: false },
@@ -23,29 +44,6 @@ export default {
 		sticks: {type: Array,default:  () =>{return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']}},
 		axis: {type: String,default: 'both',validator:  (val) =>{return ['x', 'y', 'both', 'none'].indexOf(val) !== -1}},
 	},
-
-	data: function () {
-		return {
-			active: this.isActive,
-			rawWidth: this.w,
-			rawHeight: this.h,
-			rawLeft: this.x,
-			rawTop: this.y,
-			rawRight: null,
-			rawBottom: null,
-			zIndex: this.z,
-			aspectFactor: this.w / this.h,
-			parentWidth: null,
-			parentHeight: null,
-			left: this.x,
-			top: this.y,
-			right: null,
-			bottom: null,
-			minWidth: this.minw,
-			minHeight: this.minh
-		}
-	},
-
 	created: function () {
 		let vm=this
 		vm.stickDrag =  vm.bodyDrag = false;
@@ -127,7 +125,7 @@ export default {
 			if (this.bodyDrag) 
 				this.bodyUp(ev)
 		},
-		bodyDown: function (ev) {
+		bodyDown (ev) {
 			let target = ev.target || ev.srcElement;
 			if (!this.preventActiveBehavior) 
 				this.active = true;
@@ -504,6 +502,7 @@ export default {
 				this.limits = this.calcResizeLimitation();
 			let delta = this.width - this.w;
 			this.rawRight = this.right + delta;
+			this.$nextTick(()=>{ this.$emit('resizing', this.rect); })	//квадрат не успевает пересчитаться из-за реактивности своих полей.
 		},
 		h() {
 			if (this.stickDrag || this.bodyDrag) 
@@ -514,6 +513,7 @@ export default {
 				this.limits = this.calcResizeLimitation();
 			let delta = this.height - this.h;
 			this.rawBottom = this.bottom + delta;
+			this.$nextTick(()=>{ this.$emit('resizing', this.rect); })
 		},
 		parentW(val) {
 			this.right = val - this.width - this.left;

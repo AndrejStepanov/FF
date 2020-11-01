@@ -34,8 +34,9 @@ export default {
 			let data= getters.getGroup(form), tmp={}
 			withChecked=withChecked||'N'
 			for(let name in data)
-				if(withChecked=='N' || $h.nvl(data[name].checked,false))
-					tmp[name]= getters.getValFieldByData(data[name])=='value' ? data[name].value : data[name].value_arr.split(',')
+				if(withChecked=='N' || $h.nvl(data[name].checked,false)){
+					tmp[name]= getters.getValFieldByData(data[name])=='value' ? data[name].value : data[name].value_arr.slice()
+				}
 			return tmp
 		},
 	},

@@ -42,9 +42,10 @@ import dialog from './stores/s-dialog'
 import param from './stores/s-param'
 import paramConfig from './stores/s-param-config'
 import layout from './stores/s-layout'
+import system from './stores/s-system'
 
 Vue.use(vuex)
-let store = new vuex.Store({modules: {	profile,msg, dialog, param, paramConfig, layout} })
+let store = new vuex.Store({modules: {	profile,msg, dialog, param, paramConfig, layout, system,} })
 
 import vueAxios from 'vue-axios'
 import axios from 'axios'
@@ -70,13 +71,8 @@ window.axios.interceptors.request.use(config => {
 
 //ПОСЛЕ ПОЛУЧЕНИЯ КАЖДОГО ОТВЕТА
 window.axios.interceptors.response.use(res => {
-	// после каждого получения ответа
 	if (process.env.NODE_ENV !== 'production')
 		console.log('[RES]=>', res)
-	//store._actions['login/checkPermitionsOnCurrentPath'][0]()//check perm and redirect
-	/*if (res.status == 401) 
-		snack('Недостаточно прав для этого действия', 'error')*/
-
 	return res
 })
 

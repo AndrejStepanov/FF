@@ -14,7 +14,8 @@
 				msgAllMsg: "msg/getAllMsg",
 				msgMsg: "msg/getMsg",
 				msgMsgIndex: "msg/getMsgIndex",
-				paramConfigGroup: "paramConfig/getGroup",
+				paramConfigGroupInput: "paramConfig/getGroupInput",
+				paramConfigGroupFilter: "paramConfig/getGroupFilter",
 				paramByCode: "param/getByCode",
 				paramValByCode: "param/getValByCode",
 				paramValFieldByData: "param/getValFieldByData",
@@ -42,6 +43,7 @@
 				layoutLink: "layout/getLink",
 				layoutLinkObj: "layout/getLinkObj",
 				layoutLinkChilds: "layout/getLinkChilds",
+				systemCurArmName : "system/getCurArmName",
 				} ) ,	
 		},
 		methods: {
@@ -71,6 +73,7 @@
 				layoutSizePxChange: "layout/doSizePxChange",
 				layoutLinkSet: "layout/doLinkSet",
 				layoutLinkDel: "layout/doLinkDel",
+				systemCurArmNameChange: "system/doCurArmNameChange",
 			}) ,	
 		},
 	}

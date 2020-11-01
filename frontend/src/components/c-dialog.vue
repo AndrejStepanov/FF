@@ -2,7 +2,7 @@
 	<v-dialog value = "true" :persistent="dialogConfigGet.persistent" no-click-animation >
 		<c-drag-resize :isActive="dragActive" :isDraggable="dragDraggable" :isResizable="dragResizable" :preventActiveBehavior="dragActiveBehavior" :parentLimitation="dragLimitation" :sticks="dragSticks" :noLineStyle="dragNoLineStyle"
 				:w="width" :h="height" @resizing="changeSize($event)"  :x="x" :y="y" :reInitEvent="dragReInitEvent"> 
-			<template v-slot:header >
+			<template v-if="!noHeader" #header  >
 				<v-toolbar  dense color="primary" dark >
 					<v-toolbar-title > {{ $vuetify.lang.t(dialogConfigGet.title) }}</v-toolbar-title>
 					<v-spacer/>
@@ -14,21 +14,19 @@
 					</v-btn>
 				</v-toolbar>
 			</template>
-			<v-card >	
-				<v-card-text :height="heightSlot" :style="{height:heightSlot, overflowY: 'auto'}">
-					<slot />
-				</v-card-text>
-				<v-divider></v-divider>
-				<v-card-actions >							
-					<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" :loading="row.loading||false"  > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{$vuetify.lang.t(row.title)}}</v-btn>
-					<v-spacer/>
-					<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" :loading="row.loading||false" > {{$vuetify.lang.t(row.title)}}&nbsp;<v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon></v-btn>
-				</v-card-actions>
-			</v-card>
-
-			<v-layout  >
-
-			</v-layout> <!---->
+			<template #default="{bodyDown}" >
+				<v-card >	
+					<v-card-text :height="heightSlot" class='pa-0' :style="{height:heightSlot, overflowY: 'auto'}">
+						<slot />
+					</v-card-text>
+					<v-divider></v-divider>
+					<v-card-actions @mousedown.self="bodyDown($event)"  >							
+						<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" :loading="row.loading||false"  > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{$vuetify.lang.t(row.title)}}</v-btn>
+						<v-spacer/>
+						<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" :loading="row.loading||false" > {{$vuetify.lang.t(row.title)}}&nbsp;<v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon></v-btn>
+					</v-card-actions>
+				</v-card>
+			</template>
 		</c-drag-resize>
 	</v-dialog>
 </template>
@@ -40,9 +38,9 @@
 				*/
 	import XStore from '../mixins/x-store'
 	import cDragResize from './c-drag-resize/c-drag-resize';
-    export default {
+	export default {
 		name:'c-dialog',
-        data: () => ({
+		data: () => ({
 			heightSlot:'',
 			dragReInitEvent:'',
 		}),
@@ -56,8 +54,9 @@
 			dragActiveBehavior: {type: Boolean, default: true}, 
 			dragResizable: {type: Boolean, default: true}, 
 			dragLimitation: {type: Boolean, default: false}, 
-			dragSticks: {type: Array, default: () =>{return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']}}, //тягальщики
+			dragSticks: {type: Array, default: () =>{return ['tl', 'tm-l', 'tr', 'mr-l', 'br', 'bm-l', 'bl', 'ml-l']}}, //тягальщики
 			dragNoLineStyle:{type: Boolean, default: true},
+			noHeader:{type: Boolean, default: false},
 		},
 		computed: {
 			dialogConfigGet(){
@@ -71,28 +70,28 @@
 				return this.buttons.filter(row =>  row.allig != 'left' )
 			},
 			width(){
-				return this.widthOrig>document.documentElement.clientWidth-100? document.documentElement.clientWidth-100:this.widthOrig;
+				return this.widthOrig>this.$vuetify.breakpoint.width-100? this.$vuetify.breakpoint.width-100:this.widthOrig;
 			},
 			height(){
-				return this.heightOrig>document.documentElement.clientHeight-100? document.documentElement.clientHeight-100:this.heightOrig;
+				return this.heightOrig>this.$vuetify.breakpoint.height-100? this.$vuetify.breakpoint.height-120:this.heightOrig;
 			},
 			x(){
-				return (document.documentElement.clientWidth-this.width)/2
+				return (this.$vuetify.breakpoint.width-this.width)/2
 			},
 			y(){
-				return (document.documentElement.clientHeight-this.height)/2
+				return (this.$vuetify.breakpoint.height-this.height)/2
 			},
 		},
-        components: {
-            cDragResize
+		components: {
+			cDragResize
 		},
 		mixins: [
 			XStore,
 		],
 		methods: {
-            changeSize(newRect) {
+			changeSize(newRect) {
 				let vm=this
-				vm.heightSlot = newRect.height-130+'px';
+				vm.heightSlot = newRect.height-(vm.noHeader?0:130)+'px';
 			},
 			buttonClick(button){
 				let vm=this
@@ -114,5 +113,5 @@
 		mounted: function (){
 			this.changeSize({height:this.height,width:this.width})
 		},
-    }
+	}
 </script>

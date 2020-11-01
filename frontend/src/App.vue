@@ -1,6 +1,6 @@
 <template>
 	<c-app :curentSystem="curentSystem" :panelLeft="{show:true, color:'accent', slotAppend:true }"  :panelRight="{show:false}"  >
-		<template v-slot:panelLeft>
+		<template #panelLeft>
 
 			<v-divider class="mb-1" />
 
@@ -17,7 +17,7 @@
 				</v-list-item>
 			
 				<v-list-group v-else :color="linkColor"	>
-					<template v-slot:activator>
+					<template #activator>
 						<v-list-item-avatar	class="align-self-center"	contain	height="30"	>
 							<v-icon v-text="'account_circle'"	/>
 						</v-list-item-avatar>
@@ -50,19 +50,20 @@
 					</v-list-item>
 				</v-list-group>
 			</v-list>
+
 			<v-divider class="mb-2" />
-			
+		
 			<v-treeview  v-bind="lightSet" dense  hoverable  :color="linkColor" :items="linksTree" :open="linkOpenPath"  open-on-click id = 'treeSystemLink'  >
-				<template v-slot:label="{ item }">
+				<template #label="{ item }">
 					<router-link v-if="item.href_link!='' " :to="item.href_link" exact >{{item.link_name}}</router-link>
 					<template v-else>
 						{{item.link_name}}
 					</template>
 				</template>
-				<template v-slot:prepend="{ item, open }">
-					<router-link v-if="item.href_link!='' " :to="item.href_link" exact tag="div"  v-slot="{ navigate, isExactActive }" >
+				<template #prepend="{ item, open }">
+					<router-link v-if="item.href_link!='' " :to="item.href_link" exact tag="div"  v-slot="{ navigate, isActive, isExactActive  }" >
 						<div @click="navigate">
-							<v-icon  :class="[ isExactActive? 'router-link-exact-active-icon' : '' ]">
+							<v-icon  :class="[ (isActive || isExactActive ) && 'router-link-exact-active-icon' ]">
 								{{ item.children? (open ? 'folder_open' : 'folder') :'dashboard'  }}
 							</v-icon>
 						</div>
@@ -72,9 +73,12 @@
 					</v-icon>				
 				</template>
 			</v-treeview>
+			
+			<v-divider class="mb-2" />	
+			
 		</template>		
 		<v-skeleton-loader v-if="profileUserName==''" class="pa-3" :width="sceletSize.width-12*2" :height="sceletSize.height-12*2"	type="button,  divider, list-item, table"/>
-		<transition v-else>
+		<transition v-else name="app-transition">
 			<keep-alive>
 				<router-view/>
 			</keep-alive>
@@ -87,7 +91,7 @@
 	export default {
 		data: () => ({
 			layoutsConfigs: { //'horizontal' - внутри будут строки,  'vertical' - внутри будут столбики;  Последнему слою выставлять размер бессмысленно
-				name: 'main'
+				name: 'mainLayout'
 			}, 
 			systemLinks:[],
 			linksTree: [],
@@ -102,7 +106,7 @@
 				return this.$vuetify.theme.dark? 'black': 'white'
 			},
 			sceletSize(){
-				return this.layoutSizePxByName('main','main')
+				return this.layoutSizePxByName('mainLayout','mainLayout')
 			},
 			/*linkOpenPath(){
 				let vm =this, res = []
@@ -168,4 +172,9 @@
 #treeSystemLink a {color:inherit;}
 #treeSystemLink a.router-link-exact-active { font-weight: bold; }
 #treeSystemLink i.router-link-exact-active-icon { text-decoration: underline; -webkit-text-decoration-skip: ink;    text-decoration-skip-ink: auto;}
+.app-transition-enter-active,
+.app-transition-leave-active {  transition-property: opacity;  transition-duration: 0.25s;}
+.app-transition-enter-active {  transition-delay: 0.25s;}
+.app-transition-enter,
+.app-transition-leave-active {  opacity: 0;}
 </style>

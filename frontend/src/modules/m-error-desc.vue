@@ -1,5 +1,5 @@
 <template>
-	<c-dialog :dialogId="dialogId" :widthOrig="dialogConfigGet.width" :heightOrig="dialogConfigGet.height" :buttons='buttons' >
+	<c-dialog :dialogId="dialogId" :widthOrig="dialogConfigGet.width" :heightOrig="dialogConfigGet.height" :buttons="dialogButtons" >
 		<v-expansion-panels class="overXAutoLi" v-model="panel" multiple >
 			<v-expansion-panel>
 				<v-expansion-panel-header :style="'user-select: text;'">
@@ -21,7 +21,7 @@
 
 <script>
 	import XStore from '../mixins/x-store'
-	import CDialog from '../components/c-dialog';
+	import XModal from '../mixins/x-modal'
 	export default {
 		name:'m-error-desc',
 		data: () => ({
@@ -34,27 +34,8 @@
 				{id:-1, title:'$vuetify.system.simple.actions.close', icon:'close', allig:'right', click:'dialogClose'}
 			] }},
 		},
-		computed: {
-			buttons() {
-				let vm=this
-				let tmp = [], buttons=vm.dialogButtons
-				buttons.forEach((row)=> { tmp.push({...row, disabled: ( row.needCheck==true && !vm.inputsValid ? true :false ) }) })
-				return tmp
-			},
-			dialogConfigGet(){
-				let vm=this
-				return vm.dialogConfig(vm.dialogId)
-			},
-			dialogParamsGet(){
-				let vm=this
-				return vm.dialogParams(vm.dialogId)
-			},
-		},
-		components: {
-			CDialog,
-		},
 		mixins: [
-			XStore,
+			XStore, XModal,
 		],
 		methods: {
 		},

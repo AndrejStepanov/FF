@@ -8,18 +8,18 @@ export default {
 		filters:{},
 	},
 	getters: { // computed properties
-		getGroupInput: state=> form=>{
+		getGroupInputs: state=> form=>{
 			return $h.nvl(state.inputs[form],{})
 		},
-		getGroupFilter: state=> form=>{
+		getGroupFilters: state=> form=>{
 			return $h.nvl(state.filters[form],{})
 		},
 	},
 	actions:{	
 		async doInit({commit},{form,params, type}){	// jshint ignore:start
 			params=params||[]  
-			type=type||'inputs'
-			if (type == 'inputs')
+			type=type||'input'
+			if (type == 'input')
 				commit("allInputsConfigSet",{ form, inputs: params.reduce((res, row) => ({ 
 						...res, [row.code]:{...row,}  
 					}  
@@ -32,12 +32,12 @@ export default {
 		}, // jshint ignore:end
 	},
 	mutations:{
-		allInputsConfigSet(state, {form,inputs, }){
+		allParamsConfigSet(state, {form,inputs, }){
 			console.log('allInputsConfigSet',state, form, inputs);
 			Vue.set(state.inputs, form, inputs)
 		},
 		allFiltersConfigSet(state, {form,filters, }){
-			console.log('allFiltersConfigSet',state, form, filters);
+			console.log('allInputsConfigSet',state, form, filters);
 			Vue.set(state.filters, form, filters)
 		},
 

@@ -1,7 +1,10 @@
 <script>
+	import XStore from '../mixins/x-store'
 	export default {
 		data: () => ({
+			dialogRes:null,
 			dialogIdOpened:0,
+			dialogNameOpened:'',
 			dialogModule:'',	
 			dialogsConfig: {
 				/* оставил для примера, в результирующей компоненте должна быть описана эта структура
@@ -15,24 +18,35 @@
 				*/
 			},	
 		}),
+		computed: {
+		},
+		mixins: [
+			XStore,
+		],
 		methods: {
 			dialogIsShowen(dialogId){return this.dialogIsShow(dialogId)},	
-			dialogShow(dialogId){
+			openDialog({dialogId, name}){
 				let vm=this
-				vm.dialogSelect(dialogId)
+				if( this.$h.nvl(dialogId)=='' &&  this.$h.nvl(name)=='')
+					vm.$h.showMsg(  vm.$h.getErrDesc('noDialogInitId'))
+				if (this.$h.nvl(name)=='')
+					for ( let configName in vm.dialogsConfig)
+						if(vm.dialogsConfig[configName].id==dialogId )
+							name=configName
+				if(vm.dialogsConfig[name] == undefined )
+					vm.$h.showMsg(  vm.$h.getErrDesc('noDialogOpen'))
+				dialogId=vm.dialogsConfig[name].id
+				if(vm[name+'_getParams']!=undefined)
+					vm.dialogSetParamByName({id:dialogId, params: vm[name+'_getParams']()   }  )
+				vm.dialogIdOpened= dialogId 
+				vm.dialogModule=vm.dialogsConfig[name].module||'m-input-fields'
 				vm.dialogShowChange({id:dialogId, isShow:true}  )
 			},
-			dialogSelect(dialogId){//что бы инициализировать компоненту шблонного окна
-				let vm=this, res=0
-				vm.dialogIdOpened=dialogId
-				for ( let name in vm.dialogsConfig)
-					if(vm.dialogsConfig[name].id==dialogId ){
-						res=1
-						vm.dialogModule=vm.dialogsConfig[name].module||'m-input-fields'
-						break
-					}
-				if(res==0)
-					vm.$h.showMsg(  vm.$h.getErrDesc('noDialogOpen'));
+			saveDialog({id,payload}){
+				let vm=this,
+					name = vm.dialogById(id).config.name
+				if(vm[name+'_saveDialog']!=undefined)
+					vm[name+'_saveDialog'](payload)
 			},
 		},
 		created: function (){

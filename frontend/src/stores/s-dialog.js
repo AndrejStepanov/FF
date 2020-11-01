@@ -35,6 +35,8 @@ export default {
 				return
 			}
 			config.persistent=config.persistent||true
+			//config.width=config.width||500
+			//config.height=config.height||500
 			commit('adding',{config, params})
 		},
 		async doShowChange({commit,getters,state},{id,name, isShow}){

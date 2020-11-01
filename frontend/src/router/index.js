@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueScrollTo from 'vue-scrollto'
 import PMainTest from '@/pages/p-main-test'
 import PObjectView from '@/pages/p-object-view'
 import PObjectWork from '@/pages/p-object-work'
+import pTestArm from '@/pages/p-test-arm'
 /*import Login from '@/components/Login'
 import Register from '@/components/Register'
 import UserBoard from '@/components/UserBoard'
@@ -17,7 +19,15 @@ let router = new Router({
 		//{	path: '/login',					name: 'p-main-test',	component: PMainTest,	meta: {	linkId:, guest: true	}	},
 		{	path: '/Работа с объектами',	name: 'p-object-work',	component: PObjectWork,	meta: {	linkId:2, requiresAuth: true	}	},
 		{	path: '/Просмотр объектов',		name: 'p-object-view',	component: PObjectView,	meta: {	linkId:3, requiresAuth: true,	isAdmin: true}	},
-	]
+		{	path: '/Тестовый арм',			name: 'p-test-arm',		component: pTestArm,	meta: {	linkId:4, requiresAuth: true,	}	},
+	],
+	scrollBehavior(to, from, savedPosition) {
+		if (savedPosition) {
+			VueScrollTo.scrollTo("#app", 500, { offset: savedPosition.y })
+			return savedPosition
+		} else 
+		VueScrollTo.scrollTo("#app")
+	},
 })
 
 router.beforeEach((to, from, next) => {

@@ -1,6 +1,6 @@
 <template>
   <div :class="classnames" :style="{ width:configSizes.width+'px', height:configSizes.height+'px' }" :name='name' >
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
