@@ -32,7 +32,7 @@
 											:multi-line="isMultiLine" :tabindex="sortSeq" :type="getComponentType"  :color="checkBoxColor" :id="id" :loading="isLoading"
 											:always-dirty="isSliderLike" :persistent-hint="isSliderLike" :thumb-label="thumbLabelNeed" :ticks="ticksNeed?'always':''" :tickSize="tickSize" :thumb-size="thumbSize" :tick-labels="tickLabels"
 											:append-icon="getAppendIcon" :clearable="getClearable" :vMask="vMask"  :min="min" :max="max" :step="step" 
-											@keyup.enter="submit"  @blur="onBlur" @focus="onFocus" dense >
+											@keyup.enter="submit"   dense > <!-- @blur="onBlur" @focus="onFocus" почему то срабатывает даже когда не уже не отображаеся -->
 										<template v-if="!isNumeric"	#thumb-label="props">
 											<span> {{ getTitleByNum(props.value) }} </span>
 										</template>
@@ -141,14 +141,14 @@
 										<div  :style="getDialogMainDivStyle" class='position--relative' >
 											<c-table tableTitle="$vuetify.system.modals.valSelect.title" :searchNeed="true" :headers="tabHeader"	:items="tabValues" v-model="tabSelectedRows"  ref="table"  
 												:vDataTableProp="{showSelect:true, singleSelect:!multy}"  withRowNum	:height="getDialogMainDivHeight"  :loading="tabLoading"
-												@dblclick:row="saveDialog(tabSelectedRows)"
+												@dblclick:row="saveDialog($event)"
 											/>
 										</div>
 										<v-divider></v-divider>
 										<v-toolbar dense >	
 											<v-spacer/>
 											<v-btn small class="accent"  @click="isDialog = false">{{ $vuetify.lang.t('$vuetify.system.simple.actions.cancel') }} &nbsp;<v-icon>close</v-icon> </v-btn>
-											<v-btn small class="accent ma-1"  @click="saveDialog(tabSelectedRows)"><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
+											<v-btn small class="accent ma-1"  @click="saveDialog(tabSelectedRows)" :disabled="tabSelectedRows.length==0"   ><v-icon>save</v-icon>&nbsp; {{ $vuetify.lang.t('$vuetify.system.simple.actions.accept') }} </v-btn>
 										</v-toolbar>
 									</template>
 								</v-dialog>
@@ -164,9 +164,9 @@
 </template>
 
 <script>
-	import XStore from '../mixins/x-store'
-	import CTimePicker from './c-time-picker'
-	import CLoading from './c-loading'
+	import XStore from '@/mixins/x-store'
+	import CTimePicker from '@/components/c-time-picker'
+	import CLoading from '@/components/c-loading'
 	import {VSelect,VSlider,VRangeSlider,VTextarea } from 'vuetify/lib' //из-за хитрого загрузчика, который анализирует только шаблон, динамические окмпоененты приходится импортировать руками. иначе они не подгрузятся
 	
 	export default {
@@ -524,11 +524,15 @@
 				get:function()	{
 					let vm=this,
 						tmp =vm.paramData.value
+					console.log('value', vm.code, tmp);
 					if ( !vm.$h.nvl(vm.isNeedResetVal, false))
 						return tmp
+					else if (vm.type=='BOOL')
+						tmp= vm.$h.nvl(tmp,false)
 					else if(vm.isDateTimeLike && !vm.multy && vm.valueArr.length>0  && tmp==null)
 						if(['DATE', 'TIME', 'DATETIME'].indexOf(vm.type)!=-1)
 							tmp = vm.valueArr[0]
+					console.log('value', vm.code, tmp);
 					vm.setValue(tmp, false)
 					return tmp
 				},
@@ -696,7 +700,7 @@
 			},
 		},
 		components: {
-			CTable: (resolve) =>{ require(['./c-table.vue'], resolve) },
+			CTable: (resolve) =>{ require(['@/components/c-table.vue'], resolve) },
 			VSelect,VSlider,VRangeSlider,VTextarea,CTimePicker,CLoading
 		},
 		mixins: [
@@ -882,15 +886,18 @@
 					curTime = new Date().getTime()
 				if ( curTime<vm.lastTimeClick+500 )//для автоматической активации полей над ними висит следилка. что бы она не работала лишний раз - глушим ее
 					return
-				console.log(vm.code, 'onClick',vm.isNeedTab, vm.isAuto);
+				console.log(vm.code, 'onClick',vm.isNeedTab, vm.isAuto, vm.value);
 				vm.lastTimeClick=curTime
 				vm.checked=true
 				vm.getDataFromServiceGiven().then( response =>{
 					if(vm.isWithDialog && (vm.isDateTimeLike || vm.isAuto)){
 						vm.isDialog=true
 					}
-					else
-						setTimeout(()=>{vm.$refs.input.onClick(e)},100)	
+					else 				
+						if(vm.type=='BOOL')
+							vm.onInput(!vm.value)
+						else
+							setTimeout(()=>{vm.$refs.input.onClick(e)},100)	
 				})
 			},
 			onFocus(){
@@ -1029,32 +1036,36 @@
 							args[arg]= args[arg].replace(new RegExp('{{'+field+'}}','g'), value)
 						}
 					}
-				try{
-					if(vm.$h.nvl(param.script)!=''){
-						return new Promise((resolve, reject) => {
-							let script = param.script
-							if(script ==  'listToArrObj')
-								script = 'return args.list.split(\';\').filter((row)=>row!=\'\').map(row=>{ let arr = row.split(\'::\'); return {value:arr[0], text:$h.nvl(arr[1], arr[0]) } } )'
-							response= (new Function('args', '$h', script) ) (args, vm.$h)
-							if(vm.$h.nvl(arrName)!='')
-								vm.paramSet( {form: vm.paramsForm, code:vm.code, data:{[arrName]:response}  })
-							vm.loading--
-							resolve(response);
-						});
+				if(vm.$h.nvl(param.script)!=''){
+					try{
+						vm.loading++
+						let script = param.script
+						if(script ==  'listToArrObj')
+							script = 'return args.list.split(\';\').filter((row)=>row!=\'\').map(row=>{ let arr = row.split(\'::\'); return {value:arr[0], text:$h.nvl(arr[1], arr[0]) } } )'
+						response= (new Function('args', '$h', script) ) (args, vm.$h)
+						console.log(response, arrName);
+						if(vm.$h.nvl(arrName)!='')
+							vm.paramSet( {form: vm.paramsForm, code:vm.code, data:{[arrName]:response}  })
+						vm.loading--
 					}
-					if(vm.$h.nvl(param.name)=='' )
-						return {}
-					response= await vm.$h.sendRequest({href:vm.$h.dataCommandHref, type:param.name, data: args })
-					console.log('getDataFromservice', arrName, vm.paramData.services,'response',response);
-					if(vm.$h.nvl(arrName)!='')
-						vm.paramSet( {form: vm.paramsForm, code:vm.code, data:{[arrName]:response.data}  })
+					catch(error){
+						vm.loading--
+						throw error
+					}
 					vm.loading--
-					return vm.$h.nvl(response.data,[])
+					return response
 				}
-				catch{
+				if(vm.$h.nvl(param.name)=='' ){
 					vm.loading--
 					return {}
 				}
+				response= await vm.$h.sendRequestForData({href:vm.$h.dataCommandHref, method:vm.$h.dataCommandMetod, data:{ socetEvent:param.name, ...args}, needLoadingNum:'loading' }, vm)
+				console.log('getDataFromservice', arrName, vm.paramData.services,'response',response);
+				if(vm.$h.nvl(arrName)!='')
+					vm.paramSet( {form: vm.paramsForm, code:vm.code, data:{[arrName]:response}  })
+				vm.loading--
+				return vm.$h.nvl(response,[])
+
 			},
 		},
 		created: function (){

@@ -1,5 +1,5 @@
 <template>
-	<c-layouts-slots :layoutsConfigs="layoutsConfigsCur" :layoutName="$h.camelize($options.name)" :parentLayoutName="parentLayoutName"  >
+	<c-layouts-slots :layoutsConfigs="layoutsConfigsCur" :layoutName="componentName" :parentLayoutConfig="parentLayoutConfig"  >
 		<template #fourth  >
 			<H1>fourth</H1> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 		</template>
@@ -31,7 +31,7 @@
 
 </template>
 <script>
-	import XPage from '../mixins/x-page'
+	import XPage from '@/mixins/x-page'
 	export default {
 		name:'p-main-test',
 		data: () => ({

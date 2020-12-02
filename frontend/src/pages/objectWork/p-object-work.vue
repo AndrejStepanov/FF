@@ -1,5 +1,5 @@
 <template>
-	<c-layouts-slots :layoutsConfigs="layoutsConfigsCur" :layoutName="$h.camelize($options.name)" :parentLayoutName="parentLayoutName"  >
+	<c-layouts-slots :layoutsConfigs="layoutsConfigsCur" :layoutName="componentName" :parentLayoutConfig="parentLayoutConfig"  >
 		<template #second  >
 			<div class='display--flex flex-direction--column height--100pr'>
 				<v-text-field id="treeSearch" name="treeSearch" class="check-size flex--inherit" append-icon="search" v-model="treeSearch"  single-line :label="$vuetify.lang.t('$vuetify.system.simple.actions.search')" @keyup.enter="treeSearchSubmit"/>
@@ -18,9 +18,8 @@
 
 </template>
 <script>
-	import XDialog from '../mixins/x-dialog'
-	import CTree from '../components/tree/c-tree'
-	import XPage from '../mixins/x-page'
+	import CTree from '@/components/tree/c-tree'
+	import XPage from '@/mixins/x-page'
 	export default {
 		name:'p-object-work',
 		data: () => ({
@@ -36,7 +35,7 @@
 			dialogsConfig: {
 				treeAdd:{
 					id:-1,  title:"$vuetify.objectWork.modals.treeAdd.title", module:'m-input-fields', 
-					params:{ socetHref:"/data_command", socetEvent:"object.tree.add",  inputGroup:'pObjectWorkTreeAdd'}, 
+					params:{ href:"api/data_command", method:'post', socetEvent:"object.tree.add",  inputGroup:'pObjectWorkTreeAdd'}, 
 				},
 			},
 			inputsConfig:{
@@ -51,7 +50,7 @@
 			CTree,
 		},
 		mixins: [
-			XDialog, XPage,
+			XPage,
 		],
 		methods: {
 			itemClick(node) {
@@ -62,18 +61,18 @@
 				return;
 			},
 			treeAdd_getParams(){
-				return {treeId: this.treeSelectedId, checkFunc:this.treeAdd_check}
+				return {todoExt:{treeId: this.treeSelectedId}, }
 			},
-			treeAdd_check(params){
+			treeAdd_checkTodo(params){
 				let vm=this
 				console.log(params.treeId);
 				if(params.obj_level.value=='inside' && vm.$h.nvlo(params.treeId)==0  )
 					vm.$h.showMsg(vm.$h.getErrDesc('withAddNestElem') );
+				return true
 			},
 		},
 		created: function (){
 			//let vm = this
-			console.log(this.$vuetify);
 		},
 	}
 </script>

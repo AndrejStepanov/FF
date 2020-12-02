@@ -12,19 +12,19 @@ export default {
 	},
 	getters: { // computed properties
 		getByHead: state => head => {
-			return $h.nvl(state.struct[head], null )
+			return $h.nvlo(state.struct[head], null)
 		},
-		getDescByHead: state => head => {
-			return $h.nvl(state.structDesc[head] )
+		getDescByHead: (state) => head => {
+			return $h.nvlo(state.structDesc[head] )
 		},
-		getDescByName: state => (head,name) => {
-			return $h.nvl(state.structDesc[head][name] )
+		getDescByName: (state,getters) => (head,name) => {
+			return $h.nvlo(getters.getDescByHead(head)[name] )
 		},
 		getSizePxByHead: state => head => {
-			return $h.nvl(state.structSizePx[head] )
+			return $h.nvlo(state.structSizePx[head] )
 		},
-		getSizePxByName: state => (head,name) => {
-			return $h.nvl(state.structSizePx[head][name] )
+		getSizePxByName: (state,getters) => (head,name) => {
+			return $h.nvlo(getters.getSizePxByHead(head)[name] )
 		},
 		getLink: state => (head) => {
 			return $h.nvl(state.structLink[head])
@@ -43,13 +43,21 @@ export default {
 					e.push(child)
 			return e
 		},
+		getLinkChildsFromArr: state => (head,nameArr) => {
+			let e = [], parentArr = nameArr.map(row=> head+$h.linkSep+row )
+			for (let child in state.structLink)
+				if(parentArr.indexOf(state.structLink[child])!=-1)
+					e.push(child)
+			return e
+		},
 	},
 	actions:{
 		async doInit({dispatch,commit,getters,state},structs){
 			commit('structClear',{ head:Object.keys(structs)[0] , })
 			commit('structSetting',{ head:Object.keys(structs)[0] ,structs, })
-			var structParse = ({ head, config,parent='', parentLayout='', num=0, prevResizable='', lastLayout=''})=>{
-				let tmp ={}, resizableLast = '', resizableLastNum = 0, resizableNext = '', resizable='resizable' in config? config.resizable: true
+			let tmp ={}
+			var structParse = ({ head, config, parent='', parentLayout='', num=0, prevResizable='', lastLayout=''})=>{
+				let resizableLast = '', resizableLastNum = 0, resizableNext = '', resizable='resizable' in config? config.resizable: true
 				config.layout=(config.layout||'').toLowerCase()
 				config.cssClass=config.cssClass||''
 				if( $h.typeOfObject(config.cssClass)!='string'  ){
@@ -66,11 +74,9 @@ export default {
 				config.height=config.height||'100%'
 				if(config.data!=undefined && config.data.length){
 					if(['horizontal', 'vertical'].indexOf(config.layout)==-1 ) //'horizontal' - внутри будут строки,  'vertical' - внутри будут столбики;
-						$h.showMsg(  {...$h.getErrDesc('layoutWrongLayout'), msgParams:[config.layout] } )
+						$h.showMsg(  {...$h.getErrDesc('layoutWrongLayout'), textParams:[config.layout] } )
 					config.data.forEach((element,idx) => {
-						if($h.nvlo(tmp[element.name],'')!='')
-							$h.showMsg(  {...$h.getErrDesc('layoutDublicateNames'), msgParams:[head, element.name] } )
-						tmp={...tmp, ...structParse( {head, config:element, parent:config.name, parentLayout:config.layout,  num:idx,	prevResizable: resizableLast, lastLayout:config.data[ config.data.length-1 ].name } ) }
+						structParse( {head, config:element, parent:config.name, parentLayout:config.layout,  num:idx,	prevResizable: resizableLast, lastLayout:config.data[ config.data.length-1 ].name } )
 						if( tmp[element.name].resizable)
 							resizableLast = element.name
 					})
@@ -91,15 +97,16 @@ export default {
 						}
 					})
 				}
-				if($h.nvlo(tmp[config.name],'')!='')
-					$h.showMsg(  {...$h.getErrDesc('layoutDublicateNames'), msgParams:[head, config.name] } )
-				return  {
+				if(tmp[config.name]!=undefined)
+					$h.showMsg(  {...$h.getErrDesc('layoutDublicateNames'), textParams:[head, config.name] } )
+				tmp = {
 					[config.name]:{
 						...config,  parent,  parentLayout: $h.nvl(parentLayout, config.layout), lastLayout, changeLayout:resizable?config.name:prevResizable , changeLayoutNext:'',
 						balanceLayout:'',  num, resizable , childBalance:resizableLast
 					},
 					...tmp
 				}
+				return tmp
 			}
 			for (let struct in structs){
 				commit('structDescSetting',{ head:struct, struct:structParse({head:struct, config:structs[struct]}),  }) 
@@ -113,7 +120,7 @@ export default {
 				res={[changeName]:{}, [balanceName]:{},},
 				link =getters.getLinkObj([head]),
 				container = state.structDesc[head][changeName].parent!=''? state.structSizePx[head][ state.structDesc[head][changeName].parent ] : 
-					$h.nvlo(link)!='' ? state.structSizePx[link.head][link.changeName] : 
+					$h.nvlo(link,'')!='' ? state.structSizePx[link.head][link.changeName] : 
 					state.structDesc[head][changeName].pxInit,
 				isPx= {cur: state.structDesc[head][changeName][curAttr].toLowerCase().indexOf('px')>0, bal:  state.structDesc[head][balanceName][curAttr].toLowerCase().indexOf('px')>0 },
 				sizeOrig =  state.structSizePx[head][changeName][curAttr]+$h.layoutSepSize,
@@ -143,8 +150,11 @@ export default {
 			await dispatch('doSizePxRecalc',{head,  name:state.structDesc[head][changeName].parent })
 		},
 		async doSizePxRecalc({dispatch,commit,getters,state},{head, name, parentSizePx}){
+			let namesNeedRecalc={}
 			name=name||state.struct[head].name
 			parentSizePx= parentSizePx|| state.structSizePx[head] [ (name == state.struct[head].name ? name: state.structDesc[head][name].parent  ) ]
+			if(state.structDesc[head]==undefined || state.structDesc[head][name]==undefined)
+				return
 			if(state.structDesc[head][name].parent=='')
 				state.structDesc[head][name].pxInit = parentSizePx							
 			let structSizer = async ({cur, parentSize})=>{
@@ -153,6 +163,7 @@ export default {
 					height: cur.height.toLowerCase().indexOf('px')>0 ? parseFloat(cur.height) : parseFloat(cur.height)/100 *parseFloat(parentSize.height) ,
 				}
 				commit('structSizePxSetting',{ head, name:cur.name, size:res }) 
+				namesNeedRecalc[cur.name]=true
 				if(cur.data!=undefined && cur.data.length){
 					for( let idx=0, element={}; idx<cur.data.length; idx++  ){ //ForEach ведет себя асинхронно для асинхронных функций.
 						element = cur.data[idx]
@@ -166,13 +177,14 @@ export default {
 						correct[curAttr=='width'?'height' : 'width']=state.structDesc[head][cur.childBalance][curAttr=='width'?'height' : 'width']
 						commit('structSizeSetting',{head, name:cur.childBalance, size:correct })
 						await dispatch('doSizePxRecalc',{head, name:cur.childBalance })
+						namesNeedRecalc[cur.childBalance]=true
 					}
 				}
 			}
-			await structSizer({cur:state.structDesc[head][name], parentSize:parentSizePx})
-			for( let idx=0, data = getters.getLinkChilds(head, name), row={}; idx<data.length; idx++  ){
-				row = data[idx]
-				await dispatch('doSizePxRecalc',{head:row,  parentSizePx})
+			await structSizer({cur:state.structDesc[head][name], parentSize:parentSizePx})		
+			for( let idx=0, data = getters.getLinkChildsFromArr(head, Object.keys(namesNeedRecalc) ); idx<data.length; idx++  ){
+				let tmp = state.structLink[ data[idx] ].split($h.linkSep)
+				await dispatch('doSizePxRecalc',{head:data[idx],  parentSizePx: state.structSizePx[ tmp[0] ][ tmp[1] ]  })
 			}
 		},
 		async doSizePxChange({commit,getters,state},{head, name, attr, val}){

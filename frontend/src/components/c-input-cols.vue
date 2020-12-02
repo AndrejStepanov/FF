@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import CInput from './c-input';
+    import CInput from '@/components/c-input';
 
     export default {
 		name:'c-input-cols',

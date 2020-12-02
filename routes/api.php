@@ -22,10 +22,10 @@ Route::middleware('auth:api')->match(['get', 'post'],'/user/logout', function (R
 	$token->revoke();
 	return 'sucsess';
 });
-Route::post('systemLinks','API\SystemLinksController@index')->middleware('auth:api');
+Route::middleware('auth:api')->group( function () {  Route::resource('systemLinks','API\SystemLinksController'); });
 
-Route::middleware('auth:api')->group( function () {  Route::resource('TestArm', 'API\TestArmController'); });
+Route::middleware('auth:api')->group( function () {  Route::resource('testArms', 'API\TestArmController'); });
 
-Route::post('data_command','DataCommandController@reciveCommand')->middleware('auth:api');
-Route::post('socet_command','SocetCommandController@reciveCommand')->middleware('auth:api');
+Route::post('data_command','API\DataCommandController@reciveCommand')->middleware('auth:api');
+Route::post('socet_command','API\SocetCommandController@reciveCommand')->middleware('auth:api');
 //Route::middleware('auth:api')->match(['get', 'post'],'/systemLinks', 'API\SystemLinksController');

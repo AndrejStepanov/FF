@@ -2,16 +2,26 @@
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\Models\TestArm;
+use App\Models\testArm;
+use App\Models\User;
 use Validator;
 class TestArmController extends BaseController{
+	public function __construct(){
+		$this->testArms=(new testArm())->getTable();
+		$this->Users=(new User())->getTable();
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request)	{
-		$testArms = TestArm::all();
+		 $testArms = 
+			testArm::select( $this->testArms.'.*', 'u1.name as user_name')
+				->LeftJoin($this->Users.' as u1', 'u1.id', '=', $this->testArms.'.user_id')
+			//->where('o1.obj_path', 'like', 'Тестовая система%')
+			//->orderBy('obj_path')
+			->get();
 		return $this->sendResponse($testArms->toArray(), 'TestArms retrieved successfully.');
 	}
 	/**

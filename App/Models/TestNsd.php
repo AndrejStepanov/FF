@@ -14,7 +14,7 @@ class TestNsd extends Model{
 	public  function sentNsdDataBySet($set){
 		$query =  $this->select('id','param_code as value','param_desc','param_value as text' )->where('set' ,'=',$set)->orderBy('seq_num');	
 		//sleep(3);	 
-		return json_encode( $query->get()->toArray() );
+		return  $query->get()->toArray();
 	}
 }
 ?>

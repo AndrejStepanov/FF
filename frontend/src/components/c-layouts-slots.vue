@@ -1,5 +1,5 @@
 <template>
-	<c-layouts  :name="layoutName" :size="parentLayoutConfig.sizePx">
+	<c-layouts  :name="layoutName" :size="parentLayout.sizePx">
 		<template  v-for="(slotName, index) in slotNames"    v-slot:[slotName]  >
 			<div :key="index" >
 				<slot  :name="slotName" />
@@ -8,8 +8,8 @@
 	</c-layouts>
 </template>
 <script>
-	import CLayouts from './c-layouts'
-	import XStore from '../mixins/x-store'
+	import CLayouts from '@/components/c-layouts'
+	import XStore from '@/mixins/x-store'
 	export default {
 		name:'c-layouts-slots',
 		data:() => ({
@@ -17,12 +17,12 @@
 		}),
 		props:{
 			layoutName:{type:  String, required: true},	
-			parentLayoutName:{type:  String, required: true},	
+			parentLayoutConfig:{type:  Object, required: true},	//head:'', name:''
 			layoutsConfigs:{type:  Object, required: true},	
 		},
 		computed:{
-			parentLayoutConfig(){
-				return this.layoutByHead(this.parentLayoutName)
+			parentLayout(){
+				return this.layoutDescByName(this.parentLayoutConfig.head,this.parentLayoutConfig.name)
 			},
 			slotNames(){
 				let vm=this
@@ -32,7 +32,7 @@
 		watch: {
 			layoutsConfigs(val, valOld){
 				let vm = this
-				vm.layoutInit({[vm.layoutName]:{...val, sizePx:vm.parentLayoutConfig.sizePx}})
+				vm.layoutInit({[vm.layoutName]:{...val, sizePx:vm.parentLayout.sizePx}})
 			},
 		},
 		components: {
@@ -46,8 +46,8 @@
 		},
 		created: function (){
 			let vm = this
-			vm.layoutInit({[vm.layoutName]:{...vm.layoutsConfigs, sizePx:vm.parentLayoutConfig.sizePx}})
-			vm.layoutLinkSet({head:vm.layoutName, parentHead:vm.parentLayoutName, })
+			vm.layoutInit({[vm.layoutName]:{...vm.layoutsConfigs, sizePx:vm.parentLayout.sizePx}})
+			vm.layoutLinkSet({head:vm.layoutName, parentHead:vm.parentLayoutConfig.head,  parentName:vm.parentLayoutConfig.name, })
 		},
 	}
 </script>

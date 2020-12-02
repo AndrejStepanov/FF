@@ -11,19 +11,20 @@ var _curTheme='light',
 	},
 	dateFormatStr = '$3.$2.$1', //2018-10-03 - 1, 2 и 3 цифры
 	dateFormatStrRevert = '$3-$2-$1', //2018-10-03 - 1, 2 и 3 цифры
-	socetCommandHref = '/socet_command',
+	socetCommandHref = '/api/socet_command',
 	dataCommandHref = '/api/data_command',
+	dataCommandMetod = 'post',
 	//primary: '#2c353f', secondary: '#452F41', accent: '#555C3E',
 	sysNumeral=null,
-	vm=null,
+	_vm=null,
 	linkSep = '->', //рзделитель в ссулках на родителя в структуре слоев
 	layoutSepSize = 3, //размер разделителя между слоями
 	layoutMinSize = 30 //минимальный размер слоя
 
-function appThemeInit ({appTheme, curTheme,numeral, _vm}) {
+function appThemeInit ({appTheme, curTheme,numeral, vm}) {
 	_appTheme = appTheme
 	_curTheme = curTheme
-	vm=_vm
+	_vm=vm
 	let styleElt, styleSheet
 	if (document.createStyleSheet)  //Если определен IE API, использовать его
 		styleSheet = document.createStyleSheet()
@@ -41,6 +42,7 @@ function appThemeInit ({appTheme, curTheme,numeral, _vm}) {
 		'.background-accent							{background: '+_appTheme.themes[_curTheme].accent+' !important;} '+ //оранжевый
 		'.background-primary						{background: '+_appTheme.themes[_curTheme].primary+' !important;} '+ //синий
 		'.background-secondary						{background: '+_appTheme.themes[_curTheme].secondary+' !important;} '+ //салатовый
+		'.box-shadow-none							{box-shadow: none !important;} '+ 
 		'.height--100pr 							{height: 100%;} '+
 		'.multipane>div					 			{height: 100%;} '+
 		'.max-height--100pr					 		{max-height: 100%} '+
@@ -66,6 +68,7 @@ function appThemeInit ({appTheme, curTheme,numeral, _vm}) {
 		'button.check-size        				  	{max-width: 90%;   margin-left: 5%;}'+
 		'button.check-size        				  	{min-width: 90% !important; margin-bottom: 10px;}'+
 		'.text-nobr									{white-space: nowrap;}'+
+		'.font-size-standart						{font-size: 13px !important;}'+
 		'td.text-bold,'+
 		'tr.text-bold>td							{font-weight: 700 !important;}'+
 		'td.text-right								{text-align: right;}'+
@@ -124,11 +127,14 @@ function createDictionary (obj, keyVal, keyText, needSort){
 	return tmp
 }
 
+function dateFormatNorm (str){//2018-10-03 12:52 в 03.10.2018
+	return dateFormat(str).substring(0,10)
+}
 function dateFormat (str){//2018-10-03 12:52 в 03.10.2018 12:52
-	return nvl(str,'').replace(/(\d\d\d\d)-(\d\d)-(\d\d)/g, dateFormatStr )
+	return nvl(str,'').replace(/(\d\d\d\d)-(\d\d)-(\d\d)/g, dateFormatStr ).replace('T',' ').substring(0, 19)
 }
 function dateFormatRevert (str ){//03.10.2018 12:52  в  2018-10-03 12:52
-	return nvl(str,'').replace(/(\d\d).(\d\d).(\d\d\d\d)/g, dateFormatStrRevert )
+	return nvl(str,'').replace(/(\d\d).(\d\d).(\d\d\d\d)/g, dateFormatStrRevert ).replace(' ','T').substring(0, 19)
 }
 function validateDate (value){ // проверка даты в формате 03.10.2018 12:52
 	let arr = value.split(' ')[0].split('.');
@@ -144,7 +150,7 @@ function dateTimeNorm (str){
 	if(typeof str != 'string' )
 		return ''
 	let res = str.trim().replace(' ','T').
-	match(/(\d\d\d\d-(0\d|1[0-2])-([0-2]\d|3[0-1])|([0-2]\d|3[0-1]).(0\d|1[0-2]).\d\d\d\d)(T([0-1]\d|2[0-3])(:([0-4]\d|5[0-9]))?(:([0-4]\d|5[0-9]))?)?/g)
+		match(/(\d\d\d\d-(0\d|1[0-2])-([0-2]\d|3[0-1])|([0-2]\d|3[0-1]).(0\d|1[0-2]).\d\d\d\d)(T([0-1]\d|2[0-3])(:([0-4]\d|5[0-9]))?(:([0-4]\d|5[0-9]))?(.*)?)?/g)
 	res =nvl(res,[''])[0]
 	if(res=='')
 		return ''
@@ -157,7 +163,7 @@ function dateTimeNorm (str){
 function timeNorm (str){
 	if(typeof str != 'string' )
 		return ''
-	let res = str.trim().replace(' ','T').match(/(\d\d\d\d-(0\d|1[0-2])-([0-2]\d|3[0-1])T|([0-2]\d|3[0-1]).(0\d|1[0-2]).\d\d\d\dT)?([0-1]\d|2[0-3])(:([0-4]\d|5[0-9]))?(:([0-4]\d|5[0-9]))?/g)
+	let res = str.trim().replace(' ','T').match(/(\d\d\d\d-(0\d|1[0-2])-([0-2]\d|3[0-1])T|([0-2]\d|3[0-1]).(0\d|1[0-2]).\d\d\d\dT)?([0-1]\d|2[0-3])(:([0-4]\d|5[0-9]))?(:([0-4]\d|5[0-9]))?(.*)?/g)
 	res =nvl(res,[''])[0]
 	if(res=='')
 		return ''
@@ -230,32 +236,34 @@ function camelize (str) {
 }
 
 function nvl (val,replace){
-	if(/*val===false ||*/ val===undefined || val===null || val==='' ) return arguments.length ==1? 0: replace; else return val;
+	if(val===undefined || val===null || val==='' ) return arguments.length ==1? 0: replace; else return val;
 }
 
 function nvlo (val,replace){
-	if(!val || val==undefined || val=='' ) return arguments.length ==1? {}: replace ; else return val;
+	if(typeOfObject(val) != 'object' || Object.keys(val).length==0 ) return arguments.length ==1? {}: replace ; else return val;
 }
 
-async function showMsg ({title, text, type, params, msgParams}){
+function systemException({title , text, textParams}) {
+	const error = new Error(title+' | '+text)
+	error.title = title
+	error.text = text
+	error.textParams = textParams
+	return error
+}
+
+function showMsg ({title, text, type, params, textParams, withThrow,}){
 	type=type||'error'
 	params=params||{}
-	msgParams=msgParams||[]
-	let tmp = null, promise = null
-	if( vm == null)
-		do{
-			promise= new Promise(function(resolve, reject) {
-				setTimeout(()=> resolve( vm  )  ,  500)
-			})
-			tmp =  await promise
-			console.log(111);
-		}
-		while(vm == null || tmp == null)	
-	title=vm.$vuetify.lang.t(title)||title
-	text=vm.$vuetify.lang.t(text,...msgParams)||text
-	vm.$store.dispatch('msg/doAdd', {title,text,type, ...params, })  // jshint ignore:line
-	if(type=='error')
-		throw new Error(title+' - '+text)
+	textParams=textParams||[]
+	withThrow= nvl(withThrow,true)
+	if( nvl(_vm)!=0){
+		title=_vm.$vuetify.lang.t(title)||title
+		text=_vm.$vuetify.lang.t(text, ...textParams)||text
+	}
+	if(type!='error' ||  !withThrow && nvl(_vm)!=0)
+		_vm.$store.dispatch('msg/doAdd', {title,text,type, ...params, })  // jshint ignore:line
+	else
+		throw new systemException({ title , text, textParams: textParams.join(' | ') } )
 }
 
 function getErrDesc(errName){
@@ -265,43 +273,70 @@ function getMsgDesc (msgName, type='success'){
 	return {title:'$vuetify.msgs.'+msgName+'.title', text:'$vuetify.msgs.'+msgName+'.text' , type }
 }
 
-async function sendRequest  (params) {
-	let _hrefBackAuth=getLocationParam('auth_href_back'),
-		response=''
-	if(  nvl(params.href)==0  ){
-		showMsg(getErrDesc('noSendAddress') );
-		return
+function openDialogUniversal(params,vm){
+	console.log(params,vm);
+}
+
+async function getDataTable({href,method, data, variable, loadingVar,  loadingVarNum },vm){
+	let param = {href,method, data}
+	loadingVar=loadingVar||''
+	loadingVarNum=loadingVarNum||''
+	if(nvlo(vm,'')==''  )
+		showMsg(  {...getErrDesc('wrongFuncEnterParam'), textParams:['getDataTable', 'vm',  vm ] })
+	if(vm[variable]== undefined  )
+		showMsg(  {...getErrDesc('wrongFuncEnterParam'), textParams:['getDataTable', 'variable',  variable ] })
+	if(nvl(loadingVar)!='')
+		param = {loadingVar, ...param}
+	if(nvl(loadingVarNum)!='')
+		param = {loadingVarNum, ...param}
+	vm[variable]= await vm.$h.sendRequestForData( param, vm )
+}
+async function sendRequestForData(params, vm){
+	return (await sendRequest(params, vm)).data.data
+}
+async function sendRequest  ({href, method, headers, data, needSucess, hrefBack, defaultErr, loadingVar, loadingVarNum, }, vm) {
+	method=method||'get'
+	loadingVar=loadingVar||''
+	loadingVarNum=loadingVarNum||''
+	let _hrefBackAuth=getLocationParam('auth_href_back'), response={}, 	needLoading= loadingVar!='', needLoadingNum= loadingVarNum!=''
+	if(needLoading || needLoadingNum){
+		if(nvlo(vm,'')==''  )
+			showMsg(  {...getErrDesc('wrongFuncEnterParam'), textParams:['sendRequest', 'vm',  vm ] })
+		if( needLoading && vm[loadingVar]== undefined )
+			showMsg(  {...getErrDesc('wrongFuncEnterParam'), textParams:['sendRequest', 'loadingVar',  nvl(loadingVar,'')] })
+		if( needLoadingNum && vm[loadingVarNum]== undefined )
+			showMsg(  {...getErrDesc('wrongFuncEnterParam'), textParams:['sendRequest', 'loadingVarNum',  nvl(loadingVarNum,'')] })
 	}
+	if(  nvl(href)==0  )
+		showMsg(getErrDesc('noSendAddress') )
 	try {
-		response  = await window.axios.post(params.href, {type:params.type, ...params.data,}, { headers:{ accept: 'application/json',  ...nvlo(params.headers, {} ) } }   ) 
-		if(nvl(params.needSucess,'N')=='Y' && response.data!='sucsess'){
+		if(needLoadingNum) vm[loadingVarNum]++; if (needLoading) vm[loadingVar]=true;
+		response  = await window.axios({														//GET 			/photos 				index 		photos.index
+			method: method,																		//GET 			/photos/create 			create 		photos.create
+			url: href,																			//POST 			/photos 				store 		photos.store
+			headers: { accept: 'application/json',  ...nvlo(headers, {} ) },					//GET 			/photos/{photo} 		show 		photos.show
+			params: method=='get'?data:{},														//GET 			/photos/{photo}/edit 	edit 		photos.edit
+			data: method!='get'?data:{},														//PUT/PATCH 	/photos/{photo} 		update 		photos.update
+		})																						//DELETE 		/photos/{photo} 		destroy 	photos.destroy
+		if(nvl(needSucess,'N')=='Y' && response.data!='sucsess')
 			showMsg( getErrDesc('requestRefused') )
-			throw new Error('')
-		}
-		if(nvl(params.hrefBack)!='')
-			window.location.href = decodeURIComponent( params.hrefBack)
-		if(['/login','/register'].indexOf(params.href)!=-1 && _hrefBackAuth!=null)
+		if(nvl(hrefBack)!='')
+			window.location.href = decodeURIComponent( hrefBack)
+		if(['/login','/register'].indexOf(href)!=-1 && _hrefBackAuth!=null)
 			window.location.href = decodeURIComponent(_hrefBackAuth)
-		if(params.handlerMust )
-			params.handlerMust()
-		if(params.handler )
-			params.handler(response)
-		return response
 	} catch (error) {
 		console.log(error)
 		let r = nvlo(error.response)
-		if(params.handlerMust )
-			params.handlerMust()
-		if(params.handlerErr )
-			params.handlerErr()
-		if( nvlo(r.data).message=='Unauthenticated.'){
+		if( nvlo(r.data).message.indexOf("The provided authorization grant")==0) // почему то сервер возращает такой ответ при неверном логине/пароле
+			[r.data.title, r.data.message] = ['$vuetify.errors.withLogIn.title', '$vuetify.errors.withLogIn.text']
+		if( nvlo(r.data).message=='Unauthenticated.')
 			[r.data.title, r.data.message] = ['$vuetify.errors.needAuth.title', '$vuetify.errors.needAuth.text']
-			setTimeout(()=>{window.location.href ="\\auth?auth_href_back="+window.location.href }, 1000)
-		}
-		showMsg({ title: nvlo(r.data).title||nvlo(params.default).title||'$vuetify.errors.requestFaild.title'  , text:nvlo(r.data).message||nvlo(params.default).text||'$vuetify.errors.requestFaild.text',
-			'params': {status:r.status, trace:nvlo(r.data).trace, file:nvlo(nvl(error.response).data).file, line:nvlo(r.data).line}, })
-		throw new Error(error)
+		if (needLoading) if(needLoadingNum) vm[loadingVarNum]--; else	vm[loadingVar]=false;
+		showMsg({ title: nvlo(r.data).title||nvlo(defaultErr).title||'$vuetify.errors.requestFaild.title'  , text:nvlo(r.data).message||nvlo(defaultErr).text||'$vuetify.errors.requestFaild.text',
+			params: {status:r.status, trace:nvlo(r.data).trace, file:nvlo(nvl(error.response).data).file, line:nvlo(r.data).line}, })
 	}
+	finally{if(needLoadingNum) vm[loadingVarNum]--; if (needLoading) vm[loadingVar]=false;}
+	return response
 }
 
 export default { 
@@ -313,6 +348,7 @@ export default {
 	dateFormatStrRevert ,
 	socetCommandHref ,
 	dataCommandHref,
+	dataCommandMetod,
 	sysNumeral,
 	appThemeInit,
 	appNumeralInit,
@@ -324,6 +360,7 @@ export default {
 	layoutSepSize,
 	layoutMinSize,
 
+	dateFormatNorm,
 	dateFormat,
 	dateFormatRevert,
 	validateDate,
@@ -353,5 +390,9 @@ export default {
 	getErrDesc,
 	getMsgDesc,
 
+	openDialogUniversal,
+	
+	getDataTable,
+	sendRequestForData,
 	sendRequest,
 }

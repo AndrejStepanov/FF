@@ -7,7 +7,7 @@
 					<v-card-title dense> 
 						<v-icon>{{icons[msg.type]}}</v-icon>&nbsp;{{msg.title}}     						 
 					</v-card-title>
-					<v-card-subtitle dense>   {{msg.text}}    </v-card-subtitle>
+					<v-card-subtitle dense v-html="msg.text"/>
 					<v-divider></v-divider>
 					<v-card-actions>
 						<v-btn v-if="traceAble" class="accent noMarginLeft" @click.native="$emit('traceDialogShow', msg.id)" small>
@@ -28,7 +28,7 @@
 </template>
  
 <script>
-	import XStore from '../mixins/x-store'
+	import XStore from '@/mixins/x-store'
 	export default {
 		name:'c-msg',
 		data: () => ({

@@ -1,5 +1,4 @@
 <script>
-	import XStore from '../mixins/x-store'
 	export default {
 		data: () => ({
 			userTicket:'',
@@ -7,7 +6,7 @@
 			dialogsConfig: {
 				authLogin:{
 					id:-1,  title:'$vuetify.system.modals.auth.title', module:'m-input-fields', width:300, 
-					params:{href:'oauth/token', headers:{Authorization:''},
+					params:{href:'oauth/token',  method:'post', headers:{Authorization:''},
 						todoExt:{grant_type: process.env.VUE_APP_API_GRANT_TYPE, client_id: process.env.VUE_APP_API_CLIENT_ID, client_secret: process.env.VUE_APP_API_CLIENT_SECRET},
 						saveButtonProp: {title:'$vuetify.system.simple.actions.logIn', icon:'input', }, 
 						inputGroup:'authLogin',
@@ -16,7 +15,6 @@
 			},
 		}),		
 		mixins: [
-			XStore,
 		],
 		methods: {
 			clearStorageAuth(){
@@ -51,7 +49,7 @@
 			async login({username, password, remember }){
 				let vm=this,
 					response={}
-				response = await vm.$h.sendRequest( { href:'oauth/token', data:{ username, password, grant_type: process.env.VUE_APP_API_GRANT_TYPE, client_id: process.env.VUE_APP_API_CLIENT_ID, client_secret: process.env.VUE_APP_API_CLIENT_SECRET} } )
+				response = await vm.$h.sendRequest( { href:'oauth/token', method:'post', data:{ username, password, grant_type: process.env.VUE_APP_API_GRANT_TYPE, client_id: process.env.VUE_APP_API_CLIENT_ID, client_secret: process.env.VUE_APP_API_CLIENT_SECRET} } )
 				if(!response)
 					return
 				await vm.loginResponseProcess({response, remember})
@@ -71,12 +69,12 @@
 				vm.profileSetToken({token:localStorage.authAccessToken, expiresIn:localStorage.authExpiresIn, refreshToken:localStorage.authRefreshToken, tokenType:localStorage.authTokenType, tokenRemember:localStorage.authRemember,} )
 				await vm.retrieveUserInfo()
 				vm.$root.$emit('loginProcessed')
-				vm.$h.showMsg({...vm.$h.getMsgDesc('loginSucsess'),   msgParams:[ vm.profileUserName ],}	)
+				vm.$h.showMsg({...vm.$h.getMsgDesc('loginSucsess'),   textParams:[ vm.profileUserName ]}	)
 			},
 			async retrieveUserInfo(){
 				let vm=this,
 					response={}
-				response = await vm.$h.sendRequest( { href:'api/user', data:{ } } )
+				response = await vm.$h.sendRequest( { href:'api/user' } )
 				if(!response)
 					return
 				vm.profileLog({userName:response.data.name, userId:response.data.id, isRoot:response.data.is_root, avatar:response.data.avatar, 
@@ -87,12 +85,15 @@
 			async logout(){
 				let vm = this,
 					isGuest= vm.profileUserLogin==process.env.VUE_APP_API_GUEST_LOGIN
-				await vm.$h.sendRequest( { href:'api/user/logout', data:{ } } )
+				await vm.$h.sendRequest( { href:'api/user/logout' } )
 				vm.clearStorageAuth()
 				vm.profileLogout()
 				vm.$root.$emit('logoutProcessed')				
 				if(!isGuest)
 					vm.$h.showMsg(vm.$h.getMsgDesc('logoutSucsess') )
+			},
+			async authLogin_finishDialog({response, todo}){
+				await this.loginResponseProcess({response, todo})
 			},
 		},
 		created: async function (){
@@ -107,9 +108,6 @@
 				await vm.logout()
 				await vm.loginGuest()
 				vm.logoutDoing=false
-			})
-			vm.$root.$on('dialog'+vm.dialogsConfig.authLogin.id+'Finish', async ({response, todo})=>{
-				await vm.loginResponseProcess({response, todo})
 			})
 			vm.initProfile()
 		},

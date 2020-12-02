@@ -4,6 +4,8 @@ import app from './App.vue'
 import  h from './helpers/functions'
 Object.defineProperty(Vue.prototype, '$h', { value: h })
 
+const nvl = h.nvl
+nvl(1)
 import router from './router'
 
 import  VueTheMask    from 'vue-the-mask'
@@ -41,18 +43,19 @@ import profile from './stores/s-profile'
 import dialog from './stores/s-dialog'
 import param from './stores/s-param'
 import paramConfig from './stores/s-param-config'
+import pageButton from './stores/s-page-button'
 import layout from './stores/s-layout'
 import system from './stores/s-system'
 
 Vue.use(vuex)
-let store = new vuex.Store({modules: {	profile,msg, dialog, param, paramConfig, layout, system,} })
+let store = new vuex.Store({modules: {	profile,msg, dialog, param, paramConfig, pageButton, layout, system,} })
 
 import vueAxios from 'vue-axios'
 import axios from 'axios'
 Vue.use(vueAxios, axios)
 
 window.axios = axios.create({
-	baseURL: process.env.NODE_ENV === 'production' ? '/' :process.env.VUE_APP_API_DEV_HREF,
+	baseURL: '/',
 	headers: {}
 })
 
@@ -76,8 +79,29 @@ window.axios.interceptors.response.use(res => {
 	return res
 })
 
+Vue.config.errorHandler = function (err, vm, info) {
+    console.error('Vue.config.errorHandler',err);
+	vm.$h.showMsg({ title: vm.$h.nvl(err.title,'$vuetify.errors.systemErrorJs.title')  , text: vm.$h.nvl(err.text, err.message),	params: {creator:'js', status:-1, trace: info+'<br>'+err.stack.replace(/\n/g,'<br>') }, withThrow:false,})
+};
+/* --непонятно что сними делать пока.
+Vue.config.warnHandler = function (err, vm, info) {
+    console.log('Custom vue warn handler: ', err,  info);
+};
+*/
 window._vue =  new Vue({el:'#app', router ,vuetify, store, render: h=> h(app),
 	mounted() {
-		this.$h.appThemeInit( {appTheme, curTheme, numeral:require('numeral'), _vm:this})
+		this.$h.appThemeInit( {appTheme, curTheme, numeral:require('numeral'), vm:this})
 	},
 })
+
+window.onerror = function(message, source, line, column, error) {
+	console.error('onerror',error);
+	window._vue.$h.showMsg({ title: '$vuetify.errors.systemErrorJs.title'  , text: message, file: source, line:line+'('+column+')',	params: {creator:'js', status:-1, trace: error.stack.replace(/\n/g,'<br>') }, withThrow:false, })
+	return false
+}
+window.addEventListener('unhandledrejection', function(event) {
+	//console.error('unhandledrejection',event.reason);
+	let vm = window._vue,
+		text = vm.$h.nvl(event.reason.text, event.reason.message)
+	vm.$h.showMsg({ title: vm.$h.nvl(event.reason.title,'$vuetify.errors.systemErrorJs.title')  , text:text ,	params: {creator:'js', status:-1, trace: text+'<br>'+event.reason.stack.replace(/\n/g,'<br>') }, withThrow:false,})
+ });

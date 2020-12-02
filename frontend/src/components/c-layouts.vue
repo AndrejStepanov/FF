@@ -1,6 +1,6 @@
 <script>
-	import CLayout from './c-layout'
-	import XStore from '../mixins/x-store'
+	import CLayout from '@/components/c-layout'
+	import XStore from '@/mixins/x-store'
 	export default {
 		name:'c-layouts',
 		data:() => ({
@@ -29,7 +29,9 @@
 		methods: {
 			recurRend({config,idx_cur, cnt_cur}){
 				let vm= this, tmp=[]
-				if(config.data!=undefined && config.data.length){
+				if  ( vm.$h.nvlo(vm.configPars,'')=='')
+					return
+				if(config.data!=undefined && config.data.length ){
 					config.data.forEach((element,idx) => {
 						vm.recurRend({config:element, idx_cur:idx, cnt_cur:config.data.length} )
 					})
@@ -38,7 +40,7 @@
 						if(idx< config.data.length-1)
 							tmp.push(
 								vm.$createElement('div', { 
-									class: { 'multipane-resizer': true}, 
+									class: { 'multipane-resizer': true, 'multipane-resizer-no-background': !!row.noSeparateLine }, 
 									attrs:{ block:row.name,}, 
 									on:  {mousedown:   vm.configPars[row.name].balanceLayout !=  '' &&  vm.configPars[row.name].changeLayout !=  '' ? vm.onMouseDown: ()=>{} ,}  ,  
 								})
@@ -104,4 +106,5 @@
 
 .custom-resizer.layout-v > .multipane-resizer {  margin: 0; left: 0;  position: relative;  border-style: solid; border-width: 0 thin 0 0; border-image: repeating-linear-gradient(0deg,rgb(80, 80, 80) 0, rgba(255, 255, 255, 0.5) 2px,transparent 0,transparent 4px) 1 repeat;}
 .custom-resizer.layout-h > .multipane-resizer {  margin: 0; left: 0;  position: relative;  border-style: solid; border-width: thin 0 0; border-image: repeating-linear-gradient(90deg,rgb(80, 80, 80) 0, rgba(255, 255, 255, 0.5) 2px,transparent 0,transparent 4px) 1 repeat;}
+.multipane-resizer.multipane-resizer-no-background {border: none !important;}
 </style>

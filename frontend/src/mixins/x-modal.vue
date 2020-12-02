@@ -1,5 +1,6 @@
 <script>
 	import CDialog from '../components/c-dialog'
+	import XDialogConfig from '@/mixins/x-dialog-config'
 	export default {
 		data: () => ({
 			dialogButtons:[
@@ -24,6 +25,9 @@
 		components: {
 			CDialog,
 		},
+		mixins: [
+			XDialogConfig,
+		],
 		created: function (){
 			let vm=this
 			for ( let i=0; i<vm.dialogButtons.length; i++ )

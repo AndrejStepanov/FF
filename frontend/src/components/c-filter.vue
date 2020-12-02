@@ -11,8 +11,8 @@
 	</div>
 </template>
 <script>
-	import CInputCols from './c-input-cols'
-	import XStore from '../mixins/x-store'
+	import CInputCols from '@/componentsc-input-cols'
+	import XStore from '@/mixins/x-store'
     export default {
 		name:'c-filter',
 		data:() => ({

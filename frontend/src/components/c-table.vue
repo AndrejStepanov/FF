@@ -51,7 +51,7 @@
 			</v-tooltip>
 		</v-card-title>
 
-		<v-data-table :value="selectedValues" @input="selectRow" @dblclick="dblClickRow"  :headers ="tabHeadsVisible" :items ="tabRows" v-bind="vDataTablePropAsembled"
+		<v-data-table :value="value" @input="valueChanged" @click:row="clickRow" @dblclick:row="dblClickRow"  :headers ="tabHeadsVisible" :items ="tabRows" v-bind="vDataTablePropAsembled"
 				:loading="loading" :search="searchText"  ref="table"	:class="getMainTableClass" :style="getMainTableStyle" :height="getMainTableHeight"  > <!--:pagination="pagination"	@update:pagination='updateTabFirstNum'-->
 			<template  v-for="slotName in slotPassed"    v-slot:[slotName]="slotProps"  >
 				<slot   :name="slotName" v-bind="slotProps" />
@@ -62,50 +62,8 @@
 </template>
 
 <script>
-/*
-
-			<v-tooltip bottom v-if="exportPdf" > 
-				<template v-slot:activator="{ on, attrs }">
-					<v-btn   v-bind="attrs" v-on="on" text  class="  mr-2" @click="$emit('printButtonClick')" > <v-icon>print</v-icon></v-btn> 
-				</template>
-				<span>{{$vuetify.lang.t('$vuetify.system.simple.actions.print') }}</span>
-			</v-tooltip>
-			<v-tooltip bottom v-if="exportExcel" > 
-				<template v-slot:activator="{ on, attrs }">
-					<v-btn   v-bind="attrs" v-on="on" text  class="  mr-2" @click="$emit('exportButtonClick')" > <v-icon>table_chart</v-icon></v-btn> 
-				</template>
-				<span>{{$vuetify.lang.t('$vuetify.system.simple.actions.export') }}</span>
-			</v-tooltip>
-
-			<template #progress>
-				<c-loading slot="progress" />
-			</template>
-			<template #no-data>
-				<tr>
-					<td colspan="99" class="text-xs-center">{{loading? $vuetify.lang.t(dataLoadingText) : $vuetify.lang.t(noResultsText) }}</td>
-				</tr>
-			</template>
-				import CLoading from '../components/c-loading'
-
-			<template v-if="noVuetifyHead && manHead" #header="props"  >
-				<slot name="header" :props="props"/>
-			</template>
-			<template #item="props">
-				<template v-if="manBody" >
-					<slot name="item" :item="props.item" :index="props.index" :selected="props.selected" :expanded="props.expanded" />
-				</template>
-				<template v-else >			
-					<tr :active="props.selected" @click="selectRow(props)" @dblclick="dblClickRow" :class="{'v-data-table__selected':props.isSelected}">
-						<td	v-if="vDataTablePropAsembled.showSelect" 														>	<v-simple-checkbox	:value="props.isSelected"  @click="selectRow(props)" @dblclick="dblClickRow" />		</td><!--<v-checkbox	:input-value="props.selected" :color="checkBoxColor"	hide-details /> убрал из-за того что синхронизация не хило так тормозит -->
-						<td	v-for="header in tabHeadsVisible"	:key="header.value" 	:class="header.clsssCell"	>	{{props.item[header.value]}}			</td>
-					</tr>
-				</template>
-			</template>
-
-			*/
-
 	import {Ripple,} from 'vuetify/lib/directives'
-	import XDialog from '../mixins/x-dialog'
+	import XDialogConfig from '@/mixins/x-dialog-config'
 	export default {
 		name:'c-table',
 		data: () => ({
@@ -113,7 +71,6 @@
 			firstNum:1,
 			isMounted:false,
 			filterShown:false,
-			selectedValues:[],
 			tableHeadManSettings:[],
 			selecttableTypes:['one','multy'],
 			searchText:'',
@@ -160,38 +117,36 @@
 				return this.tableTitle!='' || this.searchButton || this.fiterButton || this.exportPdf || this.exportExcel
 			},
 			vDataTablePropAsembled(){
-				return {fixedHeader:true, dense:true, multiSort:true, headerKey:'value', itemKey: '_id',  footerProps:{showFirstLastPage: true, }, ...this.vDataTableProp }
+				return {fixedHeader:true, dense:true, multiSort:true, headerKey:'value', itemKey:'id', footerProps:{showFirstLastPage: true, }, ...this.vDataTableProp }
 			},
 			typeSelect(){return  this.vDataTablePropAsembled.singleSelect?'one': this.vDataTablePropAsembled.singleSelect===false?'multy':''	},			
 			tabHeads(){
 				let  vm = this,
-					tmp = [vm.withRowNum?{value:'_id', text:vm.$vuetify.lang.t('$vuetify.system.simple.labels.numInOrder'), type:'int', clsssCell:'width-one-percent', sortable:true,}:{}]
-				if(vm.headers.find((head,i) => head.type==undefined )!=undefined)
+					tmp = [vm.withRowNum?{value:'_sys_num', text:vm.$vuetify.lang.t('$vuetify.system.simple.labels.numInOrder'), type:'int', classCell:'width-one-percent', sortable:true,}:{}]
+				if(vm.tableHeadManSettings.find((head,i) => head.type==undefined )!=undefined)
 					throw new Error('Всем элементам заголовка необходимо указывать поле type!')
-				return  tmp.concat( vm.headers).map((head,i) => {
-					let _isNumeric = !(head.type.match(/^numeric/i)==null),
-						_isDate=!(head.type.match(/^date/i)==null),
-						_isInt = !(head.type.match(/^int/i)==null)
-					return {...head, visible:( head.visible===false?false:true ), sortable:( head.sortable===true?true:false ), 
-						_isNumeric:( _isNumeric || _isInt), _isDate, mask: vm.$h.nvl(head.mask, ( _isNumeric?'0.000': _isInt ?'0':undefined ) ),
-						clsssCell:vm.$h.nvl(head.clsssCell,'')+' '+(_isNumeric||_isDate?' text-nobr ':''),
+				return  tmp.concat( vm.tableHeadManSettings).map((head,i) => {
+					let isNumeric = !(head.type.match(/^numeric/i)==null),
+						isDatetime=!(head.type.match(/^datetime/i)==null),
+						isDate=!isDatetime && !(head.type.match(/^date/i)==null),
+						isInt = !(head.type.match(/^int/i)==null)
+					return {...head, visible:( head.visible===false?false:true ), sortable:( head.sortable===false?false:true ), 
+						isNumeric:( isNumeric || isInt), isDate, isDatetime, mask: vm.$h.nvl(head.mask, ( isNumeric?'0.000': isInt ?'0':undefined ) ),
+						classCell:vm.$h.nvl(head.classCell,'')+' '+(isNumeric||isDate?' text-nobr ':''),
 					}
 				})
 			},
 			tabHeadsVisible(){
-				return this.tableHeadManSettings.filter( row=>row.visible===false? false:true )
+				return this.tabHeads.filter( row=>row.visible===false? false:true )
 			},
 			tabRows(){
 				let  vm = this
 				return vm.items.map((element,i) => {
 					let tmp={}
-					if(vm.manBody)
-						tmp = element
-					else
-						vm.tabHeads.forEach((head,j) =>{
-							tmp[head.value] = vm.valFormat(element[head.value],head.type, head.replace, head._isNumeric, head.mask, head._isDate,)
-						})
-					return {...tmp, _id:i+1}
+					vm.tabHeads.forEach(head =>{
+						tmp[head.value] = vm.valFormat(element[head.value],head)
+					})
+					return {...tmp, [vm.vDataTablePropAsembled.itemKey]:i, _sys_num:i+1, }
 				})
 			},
 			getMainTableStyle(){
@@ -213,66 +168,47 @@
 			},
 		},
 		watch: {
-			value (val, valOld) {
-				let vm = this,
-					tmp = val
-				if( !(tmp.equals( vm.selectedValues) ) )
-					vm.selectedValues=tmp
-			},
 			headers (val, valOld) {
 				this.tableHeadManSettings=val
 			},
 		},
 		components: {
-			MTableSettings: (resolve) =>{ require(['../modules/m-table-settings.vue'], resolve) },
+			MTableSettings: (resolve) =>{ require(['@/modules/tableSettings/m-table-settings.vue'], resolve) },
 		},
 		mixins: [
-			XDialog,
+			XDialogConfig,
 		],
 		directives:{
 			Ripple,
 		},
 		methods: {
-			dblClickRow(e){
+			dblClickRow(row, obj){
 				let vm = this
-				vm.$emit('dblclick:row', vm.value)
+				if( vm.typeSelect=='')
+					return
+				vm.$emit('dblclick:row', [obj.item])
 			},
-			valFormat(val, type,replace, isNumeric=false, mask, isDate=false){//вполне себе может быть использована и извне
+			clickRow(row, obj){
+				let vm = this
+				if( vm.typeSelect=='')
+					return
+				obj.select( !obj.isSelected )
+			},
+			valFormat(val, {replace, isNumeric, mask, isDate, isDatetime} ){//вполне себе может быть использована и извне
 				let vm=this
-				if(val==undefined || val=='' || ( isNumeric && val==0) )
+				if( (val==undefined || val=='' || ( isNumeric && val==0) ) && vm.$h.nvl(replace) !='' )
 					val=replace
 				if(isDate)
+					val =vm.$h.dateFormatNorm(val)
+				if(isDatetime)
 					val =vm.$h.dateFormat(val)
-				if(isNumeric)
+				if(isNumeric && vm.$h.nvl(mask) !='')
 					val=vm.$h.numberFormat(val,mask)
 				return val
 			},
-			selectRow (props) {
-				console.log(props);
-				let vm = this, 
-					values=vm.selectedValues
-				if(vm.selecttableTypes.indexOf(vm.typeSelect)==-1)
-					return
-				if(vm.typeSelect=='one')
-					values = []
-				if(props[0]!= undefined )
-					if(!props[0].selected)
-						props.forEach(row=> values.push(row) )
-					else if(vm.typeSelect!='one')
-						values=values.filter(row => props.find(sel=> row._id != sel._id  )==undefined)
-				vm.selectedValuesChanged(values)
-			},
-			toggleAll () {
-				let vm=this, values=[]
-				if (vm.values.length) 
-					values = []
-				else if(vm.typeSelect=='multy')
-					values = vm.items.slice()
-				vm.selectedValuesChanged(values)
-			},
-			selectedValuesChanged(values){
-				let vm=this
-				vm.$emit('input', values.map(row => {return {...vm.items[row._id-1], _id:row._id} } ))
+			valueChanged (props) {
+				let vm = this
+				vm.$emit('input', props )
 			},
 			tableSettings_getParams(){
 				return {headers: this.tableHeadManSettings}
@@ -286,7 +222,6 @@
 			vm.checkBoxColor=vm.$h.appTheme.checkBox||vm.checkBoxColor
 			vm.tableHeadManSettings=vm.headers
 		},
-		//
 		mounted: function (){	
 			let vm=this
 			vm.isMounted = true

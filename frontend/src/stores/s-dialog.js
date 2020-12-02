@@ -29,7 +29,7 @@ export default {
 	actions:{	
 		async doInit({commit,getters,state},{config, params, }){
 			if(config==undefined || config.id==undefined)
-				$h.showError( $h.getErrDesc('noDialogInitId') );
+				$h.showMsg( $h.getErrDesc('noDialogInitId') );
 			if (getters.getById(config.id)!=0){
 				console.log('Диалог №'+config.id+' уже зарегестрирован!');
 				return

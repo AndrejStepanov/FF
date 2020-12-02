@@ -6,42 +6,41 @@
 </template>
 
 <script>
-	import XStore from '../mixins/x-store'
-	import XDialog from '../mixins/x-dialog'
-	import CMsg from "../components/c-msg"
+	import XStore from '@/mixins/x-store'
+	import XDialogConfig from '@/mixins/x-dialog-config'
+	import CMsg from "@/components/c-msg"
 	export default {
 		name:"c-msg-list",
 		data: () => ({
 			dialogsConfig: {
 				errorTrace:{
 					id: -1,  title:"$vuetify.system.modals.traceShow.title",	module:'m-error-desc', width:1024, height:600,	buttons:[],
+					params:{ id:null, msg: null}, 
 				}
 			},
 		}),
 		computed: {
 			sizeTotal(){
 				return {
-					//height:this.msgAllMsg.length*25+"px",
 					width: (this.$vuetify.breakpoint.width>450? 450:this.$vuetify.breakpoint.width)+'px'
 				}
 			},
 		},
 		components: {
 			CMsg,
-			MErrorDesc: (resolve) => require(["../modules/m-error-desc.vue"], resolve),
+			MErrorDesc: (resolve) => require(["@/modules/errorDesc/m-error-desc.vue"], resolve),
 		},
 		mixins: [
-			XStore,XDialog,
+			XStore,XDialogConfig,
 		],
 		methods: {
 			traceDialogShow(id){
-				let vm=this
-				let tmp = vm.msgAllMsg.find((msg)=>{ return msg.id==id })
+				let vm=this,
+					tmp = vm.msgAllMsg.find((msg)=>{ return msg.id==id })
 				if(!tmp)
-					vm.$h.showMsg( vm.$h.getErrDesc('traceNotFound'));
-				vm.dialogSetAllParams({ name:"errorTrace", params:{id,msg:tmp} });
-				vm.dialogShow(vm.dialogsConfig.errorTrace.id)
-			}
+					vm.$h.showMsg( vm.$h.getErrDesc('traceNotFound'))
+				vm.openDialog({name:'errorTrace', params:{id,msg:tmp}})
+			},
 		},
 		created: function (){
 		},

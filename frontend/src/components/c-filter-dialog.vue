@@ -25,8 +25,8 @@
 	</v-dialog>
 </template>
 <script>
-	import CInputCols from './c-input-cols'
-	import XStore from '../mixins/x-store'
+	import CInputCols from '@/components/c-input-cols'
+	import XStore from '@/mixins/x-store'
     export default {
 		name:'c-filter-dialog',
 		data:() => ({

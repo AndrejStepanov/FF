@@ -7,9 +7,8 @@
 </template>
 
 <script>
-	import XStore from '../mixins/x-store'
-	import XModal from '../mixins/x-modal'
-	import CInputCols from '../components/c-input-cols'
+	import XModal from '@/mixins/x-modal'
+	import CInputCols from '@/components/c-input-cols'
 	export default {
 		name:'m-input-fields',
 		data: () => ({
@@ -27,9 +26,6 @@
 			dialogId: {type: Number, required: true}, 
 		},
 		computed: {
-			saveButtonProp(){
-				return this.dialogParamsGet.saveButtonProp||{}
-			},
 			inputs() {
 				let vm=this
 				console.log(vm.dialogParamsGet.inputGroup);
@@ -42,56 +38,32 @@
 				return tmp
 			},
 		},
-		watch: {
-			// эта функция запускается при любом изменении вопроса
-			saveButtonProp: function (val) {
-				let vm=this
-				for ( let i=0; i<vm.dialogButtons.length; i++ ){
-					if(vm.dialogButtons[i].click!='dialogSave')
-						continue
-					vm.dialogButtons[i].titleval.title||'$vuetify.system.simple.actions.save'
-					vm.dialogButtons[i].icon=val.title||'save'
-					vm.dialogButtons[i].needCheck=val.needCheck||true
-				}
-			},
-		},
 		components: {
 			CInputCols,
 		},
 		mixins: [
-			XStore, XModal,
+			XModal,
 		],
 		methods: {
 			async dialogSave(){
 				let vm=this, response
-				if (!vm.$refs[vm.paramsForm].validate())
-					return;
-				let todo={...vm.paramToObj(vm.paramsForm), ...vm.dialogParamsGet.todoExt}
-				
-				if ('checkFunc' in vm.dialogParamsGet)
-					vm.dialogParamsGet.checkFunc(todo)
-				if('prepereFuncAsync' in vm.dialogParamsGet){
-					vm.loading =true
-					try {
-						todo = await vm.dialogParamsGet.prepereFuncAsync(todo)
-					} catch(err) {
-						vm.loading=false
-						return
-					}
-				}
-				else if('prepereFunc' in vm.dialogParamsGet)
-					todo = vm.dialogParamsGet.prepereFunc(todo)
-				console.log(todo)
-				vm.loading =true
 				try {
-					response = await vm.$h.sendRequest({href:vm.$h.nvl(vm.dialogParamsGet.href,'/data_command'), type:vm.dialogParamsGet.socetEvent, data:todo, hrefBack:vm.dialogParamsGet.hrefBack, headers:vm.dialogParamsGet.headers })
-				} catch(err) {
-					vm.loading=false
-					return
-				}				
-				vm.loading=false
-				vm.$root.$emit('dialog'+vm.dialogId+'Finish', {response, todo})
-				vm.$refs.dialog.dialogClose()
+					vm.loading =true
+					if (!vm.$refs[vm.paramsForm].validate())
+						return vm.loading=false
+					let todo={...vm.paramToObj(vm.paramsForm), ...vm.dialogParamsGet.todoExt, socetEvent:vm.dialogParamsGet.socetEvent}					
+					if (typeof(vm.dialogParamsGet.checkFunc)=='function' && ! await vm.dialogParamsGet.checkFunc(todo))
+						return vm.loading=false
+					if(typeof(vm.dialogParamsGet.prepereFunc)=='function')
+						todo = await vm.dialogParamsGet.prepereFunc(todo)
+					console.log(todo)
+					response = await vm.$h.sendRequest({href:vm.$h.nvl(vm.dialogParamsGet.href,'/data_command'), method:vm.dialogParamsGet.method, data:todo, hrefBack:vm.dialogParamsGet.hrefBack, headers:vm.dialogParamsGet.headers })
+					if(typeof(vm.dialogParamsGet.finishFunc)=='function')
+						await vm.dialogParamsGet.finishFunc({response, todo})
+					vm.$root.$emit('dialog'+vm.dialogId+'Finish', {response, todo})
+					vm.$refs.dialog.dialogClose()
+				}
+				finally {vm.loading=false}
 			},
 		},
 		created: function (){
@@ -99,8 +71,17 @@
 				dialogTitle = vm.$vuetify.lang.t(vm.dialogConfigGet.title)
 			vm.paramsForm=vm.dialogConfigGet.name
 			vm.paramInit( {form: vm.paramsForm, params:vm.inputs })
+			if( vm.$h.nvlo(vm.dialogParamsGet.saveButtonProp,'')!=''){
+				for ( let i=0; i<vm.dialogButtons.length; i++ ){
+					if(vm.dialogButtons[i].click!='dialogSave')
+						continue
+					vm.dialogButtons[i].title=vm.dialogParamsGet.saveButtonProp.title||'$vuetify.system.simple.actions.save'
+					vm.dialogButtons[i].icon=vm.dialogParamsGet.saveButtonProp.icon||'save'
+					vm.dialogButtons[i].needCheck=vm.$h.nvl(vm.dialogParamsGet.saveButtonProp.needCheck,true)
+				}
+			}
 			vm.$root.$on('dialog'+vm.dialogId+'InputsCols', (obj)=>{
-				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : 	obj.rowInColA *74 + 140 
+				vm.dialogHeight= vm.dialogConfigGet.height>0 ? vm.dialogConfigGet.height : 	obj.rowInColA *74 + 130 -8
 				vm.dialogWidth= vm.dialogConfigGet.width>0 ? vm.dialogConfigGet.width : 	dialogTitle.length*20+110>obj.colsCnt*300	?	dialogTitle.length*20+110	:	obj.colsCnt*300
 			})
 			vm.$root.$on('dialog'+vm.paramsForm+'Send', ()=>{

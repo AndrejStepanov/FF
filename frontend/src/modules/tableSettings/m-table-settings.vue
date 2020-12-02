@@ -4,10 +4,10 @@
 			<div class='flex--99 position--relative' >
 				<c-table :searchNeed="true" :headers="tabHeader" :items="tabValues"  searchButton	withRowNum	:vDataTableProp="{hideDefaultFooter:true}" :tableTitle="dialogConfigGet.title" >
 					<template #item.sortable="{ item }">
-						<v-simple-checkbox	:value="item.sortable"	@click="changeAttr('sortable', item._id,  !!!item.sortable)" />
+						<v-simple-checkbox	:value="item.sortable"	@click="changeAttr('sortable', item.id,  !!!item.sortable)" />
 					</template>
 					<template #item.visible="{ item }">
-						<v-simple-checkbox	:value="item.visible" @click="changeAttr('visible', item._id, !!!item.visible)" />
+						<v-simple-checkbox	:value="item.visible" @click="changeAttr('visible', item.id, !!!item.visible)" />
 					</template>
 				</c-table>
 			</div>
@@ -16,9 +16,8 @@
 </template>
 
 <script>
-	import XStore from '../mixins/x-store'
-	import XModal from '../mixins/x-modal'	
-	import CTable from '../components/c-table'
+	import XModal from '@/mixins/x-modal'	
+	import CTable from '@/components/c-table'
 	export default {
 		name:'m-table-settings',
 		data: () => ({
@@ -29,10 +28,10 @@
 				{id:-1, 	title:'$vuetify.system.simple.actions.save', 	icon:'save', 	allig:'right', 	click:'dialogSave'}, 
 			],
 			tabHeader:[
-				{value:'value', 		text:'Название',		type:'text', 	 		default:'',			sortable:true,	},
-				{value:'text', 			text:'Перевод',			type:'text', 	 		default:'',			sortable:true,	},
-				{value:'type', 			text:'Тип',				type:'text', 	 		default:'',			sortable:true,	},
-				{value:'sortable', 		text:'Сортировка',		type:'text', 	 		default:false, 						},
+				{value:'value', 		text:'Название',		type:'text', 	 		default:'',							},
+				{value:'text', 			text:'Перевод',			type:'text', 	 		default:'',							},
+				{value:'type', 			text:'Тип',				type:'text', 	 		default:'',							},
+				{value:'sortable', 		text:'Сортировка',		type:'text', 	 		default:true, 						},
 				{value:'mask', 			text:'Маска',			type:'text', 	 		default:'', 						},
 				{value:'visible', 		text:'Видимость',		type:'text', 	 		default:true,						},
 				{value:'clsssCell', 	text:'Доп. класс',		type:'text', 	 		default:'', 						},
@@ -49,11 +48,11 @@
 			CTable, 
 		},
 		mixins: [
-			XStore, XModal,
+			XModal,
 		],
 		methods: {
 			changeAttr(type, id,  newVal){
-				this.$set(this.tabValues[id-1], type, newVal)
+				this.$set(this.tabValues[id], type, newVal)
 			},
 			dialogSave(){
 				let vm=this

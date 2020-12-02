@@ -1,7 +1,6 @@
 <script>
-	import CApp from '../components/c-app';
-	import XPage from './x-page'
-	import XDialog from './x-dialog'	
+	import XPage from '@/mixins/x-page'	
+	import CApp from '@/components/c-app'
 	export default {
 		data: () => ({
 			curentSystem: '',
@@ -20,7 +19,7 @@
 			CApp,
 		},
 		mixins: [
-			XPage, XDialog, 
+			XPage, 
 		],
 		created: function (){
 			let vm=this

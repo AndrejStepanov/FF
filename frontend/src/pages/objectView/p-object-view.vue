@@ -1,5 +1,5 @@
 <template>
-	<c-layouts-slots :layoutsConfigs="layoutsConfigsCur" :layoutName="$h.camelize($options.name)" :parentLayoutName="parentLayoutName"  >
+	<c-layouts-slots :layoutsConfigs="layoutsConfigsCur" :layoutName="componentName" :parentLayoutConfig="parentLayoutConfig"  >
 		<template #fourth >
 			<v-fab-transition>
 				<v-btn class="filter-button right-0 top-0"	color="accent"	fab	dark	small	absolute	top	right @click="filterShow=true"	>
@@ -114,8 +114,8 @@
 
 </template>
 <script>
-	import CFilterDialog from '../components/c-filter-dialog'
-	import XPage from '../mixins/x-page'
+	import CFilterDialog from '@/components/c-filter-dialog'
+	import XPage from '@/mixins/x-page'
 	export default {
 		name:'p-object-view',
 		data: () => ({

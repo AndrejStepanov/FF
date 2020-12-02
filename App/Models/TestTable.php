@@ -22,7 +22,7 @@ class TestTable extends Model{
 		$query =  $this->select('id','obj_level','obj_param', 'tree_input', 'tree_int', 'tree_num', 'tree_date' )->orderBy('id');
 		if(nvl($id,'null')!='null')
 			$query->where('id' ,'=',$id); 
-		return   json_encode( 
+		return  
 			[ 'data'=>$query->get()->toArray(), 'head'=> [
 				['value'=>'obj_param',		'text'=>'Параметр',			'type'=>'numeric', 	],
 				['value'=>'tree_input',		'text'=>'Ввод', 			'type'=>'text', 	],
@@ -31,6 +31,6 @@ class TestTable extends Model{
 				['value'=>'tree_date',		'text'=>'Дата',				'type'=>'date',		],
 				['value'=>'obj_level',		'text'=>'Вложенность',		'type'=>'text', 	],
 			], 
-		]);
+		];
 	}
 }

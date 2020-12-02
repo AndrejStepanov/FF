@@ -36,8 +36,8 @@
 По хъорошему - нужно дождаться когда онка начнут таскаться во вьютифи
 
 				*/
-	import XStore from '../mixins/x-store'
-	import cDragResize from './c-drag-resize/c-drag-resize';
+	import XStore from '@/mixins/x-store'
+	import cDragResize from '@/components/c-drag-resize/c-drag-resize';
 	export default {
 		name:'c-dialog',
 		data: () => ({

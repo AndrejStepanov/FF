@@ -12,7 +12,7 @@
 
 <script>
 	//import CProfile from './c-profile'
-	import XStore from '../mixins/x-store'
+	import XStore from '@/mixins/x-store'
 	export default {
 		name:'c-head',
 

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import XStore from '../mixins/x-store'
+import XStore from '@/mixins/x-store'
 export default {
 	name: 'c-layout',
 	data() {

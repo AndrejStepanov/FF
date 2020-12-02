@@ -26,8 +26,8 @@
 	</div>
 </template>
 <script>
-	import CTreeItem from './c-tree-item.vue'
-	import CLoading from '../c-loading';
+	import CTreeItem from '@/components/tree/c-tree-item.vue'
+	import CLoading from '@/components/c-loading';
 
 	let ITEM_ID = 0
 	let ITEM_HEIGHT_SMALL = 18
@@ -52,6 +52,7 @@
 			socetEvent: {type: String, default: ''},
 			socetChanel: {type: String, default: ''},
 			socetHref: {type: String, default: ''},
+			socetMethod: {type: String, default: 'post'},
 			typeFieldName: {type: String, default: 'type'},
 			childrenFieldName: {type: String, default: 'children'},
 			itemEvents: {
@@ -237,7 +238,7 @@
 			handleRequestChildren(oriNode){
 				var vm = this;
 				if(!oriNode.model.childLoaded && oriNode.model.hasChild ){
-					vm.$h.sendRequest({href:vm.socetHref, type:vm.socetEvent, data:{parent_id: oriNode.model.id} })
+					vm.$h.sendRequest({href:vm.socetHref, method:vm.socetMethod,   data:{socetEvent:vm.socetEvent, parent_id: oriNode.model.id} })
 					oriNode.model.loading= true;
 				}
 			},
@@ -327,7 +328,7 @@
 					vm.initializeData(parent_childrens)
 					vm.tree_loading=false;
 				});
-				vm.$h.sendRequest({href:vm.socetHref, type:vm.socetEvent})
+				vm.$h.sendRequest({href:vm.socetHref, method:vm.socetMethod, data:{socetEvent:vm.socetEvent,}, })
 			}	
 		},
 		mounted() {

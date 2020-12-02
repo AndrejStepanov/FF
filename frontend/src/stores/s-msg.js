@@ -17,7 +17,7 @@ export default {
 		},
 	},
 	actions:{
-		doAdd({commit,getters,state},{timeout, y,x, modeLine, type, title, text,status,trace,file,line,}){
+		doAdd({commit,getters,state},{timeout, y,x, modeLine, type, title, text,status,trace,file,line, creator,}){
 			let id = Math.floor(Math.random() * $h.MAX_ID)
 			timeout=timeout||5;
 			y=y||'top';
@@ -30,7 +30,8 @@ export default {
 			trace=trace||'';
 			file=file||'';
 			line=line||'';
-			commit('adding',{id,timeout, y,x, modeLine, type, title, text,status,trace,file,line,});
+			creator=creator||'php';
+			commit('adding',{id,timeout, y,x, modeLine, type, title, text,status,trace,file,line,creator,});
 		},
 		doDelete({commit,getters,state},id){
 			let index=getters.getMsgIndex(id);
@@ -40,8 +41,8 @@ export default {
 		},
 	},
 	mutations:{
-		adding(state, {id,timeout, y,x, modeLine, type, title, text,status,trace,file,line,}){
-			state.msgs.push({id,timeout, y,x, modeLine, type, title, text,status,trace,file,line,});
+		adding(state, {id,timeout, y,x, modeLine, type, title, text,status,trace,file,line,creator,}){
+			state.msgs.push({id,timeout, y,x, modeLine, type, title, text,status,trace,file,line,creator,});
 		},
 		deleting(state, id){
 			state.msgs.splice(id,1);

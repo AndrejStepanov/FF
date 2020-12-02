@@ -1,21 +1,31 @@
 <script>
-	import XStore from './x-store'
-	import CLayoutsSlots from '../components/c-layouts-slots'
-	import CTable from '../components/c-table'
-	import MInputFields from '../modules/m-input-fields'
+	import XDialogConfig from '@/mixins/x-dialog-config'
+	import CLayoutsSlots from '@/components/c-layouts-slots'
+	import CTable from '@/components/c-table'
+	import MInputFields from '@/modules/inputFields/m-input-fields'
 	export default {
 		data: () => ({
 			armName:'',
+			componentName:'',
 			layoutsConfigs: { //'horizontal' - внутри будут строки,  'vertical' - внутри будут столбики;
 				name: 'main'
 			}, 
 			layoutsCur:-1,
+			tableConfig:{
+				//main:{href:'api/testArms', method:'get', variable:'tabValues', loadingVar:'tabLoading',}
+			},
 			inputsConfig:{
 				/*treeAdd:[
 					{code:'obj_level', 	name:'Вложенность', 	placeholder:'Уровень вложенности объекта', 		type:'LIST', 		nullable:0, column_size:30, sort_seq:1, services:{ given:{ name:'test.nsd.by.set', args:{set:'Уровень вложенности объекта' } } }  },
 					{code:'tree_group', name:'Тип', 			placeholder:'Тип объекта', 						type:'LIST', 		nullable:0, column_size:30, sort_seq:2, services:{ given:{ name:'test.nsd.by.set', args:{set:'Тип объекта' } } }  },
 					{code:'tree_desc', 	name:'Название',		placeholder:'Описание объекта', 				type:'INPUT',		nullable:0, column_size:30, sort_seq:3, max_len:25 },	
 				],*/
+			},
+			buttonsConfig:{
+			},
+			buttonsConfigCheckDisable:{
+			},
+			buttonsConfigListeners:{
 			},
 			filtersConfig: {
 				/*let vm=this,
@@ -76,23 +86,76 @@
 			},
 		}),
 		props:{
-			parentLayoutName : {type:  String, default: 'mainLayout'},
+			parentLayoutConfig : {type: Object , default: () =>  {return { head:'mainLayout', name:'pageLayout'}} },
 		},
 		computed:{
 			layoutsConfigsCur(){
 				return 	this.layoutsCur>-1 && this.layoutsConfigs[this.layoutsCur]!=undefined? this.layoutsConfigs[this.layoutsCur]:this.layoutsConfigs
 			},
 		},
+		watch: {
+			buttonsConfig(val, valOld){
+				this.initButtons(val)
+			},
+		},
 		components: {
 			CLayoutsSlots, CTable, MInputFields,
 		},
 		mixins: [
-			XStore,
+			XDialogConfig,
 		],
 		methods: {
+			pageButtonDisableCheck(variable,valArr){
+				let vm=this
+				vm.$h.nvl(vm.buttonsConfigCheckDisable[variable],[]).forEach( row=>{
+					vm.pageButtonSetDisable({ page: vm.componentName , button: row.name , value: row.checkDisable.type=='multy' && !(valArr.length>0) || row.checkDisable.type=='one' && !(valArr.length==1) 	})
+				})
+			},
+			async retrieveDataTable( {name, data} ){
+				let vm=this
+				if(vm.tableConfig[name]==  undefined )
+					vm.$h.showMsg(  {...vm.$h.getErrDesc('wrongFuncEnterParam'), textParams:['retrieveDataTable', 'name',  name ] })
+				await vm.$h.getDataTable ( vm.tableConfig[name] , vm)
+			},
+			async initButtons(config){
+				let vm = this, storePageButtons ={}
+				for(let variable in vm.buttonsConfigCheckDisable ) 
+					vm.buttonsConfigCheckDisable[variable].unwatch()
+				for(let variable in vm.buttonsConfigListeners ) 
+					vm.$root.off(variable, vm.buttonsConfigListeners[variable] )
+				
+				await vm.pageButtonInit({ page: vm.componentName , buttons:config	})
+				vm.buttonsConfigListeners=vm.buttonsConfigCheckDisable={}
+				for(let button in config ) {
+					let tmp =config[button].checkDisable
+					if(tmp== undefined)
+						continue
+					if(vm.buttonsConfigCheckDisable[tmp.var]== undefined)
+						vm.$set( vm.buttonsConfigCheckDisable, tmp.var, [])
+					vm.buttonsConfigCheckDisable[tmp.var].push({...config[button], name: button,})
+				}
+				for(let variable in vm.buttonsConfigCheckDisable ) {
+					vm.buttonsConfigCheckDisable[variable].unwatch = vm.$watch(variable , newVal=> vm.pageButtonDisableCheck(variable,newVal) )
+					vm.pageButtonDisableCheck(variable,vm[variable])
+				}
+				storePageButtons =  vm.pageButtonByPage(vm.componentName)
+				for(let button in storePageButtons ) {
+					if(vm.buttonsConfigListeners[ storePageButtons[button].event ] != undefined )
+						continue
+					let event = storePageButtons[button].event.replace(vm.componentName+'-b-','')
+					if( event== 'openDialogUniversal'  ) 
+						vm.buttonsConfigListeners[ storePageButtons[button].event ]	= params=>vm.$h.openDialogUniversal(params,vm)
+					else if( typeof(vm[event+'_click'])=='function' )
+						vm.buttonsConfigListeners[ storePageButtons[button].event ] = vm[event+'_click']
+					else
+						continue
+					vm.$root.$on(storePageButtons[button].event , vm.buttonsConfigListeners[ storePageButtons[button].event ] )
+				}
+			},
 		},
 		created: function (){
 			let vm=this
+			vm.componentName= vm.$h.camelize(vm.$h.nvl(vm.componentName, vm.$vnode.tag.replace( /(vue-component-\d+-)(\w+)/ ,'$2') ) )
 			for (let group in vm.inputsConfig){
 				if(vm.$h.nvl(vm.inputsConfig[group].id,-1)==-1)
 					vm.inputsConfig[group].id= vm.$h.getNewId()
@@ -103,6 +166,7 @@
 					vm.filtersConfig[group].id= vm.$h.getNewId()
 				vm.paramConfigInit({ form: group , params:vm.filtersConfig[group], type:'filters'	})
 			}
+			vm.initButtons(vm.buttonsConfig)
 		},
 		beforeRouteEnter (to, from, next) {
 			next(vm => {

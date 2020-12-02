@@ -18,7 +18,7 @@
 			<div ref='scrollArea'/>
 			<c-layouts   :name="layoutName" :size="$vuetify.breakpoint">
 				<template  v-for="(slotName, index) in slotNames"    v-slot:[slotName] >
-					<v-container   v-if="slotNames.length==1 && slotNames[0]=='mainLayout' " fluid fill-height id = 'mainLayoutId' :key="index" class="overflow-auto   padding-0" >
+					<v-container   v-if=" slotName=='pageLayout' " fluid fill-height id = 'pageLayoutId' :key="index" class="overflow-auto   padding-0" >
 						<slot  />
 					</v-container>
 					<div v-else :key="index">
@@ -35,13 +35,12 @@
 </template>
 
 <script>	
-	import XAuth from '../mixins/x-auth'
-	import XStore from '../mixins/x-store'
-	import XDialog from '../mixins/x-dialog'
-	import CHead from '../components/c-head'
-	import CFooter from '../components/c-footer'
-	import CMsgList from '../components/c-msg-list'
-	import CLayouts from '../components/c-layouts'
+	import XAuth from '@/mixins/x-auth'
+	import XDialogConfig from '@/mixins/x-dialog-config'
+	import CHead from '@/components/c-head'
+	import CFooter from '@/components/c-footer'
+	import CMsgList from '@/components/c-msg-list'
+	import CLayouts from '@/components/c-layouts'
 	export default {
 		name:'c-app',
 		data:() => ({
@@ -105,10 +104,10 @@
 		},
 		components: {
 			CHead, CFooter,CMsgList, CLayouts,
-			MInputFields: (resolve) => require(['../modules/m-input-fields.vue'], resolve),
+			MInputFields: (resolve) => require(['@/modules/inputFields/m-input-fields.vue'], resolve),
 		},
 		mixins: [
-			XStore,XDialog,XAuth,
+			XDialogConfig,XAuth,
 		],
 		methods: {
 			onResize () {
