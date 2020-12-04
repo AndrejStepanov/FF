@@ -23,7 +23,7 @@ class SystemLinksController extends BaseController{
 	 */
 	public function index(Request $request)	{
 		 $links = 
-			ObjLink::select( $this->ObjLink.'.*', 'o1.obj_path', 'l2.link_id as link_parent_id')
+			ObjLink::select( $this->ObjLink.'.*', 'o1.obj_path', 'o1.obj_comp_name', 'l2.link_id as link_parent_id')
 				->Join($this->Objects.' as o1', 'o1.obj_id', '=', $this->ObjLink.'.obj_id')
 				->Join($this->Tree, 'o1.guid_tree_id', '=', $this->Tree.'.tree_id')
 				->LeftJoin($this->Objects.' as o2', 'o2.guid_tree_id', '=', $this->Tree.'.parent_id')

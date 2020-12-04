@@ -51,7 +51,13 @@
 				</v-list-group>
 			</v-list>
 
-			<template v-if="profileUserLogin!=''">
+			<v-skeleton-loader v-if="profileUserLogin==''  " class="pa-3" :width="'270px'"  type="divider"/>
+			<v-skeleton-loader v-if="profileUserLogin==''  " class="pa-3" :width="'270px'" tile type="button "/> <!--  писать type по человечи не получается, они склеиваются -->
+			<v-skeleton-loader v-if="profileUserLogin==''  " class="pa-3" :width="'270px'"  type="divider"/>
+			<v-skeleton-loader v-if="profileUserLogin==''  " class="pa-3" :width="'270px'"  type="heading"/>
+			<v-skeleton-loader v-if="profileUserLogin==''  " class="pa-3" :width="'270px'"  type="heading"/>
+			<v-skeleton-loader v-if="profileUserLogin==''  " class="pa-3" :width="'270px'"  type="heading"/>
+			<template v-else>
 				<v-divider class="mt-2" />
 				<v-bottom-navigation	v-model="curPanel"	v-bind="lightSet"	shift background-color="transparent" class='box-shadow-none'	>
 					<v-btn>
@@ -109,7 +115,9 @@
 				
 			</template>
 		</template>		
-		<v-skeleton-loader v-if="profileUserName==''" class="pa-3" :width="sceletSize.width-12*2" :height="sceletSize.height-12*2"	type="button,  divider, list-item, table"/>
+		<v-skeleton-loader v-if="profileUserLogin=='' || linksTree.length==0 " class="pa-3" :width="sceletSize.width-12*2" :height="sceletSize.height-12*2"	type="heading,  divider, list-item, table"/>
+		<p-error-show v-else-if="errorShowMsg!=''" :msg="errorShowMsg" />
+		<p-need-login v-else-if="profileUserLogin==guestLogin && !$route.meta.guest" />
 		<transition v-else name="app-transition">
 			<keep-alive>
 				<router-view/>
@@ -118,8 +126,16 @@
 	</c-app>
 </template>
 
-<script> //view_comfy apps 
-	import XApp from './mixins/x-app'
+<script>
+/* :width="sceletSize.width-12*2" :height="sceletSize.height-12*2"*/
+	import XApp from '@/mixins/x-app'
+	import pNeedLogin from '@/pages/needLogin/p-need-login'
+	import pErrorShow from '@/pages/errorShow/p-error-show'
+	import PMainTest from '@/pages/mainTest/p-main-test'
+	import PObjectView from '@/pages/objectView/p-object-view'
+	import PObjectWork from '@/pages/objectWork/p-object-work'
+	import pTestArm from '@/pages/testArm/p-test-arm'
+	let pages={PMainTest, PObjectView, PObjectWork, pTestArm}
 	export default {
 		data: () => ({
 			layoutsConfigs: { //'horizontal' - внутри будут строки,  'vertical' - внутри будут столбики;  Последнему слою выставлять размер бессмысленно
@@ -159,28 +175,44 @@
 				return res
 			},
 			pageButtons(){
-				return this.pageButtonByPage( this.$h.camelize(this.$h.nvl(this.$route.name,'')) )
-			},			
+				return this.pageButtonByPage( this.$h.camelize(this.$h.nvl(this.$route.meta.compName,'')) )
+			},
+			errorShowMsg(){
+				return this.$route.meta.admin && !this.profileIsRoot?'$vuetify.system.simple.msgs.noAccess':
+					this.$h.nvl(this.$route.name)==''? '$vuetify.system.simple.msgs.invalidHref':
+					''
+			},
+					
 		},
 		watch: {
 			systemLinks (val, valOld) {
-				let vm =this, containers={}
+				let vm =this, containers={}, routers=[]
 				vm.linksTree=[]
 				vm.systemLinks.forEach(el => {
 					el.id = el.link_id
 					el.name = el.link_name
+					el.href_link = encodeURI(el.href_link)
+					if (pages[el.obj_comp_name] == undefined )
+						vm.$h.showMsg(  {...vm.$h.getErrDesc('wrongPageName'), textParams:[el.obj_comp_name ] })
 					if(el.link_parent_id==null ){
 						vm.linksTree.push( {children:[],  ...el,} )
 						containers[el.id] = vm.linksTree[ vm.linksTree.length-1 ]
 					}
 					else{
-						//containers[el.parent_id].children=containers[el.parent_id].children||[]
 						containers[el.link_parent_id].children.push(el)
 						containers[el.id]= containers[el.link_parent_id].children[ containers[el.link_parent_id].children.length-1 ]
 					}
-				})
+					routers.push(
+						{	path:el.href_link ,	name: el.link_id,	component: pages[el.obj_comp_name],	meta: {	linkId:el.link_id, guest: true, compName:el.obj_comp_name	}	},
+					)
+				})			
 				vm.systemLinksStruct = Object.assign({}, this.systemLinksStruct, containers)
+				vm.$router.addRoutes( routers )
+
 			},
+		},
+		components: {
+			pNeedLogin, pErrorShow,
 		},
 		mixins: [
 			XApp,
@@ -201,7 +233,9 @@
 		},
 		errorCaptured(err,vm,info) {
 			console.error('errorCaptured',err);
-			this.$h.showMsg({ title: this.$h.nvl(err.title,'$vuetify.errors.systemErrorJs.title')  , text: this.$h.nvl(err.text ,err.message),	params: {creator:'js', status:-1, trace: info+'<br>'+err.stack.replace(/\n/g,'<br>') }, withThrow:false,})
+			let nvl=this.$h.nvl
+			this.$h.showMsg({ title: nvl(err.title,'$vuetify.errors.systemErrorJs.title')  , text: nvl(err.text ,err.message),	
+				params: {creator:err.creator, status: nvl(err.status,-1), trace: nvl(err.trace, info+'<br>'+nvl( err.stack.replace(/\n/g,'<br>') ) ) , file: nvl(err.file), line: nvl(err.line),  }, withThrow:false,})
 			return false;
 		}
 	}
@@ -209,14 +243,15 @@
 <style>
 .v-list-group__header.v-list-item--active:not(:hover):not(:focus):before{ opacity:.24 !important}
 .v-application--is-ltr .v-list-item__icon:last-of-type:not(:only-child) {    margin-left: 0px !important;}
-#treeSystemLink a {color:inherit;}
-#treeSystemLink a.router-link-exact-active { font-weight: bold; }
+#treeSystemLink a {color:inherit; text-decoration: none;}
+#treeSystemLink a.router-link-exact-active { font-weight: bold; text-decoration: underline;}
 #treeSystemLink i.router-link-exact-active-icon { text-decoration: underline; -webkit-text-decoration-skip: ink;    text-decoration-skip-ink: auto;}
 .app-transition-enter-active,
 .app-transition-leave-active {  transition-property: opacity;  transition-duration: 0.25s;}
 .app-transition-enter-active {  transition-delay: 0.25s;}
 .app-transition-enter,
 .app-transition-leave-active {  opacity: 0;}
+
 
 /*
 .btn-functional>span	{      display: flex;    flex-direction: column;    top: 0px;left: 0px; align-items: center;    position: absolute; height: 68px; width: 68px;}

@@ -81,7 +81,9 @@ window.axios.interceptors.response.use(res => {
 
 Vue.config.errorHandler = function (err, vm, info) {
     console.error('Vue.config.errorHandler',err);
-	vm.$h.showMsg({ title: vm.$h.nvl(err.title,'$vuetify.errors.systemErrorJs.title')  , text: vm.$h.nvl(err.text, err.message),	params: {creator:'js', status:-1, trace: info+'<br>'+err.stack.replace(/\n/g,'<br>') }, withThrow:false,})
+	let nvl=vm.$h.nvl
+	vm.$h.showMsg({ title: nvl(err.title,'$vuetify.errors.systemErrorJs.title')  , text: nvl(err.text ,err.message),	
+		params: {creator:err.creator, status: nvl(err.status,-1), trace: nvl(err.trace, info+'<br>'+nvl( err.stack.replace(/\n/g,'<br>') ) ) , file: nvl(err.file), line: nvl(err.line),  }, withThrow:false,})
 };
 /* --непонятно что сними делать пока.
 Vue.config.warnHandler = function (err, vm, info) {
@@ -95,13 +97,15 @@ window._vue =  new Vue({el:'#app', router ,vuetify, store, render: h=> h(app),
 })
 
 window.onerror = function(message, source, line, column, error) {
-	console.error('onerror',error);
+	console.error('onerror',error);		
 	window._vue.$h.showMsg({ title: '$vuetify.errors.systemErrorJs.title'  , text: message, file: source, line:line+'('+column+')',	params: {creator:'js', status:-1, trace: error.stack.replace(/\n/g,'<br>') }, withThrow:false, })
 	return false
 }
 window.addEventListener('unhandledrejection', function(event) {
 	//console.error('unhandledrejection',event.reason);
 	let vm = window._vue,
-		text = vm.$h.nvl(event.reason.text, event.reason.message)
-	vm.$h.showMsg({ title: vm.$h.nvl(event.reason.title,'$vuetify.errors.systemErrorJs.title')  , text:text ,	params: {creator:'js', status:-1, trace: text+'<br>'+event.reason.stack.replace(/\n/g,'<br>') }, withThrow:false,})
+		text = vm.$h.nvl(event.reason.text, event.reason.message),
+		nvl=vm.$h.nvl
+	vm.$h.showMsg({ title: nvl(event.reason.title,'$vuetify.errors.systemErrorJs.title')  , text: text,	
+		params: {creator:event.reason.creator, status: nvl(event.reason.status,-1), trace: nvl(event.reason.trace, text+'<br>'+event.reason.stack.replace(/\n/g,'<br>') ) , file: nvl(event.reason.file), line: nvl(event.reason.line),  }, withThrow:false,})
  });

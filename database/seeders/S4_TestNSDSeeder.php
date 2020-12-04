@@ -1,10 +1,10 @@
 <?php
-
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\TestNsd;
 
-class TestNSDSeeder extends Seeder {
+class S4_TestNSDSeeder extends Seeder {
 
   public function run()  {
 	TestNsd::whereIn('id', array(1,2,3,4,5,6,7))->delete();

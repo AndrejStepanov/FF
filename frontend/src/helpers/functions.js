@@ -243,11 +243,17 @@ function nvlo (val,replace){
 	if(typeOfObject(val) != 'object' || Object.keys(val).length==0 ) return arguments.length ==1? {}: replace ; else return val;
 }
 
-function systemException({title , text, textParams}) {
+function systemException({title , text, textParams }, { status, trace, file, line  }) {
 	const error = new Error(title+' | '+text)
+	console.log(title);
 	error.title = title
 	error.text = text
 	error.textParams = textParams
+	error.creator= error.status== undefined? 'js':'php'
+	error.status=status
+	error.trace=trace
+	error.file=file
+	error.line=line
 	return error
 }
 
@@ -263,7 +269,7 @@ function showMsg ({title, text, type, params, textParams, withThrow,}){
 	if(type!='error' ||  !withThrow && nvl(_vm)!=0)
 		_vm.$store.dispatch('msg/doAdd', {title,text,type, ...params, })  // jshint ignore:line
 	else
-		throw new systemException({ title , text, textParams: textParams.join(' | ') } )
+		throw new systemException({ title , text, textParams: textParams.join(' | '),  }, params )
 }
 
 function getErrDesc(errName){
@@ -327,7 +333,7 @@ async function sendRequest  ({href, method, headers, data, needSucess, hrefBack,
 	} catch (error) {
 		console.log(error)
 		let r = nvlo(error.response)
-		if( nvlo(r.data).message.indexOf("The provided authorization grant")==0) // почему то сервер возращает такой ответ при неверном логине/пароле
+		if( nvl(nvlo(r.data).message,'').indexOf("The provided authorization grant")==0) // почему то сервер возращает такой ответ при неверном логине/пароле
 			[r.data.title, r.data.message] = ['$vuetify.errors.withLogIn.title', '$vuetify.errors.withLogIn.text']
 		if( nvlo(r.data).message=='Unauthenticated.')
 			[r.data.title, r.data.message] = ['$vuetify.errors.needAuth.title', '$vuetify.errors.needAuth.text']

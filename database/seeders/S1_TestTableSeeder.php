@@ -1,10 +1,10 @@
 <?php
-
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\TestTable;
 
-class TestTableSeeder extends Seeder {
+class S1_TestTableSeeder extends Seeder {
 
   public function run()  {
 	TestTable::whereIn('obj_param', array('qwe', 'iop'))->delete();

@@ -7,7 +7,7 @@
 			<transition v-if="searchButton" name="searchButton-fade" mode="out-in"  >
 				<v-tooltip  v-if="!filterShown" key="icon" bottom  > 
 					<template v-slot:activator="{ on, attrs }">
-						<v-btn   v-bind="attrs" v-on="on" text class=" mr-2" @click="$emit('searchButtonClick'); filterShown=!filterShown" > 
+						<v-btn   v-bind="attrs" v-on="on" text class=" mr-2" @click.stop="$emit('searchButtonClick'); filterShown=!filterShown" > 
 							<v-badge v-if="searchText!=''" overlap dot accent >
 								<v-icon>search</v-icon>
 							</v-badge>
@@ -18,14 +18,14 @@
 					<span>{{$vuetify.lang.t('$vuetify.system.simple.actions.search') }}</span>
 				</v-tooltip>
 				<v-text-field  v-else  key="field"	v-model="searchText" dense :autofocus="filterShown" filled  :label="$vuetify.lang.t('$vuetify.system.simple.actions.search')"	single-line	hide-details class="height-36px"
-					prepend-inner-icon="search"  	append-icon="close"  @click:append="filterShown=!filterShown; searchText=''" 	  multi-sort
-					prepend-icon="arrow_right"  @click:prepend="filterShown=!filterShown;" 
+					prepend-inner-icon="search"  	append-icon="close"  @click:append.stop="filterShown=!filterShown; searchText=''" 	  multi-sort
+					prepend-icon="arrow_right"  @click:prepend.stop="filterShown=!filterShown;" 
 					
 				/>
 			</transition>
 			<v-tooltip bottom v-if="fiterButton" > 
 				<template v-slot:activator="{ on, attrs }">
-					<v-btn   v-bind="attrs" v-on="on" text  class="  mr-2" @click="$emit('fiterButtonClick')" ><v-icon>filter_list</v-icon></v-btn> 
+					<v-btn   v-bind="attrs" v-on="on" text  class="  mr-2" @click.stop="$emit('fiterButtonClick')" ><v-icon>filter_list</v-icon></v-btn> 
 				</template>
 				<span>{{$vuetify.lang.t('$vuetify.system.simple.labels.filter') }}</span>
 			</v-tooltip>
@@ -33,19 +33,19 @@
 				<template #activator="{ on: onMenu }">
 					<v-tooltip bottom>
 					<template #activator="{ on: onTooltip, attrs }">
-						<v-btn v-bind="attrs" v-on="{ ...onMenu, ...onTooltip }" text  class="  mr-2" @click="$emit('exportButtonClick')"  > <v-icon>cloud_download</v-icon></v-btn>
+						<v-btn v-bind="attrs" v-on="{ ...onMenu, ...onTooltip }" text  class="  mr-2" @click.stop="$emit('exportButtonClick')"  > <v-icon>cloud_download</v-icon></v-btn>
 					</template>
 					<span>{{$vuetify.lang.t('$vuetify.system.simple.actions.export') }}</span>
 					</v-tooltip>
 				</template>
 				<v-list>
-					<v-list-item  v-if="exportPdf"  @click="$emit('pdfButtonClick')"  >	<v-list-item-title> {{$vuetify.lang.t('$vuetify.system.simple.labels.pdfFile') }} </v-list-item-title>		</v-list-item>
-					<v-list-item  v-if="exportExcel" @click="$emit('excelButtonClick')"  >	<v-list-item-title> {{$vuetify.lang.t('$vuetify.system.simple.labels.excelFile') }} </v-list-item-title>		</v-list-item>
+					<v-list-item  v-if="exportPdf"  @click.stop="$emit('pdfButtonClick')"  >	<v-list-item-title> {{$vuetify.lang.t('$vuetify.system.simple.labels.pdfFile') }} </v-list-item-title>		</v-list-item>
+					<v-list-item  v-if="exportExcel" @click.stop="$emit('excelButtonClick')"  >	<v-list-item-title> {{$vuetify.lang.t('$vuetify.system.simple.labels.excelFile') }} </v-list-item-title>		</v-list-item>
 				</v-list>
 			</v-menu>
 			<v-tooltip bottom v-if="settingsButton" > 
 				<template v-slot:activator="{ on, attrs }">
-					<v-btn   v-bind="attrs" v-on="on" text  class="  mr-2" @click="$emit('settingsButtonClick'); openDialog({name:'tableSettings'})" ><v-icon>settings</v-icon></v-btn> 
+					<v-btn   v-bind="attrs" v-on="on" text  class="  mr-2" @click.stop="$emit('settingsButtonClick'); openDialog({name:'tableSettings'})" ><v-icon>settings</v-icon></v-btn> 
 				</template>
 				<span>{{$vuetify.lang.t('$vuetify.system.simple.labels.settings') }}</span>
 			</v-tooltip>
@@ -57,11 +57,11 @@
 				<slot   :name="slotName" v-bind="slotProps" />
 			</template>
 		</v-data-table>
-		<component v-bind:is="dialogModule" @input="saveDialog" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened"/>
 	</v-card>
 </template>
 
 <script>
+//		<component v-bind:is="dialogModule" @input="saveDialog" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened"/>
 	import {Ripple,} from 'vuetify/lib/directives'
 	import XDialogConfig from '@/mixins/x-dialog-config'
 	export default {
@@ -173,7 +173,6 @@
 			},
 		},
 		components: {
-			MTableSettings: (resolve) =>{ require(['@/modules/tableSettings/m-table-settings.vue'], resolve) },
 		},
 		mixins: [
 			XDialogConfig,

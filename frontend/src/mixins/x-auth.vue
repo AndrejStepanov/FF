@@ -23,6 +23,8 @@
 				localStorage.authRefreshToken = ''
 				localStorage.authTokenType = ''
 				localStorage.authRemember = 0
+				localStorage.authIsRoot = false
+				localStorage.authIsGuest = true
 			},
 			async initProfile(){
 				let vm=this,
@@ -79,6 +81,8 @@
 					return
 				vm.profileLog({userName:response.data.name, userId:response.data.id, isRoot:response.data.is_root, avatar:response.data.avatar, 
 					login:response.data.login, email:response.data.email, firstname:response.data.firstname, lastname:response.data.lastname, systemLanguage:response.data.systemLanguage })
+				localStorage.authIsRoot = response.data.is_root
+				localStorage.authIsGuest = response.data.login=='guest'
 				vm.$vuetify.lang.current=response.data.systemLanguage
 				vm.$root.$emit('userInfoRetrieved')				
 			},

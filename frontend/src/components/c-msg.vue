@@ -1,9 +1,9 @@
 <template>
 	<v-slide-x-transition >
 		<div   v-on:click ="alertClcik" >
-			<v-alert v-model="snackbar" border="left"  :type="msg.type" >
-				<template v-slot:prepend> <div/> </template>
-				<v-card  light  >
+			<v-alert v-model="snackbar" border="left"  :type="msg.type" class='systemCMessage' >
+				<template #prepend> <div/> </template>
+				<v-card  light  class='width: 100%;'>
 					<v-card-title dense> 
 						<v-icon>{{icons[msg.type]}}</v-icon>&nbsp;{{msg.title}}     						 
 					</v-card-title>
@@ -85,3 +85,6 @@
 		},
 	}
 </script>
+<style >
+	.systemCMessage .v-alert__content {width: 100%;}
+</style>

@@ -40,9 +40,6 @@
 			],
 		}),
 		computed: {
-			dialogConfigGet(){
-				return this.dialogConfig(this.dialogId)
-			},
 		},
 		components: {
 			CTable, 

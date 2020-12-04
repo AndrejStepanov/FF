@@ -105,6 +105,7 @@
 		components: {
 			CHead, CFooter,CMsgList, CLayouts,
 			MInputFields: (resolve) => require(['@/modules/inputFields/m-input-fields.vue'], resolve),
+			MTableSettings: (resolve) =>{ require(['@/modules/tableSettings/m-table-settings.vue'], resolve) },
 		},
 		mixins: [
 			XDialogConfig,XAuth,

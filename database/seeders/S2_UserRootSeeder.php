@@ -1,10 +1,10 @@
 <?php
-
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
-class UserRootSeeder extends Seeder {
+class S2_UserRootSeeder extends Seeder {
 
 	public function run()  {
 		if(env('APP_ENV') == 'production')	

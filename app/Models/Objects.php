@@ -14,6 +14,6 @@ class Objects extends Model{
     protected $primaryKey = 'obj_id';
     protected $dates = [  'created_at', 'updated_at' ];
     protected $fillable = [
-		'obj_group','obj_type', 'obj_path', 'obj_name', 'obj_desc', 'auth', 'language', 'guid_tree_id', 'obj_id', 
+		'obj_group','obj_type', 'obj_path', 'obj_name', 'obj_desc', 'auth', 'language', 'guid_tree_id', 'obj_id', 'obj_comp_name', 
     ];
 }

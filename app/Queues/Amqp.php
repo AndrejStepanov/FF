@@ -1,9 +1,9 @@
 <?php
-namespace App\Services\Queues;
+namespace App\Queues;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
  
-class AmqpQueue {
+class Amqp {
   private $connection;
   private $channel;
   private $callback_queue;
