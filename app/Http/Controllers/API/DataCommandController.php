@@ -14,7 +14,7 @@ class DataCommandController extends BaseController{
 		$data=$request->all();
 		$res=[];
 		switch($data['socetEvent']){
-			case('object.tree.add'):{  throw new \App\Exceptions\KonsomException( 'Что-то пошло не так','Пошло не так все из-за корявых рук!');   }
+			case('object.tree.add'):{  /*sleep( 10 );*/ throw new \App\Exceptions\KonsomException( 'Что-то пошло не так','Пошло не так все из-за корявых рук!');   }
 			case('test.nsd.by.set'):{  $res=(new TestNsd() )->sentNsdDataBySet(nvl($data['set'],'null')); break; };
 			case('test.data.by.id'):{  $res=(new TestTable() )->sentDataById(nvl($data['id'],'null')); break; 	}
 			case('test.number.with.sleep'):{ /*sleep(5);*/ $res=json_encode( ['value'=>10] ); break;	}

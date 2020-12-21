@@ -1,11 +1,14 @@
 <template>
-	<c-layouts  :name="layoutName" :size="parentLayout.sizePx">
-		<template  v-for="(slotName, index) in slotNames"    v-slot:[slotName]  >
-			<div :key="index" >
-				<slot  :name="slotName" />
-			</div>
-		</template>
-	</c-layouts>
+	<div>
+		<c-layouts  :name="layoutName" :size="parentLayout.sizePx">
+			<template  v-for="(slotName, index) in slotNames"    v-slot:[slotName]  >
+				<div :key="index" >
+					<slot  :name="slotName" />
+				</div>
+			</template>
+		</c-layouts>
+		<slot name="layoutDialogs"/>
+	</div>
 </template>
 <script>
 	import CLayouts from '@/components/c-layouts'

@@ -14,8 +14,8 @@ class TestArm extends Model{
      * @var array
      */
     protected $primaryKey = 'id';
-    protected $dates = [  'created_at', 'updated_at', 'attDate1', 'attDate2'];
+    protected $dates = [  'created_at', 'updated_at', 'attDate1', 'attDate2',];
     protected $fillable = [
-		'id','attInt1', 'attInt2', 'attNum1', 'attNum2', 'attDate1', 'attDate2', 'user_id',
+		'id','attInt1', 'attInt2', 'attNum1', 'attNum2', 'attDate1', 'attDate2', 'attStr1', 'attStr2', 'user_id',
     ];
 }

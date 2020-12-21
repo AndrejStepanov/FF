@@ -12,7 +12,7 @@
 					</v-list-item-avatar>
 
 					<v-list-item-content>
-						<v-list-item-title > {{profileUserName!=''?profileUserName:$vuetify.lang.t('$vuetify.system.simple.labels.auth')}} 	</v-list-item-title>
+						<v-list-item-title > {{profileUserName!=''?profileUserName:$vuetify.lang.t('$vuetify.system.labels.auth')}} 	</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
 			
@@ -25,7 +25,7 @@
 						<v-list-item-content  >
 							<v-list-item-title 	v-text="profileUserName"	/>
 							<v-list-item-subtitle >
-								<small>{{$vuetify.lang.t('$vuetify.system.simple.labels.activeTo')}}</small>  {{$moment(profileExpiresIn*1000).format('DD.MM hh:mm')  }}
+								<small>{{$vuetify.lang.t('$vuetify.system.labels.activeTo')}}</small>  {{$moment(profileExpiresIn*1000).format('DD.MM hh:mm')  }}
 							</v-list-item-subtitle>
 						</v-list-item-content>
 					</template>
@@ -34,19 +34,19 @@
 						<v-list-item-icon>
 							<v-icon v-text="'cached'"></v-icon>
 						</v-list-item-icon>
-						<v-list-item-title v-text="$vuetify.lang.t('$vuetify.system.simple.actions.chacngePass')"></v-list-item-title>
+						<v-list-item-title v-text="$vuetify.lang.t('$vuetify.system.actions.chacngePass')"></v-list-item-title>
 					</v-list-item>
 					<v-list-item  link >
 						<v-list-item-icon>
 							<v-icon v-text="'settings'"></v-icon>
 						</v-list-item-icon>
-						<v-list-item-title v-text="$vuetify.lang.t('$vuetify.system.simple.actions.settings')"></v-list-item-title>
+						<v-list-item-title v-text="$vuetify.lang.t('$vuetify.system.actions.settings')"></v-list-item-title>
 					</v-list-item>
 					<v-list-item  link	@click="$root.$emit('systemLogout')" >
 						<v-list-item-icon>
 							<v-icon v-text="'close'"></v-icon>
 						</v-list-item-icon>
-						<v-list-item-title v-text="$vuetify.lang.t('$vuetify.system.simple.actions.authEnd')"></v-list-item-title>
+						<v-list-item-title v-text="$vuetify.lang.t('$vuetify.system.actions.authEnd')"></v-list-item-title>
 					</v-list-item>
 				</v-list-group>
 			</v-list>
@@ -61,12 +61,12 @@
 				<v-divider class="mt-2" />
 				<v-bottom-navigation	v-model="curPanel"	v-bind="lightSet"	shift background-color="transparent" class='box-shadow-none'	>
 					<v-btn>
-						<span>{{$vuetify.lang.t('$vuetify.system.simple.labels.struct')}}</span>
+						<span>{{$vuetify.lang.t('$vuetify.system.labels.struct')}}</span>
 						<v-icon>account_tree</v-icon>
 					</v-btn>
 
 					<v-btn>
-						<span>{{$vuetify.lang.t('$vuetify.system.simple.labels.functional')}}</span>
+						<span>{{$vuetify.lang.t('$vuetify.system.labels.functional')}}</span>
 						<v-icon>apps</v-icon>
 					</v-btn>
 
@@ -96,19 +96,19 @@
 				</v-treeview>
 
 				<div v-show="curPanel==1" >
-					<template v-for="(value, key) in pageButtons " >
-						<v-tooltip  v-if="pageButtons[key].title!=''"	:key="key"   bottom  > 
+					<template v-for="(row, key) in compButtons " >
+						<v-tooltip  v-if="row.title!=''"	:key="key"   bottom  > 
 							<template v-slot:activator="{ on, attrs }">
-								<v-btn	v-on="on" tile class=" btn-functional ml-4  mb-4"	height="68px" :disabled="pageButtons[key].disabled"	width="68px"	color="transparent"   
-									v-bind="{...lightSet,...attrs}" @click="$root.$emit(pageButtons[key].event, pageButtons[key].param)"  >
-									<v-icon >{{pageButtons[key].icon}}</v-icon>
+								<v-btn	v-on="on" tile class=" btn-functional ml-4  mb-4"	height="68px" :disabled="row.disabled"	width="68px"	color="transparent"   
+									v-bind="{...lightSet,...attrs}" @click="$root.$emit(row.event, row.params)"  >
+									<v-icon >{{row.icon}}</v-icon>
 								</v-btn>
 							</template>
-							<span >{{$vuetify.lang.t(pageButtons[key].title)}}</span>	
+							<span >{{$vuetify.lang.t(row.title)}}</span>	
 						</v-tooltip>
-						<v-btn v-else :key="key" tile class=" btn-functional ml-4  mb-4"	height="68px"	:disabled="pageButtons[key].disabled" width="68px"	color="transparent"   
-							v-bind="lightSet" @click="$root.$emit(pageButtons[key].event, pageButtons[key].param)">
-							<v-icon >{{pageButtons[key].icon}}</v-icon> 
+						<v-btn v-else :key="key" tile class=" btn-functional ml-4  mb-4"	height="68px"	:disabled="row.disabled" width="68px"	color="transparent"   
+							v-bind="lightSet" @click="$root.$emit(row.event, row.param)">
+							<v-icon >{{row.icon}}</v-icon> 
 						</v-btn>
 					</template>
 				</div>
@@ -129,13 +129,13 @@
 <script>
 /* :width="sceletSize.width-12*2" :height="sceletSize.height-12*2"*/
 	import XApp from '@/mixins/x-app'
-	import pNeedLogin from '@/pages/needLogin/p-need-login'
-	import pErrorShow from '@/pages/errorShow/p-error-show'
+	import PNeedLogin from '@/pages/needLogin/p-need-login'
+	import PErrorShow from '@/pages/errorShow/p-error-show'
 	import PMainTest from '@/pages/mainTest/p-main-test'
 	import PObjectView from '@/pages/objectView/p-object-view'
 	import PObjectWork from '@/pages/objectWork/p-object-work'
-	import pTestArm from '@/pages/testArm/p-test-arm'
-	let pages={PMainTest, PObjectView, PObjectWork, pTestArm}
+	import PTestArm from '@/pages/testArm/p-test-arm'
+	let pages={PMainTest, PObjectView, PObjectWork, PTestArm}
 	export default {
 		data: () => ({
 			layoutsConfigs: { //'horizontal' - внутри будут строки,  'vertical' - внутри будут столбики;  Последнему слою выставлять размер бессмысленно
@@ -174,12 +174,12 @@
 					}
 				return res
 			},
-			pageButtons(){
-				return this.pageButtonByPage( this.$h.camelize(this.$h.nvl(this.$route.meta.compName,'')) )
+			compButtons(){
+				return this.compButtonByName( this.$route.meta.compName )
 			},
 			errorShowMsg(){
-				return this.$route.meta.admin && !this.profileIsRoot?'$vuetify.system.simple.msgs.noAccess':
-					this.$h.nvl(this.$route.name)==''? '$vuetify.system.simple.msgs.invalidHref':
+				return this.$route.meta.admin && !this.profileIsRoot?this.$h.getErrDesc('noAccess').text:
+					this.$h.nvl(this.$route.name)==''? this.$h.getErrDesc('invalidHref').text:
 					''
 			},
 					
@@ -203,7 +203,7 @@
 						containers[el.id]= containers[el.link_parent_id].children[ containers[el.link_parent_id].children.length-1 ]
 					}
 					routers.push(
-						{	path:el.href_link ,	name: el.link_id,	component: pages[el.obj_comp_name],	meta: {	linkId:el.link_id, guest: true, compName:el.obj_comp_name	}	},
+						{	path:el.href_link ,	name: el.link_id,	component: pages[el.obj_comp_name],	meta: {	linkId:el.link_id, guest: true, compName:vm.$h.camelize(vm.$h.nvl(el.obj_comp_name,''))+'_'+el.link_id 	}	},
 					)
 				})			
 				vm.systemLinksStruct = Object.assign({}, this.systemLinksStruct, containers)
@@ -212,7 +212,7 @@
 			},
 		},
 		components: {
-			pNeedLogin, pErrorShow,
+			PNeedLogin, PErrorShow,
 		},
 		mixins: [
 			XApp,
@@ -230,11 +230,14 @@
 			vm.$root.$on('logoutProcessed', ()=>{
 				vm.systemLinks=[]
 			})
+			vm.$root.$on('curPageRefresh', async ( data )=>{
+				vm.$root.$emit(vm.$route.meta.compName+'_contentRefresh', data)
+			})
 		},
 		errorCaptured(err,vm,info) {
 			console.error('errorCaptured',err);
 			let nvl=this.$h.nvl
-			this.$h.showMsg({ title: nvl(err.title,'$vuetify.errors.systemErrorJs.title')  , text: nvl(err.text ,err.message),	
+			this.$h.showMsg({ title: nvl(err.title,'$vuetify.system.errors.systemErrorJs.title')  , text: nvl(err.text ,err.message),	
 				params: {creator:err.creator, status: nvl(err.status,-1), trace: nvl(err.trace, info+'<br>'+nvl( err.stack.replace(/\n/g,'<br>') ) ) , file: nvl(err.file), line: nvl(err.line),  }, withThrow:false,})
 			return false;
 		}

@@ -1,5 +1,5 @@
 <template>
-	<c-dialog :dialogId="dialogId" :widthOrig="dialogConfigGet.width" :heightOrig="dialogConfigGet.height" :buttons="dialogButtons" >
+	<c-dialog :dialogLink="dialogLink"  :widthOrig="modalSize.width" :heightOrig="modalSize.height" :buttons="compButtonsGet" >
 		<v-expansion-panels class="overXAutoLi" v-model="panel" multiple >
 			<v-expansion-panel>
 				<v-expansion-panel-header :style="'user-select: text;'">
@@ -29,9 +29,9 @@
 		data: () => ({
 			inputsValid:true,
 			panel: [0],
-			dialogButtons: [
-				{id:-1, title:'$vuetify.system.simple.actions.close', icon:'close', allig:'right', click:'dialogClose'}
-			],
+			buttonsConfig: {
+				close: {title:'$vuetify.system.actions.close', icon:'close', allig:'right'}
+			},
 		}),
 		props:{
 		},

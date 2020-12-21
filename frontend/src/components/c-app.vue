@@ -30,13 +30,13 @@
 		<c-footer v-if="needFooter" :dark="isPerefThemeDark" :light="isPerefThemeLight" />
 		<c-msg-list   />
 		<slot name="dialogs" />
-		<component v-bind:is="dialogModule" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened" />
+		<component v-for="(row, name) in dialogsShowen " :key="name" v-bind:is="row.config.component" :dialogLink="row.link"  />
 	</v-app>
 </template>
 
 <script>	
 	import XAuth from '@/mixins/x-auth'
-	import XDialogConfig from '@/mixins/x-dialog-config'
+	import XDialogsConfig from '@/mixins/x-dialogs-config'
 	import CHead from '@/components/c-head'
 	import CFooter from '@/components/c-footer'
 	import CMsgList from '@/components/c-msg-list'
@@ -108,7 +108,7 @@
 			MTableSettings: (resolve) =>{ require(['@/modules/tableSettings/m-table-settings.vue'], resolve) },
 		},
 		mixins: [
-			XDialogConfig,XAuth,
+			XDialogsConfig, XAuth,
 		],
 		methods: {
 			onResize () {
@@ -123,7 +123,7 @@
 				vm.layoutSizePxRecalc( {head:vm.layoutName, parentSizePx:{width: window.innerWidth-dxWidth, height: window.innerHeight-dxHeight } } )
 			},
 		},
-		created: function (){
+		async created (){
 			let vm=this
 			vm.panelLeftShowen= ['xs','sm'].indexOf(vm.$vuetify.breakpoint.name)!=-1? false: vm.$h.nvl(vm.panelLeft.show,false)
 			vm.panelRightShowen=['xs','sm'].indexOf(vm.$vuetify.breakpoint.name)!=-1? false: vm.$h.nvl(vm.panelRight.show,false)
@@ -133,6 +133,7 @@
 			vm.$root.$on('headDrawerRightClick', (obj)=>{
 				vm.panelRightShowen=!vm.panelRightShowen
 			})
+			await vm.initDialogs(vm.dialogsConfig)
 		},
 		mounted() {
 			let vm=this

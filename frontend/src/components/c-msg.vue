@@ -11,11 +11,11 @@
 					<v-divider></v-divider>
 					<v-card-actions>
 						<v-btn v-if="traceAble" class="accent noMarginLeft" @click.native="$emit('traceDialogShow', msg.id)" small>
-							<v-icon>description</v-icon> &nbsp;{{$vuetify.lang.t('$vuetify.system.simple.labels.detail')}}&nbsp;
+							<v-icon>description</v-icon> &nbsp;{{$vuetify.lang.t('$vuetify.system.labels.detail')}}&nbsp;
 						</v-btn>
 						<v-spacer></v-spacer>
 						<v-btn class="accent noMarginLeft" @click.native="snackbar = false" small>
-							&nbsp;{{$vuetify.lang.t('$vuetify.system.simple.actions.close')}}&nbsp; 
+							&nbsp;{{$vuetify.lang.t('$vuetify.system.actions.close')}}&nbsp; 
 							<v-progress-circular v-if="timerId>0" :rotate="-90"  :size="23" :width="3"   :value="100-(timerVal/maxTimerVal)*100" dark > {{((timerVal/2)|0)}}   </v-progress-circular> 
 							<v-icon v-else >close</v-icon> 
 						</v-btn>

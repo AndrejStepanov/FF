@@ -1,20 +1,20 @@
 <template>
 	<div id="block_message" :style="sizeTotal">
 		<c-msg v-for="msg in msgAllMsg"  :key="msg.id" :msg="msg" @traceDialogShow="traceDialogShow"  />
-		<component v-bind:is="dialogModule" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened"/>  
+		<component v-for="(row, name) in dialogsShowen " :key="name" v-bind:is="row.config.component" :dialogLink="row.link"  />  
 	</div>
 </template>
 
 <script>
 	import XStore from '@/mixins/x-store'
-	import XDialogConfig from '@/mixins/x-dialog-config'
+	import XDialogsConfig from '@/mixins/x-dialogs-config'
 	import CMsg from "@/components/c-msg"
 	export default {
 		name:"c-msg-list",
 		data: () => ({
 			dialogsConfig: {
 				errorTrace:{
-					id: -1,  title:"$vuetify.system.modals.traceShow.title",	module:'m-error-desc', width:1024, height:600,	buttons:[],
+					id: -1,  title:"$vuetify.system.modals.traceShow.title",	component:'m-error-desc', width:1024, height:600,	buttons:[],
 					params:{ id:null, msg: null}, 
 				}
 			},
@@ -31,7 +31,7 @@
 			MErrorDesc: (resolve) => require(["@/modules/errorDesc/m-error-desc.vue"], resolve),
 		},
 		mixins: [
-			XStore,XDialogConfig,
+			XStore, XDialogsConfig,
 		],
 		methods: {
 			traceDialogShow(id){
@@ -39,10 +39,12 @@
 					tmp = vm.msgAllMsg.find((msg)=>{ return msg.id==id })
 				if(!tmp)
 					vm.$h.showMsg( vm.$h.getErrDesc('traceNotFound'))
-				vm.openDialog({name:'errorTrace', params:{id,msg:tmp}})
+				vm.openDialog({dialog:'errorTrace', params:{id,msg:tmp}})
 			},
 		},
-		created: function (){
+		async created (){
+			let vm = this
+			await vm.initDialogs(vm.dialogsConfig)
 		},
 	}
 </script>

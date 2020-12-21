@@ -6,10 +6,10 @@
 				<v-toolbar  dense color="primary" dark >
 					<v-toolbar-title > {{ $vuetify.lang.t(dialogConfigGet.title) }}</v-toolbar-title>
 					<v-spacer/>
-					<v-btn icon x-small>
-						<v-icon>more_vert</v-icon>
+					<v-btn v-if ="profileIsRoot" icon x-small>
+						<v-icon>info_outline</v-icon>
 					</v-btn>
-					<v-btn icon @click.native="dialogClose" x-small>
+					<v-btn icon @click="$root.$emit(buttonClose.event , buttonClose.param)" x-small>
 						<v-icon>clear</v-icon>
 					</v-btn>
 				</v-toolbar>
@@ -21,9 +21,9 @@
 					</v-card-text>
 					<v-divider></v-divider>
 					<v-card-actions @mousedown.self="bodyDown($event)"  >							
-						<v-btn v-for="row in buttonsLeft"   small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent"  :disabled="row.disabled" :loading="row.loading||false"  > <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon>&nbsp;{{$vuetify.lang.t(row.title)}}</v-btn>
+						<v-btn v-for="row in buttonsBySide.left"   small v-bind:key="row.id" @click="$root.$emit(row.event, row.param)"  color="accent" :disabled="row.disabled" :loading="row.loading"  > <v-icon v-if="row.icon!=''"  >{{row.icon}}</v-icon>&nbsp;{{$vuetify.lang.t(row.title)}}</v-btn>
 						<v-spacer/>
-						<v-btn  v-for="row in buttonsRight" small v-bind:key="row.id" @click.native="buttonClick(row)" color="accent" :disabled="row.disabled" :loading="row.loading||false" > {{$vuetify.lang.t(row.title)}}&nbsp;<v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon></v-btn>
+						<v-btn  v-for="row in buttonsBySide.right" small v-bind:key="row.id" @click="$root.$emit(row.event, row.param)"  color="accent" :disabled="row.disabled" :loading="row.loading" > {{$vuetify.lang.t(row.title)}} <v-icon v-if="row.icon!=''" >{{row.icon}}</v-icon></v-btn>
 					</v-card-actions>
 				</v-card>
 			</template>
@@ -37,7 +37,7 @@
 
 				*/
 	import XStore from '@/mixins/x-store'
-	import cDragResize from '@/components/c-drag-resize/c-drag-resize';
+	import cDragResize from '@/components/c-drag-resize/c-drag-resize'
 	export default {
 		name:'c-dialog',
 		data: () => ({
@@ -45,10 +45,10 @@
 			dragReInitEvent:'',
 		}),
 		props:{
-			dialogId: {type: Number, required: true}, 
+			dialogLink: {type: Object, required: true}, 
 			widthOrig: {type: Number, default: 500}, 
 			heightOrig: {type: Number, default: 1000}, 
-			buttons: {type: Array, default: () =>{return  [{id:1, title:'$vuetify.system.simple.actions.close', icon:'close', allig:'right', click:'dialogClose', }] }},
+			buttons: {type: Object, default: () =>{return  { close: {id:1, title:'$vuetify.system.actions.close', icon:'close', allig:'right', click:'modalClose', } }  } },
 			dragActive: {type: Boolean, default: true}, 
 			dragDraggable: {type: Boolean, default: true}, 
 			dragActiveBehavior: {type: Boolean, default: true}, 
@@ -57,23 +57,30 @@
 			dragSticks: {type: Array, default: () =>{return ['tl', 'tm-l', 'tr', 'mr-l', 'br', 'bm-l', 'bl', 'ml-l']}}, //тягальщики
 			dragNoLineStyle:{type: Boolean, default: true},
 			noHeader:{type: Boolean, default: false},
+			buttonLoading:{type: String , default: ''},
+			buttonsDisabled:{type: String , default: ''},
 		},
 		computed: {
 			dialogConfigGet(){
-				let vm=this
-				return vm.dialogConfig(vm.dialogId)
+				return this.compDialogConfig( this.dialogLink.comp, this.dialogLink.dialog)
 			},
-			buttonsLeft(){
-				return this.buttons.filter(row =>  row.allig == 'left' )
+			buttonsBySide(){
+				let vm=this, tmp ={left:[], right:[]}
+				for (let name in vm.buttons)
+					if (vm.buttons[name].allig == 'left')
+						tmp.left.push(vm.buttons[name])
+					else 
+						tmp.right.push(vm.buttons[name])
+				return tmp
 			},
-			buttonsRight(){
-				return this.buttons.filter(row =>  row.allig != 'left' )
+			buttonClose(){
+				return this.$h.nvlo(this.buttons.close, {event: 'c-dialog-close-head-undefined' })
 			},
 			width(){
-				return this.widthOrig>this.$vuetify.breakpoint.width-100? this.$vuetify.breakpoint.width-100:this.widthOrig;
+				return this.widthOrig>this.$vuetify.breakpoint.width-100? this.$vuetify.breakpoint.width-100:this.widthOrig
 			},
 			height(){
-				return this.heightOrig>this.$vuetify.breakpoint.height-100? this.$vuetify.breakpoint.height-120:this.heightOrig;
+				return this.heightOrig>this.$vuetify.breakpoint.height-120? this.$vuetify.breakpoint.height-120:this.heightOrig
 			},
 			x(){
 				return (this.$vuetify.breakpoint.width-this.width)/2
@@ -91,23 +98,7 @@
 		methods: {
 			changeSize(newRect) {
 				let vm=this
-				vm.heightSlot = newRect.height-(vm.noHeader?0:130)+'px';
-			},
-			buttonClick(button){
-				let vm=this
-				if(Array.isArray(button.click)  )
-					button.click.forEach(row=>vm.buttonClickFunc(row));
-				else
-					vm.buttonClickFunc(button.click)
-			},
-			buttonClickFunc(event){
-				if(event=='dialogClose')
-					this.dialogClose();
-				else
-					this.$emit(event);
-			},
-			dialogClose(){
-				this.dialogShowChange({id:this.dialogId, isShow:false})
+				vm.heightSlot = newRect.height-(vm.noHeader?0:48)-45+'px'
 			},
 		},
 		mounted: function (){

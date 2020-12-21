@@ -1,6 +1,6 @@
 <template>
 		<v-btn v-if="profileUserLogin()==''" 	
-			class="accent"   @click="$root.$emit('systemLogin')" > 		&nbsp;{{$vuetify.lang.t('$vuetify.system.simple.labels.auth')}}&nbsp;		<v-icon >account_circle</v-icon> 	</v-btn>	
+			class="accent"   @click="$root.$emit('systemLogin')" > 		&nbsp;{{$vuetify.lang.t('$vuetify.system.labels.auth')}}&nbsp;				<v-icon >account_circle</v-icon> 	</v-btn>	
 		<v-btn v-else-if="profileUserLogin()==guestLogin" 
 			class="accent"   @click="$root.$emit('systemLogin')" > 		&nbsp;{{profileUserName()}}&nbsp;											<v-icon >account_circle</v-icon> 	</v-btn>	
 		<v-btn v-else 							 

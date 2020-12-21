@@ -61,7 +61,7 @@
 				}
 			},
 			async: {type: Function},
-			loadingText: {type: String, default: '$vuetify.system.simple.labels.loading' },
+			loadingText: {type: String, default: '$vuetify.system.labels.loading' },
 			draggable: {type: Boolean, default: false},
 			dragOverBackgroundColor: {type: String, default: "#C9FDC9"},
 			klass: String
@@ -323,10 +323,11 @@
 					parent_childrens.forEach((node, i ) => {if(node.is_save==0) parent_childrens.splice(i,1)	});
 					recive.forEach((item, i ) => {if(item.is_check==0) parent_childrens.push(item) });
 					parent_childrens.sort(function (a, b) {vm.$h.sort(a, b, vm.textFieldName, vm.textFieldName) });
-					parent_node.loading = false;
-					parent_node.childLoaded= true;
+					parent_node.loading = false
+					parent_node.childLoaded= true
 					vm.initializeData(parent_childrens)
-					vm.tree_loading=false;
+					vm.tree_loading=false
+					this.$emit("rootLoaded")
 				});
 				vm.$h.sendRequest({href:vm.socetHref, method:vm.socetMethod, data:{socetEvent:vm.socetEvent,}, })
 			}	

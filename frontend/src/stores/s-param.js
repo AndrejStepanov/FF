@@ -26,26 +26,31 @@ export default {
 		getParamsInfoChecked: (state,getters) =>(form)=> {
 			let data= getters.getGroup(form), tmp={}
 			for(let name in data)
-				if( $h.nvl(data[name].checked,false))
+				if( data[name].checked)
 					tmp[name]=data[name]
 			return tmp
 		},
-		getParamsToObj: (state,getters) =>(form, withChecked)=> {
+		getParamsToObj: (state,getters) =>(form, withoutChecked)=> {
 			let data= getters.getGroup(form), tmp={}
-			withChecked=withChecked||'N'
+			withoutChecked=withoutChecked||'N'
 			for(let name in data)
-				if(withChecked=='N' || $h.nvl(data[name].checked,false)){
-					tmp[name]= getters.getValFieldByData(data[name])=='value' ? data[name].value : data[name].value_arr.slice()
+				if(withoutChecked=='Y' || data[name].checked){
+					let field = getters.getValFieldByData(data[name])
+					tmp[name]= field == 'value' ? data[name].value :
+						field=='value_arr' && !data[name].multy &&  ['LIST', 'DATE',  'DATETIME',  'TIME', ].indexOf(data[name].type)!=-1? data[name].value_arr[0].slice() :
+						data[name].value_arr.slice()
 				}
 			return tmp
 		},
 	},
 	actions:{	
-		async doInit({dispatch,commit,getters,state},{form,params}){
-			//commit("allParamsClearing",{ form, })		
-			params=params||[]  // jshint ignore:start
-			commit("allParamsSet",{ form, params: params.reduce((res, row) => ({ 
+		async doInit({dispatch,commit,getters,state, rootGetters },{form, id, type}){ // jshint ignore:start
+			let tmp = rootGetters['paramConfig/getGroup'](type,form, null)
+			if(tmp==null)
+				$h.showMsg(  {...$h.getErrDesc('paramsInitInvalidParam'), textParams:[form, type] } )
+			commit("allParamsSet",{ form:form+$h.idSep+id, params: rootGetters['paramConfig/getGroup'](type,form).reduce((res, row) => ({ 
 				...res, [row.code]:{
+					id:$h.getNewId(),
 					sign:'=', need_reset_val:true, need_reset_val_arr:true, checked:true, defaultInit:false, value: '', valueView:'',value_arr: ['',''], valueArrView:['',''], table_values:[], table_values_init:false,  
 					multy:false,  delim: ['DATE_RANGE', 'DATETIME_RANGE', 'TIME_RANGE', 'RANGE'].indexOf(row.type)!=-1 ? '--':',', //';', вьютифишный лист использует запятую как сеператор
 					...row,}  
@@ -92,16 +97,18 @@ export default {
 				dispatch('doSetValOutside',{form, code, value:value[code], data})
 		},
 		async doSetSeveral({dispatch,commit,getters,state},{form,params }){// params:{code:{value:'значение параметра, если undefined - не указан', view:'отображаемое пользователю значение'}}
-			params=params||{}
-			Object.keys(params).forEach(code=>{
-				dispatch("doSet",{form, code, value:params[code].value, value2:params[code].value2, checked:params[code].checked, sign:params[code].sign}) 
-			})	
+			for (let code in params) 
+				if ($h.nvlo( getters.getByCode(form,code),'')!='')
+					commit("paramSetting",{form, code, data:params[code]}) 
+		},
+		async doClear({commit,getters,state},{form,}){
+			commit("paramClearing",{ form,})		
 		},
 	},
 	mutations:{
-		allParamsClearing(state, {form, }){
-			console.log('allParamsClearing',state, form);
-			Vue.set(state.params, form, {})
+		paramClearing(state, {form, }){
+			console.log('paramClearing',state, form);
+			Vue.delete(state.params, form)
 		},
 		allParamsSet(state, {form,params, }){
 			console.log('allParamsSet',state, form, params);

@@ -5,6 +5,8 @@
 		<v-spacer/>
 		<v-icon v-if="profileUserName!='' && withSearch" color='accent' class='get-clcik' @click="searchClick">search</v-icon>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<v-icon color='accent' class='get-clcik' @click="$root.$emit('curPageRefresh')">refresh</v-icon>
+		<v-icon v-if ="profileIsRoot" color='accent' class='get-clcik ml-2'  @click="$root.$emit('sysInfo')">info_outline</v-icon>
 		<!--<c-profile class='get-clcik'/> /-->
 		<v-app-bar-nav-icon @click="toolbarClicked('Right')"  v-if="showRight" color='accent' class='get-clcik'/>
 	</v-app-bar>

@@ -8,37 +8,32 @@ export default {
 		filters:{},
 	},
 	getters: { // computed properties
-		getGroupInput: state=> form=>{
-			return $h.nvl(state.inputs[form],{})
+		getGroup: state=> (type, form, empty=[])=>{
+			type=type.toLowerCase()
+			return $h.nvl($h.nvlo(state[type])[form], empty )
 		},
-		getGroupFilter: state=> form=>{
-			return $h.nvl(state.filters[form],{})
+		getTypes: state=> ()=>{
+			let tmp=[]
+			for(let name in state)
+				tmp.push(name)
+			return tmp
 		},
+		
 	},
 	actions:{	
-		async doInit({commit},{form,params, type}){	// jshint ignore:start
+		async doInit({commit, state},{form,params, type}){	// jshint ignore:start
 			params=params||[]  
-			type=type||'inputs'
-			if (type == 'inputs')
-				commit("allInputsConfigSet",{ form, inputs: params.reduce((res, row) => ({ 
-						...res, [row.code]:{...row,}  
-					}  
-				), {}) } )
-			else
-				commit("allFiltersConfigSet",{ form, filters: params.reduce((res, row) => ({ 
-						...res, [row.code]:{...row,}  
-					} 
-				), {}) } )
+			type=(type||'inputs').toLowerCase()
+			if(state[type]== undefined)
+				$h.showMsg(  {...$h.getErrDesc('paramsConfInvalidType'), textParams:[type] } )
+			params=params.sort( (a, b) =>{return $h.sort(a, b, 'sort_seq', 'sort_seq')})
+			commit('allConfigSet' ,{  type, form, params } )
 		}, // jshint ignore:end
 	},
 	mutations:{
-		allInputsConfigSet(state, {form,inputs, }){
-			console.log('allInputsConfigSet',state, form, inputs);
-			Vue.set(state.inputs, form, inputs)
-		},
-		allFiltersConfigSet(state, {form,filters, }){
-			console.log('allFiltersConfigSet',state, form, filters);
-			Vue.set(state.filters, form, filters)
+		allConfigSet(state, {type, form,params, }){
+			console.log('allConfigSet',state, type,form, params);
+			Vue.set(state[type], form, params)
 		},
 
 	},

@@ -24,7 +24,11 @@ Route::middleware('auth:api')->match(['get', 'post'],'/user/logout', function (R
 });
 Route::middleware('auth:api')->group( function () {  Route::resource('systemLinks','API\SystemLinksController'); });
 
-Route::middleware('auth:api')->group( function () {  Route::resource('testArms', 'API\TestArmController'); });
+Route::get('testArms', 'API\TestArmController@index')->middleware('auth:api');
+Route::get('testArms/data', 'API\TestArmController@data')->middleware('auth:api');
+Route::post('testArms', 'API\TestArmController@store')->middleware('auth:api');
+Route::patch('testArms', 'API\TestArmController@update')->middleware('auth:api');
+Route::delete('testArms', 'API\TestArmController@destroy')->middleware('auth:api');
 
 Route::post('data_command','API\DataCommandController@reciveCommand')->middleware('auth:api');
 Route::post('socet_command','API\SocetCommandController@reciveCommand')->middleware('auth:api');

@@ -5,10 +5,10 @@
 			logoutDoing:false,
 			dialogsConfig: {
 				authLogin:{
-					id:-1,  title:'$vuetify.system.modals.auth.title', module:'m-input-fields', width:300, 
+					id:-1,  title:'$vuetify.system.modals.auth.title', component:'m-input-fields', //width:300, 
 					params:{href:'oauth/token',  method:'post', headers:{Authorization:''},
 						todoExt:{grant_type: process.env.VUE_APP_API_GRANT_TYPE, client_id: process.env.VUE_APP_API_CLIENT_ID, client_secret: process.env.VUE_APP_API_CLIENT_SECRET},
-						saveButtonProp: {title:'$vuetify.system.simple.actions.logIn', icon:'input', }, 
+						saveButtonProp: {title:'$vuetify.system.actions.logIn', icon:'input', }, 
 						inputGroup:'authLogin',
 					}, 
 				},
@@ -20,6 +20,9 @@
 			clearStorageAuth(){
 				localStorage.authAccessToken = ''
 				localStorage.authExpiresIn = 0
+				if (localStorage.authExpiresInId>0)
+					clearTimeout(localStorage.authExpiresInId)
+				localStorage.authExpiresInId = 0
 				localStorage.authRefreshToken = ''
 				localStorage.authTokenType = ''
 				localStorage.authRemember = 0
@@ -40,8 +43,10 @@
 					await vm.initProfile() // логин гостем
 					return
 				}
-				else
+				else{
 					vm.profileSetToken({token:localStorage.authAccessToken, expiresIn:localStorage.authExpiresIn, refreshToken:localStorage.authRefreshToken, tokenType:localStorage.authTokenType, tokenRemember:localStorage.authRemember,} )
+					localStorage.authExpiresInId = setTimeout( ()=> vm.$root.$emit('systemLogout'), (localStorage.authExpiresIn - now)*1000 )
+				}
 				await vm.retrieveUserInfo()
 			},
 			async loginGuest(){
@@ -65,6 +70,7 @@
 					await vm.logout()
 				localStorage.authAccessToken = response.data.access_token
 				localStorage.authExpiresIn = response.data.expires_in + now
+				localStorage.authExpiresInId = setTimeout( ()=> vm.$root.$emit('systemLogout'), (localStorage.authExpiresIn - now)*1000 )
 				localStorage.authRefreshToken = response.data.refresh_token
 				localStorage.authTokenType = response.data.token_type
 				localStorage.authRemember = remember
@@ -100,10 +106,10 @@
 				await this.loginResponseProcess({response, todo})
 			},
 		},
-		created: async function (){
+		async created (){
 			let vm=this
 			vm.$root.$on('systemLogin', ()=>{
-				vm.openDialog({name:'authLogin'})
+				vm.openDialog({dialog:'authLogin'})
 			})
 			vm.$root.$on('systemLogout', async ()=>{
 				if(vm.logoutDoing)
@@ -115,7 +121,7 @@
 			})
 			vm.initProfile()
 		},
-		mounted: function (){	
+		mounted (){	
 
 			//localStorage.
 			/*let userInfo = window.userInfo||{}

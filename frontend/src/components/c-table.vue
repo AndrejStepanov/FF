@@ -15,9 +15,9 @@
 						</v-btn> 
 
 					</template>
-					<span>{{$vuetify.lang.t('$vuetify.system.simple.actions.search') }}</span>
+					<span>{{$vuetify.lang.t('$vuetify.system.actions.search') }}</span>
 				</v-tooltip>
-				<v-text-field  v-else  key="field"	v-model="searchText" dense :autofocus="filterShown" filled  :label="$vuetify.lang.t('$vuetify.system.simple.actions.search')"	single-line	hide-details class="height-36px"
+				<v-text-field  v-else  key="field"	v-model="searchText" dense :autofocus="filterShown" filled  :label="$vuetify.lang.t('$vuetify.system.actions.search')"	single-line	hide-details class="height-36px"
 					prepend-inner-icon="search"  	append-icon="close"  @click:append.stop="filterShown=!filterShown; searchText=''" 	  multi-sort
 					prepend-icon="arrow_right"  @click:prepend.stop="filterShown=!filterShown;" 
 					
@@ -27,7 +27,7 @@
 				<template v-slot:activator="{ on, attrs }">
 					<v-btn   v-bind="attrs" v-on="on" text  class="  mr-2" @click.stop="$emit('fiterButtonClick')" ><v-icon>filter_list</v-icon></v-btn> 
 				</template>
-				<span>{{$vuetify.lang.t('$vuetify.system.simple.labels.filter') }}</span>
+				<span>{{$vuetify.lang.t('$vuetify.system.labels.filter') }}</span>
 			</v-tooltip>
 			<v-menu v-if="exportPdf || exportExcel" >
 				<template #activator="{ on: onMenu }">
@@ -35,19 +35,19 @@
 					<template #activator="{ on: onTooltip, attrs }">
 						<v-btn v-bind="attrs" v-on="{ ...onMenu, ...onTooltip }" text  class="  mr-2" @click.stop="$emit('exportButtonClick')"  > <v-icon>cloud_download</v-icon></v-btn>
 					</template>
-					<span>{{$vuetify.lang.t('$vuetify.system.simple.actions.export') }}</span>
+					<span>{{$vuetify.lang.t('$vuetify.system.actions.export') }}</span>
 					</v-tooltip>
 				</template>
 				<v-list>
-					<v-list-item  v-if="exportPdf"  @click.stop="$emit('pdfButtonClick')"  >	<v-list-item-title> {{$vuetify.lang.t('$vuetify.system.simple.labels.pdfFile') }} </v-list-item-title>		</v-list-item>
-					<v-list-item  v-if="exportExcel" @click.stop="$emit('excelButtonClick')"  >	<v-list-item-title> {{$vuetify.lang.t('$vuetify.system.simple.labels.excelFile') }} </v-list-item-title>		</v-list-item>
+					<v-list-item  v-if="exportPdf"  @click.stop="$emit('pdfButtonClick')"  >	<v-list-item-title> {{$vuetify.lang.t('$vuetify.system.labels.pdfFile') }} </v-list-item-title>		</v-list-item>
+					<v-list-item  v-if="exportExcel" @click.stop="$emit('excelButtonClick')"  >	<v-list-item-title> {{$vuetify.lang.t('$vuetify.system.labels.excelFile') }} </v-list-item-title>		</v-list-item>
 				</v-list>
 			</v-menu>
 			<v-tooltip bottom v-if="settingsButton" > 
 				<template v-slot:activator="{ on, attrs }">
-					<v-btn   v-bind="attrs" v-on="on" text  class="  mr-2" @click.stop="$emit('settingsButtonClick'); openDialog({name:'tableSettings'})" ><v-icon>settings</v-icon></v-btn> 
+					<v-btn   v-bind="attrs" v-on="on" text  class="  mr-2" @click.stop="$emit('settingsButtonClick'); openDialog({dialog:'tableSettings'})" ><v-icon>settings</v-icon></v-btn> 
 				</template>
-				<span>{{$vuetify.lang.t('$vuetify.system.simple.labels.settings') }}</span>
+				<span>{{$vuetify.lang.t('$vuetify.system.labels.settings') }}</span>
 			</v-tooltip>
 		</v-card-title>
 
@@ -57,13 +57,13 @@
 				<slot   :name="slotName" v-bind="slotProps" />
 			</template>
 		</v-data-table>
+		<component v-for="(row, name) in dialogsShowen " :key="name" v-bind:is="row.config.component" :dialogLink="row.link"  />
 	</v-card>
 </template>
 
-<script>
-//		<component v-bind:is="dialogModule" @input="saveDialog" v-if="dialogIsShowen(dialogIdOpened)" :dialogId="dialogIdOpened"/>
+<script>	
 	import {Ripple,} from 'vuetify/lib/directives'
-	import XDialogConfig from '@/mixins/x-dialog-config'
+	import XDialogsConfig from '@/mixins/x-dialogs-config'
 	export default {
 		name:'c-table',
 		data: () => ({
@@ -77,7 +77,7 @@
 			blocksSize:{},
 			dialogsConfig: {
 				tableSettings:{
-					id:-1,  title:"$vuetify.system.modals.tableSettings.title", module:'m-table-settings', height:480, width:900,
+					id:-1,  title:"$vuetify.system.modals.tableSettings.title", component:'m-table-settings', height:480, width:900,
 					params:{ headers:null}, 
 				},
 			},
@@ -94,6 +94,7 @@
 			settingsButton:{type:Boolean,	default: false	},
 			loading:{type:Boolean,	default: false	},
 			tableTitle: {type:String,	default: ''	},
+			keyField: {type:String,	default: '_sys_id'	},
 			withRowNum:{type:Boolean,	default: false	},
 			height:{type: Number},
 			layoutSize: {type: Object, default: () => {} },
@@ -117,12 +118,12 @@
 				return this.tableTitle!='' || this.searchButton || this.fiterButton || this.exportPdf || this.exportExcel
 			},
 			vDataTablePropAsembled(){
-				return {fixedHeader:true, dense:true, multiSort:true, headerKey:'value', itemKey:'id', footerProps:{showFirstLastPage: true, }, ...this.vDataTableProp }
+				return {fixedHeader:true, dense:true, multiSort:true, headerKey:'value', itemKey:this.keyField , footerProps:{showFirstLastPage: true, }, ...this.vDataTableProp }
 			},
 			typeSelect(){return  this.vDataTablePropAsembled.singleSelect?'one': this.vDataTablePropAsembled.singleSelect===false?'multy':''	},			
 			tabHeads(){
 				let  vm = this,
-					tmp = [vm.withRowNum?{value:'_sys_num', text:vm.$vuetify.lang.t('$vuetify.system.simple.labels.numInOrder'), type:'int', classCell:'width-one-percent', sortable:true,}:{}]
+					tmp = [vm.withRowNum?{value:'_sys_num', text:vm.$vuetify.lang.t('$vuetify.system.labels.numInOrder'), type:'int', classCell:'width-one-percent', sortable:true,}:{}]
 				if(vm.tableHeadManSettings.find((head,i) => head.type==undefined )!=undefined)
 					throw new Error('Всем элементам заголовка необходимо указывать поле type!')
 				return  tmp.concat( vm.tableHeadManSettings).map((head,i) => {
@@ -142,7 +143,7 @@
 			tabRows(){
 				let  vm = this
 				return vm.items.map((element,i) => {
-					let tmp={}
+					let tmp=element
 					vm.tabHeads.forEach(head =>{
 						tmp[head.value] = vm.valFormat(element[head.value],head)
 					})
@@ -173,9 +174,10 @@
 			},
 		},
 		components: {
+			MTableSettings: () => import('@/modules/tableSettings/m-table-settings'), 
 		},
 		mixins: [
-			XDialogConfig,
+			XDialogsConfig,
 		],
 		directives:{
 			Ripple,
@@ -210,16 +212,17 @@
 				vm.$emit('input', props )
 			},
 			tableSettings_getParams(){
-				return {headers: this.tableHeadManSettings}
+				return {headers: this.tableHeadManSettings, }
 			},
-			tableSettings_saveDialog(payload){
-				this.tableHeadManSettings=payload
+			tableSettings_finishDialog({todo}){				
+				this.tableHeadManSettings=todo
 			},
 		},
-		created: function (){
+		async created (){
 			let vm=this
 			vm.checkBoxColor=vm.$h.appTheme.checkBox||vm.checkBoxColor
 			vm.tableHeadManSettings=vm.headers
+			await vm.initDialogs(vm.dialogsConfig)
 		},
 		mounted: function (){	
 			let vm=this

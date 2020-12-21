@@ -21,7 +21,7 @@
 		mixins: [
 			XPage, 
 		],
-		created: function (){
+		created (){
 			let vm=this
 			if(vm.layoutsConfigs!=undefined)
 				if( vm.layoutsCur>-1 && vm.layoutsConfigs[vm.layoutsCur]!=undefined)

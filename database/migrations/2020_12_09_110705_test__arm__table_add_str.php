@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ObjComponentName extends Migration{
+class TestArmTableAddStr extends Migration{
 	/**
 	 * Run the migrations.
 	 *
@@ -12,8 +12,9 @@ class ObjComponentName extends Migration{
 	 */
 	public function up()   {
 		try{
-			Schema::table('objects', function (Blueprint $table) {
-				$table->string('obj_comp_name')->comment('Название компоненты для объекта');
+			Schema::table('test_arm', function (Blueprint $table) {
+				$table->string('attStr1')->nullable();
+				$table->string('attStr2')->nullable();
 			});
 		}catch(PDOException $ex){
 			$this->down();
@@ -27,8 +28,8 @@ class ObjComponentName extends Migration{
 	* @return void
 	*/
 	public function down()    {
-		Schema::table('objects', function (Blueprint $table) {
-			$table->dropColumn(['obj_comp_name',]);
+		Schema::table('test_arm', function (Blueprint $table) {
+			$table->dropColumn(['attStr1','attStr2',]);
 		});
 	}
 }

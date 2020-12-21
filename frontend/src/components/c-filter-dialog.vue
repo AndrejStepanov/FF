@@ -5,18 +5,18 @@
 				<v-btn icon dark @click="$emit('input', false) ">
 					<v-icon>close</v-icon>
 				</v-btn>
-				<v-toolbar-title>{{$vuetify.lang.t('$vuetify.system.simple.labels.filter')}}</v-toolbar-title>
+				<v-toolbar-title>{{$vuetify.lang.t('$vuetify.system.labels.filter')}}</v-toolbar-title>
 				<v-spacer/>
 				<v-toolbar-items>
-					<v-btn dark text @click="$emit('input', false)">{{$vuetify.lang.t('$vuetify.system.simple.actions.save')}}</v-btn>
+					<v-btn dark text @click="$emit('input', false)">{{$vuetify.lang.t('$vuetify.system.actions.save')}}</v-btn>
 				</v-toolbar-items>
 			</v-toolbar>
-			<v-form v-model="inputsValid" :ref="filterName"  > 
+			<v-form v-model="inputsValid" :ref="formFieldsForm.main"  > 
 				<v-list subheader class="height-auto">
 					<!--<v-subheader>{{$vuetify.t('$vuetify.system.searchPage.education')}}</v-subheader> -->
 					<v-list-item >
 						<v-list-item-content  >
-							<c-input-cols :inputs="inputs"  :paramsForm="filterName" :dialogId="dialogId"  :maxCols="getFilColCnt" :needCheckBox="true" :needSign="true" :listItemMin="true" allPT />
+							<c-input-cols  :paramsForm="formFieldsForm.main"   :maxCols="getFilColCnt" :needCheckBox="true" :needSign="true" :listItemMin="true" allPT />
 						</v-list-item-content>
 					</v-list-item>
 				</v-list>
@@ -25,19 +25,18 @@
 	</v-dialog>
 </template>
 <script>
-	import CInputCols from '@/components/c-input-cols'
 	import XStore from '@/mixins/x-store'
+	import XFields from '@/mixins/x-fields'
+	import CInputCols from '@/components/c-input-cols'
     export default {
 		name:'c-filter-dialog',
 		data:() => ({
 			inputsValid:false,
-			dialogId:0,
 		}),
 		props:{
 			value:{type:  Boolean, required: true},
-			filterName:{type:  String, required: true},
+			filterName:{type:  String, required: true},			
 			dialogConf: {type: Object, default: () => {return {fullscreen:true, hideOverlay:true, transition:'dialog-bottom-transition'} } },
-			//:dialoSaveFunc = "formSave"
 		},
 		computed:{
 			getFilColCnt(){
@@ -45,31 +44,26 @@
 				return ['xs'].indexOf(vm.$vuetify.breakpoint.name)!=-1 ? 1 :
 					['sm'].indexOf(vm.$vuetify.breakpoint.name)!=-1 ? 2 : 3
 			},
-			inputs() {
-				let vm=this
-				return Object.values( vm.paramConfigGroupFilter( vm.filterName ) ).sort( (a, b) =>{return vm.$h.sort(a, b, 'sort_seq', 'sort_seq')})
-			},
 		},
 		components: {
 			CInputCols,
 		},
 		mixins: [
-			XStore, 
+			XStore,  XFields
 		],
 		methods: {
 			filterSet(){
 				let vm = this
-				if (!vm.$refs[vm.filterName].validate())
+				if (!vm.$refs[vm.formFieldsForm.main].validate())
 					return;
-				console.log( vm.paramTodo(vm.filterName ) )
+				console.log( vm.paramTodo(vm.formFieldsForm.main ) )
 			},
 		},
-		created: function (){
+		async created (){
 			let vm= this
-			vm.dialogId = vm.$h.getNewId() 
-			vm.paramInit( {form: vm.filterName, params:vm.inputs })
+			await vm.initFields({name:'main', form:vm.filterName, type:'filters' })
 		},
-    }
+	}
 </script>
 
 <style lang="scss">

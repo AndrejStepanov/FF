@@ -6,10 +6,10 @@
 					<v-alert	prominent	type="error"	>
 						<v-row align="center">
 							<v-col class="grow">
-								{{$vuetify.lang.t('$vuetify.system.simple.msgs.needLogin')}}
+								{{$vuetify.lang.t('$vuetify.system.msgs.needLogin')}}
 							</v-col>
 							<v-col class="shrink">
-								<v-btn @click=" $root.$emit('systemLogin')">{{$vuetify.lang.t('$vuetify.system.simple.actions.logIn')}}  <v-icon v-text="'account_circle'"	/> </v-btn>
+								<v-btn @click=" $root.$emit('systemLogin')">{{$vuetify.lang.t('$vuetify.system.actions.logIn')}}  <v-icon class='ml-2' v-text="'account_circle'"	/> </v-btn>
 							</v-col>
 						</v-row>
 					</v-alert>

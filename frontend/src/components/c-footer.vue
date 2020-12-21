@@ -1,8 +1,8 @@
 <template>
 	<v-footer padless :fixed="fixed" :app="fixed" :dark="dark" :light="light"> <!---->
-		<span >&nbsp;&nbsp;&nbsp;{{ $vuetify.lang.t('$vuetify.system.simple.labels.os.name') }}</span>
+		<span >&nbsp;&nbsp;&nbsp;{{ $vuetify.lang.t('$vuetify.system.labels.os.name') }}</span>
 		<v-spacer ></v-spacer>
-		<span>&copy;  {{ $vuetify.lang.t('$vuetify.system.simple.labels.os.year') }}&nbsp;&nbsp;&nbsp;</span>
+		<span>&copy;  {{ $vuetify.lang.t('$vuetify.system.labels.os.year') }}&nbsp;&nbsp;&nbsp;</span>
 	</v-footer>
 </template>
 

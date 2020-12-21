@@ -26,9 +26,9 @@
 //<span class='color-accent' >{{ formatHour(hour) }} </span>
 //<span class='color-accent' >{{minute}} </span>
 //<span class='color-accent' >{{second}} </span> 
-//<sub> {{$vuetify.lang.t('$vuetify.system.simple.labels.hourBrevis')}} </sub>
-//<sub>{{$vuetify.lang.t('$vuetify.system.simple.labels.minuteBrevis')}}</sub>
-//<sub>{{$vuetify.lang.t('$vuetify.system.simple.labels.secondBrevis')}}</sub>
+//<sub> {{$vuetify.lang.t('$vuetify.system.labels.hourBrevis')}} </sub>
+//<sub>{{$vuetify.lang.t('$vuetify.system.labels.minuteBrevis')}}</sub>
+//<sub>{{$vuetify.lang.t('$vuetify.system.labels.secondBrevis')}}</sub>
 	export default {
 		name:'c-time-picker',
 		data: () => ({

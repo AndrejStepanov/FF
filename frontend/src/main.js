@@ -40,15 +40,15 @@ import vuex from 'vuex'
 
 import msg from './stores/s-msg'
 import profile from './stores/s-profile'
-import dialog from './stores/s-dialog'
 import param from './stores/s-param'
 import paramConfig from './stores/s-param-config'
-import pageButton from './stores/s-page-button'
+import compDialog from './stores/s-comp-dialog'
+import compButton from './stores/s-comp-button'
 import layout from './stores/s-layout'
 import system from './stores/s-system'
 
 Vue.use(vuex)
-let store = new vuex.Store({modules: {	profile,msg, dialog, param, paramConfig, pageButton, layout, system,} })
+let store = new vuex.Store({modules: {	profile,msg, compDialog, param, paramConfig, compButton, layout, system,} })
 
 import vueAxios from 'vue-axios'
 import axios from 'axios'
@@ -82,7 +82,7 @@ window.axios.interceptors.response.use(res => {
 Vue.config.errorHandler = function (err, vm, info) {
     console.error('Vue.config.errorHandler',err);
 	let nvl=vm.$h.nvl
-	vm.$h.showMsg({ title: nvl(err.title,'$vuetify.errors.systemErrorJs.title')  , text: nvl(err.text ,err.message),	
+	vm.$h.showMsg({ title: nvl(err.title,'$vuetify.system.errors.systemErrorJs.title')  , text: nvl(err.text ,err.message),	
 		params: {creator:err.creator, status: nvl(err.status,-1), trace: nvl(err.trace, info+'<br>'+nvl( err.stack.replace(/\n/g,'<br>') ) ) , file: nvl(err.file), line: nvl(err.line),  }, withThrow:false,})
 };
 /* --непонятно что сними делать пока.
@@ -98,7 +98,7 @@ window._vue =  new Vue({el:'#app', router ,vuetify, store, render: h=> h(app),
 
 window.onerror = function(message, source, line, column, error) {
 	console.error('onerror',error);		
-	window._vue.$h.showMsg({ title: '$vuetify.errors.systemErrorJs.title'  , text: message, file: source, line:line+'('+column+')',	params: {creator:'js', status:-1, trace: error.stack.replace(/\n/g,'<br>') }, withThrow:false, })
+	window._vue.$h.showMsg({ title: '$vuetify.system.errors.systemErrorJs.title'  , text: message, file: source, line:line+'('+column+')',	params: {creator:'js', status:-1, trace: error.stack.replace(/\n/g,'<br>') }, withThrow:false, })
 	return false
 }
 window.addEventListener('unhandledrejection', function(event) {
@@ -106,6 +106,6 @@ window.addEventListener('unhandledrejection', function(event) {
 	let vm = window._vue,
 		text = vm.$h.nvl(event.reason.text, event.reason.message),
 		nvl=vm.$h.nvl
-	vm.$h.showMsg({ title: nvl(event.reason.title,'$vuetify.errors.systemErrorJs.title')  , text: text,	
+	vm.$h.showMsg({ title: nvl(event.reason.title,'$vuetify.system.errors.systemErrorJs.title')  , text: text,	
 		params: {creator:event.reason.creator, status: nvl(event.reason.status,-1), trace: nvl(event.reason.trace, text+'<br>'+event.reason.stack.replace(/\n/g,'<br>') ) , file: nvl(event.reason.file), line: nvl(event.reason.line),  }, withThrow:false,})
  });

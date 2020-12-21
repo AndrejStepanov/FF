@@ -15,6 +15,7 @@ class SystemLinksController extends BaseController{
 		$this->Objects=(new Objects())->getTable();
 		$this->ObjLink=(new ObjLink())->getTable();
 		$this->Tree=(new Tree())->getTable();
+		parent::registerMainModel(new ObjLink());
 	}
 	/**
 	 * Display a listing of the resource.

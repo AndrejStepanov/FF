@@ -19,7 +19,9 @@ var _curTheme='light',
 	_vm=null,
 	linkSep = '->', //рзделитель в ссулках на родителя в структуре слоев
 	layoutSepSize = 3, //размер разделителя между слоями
-	layoutMinSize = 30 //минимальный размер слоя
+	layoutMinSize = 30, //минимальный размер слоя
+	idCounter=1,
+	idSep='_$'
 
 function appThemeInit ({appTheme, curTheme,numeral, vm}) {
 	_appTheme = appTheme
@@ -42,10 +44,12 @@ function appThemeInit ({appTheme, curTheme,numeral, vm}) {
 		'.background-accent							{background: '+_appTheme.themes[_curTheme].accent+' !important;} '+ //оранжевый
 		'.background-primary						{background: '+_appTheme.themes[_curTheme].primary+' !important;} '+ //синий
 		'.background-secondary						{background: '+_appTheme.themes[_curTheme].secondary+' !important;} '+ //салатовый
+		'.inputMainDiv.transition					{ box-shadow: 0 0 10px '+_appTheme.themes[_curTheme].accent+';} '+
 		'.box-shadow-none							{box-shadow: none !important;} '+ 
 		'.height--100pr 							{height: 100%;} '+
 		'.multipane>div					 			{height: 100%;} '+
 		'.max-height--100pr					 		{max-height: 100%} '+
+		'.border-radius--7px					 	{border-radius: 7px; } '+
 		'.overflow-y-auto 							{overflow-y: auto;} '+
 		'.overflow-auto 							{overflow: auto;} '+
 		'.overflow-hidden 							{overflow: hidden;} '+
@@ -172,7 +176,7 @@ function timeNorm (str){
 	return (res +':00:00').substring(0, 8) // на выходе или 2018-10-03T12:52:15 или ''
 }
 function getNewId (){
-	return Math.floor(Math.random() * MAX_ID)
+	return idCounter++// Math.floor(Math.random() * MAX_ID)
 }
 
 
@@ -226,7 +230,9 @@ function isNumeric (n){
 	// Если параметр не может быть преобразован, возвращает true, иначе возвращает false.
 	// isNaN("12") // false 
 }
-
+function numberToPrecision(N, prec){
+	return nvl(N,null)===null?null: prec==0? N ^ 0 : (Math.round(parseFloat(N) * 10*prec) / (10*prec) )
+}
 /**
  * Camelize a hyphen-delimited string.
  */
@@ -235,8 +241,13 @@ function camelize (str) {
   return str.replace(/-(\w)/g, (_, c) => c ? c.toUpperCase() : '')
 }
 
-function nvl (val,replace){
-	if(val===undefined || val===null || val==='' ) return arguments.length ==1? 0: replace; else return val;
+function nvl (val,replace){ // arguments.find не катит так как это объект
+	return arguments[0]!==undefined && arguments[0]!==null && arguments[0]!==''?  arguments[0]:
+		arguments[1]!==undefined && arguments[1]!==null && arguments[1]!=='' || arguments.length ==2?  arguments[1]:
+		arguments[2]!==undefined && arguments[2]!==null && arguments[2]!==''|| arguments.length ==3?  arguments[2]:
+		arguments[3]!==undefined && arguments[3]!==null && arguments[3]!==''|| arguments.length ==4?  arguments[3]:
+		arguments[4]!==undefined && arguments[4]!==null && arguments[4]!==''|| arguments.length ==5?  arguments[4]:
+		0
 }
 
 function nvlo (val,replace){
@@ -245,7 +256,6 @@ function nvlo (val,replace){
 
 function systemException({title , text, textParams }, { status, trace, file, line  }) {
 	const error = new Error(title+' | '+text)
-	console.log(title);
 	error.title = title
 	error.text = text
 	error.textParams = textParams
@@ -272,18 +282,19 @@ function showMsg ({title, text, type, params, textParams, withThrow,}){
 		throw new systemException({ title , text, textParams: textParams.join(' | '),  }, params )
 }
 
-function getErrDesc(errName){
-	return {title:'$vuetify.errors.'+errName+'.title', text:'$vuetify.errors.'+errName+'.text' }
+function getErrDesc(errName, component='system'){
+	return {title:'$vuetify.'+component+'.errors.'+errName+'.title', text:'$vuetify.'+component+'.errors.'+errName+'.text' }
 }
-function getMsgDesc (msgName, type='success'){
-	return {title:'$vuetify.msgs.'+msgName+'.title', text:'$vuetify.msgs.'+msgName+'.text' , type }
+function getMsgDesc (msgName, component='system', type='success'){
+	return {title:'$vuetify.'+component+'.msgs.'+msgName+'.title', text:'$vuetify.'+component+'.msgs.'+msgName+'.text' , type }
 }
 
 function openDialogUniversal(params,vm){
 	console.log(params,vm);
+	//vm.openDialog({name:'universalDialog'})
 }
 
-async function getDataTable({href,method, data, variable, loadingVar,  loadingVarNum },vm){
+async function getDataTable({href,method, data, variable, loadingVar,  loadingVarNum, defaultVar },vm){
 	let param = {href,method, data}
 	loadingVar=loadingVar||''
 	loadingVarNum=loadingVarNum||''
@@ -295,6 +306,8 @@ async function getDataTable({href,method, data, variable, loadingVar,  loadingVa
 		param = {loadingVar, ...param}
 	if(nvl(loadingVarNum)!='')
 		param = {loadingVarNum, ...param}
+	defaultVar=nvl(defaultVar,[])
+	vm[variable]= defaultVar
 	vm[variable]= await vm.$h.sendRequestForData( param, vm )
 }
 async function sendRequestForData(params, vm){
@@ -317,6 +330,13 @@ async function sendRequest  ({href, method, headers, data, needSucess, hrefBack,
 		showMsg(getErrDesc('noSendAddress') )
 	try {
 		if(needLoadingNum) vm[loadingVarNum]++; if (needLoading) vm[loadingVar]=true;
+		console.log(														//GET 			/photos 				index 		photos.index
+			method,																		//GET 			/photos/create 			create 		photos.create
+			href,																			//POST 			/photos 				store 		photos.store
+			{ accept: 'application/json',  ...nvlo(headers, {} ) },					//GET 			/photos/{photo} 		show 		photos.show
+			method=='get'?data:{},														//GET 			/photos/{photo}/edit 	edit 		photos.edit
+			method!='get'?data:{},
+			);
 		response  = await window.axios({														//GET 			/photos 				index 		photos.index
 			method: method,																		//GET 			/photos/create 			create 		photos.create
 			url: href,																			//POST 			/photos 				store 		photos.store
@@ -334,11 +354,11 @@ async function sendRequest  ({href, method, headers, data, needSucess, hrefBack,
 		console.log(error)
 		let r = nvlo(error.response)
 		if( nvl(nvlo(r.data).message,'').indexOf("The provided authorization grant")==0) // почему то сервер возращает такой ответ при неверном логине/пароле
-			[r.data.title, r.data.message] = ['$vuetify.errors.withLogIn.title', '$vuetify.errors.withLogIn.text']
+			[r.data.title, r.data.message] = ['$vuetify.system.errors.withLogIn.title', '$vuetify.system.errors.withLogIn.text']
 		if( nvlo(r.data).message=='Unauthenticated.')
-			[r.data.title, r.data.message] = ['$vuetify.errors.needAuth.title', '$vuetify.errors.needAuth.text']
+			[r.data.title, r.data.message] = ['$vuetify.system.errors.needAuth.title', '$vuetify.system.errors.needAuth.text']
 		if (needLoading) if(needLoadingNum) vm[loadingVarNum]--; else	vm[loadingVar]=false;
-		showMsg({ title: nvlo(r.data).title||nvlo(defaultErr).title||'$vuetify.errors.requestFaild.title'  , text:nvlo(r.data).message||nvlo(defaultErr).text||'$vuetify.errors.requestFaild.text',
+		showMsg({ title: nvlo(r.data).title||nvlo(defaultErr).title||'$vuetify.system.errors.requestFaild.title'  , text:nvlo(r.data).message||nvlo(defaultErr).text||'$vuetify.system.errors.requestFaild.text',
 			params: {status:r.status, trace:nvlo(r.data).trace, file:nvlo(nvl(error.response).data).file, line:nvlo(r.data).line}, })
 	}
 	finally{if(needLoadingNum) vm[loadingVarNum]--; if (needLoading) vm[loadingVar]=false;}
@@ -365,7 +385,8 @@ export default {
 	linkSep,
 	layoutSepSize,
 	layoutMinSize,
-
+	idSep,
+	
 	dateFormatNorm,
 	dateFormat,
 	dateFormatRevert,
@@ -383,8 +404,8 @@ export default {
 	list,
 
 	isInteger,
-
 	isNumeric,
+	numberToPrecision,
 	
 	camelize,
 	nvl,
