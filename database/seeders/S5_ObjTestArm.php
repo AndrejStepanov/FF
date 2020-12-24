@@ -23,9 +23,9 @@ class S5_ObjTestArm extends Seeder {
 		'parent_id'=>$treeeHead[0]->tree_id, 'parent_ids'=>$treeeHead[0]->tree_id,  ]);
 
 	$objTestArm = Objects::create(['auth' => 'Струков Иван', 'guid_tree_id'=> $treeeTestArm->tree_id, 'language'=>'ru', 'obj_desc'=>$objName.' описание 2', 'obj_group'=>'Form', 'obj_id'=>$objId, 
-		'obj_name'=>$objName, 'obj_path'=> $parentName.'::'.$objName, 'obj_type'=>'АРМ', 'obj_comp_name'=>'pTestArm', ]);
+		'obj_name'=>$objName, 'obj_path'=> $parentName.'::'.$objName, 'obj_type'=>'АРМ', 'obj_comp_name'=>'PTestArm', ]);
 
-	$linkTestArm = ObjLink::create(['is_active' => 'Y', 'link_id'=>4, 'link_desc'=>$objName.' описание 3', 'link_to_type'=>'_self', 'obj_id' => $objId, '/href_link'=>$objName, 'link_name'=>$objName, 'link_group'=>'Армы',  ]);
+	$linkTestArm = ObjLink::create(['is_active' => 'Y', 'link_id'=>4, 'link_desc'=>$objName.' описание 3', 'link_to_type'=>'_self', 'obj_id' => $objId, 'href_link'=>$objName, 'link_name'=>$objName, 'link_group'=>'Армы',  ]);
 
   }
 

@@ -8,11 +8,11 @@
 	composer install
 	cd frontend
 	npm install
+готовим базу
+	php artisan migrate
+	php artisan db:seed
 готовим пых
 	php artisan passport:install
 	php artisan passport:client --password
 	php artisan config:clear
 	php artisan config:cache
-готовим базу
-	php artisan migrate
-	php artisan db:seed

@@ -9,10 +9,10 @@ class DatabaseSeeder extends Seeder{
      * @return void
      */
     public function run() {
-		$this->call('S1_TestTableSeeder');		$this->command->info('Тестовая таблица загружена данными!');
-		$this->call('S2_UserRootSeeder');		$this->command->info('Администратор и гость установлены!');
-		$this->call('S3_ObjStructSeeder');		$this->command->info('Тестовая структура системы заведена!');
-		$this->call('S4_TestNSDSeeder');		$this->command->info('Тестовая структура НСИ заведена!');
-		$this->call('S5_ObjTestArm');			$this->command->info('Тестовый арм создан!');
+		$this->call('Database\Seeders\S1_TestTableSeeder');		$this->command->info('Тестовая таблица загружена данными!');
+		$this->call('Database\Seeders\S2_UserRootSeeder');		$this->command->info('Администратор и гость установлены!');
+		$this->call('Database\Seeders\S3_ObjStructSeeder');		$this->command->info('Тестовая структура системы заведена!');
+		$this->call('Database\Seeders\S4_TestNSDSeeder');		$this->command->info('Тестовая структура НСИ заведена!');
+		$this->call('Database\Seeders\S5_ObjTestArm');			$this->command->info('Тестовый арм создан!');
     }
 }
