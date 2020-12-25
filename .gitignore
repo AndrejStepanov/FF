@@ -1,8 +1,9 @@
 /node_modules
 /public/hot
 /public/storage
-/storage/*.key
 /vendor
+frontend/vue.config.js
+resources/views/spa.blade.php
 .env
 laravel-echo-server.json
 laravel-echo-server.lock
